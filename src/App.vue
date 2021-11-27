@@ -1,15 +1,29 @@
 <template>
 <div id="wrapper">
-  <div id="nav">
+  <Nav />
+  <!-- <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
     <router-link to="/recent-codes">recent-codes</router-link> |
     <router-link to="/japan">japan</router-link> |
-  </div>
+  </div> -->
   <router-view/>
 
 </div>
 </template>
+
+<script>
+import Nav from './components/Nav.vue';
+
+export default {
+  name: 'App',
+
+  components: {
+    Nav,
+  },
+
+}
+</script>
 
 
 <style lang="scss">
