@@ -1,11 +1,15 @@
 <template>
-  <!-- Container should not have height, since expanded menu will not be cover in bg-color ov nav-container -->
-  <div class="flex flex-wrap sticky top-0 z-50 items-center justify-center py-2 px-4 mb-3 border-b border-gray-300 shadow-sm bg-white">
+  <!-- Container should not have height, since expanded menu will not be cover in bg-color ov nav-container 
+  EDIT: From lg-breakpoint on container will have height of 12 in order to optically not expand when the dropdown gets expanded-->
+  <div class="flex flex-wrap sticky top-0 z-50 items-center justify-center lg:h-12 py-2 px-4 mb-3 border-b border-gray-300 shadow-sm bg-white">
 
-    <!-- flex-wrap: Wraps the (hidden) menu list items on next line when menu gets expanded -->
-    <div class="flex items-center flex-wrap w-full justify-between">
+    <!-- flex-wrap: Wraps the (hidden) menu list items on next line when menu gets expanded
+    lg:relative: From lg-breakpoint on this div gets position: relative in order to position an absolute element in it -->
+    <div class="lg:relative flex items-center flex-wrap w-full justify-between">
 
-      <div class="w-1/2 lg:w-auto">
+      <!-- From lg-breakpoint on this div gets positioned absolute with top: 0.125rem and left: 0px
+      in order for it to stay at that position even when the ropdown gets expanded (and expands the whole navbar with it)  -->
+      <div class="w-1/2 lg:w-auto lg:absolute lg:top-0.5 lg:left-0">
         <div class="flex items-center">
           <router-link to="/" class="flex text-lg font-bold mr-4 whitespace-nowrap">
             trainercodes
@@ -62,9 +66,9 @@
             </label>
 
             <!-- If the hidden checkbox gets checked (clicked), the ul gets property display:block and is not anymore hidden -->
-            <ul class="dropdown hidden text-sm border border-solid border-pink-400 z-55">
-              <li><router-link to="/" class="py-2 ml-3 flex items-start text-md text-gray-800">Item 1</router-link></li>
-              <li><router-link to="/" class="py-2 ml-3 flex items-start text-md text-gray-800">Item 2</router-link></li>
+            <ul class="dropdown hidden text-sm bg-white border border-gray-300 shadow-sm z-55 mt-2 rounded">
+              <li><router-link to="/" class="py-2 ml-3 flex items-start text-md">Item 1</router-link></li>
+              <li><router-link to="/" class="py-2 ml-3 flex items-start text-md">Item 2</router-link></li>
             </ul> 
 
           </li>
