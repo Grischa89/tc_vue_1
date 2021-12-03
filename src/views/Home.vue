@@ -1,27 +1,26 @@
 <template>
-  <div class="home">
-    Home
-
-      <div class="columns is-multiline">
-      <div class="column is-12">
-          <h2 class="is-size-2 has-text-centered">Latest TrainerCodes</h2>
-      </div>
-
+<!-- From sm-breakpoint onwards tables will be displayed in two columns -->
+  <div class="home grid sm:grid-cols-2 sm:justify-center sm:gap-0">
+    <Table />
+    <Table />
+    <Table />
+    <Table />
       <!-- <ProductBox 
         v-for="product in latestCodes"
         v-bind:key="product.id"
         v-bind:product="product" /> -->
-        {{latestCodes}}
+        <!-- {{latestCodes}}
         v-for="item in latestCodes"
         v-bind:key="item.id"
         v-bind:item="item"
-        item
-    </div>
+        item -->
 
   </div>
 </template>
 
 <script>
+import Table from '../components/Table.vue';
+
 import axios from 'axios'
 // import ProductBox from '@/components/ProductBox'
 export default {
@@ -32,7 +31,7 @@ export default {
     }
   },
   components: {
-    // ProductBox
+    Table,
   },
   mounted() {
     this.getlatestCodes()
