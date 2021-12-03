@@ -2,8 +2,9 @@
   <div class="flex flex-col justify-around items-center">
     Hi, I'm going to be a table component!
 
+    <!-- For small devices table has width of 11/12, from sm-breakpoint on has max-width of md (448px) -->
     <div class="flex flex-col mx-auto my-4 bg-white rounded-lg shadow border-b border-gray-300 w-10/12 sm:max-w-md">
-      <!-- w-10/12 sm:w-8/12 md:w-6/12 lg:max-w-md -->
+      <!-- Alternative width proportions: w-10/12 sm:w-8/12 md:w-6/12 lg:max-w-md -->
       <h1 class="text-lg font-bold uppercase tracking-wider my-4">Continent</h1>
       <table class="table-fixed text-sm">
         <thead>
@@ -44,9 +45,6 @@ export default {
 </script>
 
 <style scoped>
-  /* td {
-    padding: 10 4 10 4;
-  } */
 
   tr:nth-of-type(odd) {
     background: rgb(209, 213, 219);
@@ -54,4 +52,5 @@ export default {
   thead .thead-row {
     background: white;
   }
+  
 </style>

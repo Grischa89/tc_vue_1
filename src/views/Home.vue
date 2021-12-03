@@ -2,9 +2,6 @@
 <!-- From sm-breakpoint onwards tables will be displayed in two columns -->
   <div class="home grid sm:grid-cols-2 sm:justify-center sm:gap-0">
     <Table />
-    <Table />
-    <Table />
-    <Table />
       <!-- <ProductBox 
         v-for="product in latestCodes"
         v-bind:key="product.id"
