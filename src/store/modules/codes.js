@@ -18,7 +18,7 @@ const actions = {
 
   fetchLatestCodes({ commit }) {
 
-    axios.get('/api/v1/codes/europe/united-kingdom/')
+    axios.get('/api/v1/codes/')
       .then(res => {
         commit('setLatestCodes', res.data);
         console.log('After setLatestCodes: ', res.data);
