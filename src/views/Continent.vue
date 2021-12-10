@@ -12,11 +12,6 @@ export default {
 
 name: 'Continent',
 
-  data() {
-    return {
-    }
-  },
-
   components: {
     Table,
   },
@@ -24,15 +19,19 @@ name: 'Continent',
   mounted() {
     this.$store.dispatch('fetchLatestContinentCodes', this.$route.params.continent);
     console.log('After dispatching fetchLatestContinentCodes in Continent');
-    
-    // this.getlatestCodes()
-    // document.title = 'Home | TrainerCodes'
   },
+
+  // watch: {
+  //   $route(to, from) {
+  //     this.$store.dispatch('fetchLatestContinentCodes', this.$route.params.continent);
+  //     console.log('After dispatching fetchLatestContinentCodes in Continent');
+  //   }
+  // },
   
   computed: {
-    // ...mapGetters({
-    //   latestCodes: 'latestCodes',
-    // })
+    ...mapGetters({
+      continentCodes: 'continentCodes',
+    })
   },
 }
 </script>
