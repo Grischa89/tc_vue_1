@@ -59,16 +59,20 @@
             <!-- Hidden (display: none;) checkbox element that registers the click through which the dropdown list gets expanded -->
             <input type="checkbox" id="dropdown" name="dropdown" class="hidden">
             <label for="dropdown" class="py-2 pr-3 flex items-start items-center text-md font-bold text-gray-800 cursor-pointer">
-              <span class="mr-1">Dropdown</span>
+              <span class="mr-1">Continents</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </label>
 
             <!-- If the hidden checkbox gets checked (clicked), the ul gets property display:block and is not anymore hidden -->
-            <ul class="dropdown hidden text-sm bg-white border border-gray-300 shadow-sm z-55 mt-2 rounded">
-              <li><router-link to="/" class="py-2 ml-3 flex items-start text-md">Item 1</router-link></li>
-              <li><router-link to="/" class="py-2 ml-3 flex items-start text-md">Item 2</router-link></li>
+            <ul class="dropdown hidden text-sm bg-white border border-gray-300 shadow-sm z-55 rounded">
+              <li><router-link to="/continents/africa" class="py-1 ml-3 flex items-start text-md">Africa</router-link></li>
+              <li><router-link to="/continents/asia" class="py-1 ml-3 flex items-start text-md">Asia</router-link></li>
+              <li><router-link to="/continents/europe" class="py-1 ml-3 flex items-start text-md">Europe</router-link></li>
+              <li><router-link to="/continents/north-america" class="py-1 ml-3 flex items-start text-md">North America</router-link></li>
+              <li><router-link to="/continents/oceania" class="py-1 ml-3 flex items-start text-md">Oceania</router-link></li>
+              <li><router-link to="/continents/south-america" class="py-1 ml-3 flex items-start text-md">South America</router-link></li>
             </ul> 
 
           </li>
