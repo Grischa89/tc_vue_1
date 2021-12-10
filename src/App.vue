@@ -7,7 +7,8 @@
     <router-link to="/recent-codes">recent-codes</router-link> |
     <router-link to="/japan">japan</router-link> |
   </div> -->
-  <router-view/>
+  
+  <router-view :key="$route.fullPath" />
 
 </div>
 </template>
