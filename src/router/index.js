@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import Continent from '../views/Continent.vue'
+import Country from '../views/Country.vue'
 
 const routes = [
   {
@@ -7,6 +9,19 @@ const routes = [
     name: 'Home',
     component: Home
   },
+
+  {
+    path: '/continents/:continent',
+    name: 'Continent',
+    component: Continent
+  },
+
+  {
+    path: '/:continent/:country',
+    name: 'Country',
+    component: Country
+  },
+
   {
     path: '/about',
     name: 'About',

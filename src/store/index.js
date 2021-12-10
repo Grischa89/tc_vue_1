@@ -4,15 +4,20 @@ import continents from './modules/continents';
 import countries from './modules/countries';
 
 export default createStore({
+  
   state: {
   },
+
   mutations: {
   },
+
   actions: {
   },
+
   modules: {
     codes,
     continents,
     countries,
-  }
+  },
+
 });

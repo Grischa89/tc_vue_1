@@ -1,27 +1,36 @@
 import axios from 'axios';
 
 const state = {
+
+  countryCodes: null,
 };
 
 const getters = {
 
+  countryCodes: state => {
+    return state.countryCodes;
+  }
 };
 
 const actions = {
 
-  // fetchLatestCodes({ commit }) {
+  fetchLatestCountryCodes({ commit }, data) {
 
-  //   axios.get('/api/v1/codes/')
-  //     .then(res => {
-  //       commit('setLatestCodes', res.data);
-  //       console.log('After setLatestCodes: ', res.data);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log('An error occured.');
+    console.log('data', data.continent, data.country);
+    
+
+    // axios.get(`/api/v1/codes/asia/japan`)
+    axios.get(`/api/v1/codes/${data.continent}/${data.country}/`)
+      .then(res => {
+        commit('setLatestCountryCodes', res.data);
+        console.log('After setLatestContinentCodes: ', res.data);
+      })
+      .catch(err => {
+        console.log(err);
+        console.log('An error occured.');
         
-  //     })
-  // },
+      })
+  },
 
   // fetchQuestion({ commit }, questionId) {
 
@@ -42,9 +51,9 @@ const actions = {
 
 const mutations = {
 
-  // setLatestCodes(state, codes) {
-  //   state.codes = codes;
-  // },
+  setLatestCountryCodes(state, countryCodes) {
+    state.countryCodes = countryCodes;
+  },
 
 };
 

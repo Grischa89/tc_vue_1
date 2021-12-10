@@ -1,27 +1,35 @@
 import axios from 'axios';
 
 const state = {
+
+  continentCodes: null,
 };
 
 const getters = {
 
+  continentCodes: state => {
+    return state.continentCodes;
+  }
 };
 
 const actions = {
 
-  // fetchLatestCodes({ commit }) {
+  fetchLatestContinentCodes({ commit }, continent) {
 
-  //   axios.get('/api/v1/codes/')
-  //     .then(res => {
-  //       commit('setLatestCodes', res.data);
-  //       console.log('After setLatestCodes: ', res.data);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log('An error occured.');
+    console.log('continent', continent);
+    
+
+    axios.get(`/api/v1/codes/${continent}/`)
+      .then(res => {
+        commit('setLatestContinentCodes', res.data);
+        console.log('After setLatestContinentCodes: ', res.data);
+      })
+      .catch(err => {
+        console.log(err);
+        console.log('An error occured.');
         
-  //     })
-  // },
+      })
+  },
 
   // fetchQuestion({ commit }, questionId) {
 
@@ -42,9 +50,9 @@ const actions = {
 
 const mutations = {
 
-  // setLatestCodes(state, codes) {
-  //   state.codes = codes;
-  // },
+  setLatestContinentCodes(state, continentCodes) {
+    state.continentCodes = continentCodes;
+  },
 
 };
 
