@@ -48,11 +48,11 @@
 
         <ul class="flex flex-col lg:flex-row list-none ml-auto">
           <li>
-            <router-link to="/" class="py-2 pr-3 flex items-start text-md font-bold text-gray-800">Hello</router-link>
+            <router-link to="/" class="py-2 pr-3 flex items-start text-md font-bold text-gray-800" @click="toggleNavbar()">Hello</router-link>
           </li>
 
           <li>
-            <router-link to="/" class="py-2 pr-3 flex items-start text-md font-bold text-gray-800">Great</router-link>
+            <router-link to="/" class="py-2 pr-3 flex items-start text-md font-bold text-gray-800" @click="toggleNavbar()">Great</router-link>
           </li>
 
           <li>
@@ -78,7 +78,7 @@
           </li>
 
           <li>
-            <router-link to="/" class="py-2 pr-3 flex items-start text-md font-bold text-gray-800">Thanks</router-link>
+            <router-link to="/" class="py-2 pr-3 flex items-start text-md font-bold text-gray-800" @click="toggleNavbar()">Thanks</router-link>
           </li>
         </ul>
 
