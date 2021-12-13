@@ -65,16 +65,7 @@
               </svg>
             </label>
 
-            <!-- If the hidden checkbox gets checked (clicked), the ul gets property display:block and is not anymore hidden -->
-            <!-- <ul class="dropdown hidden text-sm bg-white border border-gray-300 shadow-sm z-55 rounded">
-              <li><router-link to="/continents/africa" class="py-1 ml-3 flex items-start text-md" @click="closeDropdown()">Africa</router-link></li>
-              <li><router-link to="/continents/asia" class="py-1 ml-3 flex items-start text-md" @click="closeDropdown()">Asia</router-link></li>
-              <li><router-link to="/continents/europe" class="py-1 ml-3 flex items-start text-md" @click="closeDropdown()">Europe</router-link></li>
-              <li><router-link to="/continents/north-america" class="py-1 ml-3 flex items-start text-md" @click="closeDropdown()">North America</router-link></li>
-              <li><router-link to="/continents/oceania" class="py-1 ml-3 flex items-start text-md" @click="closeDropdown()">Oceania</router-link></li>
-              <li><router-link to="/continents/south-america" class="py-1 ml-3 flex items-start text-md" @click="closeDropdown()">South America</router-link></li>
-            </ul>  -->
-
+            <!-- Click on dropdown link closes dropdown and navbar when expanded -->
             <ul class="dropdown hidden text-sm bg-white border border-gray-300 shadow-sm z-55 rounded" @click="closeDropdown()">
               <li><router-link to="/continents/africa" class="py-1 ml-3 flex items-start text-md">Africa</router-link></li>
               <li><router-link to="/continents/asia" class="py-1 ml-3 flex items-start text-md">Asia</router-link></li>
@@ -113,8 +104,6 @@ export default {
     },
 
     closeDropdown() {
-      // const checkbox = document.querySelector('#checkbox');
-
       document.getElementById('dropdown').checked = false;
       this.toggleNavbar();
     }
