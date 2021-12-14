@@ -5,7 +5,8 @@
     <!-- For small devices table has width of 11/12, from sm-breakpoint on has max-width of md (448px) -->
     <div class="flex flex-col mx-auto my-4 bg-white rounded-lg shadow border-b border-gray-300 w-10/12 sm:max-w-md">
       <!-- Alternative width proportions: w-10/12 sm:w-8/12 md:w-6/12 lg:max-w-md -->
-      <h1 class="text-lg font-bold uppercase tracking-wider my-4">{{ title }}</h1>
+      <h1 v-if="title" class="text-lg font-bold uppercase tracking-wider my-4">{{ title }}</h1>
+      <h1 v-else class="text-lg font-bold uppercase tracking-wider my-4">Default title</h1>
       <table class="table-fixed text-sm">
         <thead>
           <tr class="thead-row">
@@ -15,7 +16,7 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-300">
-          <tr v-for="(code, i) in latestCodes" :key="i" class="">
+          <tr v-for="(code, i) in codes" :key="i" class="">
             <td class="py-4 px-4 text-left">
                 <router-link :to="`/${code.continent_slug}/${code.country_slug}`">{{ code.country }}</router-link>
                 <!-- <router-link :to="{ name: country, params: { continent: code.continent_slug, country: country_slug } }">{{ code.country }}</router-link> -->
@@ -39,24 +40,29 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+// import { mapGetters } from 'vuex';
 
 export default {
   name: 'Table',
 
   // Maybe list props as object, props: { latestCodes: { type: Array, required: true } }
   props: {
+    codes: {
+      type: Array,
+      // required: true,
+    },
+
     title: {
       type: String,
-      required: true,
-    }
+      // required: true,
+    },
   },
 
-  computed: {
-    ...mapGetters({
-      latestCodes: 'latestCodes',
-    })
-  },
+  // computed: {
+  //   ...mapGetters({
+  //     latestCodes: 'latestCodes',
+  //   })
+  // },
  
 }
 </script>

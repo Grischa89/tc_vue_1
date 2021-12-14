@@ -1,6 +1,11 @@
 <template>
   <div>
     Hello, this is the country view!
+
+    <Table 
+    :codes="countryCodes"
+    :title="countryCodes[0].country" />
+
   </div>
 </template>
 
@@ -12,10 +17,10 @@ export default {
 
 name: 'Country',
 
-  data() {
-    return {
-    }
-  },
+  // data() {
+  //   return {
+  //   }
+  // },
 
   components: {
     Table,
@@ -23,18 +28,12 @@ name: 'Country',
 
   mounted() {
     this.$store.dispatch('fetchLatestCountryCodes', { continent: this.$route.params.continent, country: this.$route.params.country });
-    console.log('Route Params', this.$route.params);
-    
-    console.log('After dispatching fetchLatestCountryCodes in Country');
-    
-    // this.getlatestCodes()
-    // document.title = 'Home | TrainerCodes'
   },
   
   computed: {
-    // ...mapGetters({
-    //   latestCodes: 'latestCodes',
-    // })
+    ...mapGetters({
+      countryCodes: 'countryCodes',
+    })
   },
 }
 </script>

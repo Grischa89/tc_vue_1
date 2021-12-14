@@ -3,9 +3,11 @@
 NOTE: This should only be applied when there's more than one table,
 otherwise no classes -->
   <div>
+    <!-- <Table 
+    :title="tableTitle" /> -->
     <Table 
-    :title="tableTitle" />
-    <!-- <Table :latestCodes="latestCodes" /> -->
+    :title="tableTitle"
+    :codes="latestCodes" />
 
   </div>
 </template>
@@ -33,9 +35,6 @@ export default {
   mounted() {
     this.$store.dispatch('fetchLatestCodes');
     console.log('After dispatching fetchLatestCodes in Home');
-    
-    // this.getlatestCodes()
-    // document.title = 'Home | TrainerCodes'
   },
   
   computed: {
