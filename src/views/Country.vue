@@ -4,7 +4,9 @@
 
     <Table 
     :codes="countryCodes"
-    :title="countryCodes[0].country" />
+    :title="countryCodesTitle"
+     />
+    <!-- :title="countryCodes[0].country" /> -->
 
   </div>
 </template>
@@ -33,6 +35,7 @@ name: 'Country',
   computed: {
     ...mapGetters({
       countryCodes: 'countryCodes',
+      countryCodesTitle: 'countryCodesTitle',
     })
   },
 }
