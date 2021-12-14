@@ -6,7 +6,6 @@
     :codes="countryCodes"
     :title="countryCodesTitle"
      />
-    <!-- :title="countryCodes[0].country" /> -->
 
   </div>
 </template>
@@ -18,11 +17,6 @@ import { mapGetters } from 'vuex';
 export default {
 
 name: 'Country',
-
-  // data() {
-  //   return {
-  //   }
-  // },
 
   components: {
     Table,
