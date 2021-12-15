@@ -2,10 +2,12 @@
   <div>
     Hello, this is the country view!
 
-    <Table 
-    :codes="countryCodes"
+    <Table
+    v-if="countryCodes"
     :title="countryCodesTitle"
-     />
+    :codes="countryCodes" />
+    <!-- :title="countryCodesTitle"
+     /> -->
 
   </div>
 </template>
