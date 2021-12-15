@@ -6,6 +6,7 @@ otherwise no classes -->
     <!-- <Table 
     :title="tableTitle" /> -->
     <Table 
+    v-if="latestCodes"
     :title="tableTitle"
     :codes="latestCodes" />
 
