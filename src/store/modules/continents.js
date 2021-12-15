@@ -9,6 +9,10 @@ const getters = {
 
   continentCodes: state => {
     return state.continentCodes;
+  },
+
+  continentCodesTitle: state => {
+    return state.continentCodes[0].continent;
   }
 };
 

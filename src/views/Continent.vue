@@ -1,6 +1,13 @@
 <template>
   <div>
     Hello, this is the continent view!
+
+    <Table 
+    v-if="continentCodes"
+    :codes="continentCodes"
+    :title="continentCodesTitle"
+     />
+
   </div>
 </template>
 
@@ -31,6 +38,7 @@ name: 'Continent',
   computed: {
     ...mapGetters({
       continentCodes: 'continentCodes',
+      continentCodesTitle: 'continentCodesTitle',
     })
   },
 }
