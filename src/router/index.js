@@ -11,7 +11,7 @@ const routes = [
   },
 
   {
-    path: '/continents/:continent',
+    path: '/:continent',
     name: 'Continent',
     component: Continent
   },
