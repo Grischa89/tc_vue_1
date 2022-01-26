@@ -66,13 +66,17 @@
             </label>
 
             <!-- Click on dropdown link closes dropdown and navbar when expanded -->
-            <ul class="dropdown hidden text-sm bg-white border border-gray-300 shadow-sm z-55 rounded" @click="closeDropdown()">
-              <li><router-link to="/continents/africa" class="py-1 ml-3 flex items-start text-md">Africa</router-link></li>
-              <li><router-link to="/continents/asia" class="py-1 ml-3 flex items-start text-md">Asia</router-link></li>
-              <li><router-link to="/continents/europe" class="py-1 ml-3 flex items-start text-md">Europe</router-link></li>
-              <li><router-link to="/continents/north-america" class="py-1 ml-3 flex items-start text-md">North America</router-link></li>
-              <li><router-link to="/continents/oceania" class="py-1 ml-3 flex items-start text-md">Oceania</router-link></li>
-              <li><router-link to="/continents/south-america" class="py-1 ml-3 flex items-start text-md">South America</router-link></li>
+            <ul v-if="continentNames" class="dropdown hidden text-sm bg-white border border-gray-300 shadow-sm z-55 rounded" @click="closeDropdown()">
+              <!-- Hardcoded slugs and nav item names -->
+              <!-- <li><router-link to="/africa" class="py-1 ml-3 flex items-start text-md">Africa</router-link></li>
+              <li><router-link to="/asia" class="py-1 ml-3 flex items-start text-md">Asia</router-link></li>
+              <li><router-link to="/europe" class="py-1 ml-3 flex items-start text-md">Europe</router-link></li>
+              <li><router-link to="/north-america" class="py-1 ml-3 flex items-start text-md">North America</router-link></li>
+              <li><router-link to="/oceania" class="py-1 ml-3 flex items-start text-md">Oceania</router-link></li>
+              <li><router-link to="/south-america" class="py-1 ml-3 flex items-start text-md">South America</router-link></li> -->
+
+              <!-- Dynamially create list items and add slugs and names from mapGetters array of objects - continentNames (nav.js module) -->
+              <li v-for="(continent, i) in continentNames" :key="i"><router-link :to="`/${continent.slug}`" class="py-1 ml-3 flex items-start text-md">{{ continent.name }}</router-link></li>
             </ul>
 
           </li>
@@ -89,6 +93,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Nav',
 
@@ -107,6 +113,12 @@ export default {
       document.getElementById('dropdown').checked = false;
       this.toggleNavbar();
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      continentNames: 'continentNames',
+    })
   },
 
 }

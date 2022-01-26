@@ -2,6 +2,7 @@ import { createStore } from 'vuex';
 import codes from './modules/codes';
 import continents from './modules/continents';
 import countries from './modules/countries';
+import nav from './modules/nav';
 
 export default createStore({
   
@@ -18,6 +19,7 @@ export default createStore({
     codes,
     continents,
     countries,
+    nav
   },
 
 });
