@@ -1,6 +1,5 @@
 <template>
   <div>
-    Hello, this is the continent view!
 
     <Table 
     v-if="continentCodes"
