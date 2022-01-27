@@ -1,7 +1,10 @@
 <template>
   <!-- Container should not have height, since expanded menu will not be cover in bg-color ov nav-container 
   EDIT: From lg-breakpoint on container will have height of 12 in order to optically not expand when the dropdown gets expanded-->
-  <div class="flex flex-wrap sticky top-0 z-50 items-center justify-center lg:h-12 py-2 px-4 mb-3 border-b border-gray-300 shadow-sm bg-white">
+  <div class="flex flex-wrap sticky top-0 z-50 items-center justify-center lg:h-12 py-2 px-4 mb-3 bg-transparent"
+    :class="{'bg-white border-b border-gray-300 shadow-sm': !atTop }">
+    <!-- NOTE: Binding multiple classes to single variable with ternary operator would work as well:
+    :class="!atTop ? ['bg-white', 'border-b', 'border-gray-300', 'shadow-sm'] : []"> -->
 
     <!-- flex-wrap: Wraps the (hidden) menu list items on next line when menu gets expanded
     lg:relative: From lg-breakpoint on this div gets position: relative in order to position an absolute element in it -->
@@ -101,10 +104,34 @@ export default {
   data() {
     return {
       showMenu: false,
+      atTop: true,
     }
   },
 
+  beforeMount() { 
+    // Add onscroll listener to window
+    // onsroll execute detectScroll method
+    window.onscroll = this.detectScroll;
+  },
+
   methods: {
+    // Depending on value of atTop on the navbar a class will be toggled
+    detectScroll() {
+      // Check wether user scrolled in Y direction (vertical)
+      // Change number value if effect should happen later
+      if (window.scrollY > 0) {
+        // If atTop is true, set it to false
+        if (this.atTop) {
+          this.atTop = false;
+        }
+      } else { // If Y scroll position 0 (or above the threshold you choose)
+        // If atTop is false, set it to true
+        if (!this.atTop) {
+          this.atTop = true;
+        }
+      }
+    },
+
     toggleNavbar() {
       this.showMenu = !this.showMenu;
     },
@@ -125,6 +152,10 @@ export default {
 </script>
 
 <style>
+  change-color {
+    background-color: blue;
+  }
+
   /* When hidden input[type=checkbox] gets checked, the ul with .dropdown
   gets attached the display block property and is therfor visible. */
   input:checked~ul.dropdown {
