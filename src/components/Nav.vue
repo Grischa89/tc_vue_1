@@ -1,7 +1,7 @@
 <template>
   <!-- Container should not have height, since expanded menu will not be cover in bg-color ov nav-container 
   EDIT: From lg-breakpoint on container will have height of 12 in order to optically not expand when the dropdown gets expanded-->
-  <div class="flex flex-wrap sticky top-0 z-50 items-center justify-center lg:h-12 py-2 px-4 mb-3 bg-transparent"
+  <div class="flex flex-wrap sticky top-0 z-50 items-center justify-center lg:h-12 py-2 px-4 mb-3 bg-transparent transition ease-in-out duration-300"
     :class="{'bg-white border-b border-gray-300 shadow-sm': !atTop }">
     <!-- NOTE: Binding multiple classes to single variable with ternary operator would work as well:
     :class="!atTop ? ['bg-white', 'border-b', 'border-gray-300', 'shadow-sm'] : []"> -->
