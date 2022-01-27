@@ -1,5 +1,6 @@
 <template>
 <div id="wrapper">
+  <LastUpdatedInfoBanner />
   <Nav />
   <!-- <div id="nav">
     <router-link to="/">Home</router-link> |
@@ -14,12 +15,14 @@
 </template>
 
 <script>
+import LastUpdatedInfoBanner from './components/LastUpdatedInfoBanner.vue';
 import Nav from './components/Nav.vue';
 
 export default {
   name: 'App',
 
   components: {
+    LastUpdatedInfoBanner,
     Nav,
   },
 
