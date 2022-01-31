@@ -4,7 +4,7 @@ const state = {
 
   clientLocation: '',
 
-  clientInEurope: false,
+  isEurope: false,
 };
 
 const getters = {
@@ -17,8 +17,8 @@ const getters = {
     return state.clientLocation.time_zone;
   },
 
-  clientInEurope: state => {
-    return state.clientInEurope;
+  isEurope: state => {
+    return state.isEurope;
   }
 
 };
@@ -66,9 +66,9 @@ const mutations = {
   setTimeZone(state, clientTimeZone) {
     // res.data.time_zone will look sth like 'Europe/Berlin'
     if (clientTimeZone.includes('Europe')) {
-      state.clientInEurope = true;
-      console.log('setTimeZone, state.clientInEurope ', state.clientInEurope);
-      console.log('setTimeZone, state.clientInEurope ', typeof state.clientInEurope);
+      state.isEurope = true;
+      console.log('setTimeZone, state.isEurope ', state.isEurope);
+      console.log('setTimeZone, state.isEurope ', typeof state.isEurope);
     }
   }
 

@@ -33,7 +33,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      clientInEurope: 'clientInEurope',
+      isEurope: 'isEurope',
     })
   }
 
