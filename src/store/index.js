@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import location from './modules/location';
 import codes from './modules/codes';
 import continents from './modules/continents';
 import countries from './modules/countries';
@@ -16,6 +17,7 @@ export default createStore({
   },
 
   modules: {
+    location,
     codes,
     continents,
     countries,

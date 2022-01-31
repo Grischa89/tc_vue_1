@@ -17,6 +17,7 @@
 <script>
 import LastUpdatedInfoBanner from './components/LastUpdatedInfoBanner.vue';
 import Nav from './components/Nav.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
@@ -25,6 +26,16 @@ export default {
     LastUpdatedInfoBanner,
     Nav,
   },
+
+  created() {
+    this.$store.dispatch('fetchClientLocation');
+  },
+
+  computed: {
+    ...mapGetters({
+      clientInEurope: 'clientInEurope',
+    })
+  }
 
 }
 </script>
