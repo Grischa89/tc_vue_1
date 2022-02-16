@@ -29,7 +29,7 @@ const actions = {
     
     return axios.get(`https://api.freegeoip.app/json/?apikey=${process.env.VUE_APP_GEO_API_KEY}`)
     .then(res => {
-      // console.log('res.data', res.data);
+      commit('setClientLocation', res.data);
       return res.data;
     })
     .catch(err => {
@@ -40,9 +40,9 @@ const actions = {
 
 const mutations = {
 
-  // setClientLocation(state, clientLocation) {
-  //   state.clientLocation = clientLocation;
-  // },
+  setClientLocation(state, clientLocation) {
+    state.clientLocation = clientLocation;
+  },
 
   // setTimeZone(state, clientTimeZone) {
   //   // res.data.time_zone will look sth like 'Europe/Berlin'
