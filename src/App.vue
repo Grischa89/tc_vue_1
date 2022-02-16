@@ -13,6 +13,8 @@
 
   <vue-cookie-comply
     v-if="isEurope"
+    :headerTitle="headerTitle"
+    :headerDescription="headerDescription"
     :preferences="preferences"
     @on-accept-all-cookies="acceptedAll"
     @on-save-cookie-preferences="runPrefScripts"
@@ -37,7 +39,8 @@ export default {
   data() {
     return {
       isEurope: false,
-      //headerTitle: 'Hello',
+      headerTitle: 'Cookie consent',
+      headerDescription: 'We use cookies to ensure you get the best experience on our website. You can opt-out or customize the cookie settings under \"Preferences\".',
       preferences: [
         {
           title: 'Performance',
