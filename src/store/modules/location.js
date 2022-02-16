@@ -4,7 +4,7 @@ const state = {
 
   clientLocation: '',
 
-  isEurope: false,
+  isEurope: undefined,
 };
 
 const getters = {
@@ -27,50 +27,33 @@ const actions = {
 
   fetchClientLocation({ commit }) {
     
-    axios.get(`https://api.freegeoip.app/json/?apikey=${process.env.VUE_APP_GEO_API_KEY}`)
+    return axios.get(`https://api.freegeoip.app/json/?apikey=${process.env.VUE_APP_GEO_API_KEY}`)
     .then(res => {
-      console.log('res.data', res.data);
-      // let location = res.data;
-      // return location;
-      commit('setClientLocation', res.data);
-      commit('setTimeZone', res.data.time_zone);
+      // console.log('res.data', res.data);
+      return res.data;
     })
     .catch(err => {
-      console.log('err', err);
-    })
+      console.log('error', err);
+    });
   },
-
-  // fetchQuestion({ commit }, questionId) {
-
-  //   axios.get('/api/questions/' + questionId)
-  //     .then(res => {
-  //       commit('setQuestion', res.data);
-  //       commit('setAnswers', res.data.data.attributes.answers.data);
-  //       console.log('setAnswerCount', res.data.data.attributes.answers.answer_count);
-  //       commit('setAnswerCount', res.data.data.attributes.answers.answer_count);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log('Unable to fetch question.');
-  //     })
-  // },
-
 };
 
 const mutations = {
 
-  setClientLocation(state, clientLocation) {
-    state.clientLocation = clientLocation;
-  },
+  // setClientLocation(state, clientLocation) {
+  //   state.clientLocation = clientLocation;
+  // },
 
-  setTimeZone(state, clientTimeZone) {
-    // res.data.time_zone will look sth like 'Europe/Berlin'
-    if (clientTimeZone.includes('Europe')) {
-      state.isEurope = true;
-      console.log('setTimeZone, state.isEurope ', state.isEurope);
-      console.log('setTimeZone, state.isEurope ', typeof state.isEurope);
-    }
-  }
+  // setTimeZone(state, clientTimeZone) {
+  //   // res.data.time_zone will look sth like 'Europe/Berlin'
+  //   if (clientTimeZone.includes('Europe')) {
+  //     state.isEurope = true;
+  //   } else {
+  //     state.isEurope = false;
+  //   }
+  //   console.log('setTimeZone, state.isEurope ', state.isEurope);
+  //   console.log('setTimeZone, state.isEurope ', typeof state.isEurope);
+  // }
 
 };
 
