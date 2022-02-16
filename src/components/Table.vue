@@ -24,7 +24,7 @@
             </td>
             <td class="py-4 px-4"
               :id="code.player_code"
-              @click="copyToClipboard">
+              @click="copyCodeToClipboard">
 
               <div class="flex justify-between items-center">
                 <div class="mr-4 copy-code cursor-pointer"
@@ -48,7 +48,6 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex';
 
 export default {
   name: 'Table',
@@ -67,9 +66,7 @@ export default {
   },
 
   methods: {
-    copyToClipboard(e) {
-      // console.log('e.currentTarget ', e.currentTarget.id, e.currentTarget.tagName);
-      // console.log('e.target ', e.target.id, e.target.tagName);
+    copyCodeToClipboard(e) {
       // Since the click event listener was registeredon the <td>
       // a click on any of its child elements (the <div> that has the code in its textContent and the <svg>)
       // bubbles up to the parent where the click is listened to and the handler function is invoked!
@@ -79,7 +76,7 @@ export default {
       // Check if Clipboard API of navigator is supported - if not execute fallbackCopyToClipboard()
       if (!navigator.clipboard) {
         console.log('No navigator.clipboard available!');
-        this.fallbackCopyToClipboard(trainerCode);
+        this.fallbackCopyCodeToClipboard(trainerCode);
         return;
       }
 
@@ -96,7 +93,7 @@ export default {
 
     },
 
-    fallbackCopyToClipboard(code) {
+    fallbackCopyCodeToClipboard(code) {
       let tempElement = document.createElement('input');
       tempElement.value = code;
 
@@ -117,41 +114,6 @@ export default {
     },
 
   },
-
-    // copy-tp-clipboard---------------------------------------------------------------
-
-    // $(".copy-code, .carousel-copy-code").on('click', function(event){
-
-    //   var tempElement = $('<input>').val(event.currentTarget.id).appendTo('body').select();
-
-    //   document.execCommand('copy');
-    //   tempElement.remove();
-    //   // alert('Kopierter Text: ' + event.currentTarget.id);
-    // });
-
-    // $(".copy-btn, .carousel-copy-btn").on('click', function(event){
-
-    //   var tempElement = $('<input>').val(event.currentTarget.id).appendTo('body').select();
-
-    //   document.execCommand('copy');
-    //   tempElement.remove();
-    //   // alert('Kopierter Text: ' + event.currentTarget.id);
-    // });
-
-    // // "Copied!" popover on trainer codes---------------------------------------------------------------
-
-    // $('[data-toggle="tooltip"]').tooltip();
-
-    // $('.my-tooltip').on('click', function(){            
-    //   $(this).attr('data-original-title','Copied!')
-    //   .tooltip('show');
-    // });
-
-  // computed: {
-  //   ...mapGetters({
-  //     latestCodes: 'latestCodes',
-  //   })
-  // },
  
 }
 </script>
