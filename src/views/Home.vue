@@ -5,16 +5,21 @@ otherwise no classes -->
   <div>
     <!-- <Table 
     :title="tableTitle" /> -->
-    <Table 
+    <!-- <Table 
     v-if="latestCodes"
     :title="tableTitle"
+    :codes="latestCodes" /> -->
+
+    <Carousel
+    v-if="latestCodes"
     :codes="latestCodes" />
 
   </div>
 </template>
 
 <script>
-import Table from '../components/Table.vue';
+// import Table from '../components/Table.vue';
+import Carousel from '../components/carousel/Carousel.vue';
 import { mapGetters } from 'vuex';
 
 // import axios from 'axios'
@@ -30,7 +35,8 @@ export default {
   },
 
   components: {
-    Table,
+    // Table,
+    Carousel,
   },
 
   mounted() {
