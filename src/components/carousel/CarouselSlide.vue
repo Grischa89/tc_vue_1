@@ -1,10 +1,25 @@
 <template>
   <transition :name="slideTransition">
     <!-- Show the item where index and currentSlide match -->
+    <!-- justify-center items-center -->
       <div v-show="currentSlide === index"
-        class="carousel-slide flex flex-col justify-center items-center border border-gray-300 bg-white">
+        class="carousel-slide flex flex-col items-center justify-center border border-gray-300 bg-white rounded-lg">
+          <div class="mt-2 mb-5">
+            <!-- TODO: Zeilenumbruch bei langen Namen bedenken -->
+            <h2 class="text-lg font-bold uppercase">{{ code.country }}</h2>
+          </div>
           <div class="qrcode-wrapper">
             <qrcode-vue :value="code.player_code" :size="size" level="H" />
+          </div>
+          <div class="flex mt-5 mb-2">
+            <!-- TODO: Zeilenumbruch bei langen Namen bedenken -->
+            <h2 class="text-sm uppercase mx-1">
+              {{ code.player_code }}
+            </h2>
+
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"  id="icon">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+            </svg>
           </div>
         </div>
   </transition>

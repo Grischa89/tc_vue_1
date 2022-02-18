@@ -105,7 +105,7 @@ export default {
   /* position: relative;
   overflow: hidden; */
   width: 200px;
-  height: 200px;
+  height: 300px;
 }
 
 
