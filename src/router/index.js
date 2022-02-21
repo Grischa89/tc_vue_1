@@ -2,12 +2,26 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Continent from '../views/Continent.vue'
 import Country from '../views/Country.vue'
+import Carousel2 from '../views/Carousel2.vue'
+import CardCarousel from '../views/CardCarousel.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+
+  {
+    path: '/card-carousel',
+    name: 'CardCarousel',
+    component: CardCarousel
+  },
+
+  {
+    path: '/carousel2',
+    name: 'Carousel2',
+    component: Carousel2
   },
 
   {
