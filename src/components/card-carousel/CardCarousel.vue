@@ -4,7 +4,7 @@
 
       <CardCarouselSlide
         class="carousel__item"
-        v-for="(code, i) in codes"
+        v-for="(code, i) in unevenCodes"
         :key="i"
         :code="code"
         ref="carouselItems"
@@ -37,8 +37,21 @@ export default {
       carouselItems: '',
       elems: '',
       arrLength: '',
+      limit: '',
       newActive: '',
       clickedElem: '',
+    }
+  },
+
+  computed: {
+    unevenCodes() {
+      // Check if codes array needs to be altered
+      if (this.codes.length % 2 === 0) {
+        console.log('We are in if')
+        return this.codes.slice(0, -1);
+      } else {
+        return this.codes;
+      }
     }
   },
 
@@ -50,35 +63,30 @@ export default {
     this.carouselItems = document.querySelectorAll('.carousel__item');
     this.elems = Array.from(this.carouselItems);
 
-    this.arrLength = this.codes.length;
-    
-    // If array has even number of items, slice last item
-    if (this.arrLength % 2 === 0) {
-      this.codes = this.codes.slice(0, -1);
-    }
+    // Use unevenCodes length in case codes prop had even length
+    this.arrLength = this.unevenCodes.length;
 
-    // Get middle value value of array length
-    // Must 
-    const splitValue = (this.arrLength - 1) / 2;
+    // Set middle value value of array length
+    this.limit = (this.arrLength - 1) / 2;
     
     // Set iterators
     let i = 0
-    let j = splitValue;
+    let j = this.limit;
 
-    // NOTE: This is a solution for arrays with uneven array length
+    // NOTE: This is a solution for arrays with uneven array length (handled in computed)
     // For even arrays j must be adjusted (++/--) before assigning pos value i
-    // Range of carousel is chosen to be from -splitValue to +splitValue
+    // Range of carousel is chosen to be from -limit to +limit
     // No second iterator (j) needed if pos value should be positive integers only
     while (i < this.arrLength) {
 
-      // Assign positive positional values to elements until splitValue
-      if (i <= splitValue){
-        this.codes[i].dataPos = i;
+      // Assign positive positional values to elements until limit
+      if (i <= this.limit){
+        this.unevenCodes[i].dataPos = i;
         i++;
       } else {
         // Assign negative positional values
-        // For array elements with index greater than splitValue
-        this.codes[i].dataPos = -j;
+        // For array elements with index greater than limit
+        this.unevenCodes[i].dataPos = -j;
         j--;
         i++;
       }
@@ -149,14 +157,14 @@ export default {
       // Clicked on pos value 2: 2 - 2 = 0
       const newPos = currentItemPos - activeItemPos;
 
-      const borderPos = (this.arrLength - 1) / 2;
+      // const borderPos = (this.arrLength - 1) / 2;
       // Handle invalid pos values (> / < than last pos values @border)
       // If greater than positive border
-      if (newPos > borderPos) {
+      if (newPos > this.limit) {
         return newPos - this.arrLength;
       } 
       // If less than negative border
-      else if (newPos < -borderPos) {
+      else if (newPos < -this.limit) {
         return newPos + this.arrLength;
       }
 
