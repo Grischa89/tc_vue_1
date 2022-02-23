@@ -12,11 +12,16 @@
         :data-pos="code.dataPos" />
 
     </ul>
+
+    <CardCarouselControls
+      @prev="prevSlide"
+      @next="nextSlide" />
   </div>
 </template>
 
 <script>
 import CardCarouselSlide from './CardCarouselSlide.vue';
+import CardCarouselControls from './CardCarouselControls.vue';
 
 export default {
   name: 'CardCarousel',
@@ -29,6 +34,7 @@ export default {
 
   components: {
     CardCarouselSlide,
+    CardCarouselControls,
   },
 
   data() {
@@ -130,8 +136,10 @@ export default {
     },
 
     updatePos(newActive) {
+      console.log('newActive', newActive);
       // Get pos value of clicked item
       const newActivePos = newActive.dataset.pos;
+      console.log('newActivePos', newActivePos);
 
       if (!newActivePos) {
         console.log('Has now data-pos set!');
@@ -170,6 +178,20 @@ export default {
 
       return newPos;
     },
+
+    prevSlide() {
+      console.log('Previous button was clicked!');
+      const prevSlide = this.elems.find((elem) => elem.dataset.pos == -1);
+
+      this.updatePos(prevSlide);
+    },
+
+    nextSlide() {
+      console.log('Next button was clicked!');
+      const nextSlide = this.elems.find((elem) => elem.dataset.pos == 1);
+
+      this.updatePos(nextSlide);
+    },
     
   },
 }
@@ -193,6 +215,7 @@ body {
 
 .carousel {
   display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   align-items: center;
