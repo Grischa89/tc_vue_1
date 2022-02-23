@@ -199,21 +199,8 @@ export default {
 
 <style lang="scss" scoped>
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-}
-
-html {
-  height: 100vh;
-}
-
-body {
-  height: 100vh;
-}
-
 .carousel {
+  margin: 1rem auto;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -227,6 +214,7 @@ body {
     position: relative;
     width: 100%;
     height: 300px;
+    align-items: center;
     justify-content: center;
     perspective: 300px;
   }
