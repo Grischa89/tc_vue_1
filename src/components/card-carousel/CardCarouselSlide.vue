@@ -1,4 +1,5 @@
 <template>
+  <!-- data-pos crucial for sliding to work (getting and re-calculating item position) -->
   <li
     :data-pos="code.dataPos"
   >
@@ -60,6 +61,7 @@ export default {
   }
 }
 
+// TODO: Remove before production:
 #carousel__item__index {
   position: absolute;
   right: 1rem;
