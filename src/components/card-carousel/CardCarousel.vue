@@ -1,0 +1,266 @@
+<template>
+  <div class="carousel">
+    <ul class="carousel__list" ref="carouselList" @click="registerClick">
+
+      <CardCarouselSlide
+        class="carousel__item"
+        v-for="(code, i) in codes"
+        :key="i"
+        :code="code"
+        ref="carouselItems"
+        :index="i"
+        :data-pos="code.dataPos" />
+
+    </ul>
+  </div>
+</template>
+
+<script>
+import CardCarouselSlide from './CardCarouselSlide.vue';
+
+export default {
+  name: 'CardCarousel',
+
+  props: {
+    codes: {
+      type: Array,
+    }
+  },
+
+  components: {
+    CardCarouselSlide,
+  },
+
+  data() {
+    return {
+      carouselList: '',
+      carouselItems: '',
+      elems: '',
+      arrLength: '',
+      newActive: '',
+      clickedElem: '',
+    }
+  },
+
+  mounted() {
+    const state = {};
+    // Parent to list elements
+    this.carouselList = this.$refs.carouselList;
+    // List items, NodeList then Array
+    this.carouselItems = document.querySelectorAll('.carousel__item');
+    this.elems = Array.from(this.carouselItems);
+
+    this.arrLength = this.codes.length;
+    
+    // If array has even number of items, slice last item
+    if (this.arrLength % 2 === 0) {
+      this.codes = this.codes.slice(0, -1);
+    }
+
+    // Get middle value value of array length
+    // Must 
+    const splitValue = (this.arrLength - 1) / 2;
+    
+    // Set iterators
+    let i = 0
+    let j = splitValue;
+
+    // NOTE: This is a solution for arrays with uneven array length
+    // For even arrays j must be adjusted (++/--) before assigning pos value i
+    // Range of carousel is chosen to be from -splitValue to +splitValue
+    // No second iterator (j) needed if pos value should be positive integers only
+    while (i < this.arrLength) {
+
+      // Assign positive positional values to elements until splitValue
+      if (i <= splitValue){
+        this.codes[i].dataPos = i;
+        i++;
+      } else {
+        // Assign negative positional values
+        // For array elements with index greater than splitValue
+        this.codes[i].dataPos = -j;
+        j--;
+        i++;
+      }
+
+    }
+  },
+
+  methods: {
+
+    registerClick(event) {
+      // Handle click anywhere li (also child elements)
+      // Get clicked element's tag name for switch case
+      this.clickedElem = event.target.tagName.toLowerCase();
+
+      // If click happened on other element than li
+      // Set newActive to the event.target.parentElement (li)
+      // Since data-pos is attached on li
+      switch (this.clickedElem) {
+        case 'canvas':
+          this.newActive = event.target.parentElement;
+          break;
+        case 'p':
+          this.newActive = event.target.parentElement;
+          break;
+        default:
+          // Clicked element was li
+          this.newActive = event.target;
+          break;
+      }
+
+      // Make sure the clicked element was an 'item' and not outside
+      const isItem = this.newActive.closest('.carousel__item');
+
+      // If click was outside of an li item OR on li item with pos value 0 (front)
+      if (!isItem || this.newActive.classList.contains('carousel__item_active')) {
+        console.log('No item or item already in front!');
+        return;
+      };
+      
+      this.updatePos(this.newActive);
+    },
+
+    updatePos(newActive) {
+      // Get pos value of clicked item
+      const newActivePos = newActive.dataset.pos;
+
+      if (!newActivePos) {
+        console.log('Has now data-pos set!');
+        return;
+      }
+
+      // Get front element (data-pos="0") and remove active class
+      const current = this.elems.find((elem) => elem.dataset.pos == 0);
+      current.classList.remove('carousel__item_active');
+    
+      // Assign new pos values for each li item
+      this.elems.forEach(item => {
+        // Get current for each items pos value
+        const itemPos = item.dataset.pos;
+
+        // Assign new pos value with return value of getPos
+        item.dataset.pos = this.getPos(itemPos, newActivePos);
+      });
+    },
+
+    getPos(currentItemPos, activeItemPos) {
+      // The pos value of the clicked item will determine the distance for other items
+      // Clicked on pos value 2: 2 - 2 = 0
+      const newPos = currentItemPos - activeItemPos;
+
+      const borderPos = (this.arrLength - 1) / 2;
+      // Handle invalid pos values (> / < than last pos values @border)
+      // If greater than positive border
+      if (newPos > borderPos) {
+        return newPos - this.arrLength;
+      } 
+      // If less than negative border
+      else if (newPos < -borderPos) {
+        return newPos + this.arrLength;
+      }
+
+      return newPos;
+    },
+    
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  height: 100vh;
+}
+
+body {
+  height: 100vh;
+}
+
+.carousel {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  font-family: Arial;
+
+  &__list {
+    display: flex;
+    list-style: none;
+    position: relative;
+    width: 100%;
+    height: 300px;
+    justify-content: center;
+    perspective: 300px;
+  }
+  
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-size: 20px;
+    width: 150px;
+    height: 250px;
+    border-radius: 12px;
+    box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.5);
+    position: absolute;
+    transition: all .3s ease-in;
+    background: #FFF;
+    cursor: pointer;
+    
+    &[data-pos="0"] {
+      z-index: 5;
+      cursor: default;
+    }
+    
+    &[data-pos="-1"],
+    &[data-pos="1"] {
+      opacity: 0.7;
+      filter: blur(1.2px) grayscale(20%);
+    }
+    
+    &[data-pos="-1"] {
+      transform: translateX(-35%) scale(.9);
+      z-index: 4;
+    }
+    
+    &[data-pos="1"] {
+      transform: translateX(35%) scale(.9);
+      z-index: 4;
+    }
+    
+    &[data-pos="-2"],
+    &[data-pos="2"] {
+      opacity: 0.4;
+      filter: blur(1px) grayscale(20%);
+    }
+    
+    &[data-pos="-2"] {
+      transform: translateX(-70%) scale(.8);
+      z-index: 3;
+    }
+    
+    &[data-pos="2"] {
+      transform: translateX(70%) scale(.8);
+      z-index: 3;
+    }
+
+    @for $j from -21 through 21 {
+      &[data-pos="#{$j}"] {
+        @if $j < -2 {opacity: 0; box-shadow: none; }
+        @if $j > 2 { opacity: 0; box-shadow: none; }
+      }
+    }
+
+  }
+
+}
+</style>

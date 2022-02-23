@@ -10,16 +10,17 @@ otherwise no classes -->
     :title="tableTitle"
     :codes="latestCodes" /> -->
 
-    <Carousel
-    v-if="latestCodes"
-    :codes="latestCodes" />
+    <CardCarousel
+      v-if="latestCodes"
+      :codes="latestCodes"
+     />
 
   </div>
 </template>
 
 <script>
 // import Table from '../components/Table.vue';
-import Carousel from '../components/carousel/Carousel.vue';
+import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import { mapGetters } from 'vuex';
 
 // import axios from 'axios'
@@ -36,7 +37,7 @@ export default {
 
   components: {
     // Table,
-    Carousel,
+    CardCarousel,
   },
 
   mounted() {
