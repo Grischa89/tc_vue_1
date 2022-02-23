@@ -286,8 +286,7 @@ body {
 
     @for $j from -21 through 21 {
       &[data-pos="#{$j}"] {
-        @if $j < -2 {opacity: 0; box-shadow: none; }
-        @if $j > 2 { opacity: 0; box-shadow: none; }
+        @if $j < -2 or $j > 2 {opacity: 0; box-shadow: none; }
       }
     }
 
