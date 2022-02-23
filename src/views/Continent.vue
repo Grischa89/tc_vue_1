@@ -1,17 +1,21 @@
 <template>
-  <div>
+  <div v-if="continentCodes">
 
-    <Table 
+    <Table
+      :codes="continentCodes"
+      :title="continentCodesTitle" />
+    
+    <CardCarousel
     v-if="continentCodes"
-    :codes="continentCodes"
-    :title="continentCodesTitle"
-     />
+    :codes="continentCodes" />
 
   </div>
 </template>
 
 <script>
 import Table from '../components/Table.vue';
+import CardCarousel from '../components/card-carousel/CardCarousel.vue';
+
 import { mapGetters } from 'vuex';
 
 export default {
@@ -20,6 +24,7 @@ name: 'Continent',
 
   components: {
     Table,
+    CardCarousel,
   },
 
   mounted() {

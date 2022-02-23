@@ -1,19 +1,18 @@
 <template>
-  <div>
-    Hello, this is the country view!
-
+  <div v-if="countryCodes">
     <Table
-    v-if="countryCodes"
     :title="countryCodesTitle"
     :codes="countryCodes" />
-    <!-- :title="countryCodesTitle"
-     /> -->
 
+    <CardCarousel
+    :codes="countryCodes" />
   </div>
 </template>
 
 <script>
 import Table from '../components/Table.vue';
+import CardCarousel from '../components/card-carousel/CardCarousel.vue';
+
 import { mapGetters } from 'vuex';
 
 export default {
@@ -22,6 +21,7 @@ name: 'Country',
 
   components: {
     Table,
+    CardCarousel,
   },
 
   mounted() {
