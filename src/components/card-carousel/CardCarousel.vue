@@ -53,7 +53,7 @@ export default {
     unevenCodes() {
       // Check if codes array needs to be altered
       if (this.codes.length % 2 === 0) {
-        console.log('We are in if')
+        console.log('This array\'s length is an even number!')
         return this.codes.slice(0, -1);
       } else {
         return this.codes;
@@ -284,7 +284,7 @@ body {
       z-index: 3;
     }
 
-    @for $j from -21 through 21 {
+    @for $j from -100 through 100 {
       &[data-pos="#{$j}"] {
         @if $j < -2 or $j > 2 {opacity: 0; box-shadow: none; }
       }
