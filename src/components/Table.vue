@@ -23,19 +23,15 @@
                 <!-- <router-link :to="{ name: country, params: { continent: code.continent_slug, country: country_slug } }">{{ code.country }}</router-link> -->
             </td>
             <td class="py-4 px-4"
-              :id="code.player_code"
-              @click="copyCodeToClipboard">
+              :data-code="code.player_code"
+              @click="copyCodeToClipboard($event)">
 
               <div class="flex justify-between items-center">
                 <div class="mr-4 copy-code cursor-pointer"
                   id="code-playercode"
                   >{{ code.player_code }}</div>
 
-                <div class="h-5 w-5 cursor-pointer">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"  id="icon">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                  </svg>
-                </div>
+                <CopyButton />
               </div>
 
             </td>
@@ -48,9 +44,14 @@
 </template>
 
 <script>
+import CopyButton from './copy-button/CopyButton.vue';
 
 export default {
   name: 'Table',
+
+  components: {
+    CopyButton,
+  },
 
   // Maybe list props as object, props: { latestCodes: { type: Array, required: true } }
   props: {
@@ -67,51 +68,54 @@ export default {
 
   methods: {
     copyCodeToClipboard(e) {
-      // Since the click event listener was registeredon the <td>
-      // a click on any of its child elements (the <div> that has the code in its textContent and the <svg>)
-      // bubbles up to the parent where the click is listened to and the handler function is invoked!
-      // Event delegation!
-      const trainerCode = e.currentTarget.id;
+      this.$store.dispatch('copyCodeToClipboard', e.currentTarget.dataset.code);
+    },
+    // copyCodeToClipboard(e) {
+    //   // Since the click event listener was registeredon the <td>
+    //   // a click on any of its child elements (the <div> that has the code in its textContent and the <svg>)
+    //   // bubbles up to the parent where the click is listened to and the handler function is invoked!
+    //   // Event delegation!
+    //   const trainerCode = e.currentTarget.dataset.code;
       
-      // Check if Clipboard API of navigator is supported - if not execute fallbackCopyToClipboard()
-      if (!navigator.clipboard) {
-        console.log('No navigator.clipboard available!');
-        this.fallbackCopyCodeToClipboard(trainerCode);
-        return;
-      }
+    //   // Check if Clipboard API of navigator is supported - if not execute fallbackCopyToClipboard()
+    //   if (!navigator.clipboard) {
+    //     console.log('No navigator.clipboard available!');
+    //     this.fallbackCopyCodeToClipboard(trainerCode);
+    //     return;
+    //   }
 
-      let copyPromise = navigator.clipboard.writeText(trainerCode);
+    //   let copyPromise = navigator.clipboard.writeText(trainerCode);
 
-      copyPromise
-      .then(() => {
-        console.log(`${trainerCode} was copied to clipboard!`);
-      })
-      .catch((err) => {
-        console.log(`Something went wrong while trying to copy trainer code ${trainerCode}. \n
-        Error message: ${err}`)
-      });
+    //   copyPromise
+    //   .then(() => {
+    //     console.log(`${trainerCode} was copied to clipboard!`);
+    //   })
+    //   .catch((err) => {
+    //     console.log(`Something went wrong while trying to copy trainer code ${trainerCode}. \n
+    //     Error message: ${err}`)
+    //   });
 
-    },
+    // },
 
-    fallbackCopyCodeToClipboard(code) {
-      let tempElement = document.createElement('input');
-      tempElement.value = code;
+  //   fallbackCopyCodeToClipboard(code) {
+  //     let tempElement = document.createElement('input');
+  //     tempElement.value = code;
 
-      document.body.appendChild(tempElement);
-      tempElement.select();
+  //     document.body.appendChild(tempElement);
+  //     tempElement.select();
 
-      try {
-        let success = document.execCommand('copy');
-        let message = success ? 'successful' : 'failed';
+  //     try {
+  //       let success = document.execCommand('copy');
+  //       let message = success ? 'successful' : 'failed';
 
-        console.log(`The fallback function with execCommand() was ${message}!`);
-      } catch (err) {
-        console.log(`The fallback function ${message}! \n
-        Error message: ${err}`);
-      }
+  //       console.log(`The fallback function with execCommand() was ${message}!`);
+  //     } catch (err) {
+  //       console.log(`The fallback function ${message}! \n
+  //       Error message: ${err}`);
+  //     }
 
-      document.body.removeChild(tempElement);
-    },
+  //     document.body.removeChild(tempElement);
+  //   },
 
   },
  
