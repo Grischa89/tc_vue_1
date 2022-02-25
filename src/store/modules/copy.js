@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const state = {
-  
+
 };
 
 const getters = {
@@ -9,20 +9,6 @@ const getters = {
 };
 
 const actions = {
-
-  fetchLatestCodes({ commit }) {
-
-    axios.get('/api/v1/codes/')
-      .then(res => {
-        commit('setLatestCodes', res.data);
-        console.log('After setLatestCodes: ', res.data);
-      })
-      .catch(err => {
-        console.log(err);
-        console.log('An error occured.');
-        
-      })
-  },
 
   copyCodeToClipboard({ commit, dispatch }, codeToCopy) {
     // Since the click event listener was registered on the parent (e.g <td>)

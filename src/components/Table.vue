@@ -67,55 +67,10 @@ export default {
   },
 
   methods: {
+    
     copyCodeToClipboard(e) {
       this.$store.dispatch('copyCodeToClipboard', e.currentTarget.dataset.code);
     },
-    // copyCodeToClipboard(e) {
-    //   // Since the click event listener was registeredon the <td>
-    //   // a click on any of its child elements (the <div> that has the code in its textContent and the <svg>)
-    //   // bubbles up to the parent where the click is listened to and the handler function is invoked!
-    //   // Event delegation!
-    //   const trainerCode = e.currentTarget.dataset.code;
-      
-    //   // Check if Clipboard API of navigator is supported - if not execute fallbackCopyToClipboard()
-    //   if (!navigator.clipboard) {
-    //     console.log('No navigator.clipboard available!');
-    //     this.fallbackCopyCodeToClipboard(trainerCode);
-    //     return;
-    //   }
-
-    //   let copyPromise = navigator.clipboard.writeText(trainerCode);
-
-    //   copyPromise
-    //   .then(() => {
-    //     console.log(`${trainerCode} was copied to clipboard!`);
-    //   })
-    //   .catch((err) => {
-    //     console.log(`Something went wrong while trying to copy trainer code ${trainerCode}. \n
-    //     Error message: ${err}`)
-    //   });
-
-    // },
-
-  //   fallbackCopyCodeToClipboard(code) {
-  //     let tempElement = document.createElement('input');
-  //     tempElement.value = code;
-
-  //     document.body.appendChild(tempElement);
-  //     tempElement.select();
-
-  //     try {
-  //       let success = document.execCommand('copy');
-  //       let message = success ? 'successful' : 'failed';
-
-  //       console.log(`The fallback function with execCommand() was ${message}!`);
-  //     } catch (err) {
-  //       console.log(`The fallback function ${message}! \n
-  //       Error message: ${err}`);
-  //     }
-
-  //     document.body.removeChild(tempElement);
-  //   },
 
   },
  
