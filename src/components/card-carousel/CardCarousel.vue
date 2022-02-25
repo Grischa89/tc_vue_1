@@ -103,31 +103,12 @@ export default {
   methods: {
 
     registerClick(event) {
-      // Handle click anywhere li (also child elements)
-      // Get clicked element's tag name for switch case
-      this.clickedElem = event.target.tagName.toLowerCase();
-
-      // If click happened on other element than li
-      // Set newActive to the event.target.parentElement (li)
-      // Since data-pos is attached on li
-      switch (this.clickedElem) {
-        case 'canvas':
-          this.newActive = event.target.parentElement;
-          break;
-        case 'p':
-          this.newActive = event.target.parentElement;
-          break;
-        default:
-          // Clicked element was li
-          this.newActive = event.target;
-          break;
-      }
-
-      // Make sure the clicked element was an 'item' and not outside
-      const isItem = this.newActive.closest('.carousel__item');
+      // Delegate newActive to alsways be closest li item (no matter where click happened)
+      this.newActive = event.target.closest('.carousel__item');
+      console.log('this.newActive', this.newActive);
 
       // If click was outside of an li item OR on li item with pos value 0 (front)
-      if (!isItem || this.newActive.classList.contains('carousel__item_active')) {
+      if (!this.newActive || this.newActive.classList.contains('carousel__item_active')) {
         console.log('No item or item already in front!');
         return;
       };
