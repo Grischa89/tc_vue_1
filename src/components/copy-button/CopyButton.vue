@@ -1,9 +1,9 @@
 <template>
-  <div class="h-5 w-5 cursor-pointer">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"  id="icon">
+  <button class="button">
+    <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor"  id="icon">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
     </svg>
-  </div>
+  </button>
 </template>
 
 <script>
@@ -13,6 +13,16 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.button {
+  height: 1.25rem;
+  width: 1.25rem;
+  cursor: pointer;
+
+  &__prepend {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+}
 
 </style>
