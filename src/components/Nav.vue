@@ -1,32 +1,32 @@
 <template>
   <!-- Container should not have height, since expanded menu will not be cover in bg-color ov nav-container 
   EDIT: From lg-breakpoint on container will have height of 12 in order to optically not expand when the dropdown gets expanded-->
-  <div class="flex flex-wrap sticky top-0 z-50 items-center justify-center lg:h-12 py-2 px-4 mb-3 bg-transparent transition ease-in-out duration-300"
-    :class="{'bg-white border-b border-gray-300 shadow-sm': !atTop }">
+  <!-- transition ease-in-out duration-300 -->
+  <div class="navbar-wrapper lg:h-12"
+    :class="{'navbar-wrapper--scrolled': !atTop }">
+    <!-- bg-white border-b border-gray-300 shadow-sm -->
     <!-- NOTE: Binding multiple classes to single variable with ternary operator would work as well:
     :class="!atTop ? ['bg-white', 'border-b', 'border-gray-300', 'shadow-sm'] : []"> -->
 
     <!-- flex-wrap: Wraps the (hidden) menu list items on next line when menu gets expanded
     lg:relative: From lg-breakpoint on this div gets position: relative in order to position an absolute element in it -->
-    <div class="lg:relative flex items-center flex-wrap w-full justify-between">
+    <div class="navbar lg:relative">
 
       <!-- From lg-breakpoint on this div gets positioned absolute with top: 0.125rem and left: 0px
       in order for it to stay at that position even when the ropdown gets expanded (and expands the whole navbar with it)  -->
-      <div class="w-1/2 lg:w-auto lg:absolute lg:top-0.5 lg:left-0">
-        <div class="flex items-center">
+      <div class="navbar__logo lg:w-auto lg:absolute lg:top-0.5 lg:left-0">
           <router-link to="/" class="flex text-lg font-bold mr-4 whitespace-nowrap">
             trainercodes
           </router-link>
-        </div>
       </div>
 
-      <div class="flex items-center justify-end w-1/2">
+      <div class="navbar__toggle-menu">
 
         <!-- Either menu button or X will not be schown when breakpoint is > lg (lg:hidden) -->
         <!-- Show Menu button, when menu is NOT expanded -->
         <template v-if="!showMenu">
-          <button class="text-gray-800 cursor-pointer text-lg leading-none block lg:hidden outline-none focus:outline-none" type="button" @click="toggleNavbar()">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <button class="navbar__toggle-menu__btn lg:hidden" type="button" @click="toggleNavbar" data-toggle-menu>
+            <svg xmlns="http://www.w3.org/2000/svg" class="navbar__toggle-menu__btn__size" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
           </button>
@@ -34,8 +34,8 @@
 
         <!-- Show X button, when menu IS expanded -->
         <template v-else>
-          <button class="text-gray-800 cursor-pointer text-lg leading-none block lg:hidden outline-none focus:outline-none" type="button" @click="toggleNavbar()">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <button class="navbar__toggle-menu__btn lg:hidden" type="button" @click="toggleNavbar" data-toggle-menu>
+            <svg xmlns="http://www.w3.org/2000/svg" class="navbar__toggle-menu__btn__size" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -47,45 +47,40 @@
       but when breakpoint is > lg flex is applied and menu items get shown in a row on right side of navbar.
       When breakpoint is < lg the menu button with toggleNavbar method is shown.
       toggleNavbar will set showMenu to true and set flex class also for lower breakpoints. -->
-      <div :class="{'hidden': !showMenu, 'flex': showMenu}" class="lg:flex lg:flex-grow items-center">
-
-        <ul class="flex flex-col lg:flex-row list-none ml-auto">
-          <li>
-            <router-link to="/" class="py-2 pr-3 flex items-start text-md font-bold text-gray-800" @click="toggleNavbar()">Hello</router-link>
+      <!-- <div :class="{'hidden': !showMenu, 'flex justify-center bg-white mx-auto w-1/2': showMenu}" class="lg:flex lg:flex-grow uppercase tracking-wider"> -->
+      <!-- 'flex': showMenu -->
+      <div :class="{'navbar__menu-wrapper--hide': !showMenu }" class="navbar__menu-wrapper">
+        
+        <!-- <ul class="flex flex-col lg:flex-row list-none lg:ml-auto"
+          :class="{'justify-center items-center mx-auto': showMenu }"> -->
+        <ul class="navbar__menu">
+          <li class="navbar__menu__item">
+            <router-link to="/" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Hello</router-link>
           </li>
 
-          <li>
-            <router-link to="/" class="py-2 pr-3 flex items-start text-md font-bold text-gray-800" @click="toggleNavbar()">Great</router-link>
+          <li class="navbar__menu__item">
+            <router-link to="/" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Great</router-link>
           </li>
 
-          <li>
+          <li class="navbar__menu__item">
             <!-- Hidden (display: none;) checkbox element that registers the click through which the dropdown list gets expanded -->
-            <input type="checkbox" id="dropdown" name="dropdown" class="hidden">
-            <label for="dropdown" class="py-2 pr-3 flex items-start items-center text-md font-bold text-gray-800 cursor-pointer">
-              <span class="mr-1">Continents</span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <input type="checkbox" id="dropdown" name="dropdown" class="dropdown__toggle-menu">
+            <label for="dropdown" class="navbar__menu__item__link">
+              <span>Continents</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="dropdown__toggle-menu__btn" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </label>
 
             <!-- Click on dropdown link closes dropdown and navbar when expanded -->
-            <ul v-if="continentNames" class="dropdown hidden text-sm bg-white border border-gray-300 shadow-sm z-55 rounded" @click="closeDropdown()">
-              <!-- Hardcoded slugs and nav item names -->
-              <!-- <li><router-link to="/africa" class="py-1 ml-3 flex items-start text-md">Africa</router-link></li>
-              <li><router-link to="/asia" class="py-1 ml-3 flex items-start text-md">Asia</router-link></li>
-              <li><router-link to="/europe" class="py-1 ml-3 flex items-start text-md">Europe</router-link></li>
-              <li><router-link to="/north-america" class="py-1 ml-3 flex items-start text-md">North America</router-link></li>
-              <li><router-link to="/oceania" class="py-1 ml-3 flex items-start text-md">Oceania</router-link></li>
-              <li><router-link to="/south-america" class="py-1 ml-3 flex items-start text-md">South America</router-link></li> -->
-
-              <!-- Dynamially create list items and add slugs and names from mapGetters array of objects - continentNames (nav.js module) -->
-              <li v-for="(continent, i) in continentNames" :key="i"><router-link :to="`/${continent.slug}`" class="py-1 ml-3 flex items-start text-md">{{ continent.name }}</router-link></li>
+            <ul v-if="continentNames" class="dropdown__menu" @click="closeDropdown()">
+              <li v-for="(continent, i) in continentNames" :key="i" class="dropdown__menu__item"><router-link :to="`/${continent.slug}`" class="dropdown__menu__item__link">{{ continent.name }}</router-link></li>
             </ul>
 
           </li>
 
-          <li>
-            <router-link to="/" class="py-2 pr-3 flex items-start text-md font-bold text-gray-800" @click="toggleNavbar()">Thanks</router-link>
+          <li class="navbar__menu__item">
+            <router-link to="/" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Thanks</router-link>
           </li>
         </ul>
 
@@ -132,7 +127,13 @@ export default {
       }
     },
 
-    toggleNavbar() {
+    toggleNavbar(e) {
+      // console.log('e.target', e.target);
+      // const canToggle = e.target.closest('[data-toggle-menu]');
+      // // const canToggle = e.target.dataset;
+      // console.log('canToggle', canToggle);
+      // if (!canToggle) return;
+
       this.showMenu = !this.showMenu;
     },
 
@@ -151,14 +152,154 @@ export default {
 }
 </script>
 
-<style>
-  change-color {
-    background-color: blue;
+<style lang="scss" scoped>
+.navbar-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: .5rem 1rem;
+  margin-bottom: .75rem;
+  background-color: transparent;
+  transition: all 300ms ease-in-out;
+
+    &--scrolled {
+      background-color: #fff;
+      border-bottom: 1px solid rgba(209, 213, 219, 1);
+      -webkit-box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); 
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    }
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+
+    &__logo {
+      display: flex;
+      align-items: center;
+      width: 50%;
+    }
+
+    &__toggle-menu {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 50%;
+  }
+}
+
+.navbar__toggle-menu__btn {
+  // display: block;
+  // outline: 2px solid transparent;
+  // outline-offset: 2px;
+  font-size: 1.125rem; // 18px
+  line-height: 1.75rem; // 28px
+  color: rgba(31, 41, 55, 1);
+  cursor: pointer;
+
+  // &:focus {
+    // outline: 2px solid transparent;
+    // outline-offset: 2px;
+  // }
+
+  &__size {
+    height: 1.5rem; // 24px
+    width: 1.5rem; // 24px
+  }
+}
+
+.navbar__menu-wrapper {
+  // justify-center bg-white mx-auto w-1/2
+  // align-items: center; // hatten wir so zuvor
+  // width: 100%; // max-w
+  margin-left: auto; // max-w
+  margin-right: auto; // max-w 
+  // background-color: #fff; // max-w
+
+  &--hide {
+    display: none;
   }
 
-  /* When hidden input[type=checkbox] gets checked, the ul with .dropdown
-  gets attached the display block property and is therfor visible. */
-  input:checked~ul.dropdown {
-    display: block;
+  @media (min-width: 1024px) {
+    display: flex;
+    flex-grow: 1;
   }
+}
+
+.navbar__menu {
+  // justify-center items-center mx-auto
+  display: flex;
+  flex-direction: column;
+  align-items: center; // max-w
+  margin-left: auto; // max-w
+  margin-right: auto; // max-w 
+  list-style-type: none;
+  margin-left: auto;
+
+  &__item__link {
+    display: flex;
+    align-items: flex-start;
+    padding: .5rem 0; // 8px
+    color: rgba(31, 41, 55, 1);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+
+    &--dropdown-name {
+      margin-right: .25rem; // 4px
+    }
+  }
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: flex-start;
+    margin-left: auto;
+    margin-right: 0;
+
+    &__item__link {
+      padding: 0;
+      margin-left: 0.75rem; // 12px
+    }
+  }
+
+}
+
+.dropdown__toggle-menu {
+  display: none;
+}
+
+.dropdown__toggle-menu__btn {
+  height: 1.25rem; // 20px
+  width: 1.25rem; // 20px
+  margin-left: .25rem; // 4px
+}
+
+.dropdown__menu {
+  display: none;
+  padding-bottom: .5rem; // 8px
+  background-color: rgb(255 255 255 / 0.7);
+  // font-size: 0.875rem/* 14px */;
+  // line-height: 1.25rem/* 20px */;
+  border-radius: 0.25rem/* 4px */;
+  z-index: 60;
+
+  &__item__link{
+    // py-1 text-md inline-flex items-center justify-content
+    display: inline-flex;
+    padding: .25rem 0; // 4px
+  }
+}
+/* When hidden input[type=checkbox] gets checked, the ul with .dropdown
+gets attached the display block property and is therfor visible. */
+input:checked~ul.dropdown__menu {
+  display: block;
+}
 </style>
