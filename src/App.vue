@@ -6,6 +6,7 @@
   <router-view :key="$route.fullPath" />
 
   <vue-cookie-comply
+    class="cookie-comply--sticky"
     v-if="isEurope"
     :headerTitle="headerTitle"
     :headerDescription="headerDescription"
@@ -185,5 +186,12 @@ export default {
       color: #42b983;
     }
   }
+}
+
+.cookie-comply--sticky {
+  // sticky position for consent banner
+  position: sticky !important;
+  margin: 1rem .5rem;
+  z-index: 50;
 }
 </style>
