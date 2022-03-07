@@ -58,6 +58,7 @@
 
           <li class="navbar__menu__item">
             <NavbarDropdownMenu
+              ref="dropdownContinents"
               v-if="continentNames"
               @close-dropdown-menu="closeDropdown"
               :dropdownItems="continentNames" />
@@ -127,9 +128,13 @@ export default {
     },
 
     closeDropdown() {
-      document.getElementById('dropdown').checked = false;
+      // TODO: This is good for now. Maybe in future (with more dropdown menus)
+      // use vuex to store ref and trigger action
+      const dropdownCheckbox = this.$refs.dropdownContinents.$refs.dropdown;
+      dropdownCheckbox.checked = false;
       this.toggleNavbar();
-    }
+    },
+    
   },
 
   computed: {

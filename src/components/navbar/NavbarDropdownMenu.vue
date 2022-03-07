@@ -1,6 +1,6 @@
 <template>
   <!-- Hidden (display: none;) checkbox element that registers the click through which the dropdown list gets expanded -->
-  <input type="checkbox" id="dropdown" name="dropdown" class="dropdown__toggle-menu">
+  <input type="checkbox" id="dropdown" name="dropdown" class="dropdown__toggle-menu" ref="dropdown">
   <label for="dropdown" class="navbar__menu__item__link">
     <span>Continents</span>
     <svg xmlns="http://www.w3.org/2000/svg" class="dropdown__toggle-menu__btn" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,10 +21,7 @@ export default {
   emits: ['closeDropdownMenu'],
 
   props: ['dropdownItems'],
-
-  mounted() {
-    console.log('dropdownItems', this.dropdownItems);
-  }
+  
 }
 </script>
 
