@@ -75,11 +75,11 @@
 </template>
 
 <script>
-import NavbarDropdownMenu from './navbar/NavbarDropdownMenu.vue';
+import NavbarDropdownMenu from './NavbarDropdownMenu.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'Nav',
+  name: 'Navbar',
 
   components: {
     NavbarDropdownMenu,

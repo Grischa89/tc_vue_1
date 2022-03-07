@@ -1,7 +1,7 @@
 <template>
 <div id="wrapper">
   <LastUpdatedInfoBanner />
-  <Nav />
+  <Navbar />
   
   <router-view :key="$route.fullPath" />
 
@@ -38,14 +38,14 @@
 
 <script>
 import LastUpdatedInfoBanner from './components/LastUpdatedInfoBanner.vue';
-import Nav from './components/Nav.vue';
+import Navbar from './components/navbar/Navbar.vue';
 
 export default {
   name: 'App',
 
   components: {
     LastUpdatedInfoBanner,
-    Nav,
+    Navbar,
   },
 
   data() {
