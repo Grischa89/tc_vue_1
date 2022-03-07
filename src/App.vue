@@ -13,7 +13,25 @@
     :preferences="preferences"
     @on-accept-all-cookies="acceptedAll"
     @on-save-cookie-preferences="runPrefScripts"
-  />
+  >
+    <!-- <template v-slot:header>
+      <header>Custom header</header>
+    </template>
+
+    <template v-slot:modal-header>
+      <h3>My custom modal header</h3>
+    </template>
+
+    <template v-slot:modal-body="{ preference, index }">
+      <div>{{ preference.title }}</div>
+    </template>
+
+    <template v-slot:modal-footer>
+      <footer>
+        My custom modal footer
+      </footer>
+    </template> -->
+  </vue-cookie-comply>
 
 </div>
 </template>
@@ -168,7 +186,7 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -189,9 +207,13 @@ export default {
 }
 
 .cookie-comply--sticky {
-  // sticky position for consent banner
-  position: sticky !important;
-  margin: 1rem .5rem;
-  z-index: 50;
+  // fixed position for consent banner
+  position: fixed !important;
+  margin: .5rem;
+}
+
+.cookie-comply__modal {
+  // fixed position for modal (pop up after @click preferences)
+  position: fixed !important;
 }
 </style>
