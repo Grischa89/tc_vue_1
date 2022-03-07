@@ -2,20 +2,19 @@
   <!-- Container should not have height, since expanded menu will not be cover in bg-color ov nav-container 
   EDIT: From lg-breakpoint on container will have height of 12 in order to optically not expand when the dropdown gets expanded-->
   <!-- transition ease-in-out duration-300 -->
-  <div class="navbar-wrapper lg:h-12"
+  <div class="navbar-wrapper"
     :class="{'navbar-wrapper--scrolled': !atTop }">
-    <!-- bg-white border-b border-gray-300 shadow-sm -->
     <!-- NOTE: Binding multiple classes to single variable with ternary operator would work as well:
     :class="!atTop ? ['bg-white', 'border-b', 'border-gray-300', 'shadow-sm'] : []"> -->
 
     <!-- flex-wrap: Wraps the (hidden) menu list items on next line when menu gets expanded
     lg:relative: From lg-breakpoint on this div gets position: relative in order to position an absolute element in it -->
-    <div class="navbar lg:relative">
+    <div class="navbar">
 
       <!-- From lg-breakpoint on this div gets positioned absolute with top: 0.125rem and left: 0px
       in order for it to stay at that position even when the ropdown gets expanded (and expands the whole navbar with it)  -->
-      <div class="navbar__logo lg:w-auto lg:absolute lg:top-0.5 lg:left-0">
-          <router-link to="/" class="flex text-lg font-bold mr-4 whitespace-nowrap">
+      <div class="navbar__logo">
+          <router-link to="/" class="navbar__logo__link">
             trainercodes
           </router-link>
       </div>
@@ -25,7 +24,7 @@
         <!-- Either menu button or X will not be schown when breakpoint is > lg (lg:hidden) -->
         <!-- Show Menu button, when menu is NOT expanded -->
         <template v-if="!showMenu">
-          <button class="navbar__toggle-menu__btn lg:hidden" type="button" @click="toggleNavbar" data-toggle-menu>
+          <button class="navbar__toggle-menu__btn" type="button" @click="toggleNavbar" data-toggle-menu>
             <svg xmlns="http://www.w3.org/2000/svg" class="navbar__toggle-menu__btn__size" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
@@ -34,7 +33,7 @@
 
         <!-- Show X button, when menu IS expanded -->
         <template v-else>
-          <button class="navbar__toggle-menu__btn lg:hidden" type="button" @click="toggleNavbar" data-toggle-menu>
+          <button class="navbar__toggle-menu__btn" type="button" @click="toggleNavbar" data-toggle-menu>
             <svg xmlns="http://www.w3.org/2000/svg" class="navbar__toggle-menu__btn__size" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -47,12 +46,7 @@
       but when breakpoint is > lg flex is applied and menu items get shown in a row on right side of navbar.
       When breakpoint is < lg the menu button with toggleNavbar method is shown.
       toggleNavbar will set showMenu to true and set flex class also for lower breakpoints. -->
-      <!-- <div :class="{'hidden': !showMenu, 'flex justify-center bg-white mx-auto w-1/2': showMenu}" class="lg:flex lg:flex-grow uppercase tracking-wider"> -->
-      <!-- 'flex': showMenu -->
       <div :class="{'navbar__menu-wrapper--hide': !showMenu }" class="navbar__menu-wrapper">
-        
-        <!-- <ul class="flex flex-col lg:flex-row list-none lg:ml-auto"
-          :class="{'justify-center items-center mx-auto': showMenu }"> -->
         <ul class="navbar__menu">
           <li class="navbar__menu__item">
             <router-link to="/" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Hello</router-link>
@@ -166,12 +160,13 @@ export default {
   background-color: transparent;
   transition: all 300ms ease-in-out;
 
-    &--scrolled {
-      background-color: #fff;
-      border-bottom: 1px solid rgba(209, 213, 219, 1);
-      -webkit-box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); 
-      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    }
+  &--scrolled {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(209, 213, 219, 1);
+    -webkit-box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); 
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+
 }
 
 .navbar {
@@ -181,18 +176,30 @@ export default {
   flex-wrap: wrap;
   width: 100%;
 
-    &__logo {
-      display: flex;
-      align-items: center;
-      width: 50%;
+  &__logo {
+    display: flex;
+    align-items: center;
+    width: auto; // former 50%
+
+    &__link {
+      // TODO: flex mr-4 whitespace-nowrap (former)
+      font-size: 1.25rem; /* 20px */
+      line-height: 1.75rem; /* 28px */
+      font-weight: bold;
     }
 
-    &__toggle-menu {
+    // @media (min-width: 1024px) {
+    //   // width: auto;
+    // }
+  }
+
+  &__toggle-menu {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     width: 50%;
   }
+
 }
 
 .navbar__toggle-menu__btn {
@@ -212,6 +219,10 @@ export default {
   &__size {
     height: 1.5rem; // 24px
     width: 1.5rem; // 24px
+  }
+
+  @media (min-width: 1024px) {
+    display: none;
   }
 }
 
