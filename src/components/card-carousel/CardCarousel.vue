@@ -1,6 +1,6 @@
 <template>
   <div class="carousel">
-    <ul class="carousel__list" ref="carouselList" @click="registerClick">
+    <ul class="carousel__list" ref="carouselList" @click="registerClick" @touchstart="captureTouchstart" @touchend="captureTouchend">
 
       <CardCarouselSlide
         class="carousel__item"
@@ -46,6 +46,10 @@ export default {
       limit: '',
       newActive: '',
       clickedElem: '',
+      touchstartX: '',
+      touchstartY: '',
+      touchendX: '',
+      touchendY: '',
     }
   },
 
@@ -101,6 +105,35 @@ export default {
   },
 
   methods: {
+    captureTouchstart(event) {
+      this.touchstartX = event.changedTouches[0].screenX;
+      this.touchstartY = event.changedTouches[0].screenY;
+      // console.log('this.touchstartX', this.touchstartX);
+      // console.log('this.touchstartY', this.touchstartY);
+      console.log('captureTouchstart', event.changedTouches);
+    },
+
+    captureTouchend(event) {
+      this.touchendX = event.changedTouches[0].screenX;
+      this.touchendY = event.changedTouches[0].screenY;
+      // console.log('this.touchendX', this.touchendX);
+      // console.log('this.touchendY', this.touchendY);
+      console.log('captureTouchend', event.changedTouches);
+
+      this.handleSwipe();
+    },
+
+    handleSwipe() {
+      if (this.touchendX < this.touchstartX) {
+        console.log('Swiped Left');
+        this.nextSlide();
+      }
+
+      if (this.touchendX > this.touchstartX) {
+        console.log('Swiped Right');
+        this.prevSlide();
+      }
+    },
 
     registerClick(event) {
       // Delegate newActive to alsways be closest li item (no matter where click happened)
