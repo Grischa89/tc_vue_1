@@ -57,20 +57,10 @@
           </li>
 
           <li class="navbar__menu__item">
-            <!-- Hidden (display: none;) checkbox element that registers the click through which the dropdown list gets expanded -->
-            <input type="checkbox" id="dropdown" name="dropdown" class="dropdown__toggle-menu">
-            <label for="dropdown" class="navbar__menu__item__link">
-              <span>Continents</span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="dropdown__toggle-menu__btn" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </label>
-
-            <!-- Click on dropdown link closes dropdown and navbar when expanded -->
-            <ul v-if="continentNames" class="dropdown__menu" @click="closeDropdown()">
-              <li v-for="(continent, i) in continentNames" :key="i" class="dropdown__menu__item"><router-link :to="`/${continent.slug}`" class="dropdown__menu__item__link">{{ continent.name }}</router-link></li>
-            </ul>
-
+            <NavbarDropdownMenu
+              v-if="continentNames"
+              @close-dropdown-menu="closeDropdown"
+              :dropdownItems="continentNames" />
           </li>
 
           <li class="navbar__menu__item">
@@ -85,10 +75,15 @@
 </template>
 
 <script>
+import NavbarDropdownMenu from './navbar/NavbarDropdownMenu.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'Nav',
+
+  components: {
+    NavbarDropdownMenu,
+  },
 
   data() {
     return {
@@ -146,12 +141,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .navbar-wrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  // justify-content: space-between;
+  // align-items: center;
   position: sticky;
   top: 0;
   z-index: 50;
@@ -167,6 +162,11 @@ export default {
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   }
 
+  @media (min-width: 1024px) {
+    // Needed in order for navbar-wrapper not to expand when dropdown is opened
+    max-height: 2.5rem; // 42px
+  }
+
 }
 
 .navbar {
@@ -179,18 +179,27 @@ export default {
   &__logo {
     display: flex;
     align-items: center;
-    width: auto; // former 50%
+    width: 50%; // former auto? / 50%
 
     &__link {
+      // TODO: Ensure accessibility for links!
       // TODO: flex mr-4 whitespace-nowrap (former)
       font-size: 1.25rem; /* 20px */
       line-height: 1.75rem; /* 28px */
       font-weight: bold;
     }
 
-    // @media (min-width: 1024px) {
-    //   // width: auto;
-    // }
+    @media (min-width: 1024px) {
+      // position absolute helper to avoid dislocation (moving down in container)
+      // because of dropdown expansion
+      // TODO: Könnte man umgehen, indem man zwei separate container hat? Einen
+      // für das Logo und einen anderen für das Menu?
+      position: absolute;
+      top: -0.125rem; // -2px
+      left: 0;
+      width: auto;
+    }
+
   }
 
   &__toggle-menu {
@@ -198,6 +207,12 @@ export default {
     justify-content: flex-end;
     align-items: center;
     width: 50%;
+  }
+
+  @media (min-width: 1024px) {
+    // to position __logo absolute @lg
+    position: relative;
+    flex-wrap: nowrap;
   }
 
 }
@@ -253,6 +268,7 @@ export default {
   margin-right: auto; // max-w 
   list-style-type: none;
   margin-left: auto;
+  // width: 50%;
 
   &__item__link {
     display: flex;
@@ -263,10 +279,11 @@ export default {
     font-weight: bold;
     letter-spacing: 0.05em;
     cursor: pointer;
+    // TODO: Ensure accessibility for links!
+    outline: none;
+    box-shadow: none;
+    -webkit-tap-highlight-color: transparent;
 
-    &--dropdown-name {
-      margin-right: .25rem; // 4px
-    }
   }
 
   @media (min-width: 1024px) {
@@ -283,34 +300,34 @@ export default {
 
 }
 
-.dropdown__toggle-menu {
-  display: none;
-}
+// .dropdown__toggle-menu {
+//   display: none;
+// }
 
-.dropdown__toggle-menu__btn {
-  height: 1.25rem; // 20px
-  width: 1.25rem; // 20px
-  margin-left: .25rem; // 4px
-}
+// .dropdown__toggle-menu__btn {
+//   height: 1.25rem; // 20px
+//   width: 1.25rem; // 20px
+//   margin-left: .25rem; // 4px
+// }
 
-.dropdown__menu {
-  display: none;
-  padding-bottom: .5rem; // 8px
-  background-color: rgb(255 255 255 / 0.7);
-  // font-size: 0.875rem/* 14px */;
-  // line-height: 1.25rem/* 20px */;
-  border-radius: 0.25rem/* 4px */;
-  z-index: 60;
+// .dropdown__menu {
+//   display: none;
+//   padding-bottom: .5rem; // 8px
+//   background-color: rgb(255 255 255 / 0.7);
+//   // font-size: 0.875rem/* 14px */;
+//   // line-height: 1.25rem/* 20px */;
+//   border-radius: 0.25rem/* 4px */;
+//   z-index: 60;
 
-  &__item__link{
-    // py-1 text-md inline-flex items-center justify-content
-    display: inline-flex;
-    padding: .25rem 0; // 4px
-  }
-}
-/* When hidden input[type=checkbox] gets checked, the ul with .dropdown
-gets attached the display block property and is therfor visible. */
-input:checked~ul.dropdown__menu {
-  display: block;
-}
+//   &__item__link{
+//     // py-1 text-md inline-flex items-center justify-content
+//     display: inline-flex;
+//     padding: .25rem 0; // 4px
+//   }
+// }
+// /* When hidden input[type=checkbox] gets checked, the ul with .dropdown
+// gets attached the display block property and is therfor visible. */
+// input:checked~ul.dropdown__menu {
+//   display: block;
+// }
 </style>
