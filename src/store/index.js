@@ -5,6 +5,7 @@ import continents from './modules/continents';
 import countries from './modules/countries';
 import nav from './modules/nav';
 import copy from './modules/copy';
+import addCodes from './modules/add-codes';
 
 export default createStore({
   
@@ -23,7 +24,8 @@ export default createStore({
     continents,
     countries,
     nav,
-    copy
+    copy,
+    addCodes
   },
 
 });

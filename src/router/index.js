@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Continent from '../views/Continent.vue'
 import Country from '../views/Country.vue'
 import CardCarousel from '../views/CardCarousel.vue'
+import AddCode from '../views/AddCode.vue'
 
 const routes = [
   {
@@ -27,6 +28,12 @@ const routes = [
     path: '/:continent/:country',
     name: 'Country',
     component: Country
+  },
+
+  {
+    path: '/add',
+    name: 'AddCode',
+    component: AddCode,
   },
 
   {
