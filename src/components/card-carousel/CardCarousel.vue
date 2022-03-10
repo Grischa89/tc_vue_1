@@ -56,6 +56,13 @@ export default {
   mounted() {
     console.log('mounted hook run');
     // this.addDataPos();
+
+    const state = {};
+      // Parent to list elements
+      this.carouselList = this.$refs.carouselList;
+      // List items, NodeList then Array
+      this.carouselItems = document.querySelectorAll('.carousel__item');
+      this.elems = Array.from(this.carouselItems);
   },
 
   watch: {
@@ -76,13 +83,6 @@ export default {
 
   methods: {
     addDataPos() {
-      const state = {};
-      // Parent to list elements
-      this.carouselList = this.$refs.carouselList;
-      // List items, NodeList then Array
-      this.carouselItems = document.querySelectorAll('.carousel__item');
-      this.elems = Array.from(this.carouselItems);
-
       // Use unevenCodes length in case codes prop had even length
       this.arrLength = this.unevenCodes.length;
 
