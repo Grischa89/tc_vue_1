@@ -4,6 +4,8 @@ const state = {
 
   countries: null,
 
+  cities: null,
+
 };
 
 const getters = {
@@ -11,6 +13,10 @@ const getters = {
   countries: state => {
     return state.countries;
   },
+
+  cities: state => {
+    return state.cities;
+  }
 
 };
 
@@ -28,10 +34,9 @@ const actions = {
   },
 
   getCities({ commit }, selectedCountry) {
-    console.log('selectedCountry', selectedCountry);
     return axios.get('/api/v1/codes/ajax/load-cities/?country=' + selectedCountry)
       .then(res => {
-        // console.log('getCities', res.data);
+        commit('setCities', res.data.cities);
         return res.data;
       })
       .catch(err => {
@@ -39,6 +44,18 @@ const actions = {
         console.log('An error occured in getCities.');
       });
   },
+
+  addCode({ commit }, data) {
+    axios.post('/api/v1/codes/add/', data)
+      .then(res => {
+        console.log('addCode res', res);
+        console.log('addCode res.data', res.data);
+      })
+      .catch(err => {
+        console.log(err.message);
+        console.log('An error occured in addCode.');
+      });
+  }
 
   // createQuestion({commit, state}) {
     
@@ -64,6 +81,10 @@ const mutations = {
   setCountries(state, countries) {
     state.countries = countries;
   },
+
+  setCities(state, cities) {
+    state.cities = cities;
+  }
 
 };
 
