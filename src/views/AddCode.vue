@@ -164,10 +164,9 @@ export default {
       // So theoretically e.key or e.code are needed, but they are not available mobile.
       if (inputLen > this.maxLen) {
         input = input.slice(0, this.maxLen);
-        this.data.player_code = input;
-      } else {
-        this.data.player_code = input;
       }
+
+      this.data.player_code = input;
     },
 
   },
