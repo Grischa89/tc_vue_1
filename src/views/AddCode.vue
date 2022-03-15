@@ -44,7 +44,7 @@
         <!-- <span class="form__group__help"></span> -->
       </div>
 
-      <button>Save</button>
+      <button @click="postCode">Save</button>
       <!-- <a href="{% url 'person_changelist' %}">Nevermind</a> -->
     </div>
 
@@ -116,7 +116,7 @@ export default {
   },
 
   methods: {
-    addCode() {
+    postCode() {
       console.log('data', typeof this.data);
       this.$store.dispatch('addCode', this.data);
     },
