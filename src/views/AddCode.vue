@@ -117,8 +117,12 @@ export default {
 
   methods: {
     postCode() {
-      console.log('data', typeof this.data);
-      this.$store.dispatch('addCode', this.data);
+      this.$store.dispatch('addCode', this.data)
+        .then(() => {
+          this.$router.push(`/`);
+        });
+
+      // TODO: Catch error!
     },
 
     getCountry(event) {
