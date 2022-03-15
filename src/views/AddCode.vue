@@ -8,7 +8,8 @@
         <label class="form__group__label" for="trainercode">Trainercode</label>
         <input class="form__group__input form__group__input--code" type="number" step="1" id="trainercode" name="trainercode" placeholder="0000 1111 2222" v-model="data.player_code" @keydown="restrictKeys($event)" @keyup="typeCode($event)" @paste="pasteCode($event)" required>
 
-        <span class="form__group__help">Please enter a valid trainercode.  {{ data.player_code}} </span>
+        <!-- <span v-if="error" class="form__group__help">Please enter a valid trainercode.</span> -->
+        <span v-if="formatCode" class="form__group__help">Your Trainer Code: {{ formatCode }}</span>
       </div>
 
       <div class="form__group">
@@ -107,6 +108,11 @@ export default {
     codeToAdd() {
       return this.data;
     },
+
+    formatCode() {
+      // Replace every 4 chars with the 4 chars plus a space
+      return this.codeInput.replace(/.{4}/g, '$& ');
+    }
   },
 
   methods: {
@@ -166,6 +172,7 @@ export default {
         input = input.slice(0, this.maxLen);
       }
 
+      this.codeInput = input;
       this.data.player_code = input;
     },
 
@@ -223,7 +230,7 @@ export default {
     &__help {
       font-size: .75rem;
       margin-top: .25rem;
-      color: rgb(200, 0, 0);
+      // color: rgb(200, 0, 0);
     }
   }
 }
