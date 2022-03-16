@@ -189,7 +189,8 @@ export default {
     &__link {
       // TODO: Ensure accessibility for links!
       // TODO: flex mr-4 whitespace-nowrap (former)
-      font-size: 1.25rem; /* 20px */
+      font-size: $mobile-heading;
+      // font-size: 1.25rem; // 20px
       line-height: 1.75rem; /* 28px */
       font-weight: bold;
     }
