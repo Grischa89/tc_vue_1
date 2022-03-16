@@ -15,7 +15,7 @@
 
       <div class="form__group">
         <label class="form__group__label" for="country">Country</label>
-        <select class="form__group__input form__group__input--select" name="country" id="country"  @change="getCountry($event)" @blur="validateCountry(data.country)" v-model="data.country">
+        <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCountry}" name="country" id="country"  @change="getCountry($event)" @blur="validateCountry(data.country)" v-model="data.country">
           <option value selected disabled >Choose A Country</option>
           <option
             v-for="(country, i) in countries"
@@ -29,7 +29,7 @@
       <div class="form__group">
         <label class="form__group__label" for="city">City</label>
         <!-- disabled until country got chosen successfully -->
-        <select class="form__group__input form__group__input--select" name="city" id="city" @change="validateCity(data.city)" @blur="validateCity(data.city)" v-model="data.city" :disabled="!cities">
+        <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCity}" name="city" id="city" @change="validateCity(data.city)" @blur="validateCity(data.city)" v-model="data.city" :disabled="!cities">
           <option value selected disabled>Choose A City</option>
           <option 
             v-for="(city, i) in cities"
@@ -240,11 +240,16 @@ export default {
     &__input {
       display: block;
       padding: .25rem;
-      border: 1px solid #999;
+      border: 1px solid rgb(153, 153, 153);
       border-radius: 0.25em;
       height: 5ch;
       width: 100%;
 
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(153, 153, 153, 0.4);
+      }
+  
       &--code {
         // Hide stepper arrows in Firefox
         -moz-appearance:textfield;
@@ -257,10 +262,13 @@ export default {
         margin: 0;
       }
 
-
-
       &--error {
-        border-color: rgb(200, 0, 0);
+        outline: none;
+        border: 1px solid rgb(200, 0, 0);
+      }
+
+      &--error:focus {
+        box-shadow: 0 0 0 2px rgba(200, 0, 0, 0.4);
       }
 
       // &--select {
@@ -279,5 +287,7 @@ export default {
     }
   }
 }
+
+
 
 </style>
