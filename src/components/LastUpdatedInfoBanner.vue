@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-gray-700 bg-opacity-10">
-    <div class="text-xs py-1">
-      Last updated 12 minutes ago. Just click on icon to copy a code!
+  <div class="last-updated__banner">
+    <div class="last-updated__banner__help">
+      Last updated 12 minutes ago.
     </div>
   </div>
 </template>
@@ -14,6 +14,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+.last-updated__banner {
+  background-color: rgba(55, 65, 81, 0.1);
 
+  &__help {
+    font-size: $mobile-help;
+    padding: .25rem;
+  }
+}
 </style>
