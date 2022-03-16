@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Continent from '../views/Continent.vue'
 import Country from '../views/Country.vue'
-import CardCarousel from '../views/CardCarousel.vue'
 import AddCode from '../views/AddCode.vue'
 
 const routes = [
@@ -10,12 +9,6 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
-  },
-
-  {
-    path: '/card-carousel',
-    name: 'CardCarousel',
-    component: CardCarousel
   },
 
   {
