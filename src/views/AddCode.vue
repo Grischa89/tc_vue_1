@@ -272,10 +272,10 @@ $input-disabled-bg: #dedede;
 
     &__input {
       display: block;
-      padding: .25rem;
+      font-size: $mobile-input;
       border: 1.5px solid $input-color;
       border-radius: 0.25em;
-      height: 5ch;
+      height: 3rem;
       // Width needed to stretch input fields to evenly
       width: 100%;
 
@@ -299,6 +299,7 @@ $input-disabled-bg: #dedede;
       &--code {
         // Hide stepper arrows in Firefox
         -moz-appearance:textfield;
+        padding-left: .25rem;
       }
 
       &--code::-webkit-outer-spin-button,
