@@ -219,7 +219,8 @@ $input-color: #999999;
 $input-shadow: rgba($input-color, 0.4);
 $error-color: #c80000;
 $error-shadow: rgba($error-color, 0.4);
-$placeholder-text: #7e7e7e;
+$placeholder-color: #7e7e7e;
+$help-color: $placeholder-color;
 $input-disabled-bg: #dedede;
 
 
@@ -232,12 +233,16 @@ $input-disabled-bg: #dedede;
 
 .form {
   background-color: #fff;
-  padding: 1rem 0;
+  padding: .75rem 0;
   border-radius: 0.75em;
 
   &__title {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
+    // TODO: heading
+    font-size: $mobile-heading;
+    font-weight: bold;
+    text-transform: uppercase;
   }
 
   &__group {
@@ -250,6 +255,7 @@ $input-disabled-bg: #dedede;
     margin: 1rem auto;
 
     &__label {
+      font-size: $mobile-body;
       text-transform: uppercase;
       letter-spacing: .05rem;
       font-weight: bold;
@@ -270,15 +276,15 @@ $input-disabled-bg: #dedede;
       width: 100%;
 
       &::placeholder {
-        color: $placeholder-text;
+        color: $placeholder-color;
       }
 
       &:-ms-input-placeholder {
-        color: $placeholder-text;
+        color: $placeholder-color;
       }
 
       &::-ms-input-placeholder {
-        color: $placeholder-text;
+        color: $placeholder-color;
       }
 
       &:focus {
@@ -309,7 +315,6 @@ $input-disabled-bg: #dedede;
 
       &--select {
         background-color: #fff;
-        color: $placeholder-text;
 
         &:disabled {
           background-color: $input-disabled-bg;
@@ -320,7 +325,8 @@ $input-disabled-bg: #dedede;
     }
 
     &__help {
-      font-size: .75rem;
+      color: $help-color;
+      font-size: $mobile-help;
       margin-top: .25rem;
       // color: rgb(200, 0, 0);
 
@@ -340,13 +346,18 @@ $input-disabled-bg: #dedede;
     margin: .5rem auto;
     padding: .75em 2.5em;
     text-transform: uppercase;
+    font-size: $mobile-body;
     letter-spacing: .05rem;
     font-weight: bold;
-    // border: 2px solid black;
-    // border-radius: 25px;
+    border-radius: 25px;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+      outline: none;
+      box-shadow: 0 0 0 2px $input-shadow;
+    }
 
     &--submit {
-      // border: 2px solid black;
       border-radius: 25px;
       color: #fff;
       background-color: #000;
