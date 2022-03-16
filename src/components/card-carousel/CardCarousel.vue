@@ -58,16 +58,23 @@ export default {
     // this.addDataPos();
 
     const state = {};
-      // Parent to list elements
-      this.carouselList = this.$refs.carouselList;
-      // List items, NodeList then Array
-      this.carouselItems = document.querySelectorAll('.carousel__item');
-      this.elems = Array.from(this.carouselItems);
+    // Parent to list elements
+    this.carouselList = this.$refs.carouselList;
+    // List items, NodeList then Array
+    this.carouselItems = document.querySelectorAll('.carousel__item');
+    this.elems = Array.from(this.carouselItems);
+
+    this.addDataPos();
   },
 
-  watch: {
-    unevenCodes: 'addDataPos',
+  beforeUpdate() {
+    console.log('beforeUpdate hook run');
+    this.addDataPos();
   },
+
+  // watch: {
+  //   unevenCodes: 'addDataPos',
+  // },
 
   computed: {
     unevenCodes() {
