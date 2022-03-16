@@ -123,6 +123,10 @@ export default {
       this.$store.dispatch('getCities', event.target.value);
     },
 
+    cancelForm() {
+      this.$router.go();
+    },
+
     // This can also prevent copy + paste invalid character
     // filterInput(e){
     //   e.target.value = e.target.value.replace(/[^0-9]+/g, '');
