@@ -212,16 +212,31 @@ export default {
 </script>
 
 <style lang="scss">
+$input-color: #999999;
+$input-shadow: rgba($input-color, 0.4);
+$error-color: #c80000;
+$error-shadow: rgba($error-color, 0.4);
+$placeholder-text: #7e7e7e;
+$input-disabled-bg: #dedede;
+
+
 .form__container {
-  display: flex;
-  justify-content: center;
+  // display: flex;
+  // justify-content: center;
+  width: 90%;
+  margin: 0 auto;
 }
 
 .form {
+  background-color: #fff;
+  padding: 1rem 0;
+  border-radius: 0.75em;
+
   &__group {
 
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: flex-start;
     width: 90%;
     margin: 1rem auto;
@@ -240,14 +255,27 @@ export default {
     &__input {
       display: block;
       padding: .25rem;
-      border: 1px solid rgb(153, 153, 153);
+      border: 1.5px solid $input-color;
       border-radius: 0.25em;
       height: 5ch;
+      // Width needed to stretch input fields to evenly
       width: 100%;
+
+      &::placeholder {
+        color: $placeholder-text;
+      }
+
+      &:-ms-input-placeholder {
+        color: $placeholder-text;
+      }
+
+      &::-ms-input-placeholder {
+        color: $placeholder-text;
+      }
 
       &:focus {
         outline: none;
-        box-shadow: 0 0 0 2px rgba(153, 153, 153, 0.4);
+        box-shadow: 0 0 0 2px $input-shadow;
       }
   
       &--code {
@@ -264,16 +292,23 @@ export default {
 
       &--error {
         outline: none;
-        border: 1px solid rgb(200, 0, 0);
+        border: 1.5px solid $error-color;
       }
 
       &--error:focus {
-        box-shadow: 0 0 0 2px rgba(200, 0, 0, 0.4);
+        box-shadow: 0 0 0 2px $error-shadow;
       }
 
-      // &--select {
-      //   // padding-right: 1rem;
-      // }
+      &--select {
+        background-color: #fff;
+        color: $placeholder-text;
+
+        &:disabled {
+          background-color: $input-disabled-bg;
+        }
+      }
+
+
     }
 
     &__help {
@@ -282,7 +317,7 @@ export default {
       // color: rgb(200, 0, 0);
 
       &--error {
-        color: rgb(200, 0, 0);
+        color: $error-color;
       } 
     }
   }
