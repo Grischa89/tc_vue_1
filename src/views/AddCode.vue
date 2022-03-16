@@ -41,7 +41,10 @@
         <span v-if="errors.invalidCity" class="form__group__help" :class="{'form__group__help--error': errors.invalidCity}" >{{ errors.invalidCity }}</span>
       </div>
 
-      <button @click="postCode">Save</button>
+      <div class="form__btn__container">
+        <button class="form__btn form__btn--submit" @click="postCode">Save</button>
+        <button class="form__btn form__btn--cancel" @click="cancelForm">Cancel</button>
+      </div>
       <!-- <a href="{% url 'person_changelist' %}">Nevermind</a> -->
     </div>
 
@@ -232,6 +235,11 @@ $input-disabled-bg: #dedede;
   padding: 1rem 0;
   border-radius: 0.75em;
 
+  &__title {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
   &__group {
 
     display: flex;
@@ -319,6 +327,33 @@ $input-disabled-bg: #dedede;
       &--error {
         color: $error-color;
       } 
+    }
+  }
+
+  &__btn__container {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__btn {
+    margin: .5rem auto;
+    padding: .75em 2.5em;
+    text-transform: uppercase;
+    letter-spacing: .05rem;
+    font-weight: bold;
+    // border: 2px solid black;
+    // border-radius: 25px;
+
+    &--submit {
+      // border: 2px solid black;
+      border-radius: 25px;
+      color: #fff;
+      background-color: #000;
+    }
+
+    &--cancel {
+      color: #000;
     }
   }
 }
