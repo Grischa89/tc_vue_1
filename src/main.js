@@ -8,7 +8,6 @@ import './tailwind.css'
 import VueCookieComply from 'vue-cookie-comply'
 import 'vue-cookie-comply/dist/style.css'
 
-// axios.defaults.baseURL = 'http://127.0.0.1:8000/'
-axios.defaults.baseURL = 'http://api.trainercodes.tk/'
+axios.defaults.baseURL = 'https://api.trainercodes.tk/'
 
 createApp(App).use(store).use(router, axios).use(VueCookieComply).mount('#app')

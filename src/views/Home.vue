@@ -3,9 +3,9 @@
 NOTE: This should only be applied when there's more than one table,
 otherwise no classes -->
   <div v-if="latestCodes">
-    <!-- <Table 
+    <Table 
       :title="tableTitle"
-      :codes="latestCodes" /> -->
+      :codes="latestCodes" />
 
     <CardCarousel
       :codes="latestCodes" />
