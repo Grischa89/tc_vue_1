@@ -16,12 +16,12 @@ const getters = {
 
 const actions = {
 
-  fetchLatestCodes({ commit }) {
+  fetchLatestCodes({ state, commit }) {
 
     axios.get('/api/v1/codes/')
       .then(res => {
-        commit('setLatestCodes', res.data);
-        console.log('After setLatestCodes: ', res.data);
+        commit('addDataPositions', res.data);
+        // console.log('After setLatestCodes: ', res.data);
       })
       .catch(err => {
         console.log(err);
@@ -114,9 +114,41 @@ const actions = {
 
 const mutations = {
 
-  setLatestCodes(state, codes) {
+  addDataPositions(state, codes) {
+    // Check if codes array needs to be altered
+    if (codes.length % 2 === 0) {
+      console.log('This array\'s length is an even number!');
+      codes.slice(0, -1);
+    }
+    let len = codes.length;
+    // Set middle value value of array length
+    let limit = (len - 1) / 2;
+
+    // Set iterators
+    let i = 0
+    let j = limit;
+
+    while (i < len) {
+
+      // Assign positive positional values to elements until limit
+      if (i <= limit){
+        codes[i].dataPos = i;
+        i++;
+      } else {
+        // Assign negative positional values
+        // For array elements with index greater than limit
+        codes[i].dataPos = -j;
+        j--;
+        i++;
+      }
+    }
+
     state.codes = codes;
   },
+
+  // setLatestCodes(state, codes) {
+  //   state.codes = codes;
+  // },
 
   // setQuestionsStatus(state, status) {
   //   state.questionsStatus = status;

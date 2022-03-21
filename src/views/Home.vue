@@ -33,7 +33,7 @@ export default {
     CardCarousel,
   },
 
-  mounted() {
+  created() {
     this.$store.dispatch('fetchLatestCodes');
     console.log('After dispatching fetchLatestCodes in Home');
   },

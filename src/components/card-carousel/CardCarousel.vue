@@ -4,7 +4,7 @@
 
       <CardCarouselSlide
         class="carousel__item"
-        v-for="(code, i) in unevenCodes"
+        v-for="(code, i) in codes"
         :key="i"
         :code="code"
         ref="carouselItems"
@@ -64,12 +64,12 @@ export default {
     this.carouselItems = document.querySelectorAll('.carousel__item');
     this.elems = Array.from(this.carouselItems);
 
-    this.addDataPos();
+    // this.addDataPos();
   },
 
   beforeUpdate() {
     console.log('beforeUpdate hook run');
-    this.addDataPos();
+    // this.addDataPos();
   },
 
   // watch: {
@@ -77,49 +77,49 @@ export default {
   // },
 
   computed: {
-    unevenCodes() {
-      // Check if codes array needs to be altered
-      if (this.codes.length % 2 === 0) {
-        console.log('This array\'s length is an even number!')
-        return this.codes.slice(0, -1);
-      } else {
-        return this.codes;
-      }
-    }
+    // unevenCodes() {
+    //   // Check if codes array needs to be altered
+    //   if (this.codes.length % 2 === 0) {
+    //     console.log('This array\'s length is an even number!')
+    //     return this.codes.slice(0, -1);
+    //   } else {
+    //     return this.codes;
+    //   }
+    // }
   },
 
   methods: {
-    addDataPos() {
-      // Use unevenCodes length in case codes prop had even length
-      this.arrLength = this.unevenCodes.length;
+    // addDataPos() {
+    //   // Use unevenCodes length in case codes prop had even length
+    //   this.arrLength = this.unevenCodes.length;
 
-      // Set middle value value of array length
-      this.limit = (this.arrLength - 1) / 2;
+    //   // Set middle value value of array length
+    //   this.limit = (this.arrLength - 1) / 2;
       
-      // Set iterators
-      let i = 0
-      let j = this.limit;
+    //   // Set iterators
+    //   let i = 0
+    //   let j = this.limit;
 
-      // NOTE: This is a solution for arrays with uneven array length (handled in computed)
-      // For even arrays j must be adjusted (++/--) before assigning pos value i
-      // Range of carousel is chosen to be from -limit to +limit
-      // No second iterator (j) needed if pos value should be positive integers only
-      while (i < this.arrLength) {
+    //   // NOTE: This is a solution for arrays with uneven array length (handled in computed)
+    //   // For even arrays j must be adjusted (++/--) before assigning pos value i
+    //   // Range of carousel is chosen to be from -limit to +limit
+    //   // No second iterator (j) needed if pos value should be positive integers only
+    //   while (i < this.arrLength) {
 
-        // Assign positive positional values to elements until limit
-        if (i <= this.limit){
-          this.unevenCodes[i].dataPos = i;
-          i++;
-        } else {
-          // Assign negative positional values
-          // For array elements with index greater than limit
-          this.unevenCodes[i].dataPos = -j;
-          j--;
-          i++;
-        }
+    //     // Assign positive positional values to elements until limit
+    //     if (i <= this.limit){
+    //       this.unevenCodes[i].dataPos = i;
+    //       i++;
+    //     } else {
+    //       // Assign negative positional values
+    //       // For array elements with index greater than limit
+    //       this.unevenCodes[i].dataPos = -j;
+    //       j--;
+    //       i++;
+    //     }
 
-      }
-    },
+    //   }
+    // },
 
     captureTouchstart(event) {
       this.touchstartX = event.changedTouches[0].screenX;
