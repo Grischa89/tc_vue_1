@@ -136,7 +136,7 @@ const mutations = {
     // Check if codes array needs to be altered
     if (codes.length % 2 === 0) {
       console.log('This array\'s length is an even number!');
-      codes.slice(0, -1);
+      codes = codes.slice(0, -1);
     }
     let len = codes.length;
     // Set middle value value of array length
