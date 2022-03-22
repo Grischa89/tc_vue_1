@@ -2,17 +2,17 @@ import axios from 'axios';
 
 const state = {
 
-  continentCodes: null,
+  codes: null,
 };
 
 const getters = {
 
-  continentCodes: state => {
-    return state.continentCodes;
+  codes: state => {
+    return state.codes;
   },
 
   continentCodesTitle: state => {
-    return state.continentCodes[0].continent;
+    return state.codes[0].continent;
   }
 };
 
@@ -25,8 +25,9 @@ const actions = {
 
     axios.get(`/api/v1/codes/${continent}/`)
       .then(res => {
-        commit('setLatestContinentCodes', res.data);
-        console.log('After setLatestContinentCodes: ', res.data);
+        // commit('setLatestContinentCodes', res.data);
+        commit('continentAddDataPositions', res.data);
+        console.log('After continentAddDataPositions: ', res.data);
       })
       .catch(err => {
         console.log(err);
@@ -54,9 +55,43 @@ const actions = {
 
 const mutations = {
 
-  setLatestContinentCodes(state, continentCodes) {
-    state.continentCodes = continentCodes;
+  continentAddDataPositions(state, codes) {
+    // Check if codes array needs to be altered
+    if (codes.length % 2 === 0) {
+      console.log('This array\'s length is an even number!');
+      codes = codes.slice(0, -1);
+    }
+    let len = codes.length;
+    console.log('codes.length', codes.length)
+    // Set middle value value of array length
+    let limit = (len - 1) / 2;
+
+    // Set iterators
+    let i = 0
+    let j = limit;
+
+    while (i < len) {
+
+      // Assign positive positional values to elements until limit
+      if (i <= limit){
+        codes[i].dataPos = i;
+        i++;
+      } else {
+        // Assign negative positional values
+        // For array elements with index greater than limit
+        codes[i].dataPos = -j;
+        j--;
+        i++;
+      }
+    }
+
+    console.log('Inside continentAddDataPositions', codes);
+    state.codes = codes;
   },
+
+  // setLatestContinentCodes(state, continentCodes) {
+  //   state.continentCodes = continentCodes;
+  // },
 
 };
 

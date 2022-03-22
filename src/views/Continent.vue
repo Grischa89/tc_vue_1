@@ -1,13 +1,13 @@
 <template>
-  <div v-if="continentCodes">
+  <div v-if="codes">
 
     <Table
-      :codes="continentCodes"
+      :codes="codes"
       :title="continentCodesTitle" />
     
     <CardCarousel
-    v-if="continentCodes"
-    :codes="continentCodes" />
+    v-if="codes"
+    :codes="codes" />
 
   </div>
 </template>
@@ -41,7 +41,7 @@ name: 'Continent',
   
   computed: {
     ...mapGetters({
-      continentCodes: 'continentCodes',
+      codes: 'codes',
       continentCodesTitle: 'continentCodesTitle',
     })
   },
