@@ -4,6 +4,8 @@ const state = {
 
   codes: null,
 
+  testCodes: null,
+
 };
 
 const getters = {
@@ -11,6 +13,10 @@ const getters = {
   latestCodes: state => {
     return state.codes;
   },
+
+  testCodes: state => {
+    return state.testCodes;
+  }
 
 };
 
@@ -26,6 +32,18 @@ const actions = {
       .catch(err => {
         console.log(err);
         console.log('An error occured.');
+        
+      })
+  },
+
+  fetchTestCodes({ state, commit }) {
+    axios.get('/api/v1/codes/')
+      .then(res => {
+        commit('setTestCodes', res.data);
+      })
+      .catch(err => {
+        console.log(err);
+        console.log('An error occured in fetchTestCodes.');
         
       })
   },
@@ -146,9 +164,9 @@ const mutations = {
     state.codes = codes;
   },
 
-  // setLatestCodes(state, codes) {
-  //   state.codes = codes;
-  // },
+  setTestCodes(state, codes) {
+    state.testCodes = codes;
+  },
 
   // setQuestionsStatus(state, status) {
   //   state.questionsStatus = status;

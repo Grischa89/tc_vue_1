@@ -3,12 +3,19 @@ import Home from '../views/Home.vue'
 import Continent from '../views/Continent.vue'
 import Country from '../views/Country.vue'
 import AddCode from '../views/AddCode.vue'
+import CardCarousel from '../views/CardCarousel.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+
+  {
+    path: '/carousel',
+    name: 'CardCarousel',
+    component: CardCarousel
   },
 
   {
