@@ -24,17 +24,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.carousel__control__button {
-  border: none;
-  display: inline-block;
-  margin: 0 1rem;
-  height: 50px;
-  color: #000;
-  cursor: pointer;
 
-  & svg {
-    height: 1.5rem;
-    width: 1.5rem;
+.carousel__control {
+  display: none;
+
+  @media (min-width: 500px) { // 31.25rem
+    display: block;
+  } 
+
+  &__button {
+    border: none;
+    display: inline-block;
+    margin: 0 1rem;
+    height: 50px;
+    color: #000;
+    cursor: pointer;
+
+    & svg {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
   }
 }
 </style>
