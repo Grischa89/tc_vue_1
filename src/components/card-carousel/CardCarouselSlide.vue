@@ -8,7 +8,8 @@
 
     <qrcode-vue class="carousel__item__qrcode" :value="code.player_code" :size="size" level="H"/>
 
-    <div class="carousel__item__code">{{ code.player_code }}</div>
+    <div v-if="code.prettyCode" class="carousel__item__code">{{ code.prettyCode }}</div>
+    <div v-else class="carousel__item__code">{{ code.player_code }}</div>
 
     <CopyButton 
       @click="copyCodeToClipboard($event)" />

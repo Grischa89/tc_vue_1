@@ -27,7 +27,7 @@ const actions = {
       .then(res => {
         // commit('setLatestContinentCodes', res.data);
         commit('continentAddDataPositions', res.data);
-        console.log('After continentAddDataPositions: ', res.data);
+        commit('prettyCode', res.data);
       })
       .catch(err => {
         console.log(err);
@@ -85,7 +85,14 @@ const mutations = {
       }
     }
 
-    console.log('Inside continentAddDataPositions', codes);
+    state.codes = codes;
+  },
+
+  prettyCode(state, codes) {
+    for (let item of codes) {
+      item.prettyCode = item.player_code.replace(/.{4}/g, '$& ').trim();
+    }
+
     state.codes = codes;
   },
 

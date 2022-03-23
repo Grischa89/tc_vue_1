@@ -27,7 +27,10 @@
               @click="copyCodeToClipboard($event)">
 
               <div class="flex justify-between items-center">
-                <div class="mr-4 copy-code cursor-pointer"
+                <div v-if="code.prettyCode" class="mr-4 copy-code cursor-pointer whitespace-nowrap"
+                  id="code-playercode"
+                  >{{ code.prettyCode }}</div>
+                <div v-else class="mr-4 copy-code cursor-pointer whitespace-nowrap"
                   id="code-playercode"
                   >{{ code.player_code }}</div>
 

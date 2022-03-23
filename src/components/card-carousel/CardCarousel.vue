@@ -286,6 +286,24 @@ export default {
       transform: translateX(20%) scale(.9);
       z-index: 4;
     }
+
+    @media (min-width: 500px) { // 31.25rem
+      &[data-pos="-2"],
+      &[data-pos="2"] {
+        opacity: 0.4;
+        filter: blur(1px) grayscale(20%);
+      }
+
+      &[data-pos="-2"] {
+        transform: translateX(-40%) scale(.8);
+        z-index: 3;
+      }
+      
+      &[data-pos="2"] {
+        transform: translateX(40%) scale(.8);
+        z-index: 3;
+      }
+    }
     
     // only visible for @desktop
     // &[data-pos="-2"],

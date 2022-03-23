@@ -16,7 +16,7 @@ const getters = {
 
   testCodes: state => {
     return state.testCodes;
-  }
+  },
 
 };
 
@@ -27,8 +27,10 @@ const actions = {
     axios.get('/api/v1/codes/')
       .then(res => {
         commit('addDataPositions', res.data);
+        commit('prettyCode', res.data);
         // console.log('After setLatestCodes: ', res.data);
       })
+      .then()
       .catch(err => {
         console.log(err);
         console.log('An error occured.');
@@ -166,6 +168,14 @@ const mutations = {
 
   setTestCodes(state, codes) {
     state.testCodes = codes;
+  },
+
+  prettyCode(state, codes) {
+    for (let item of codes) {
+      item.prettyCode = item.player_code.replace(/.{4}/g, '$& ').trim();
+    }
+
+    state.codes = codes;
   },
 
   // setQuestionsStatus(state, status) {

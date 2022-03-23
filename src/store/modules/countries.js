@@ -29,7 +29,7 @@ const actions = {
     axios.get(`/api/v1/codes/${data.continent}/${data.country}/`)
       .then(res => {
         commit('countryAddDataPositions', res.data);
-        console.log('After countryAddDataPositions: ', res.data);
+        commit('prettyCode', res.data);
       })
       .catch(err => {
         console.log(err);
@@ -87,7 +87,14 @@ const mutations = {
       }
     }
 
-    console.log('Inside countryAddDataPositions', codes);
+    state.countryCodes = codes;
+  },
+
+  prettyCode(state, codes) {
+    for (let item of codes) {
+      item.prettyCode = item.player_code.replace(/.{4}/g, '$& ').trim();
+    }
+
     state.countryCodes = codes;
   },
 
