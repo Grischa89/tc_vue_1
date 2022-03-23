@@ -65,7 +65,7 @@
           </li>
 
           <li class="navbar__menu__item">
-            <router-link to="/" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Thanks</router-link>
+            <router-link to="/add" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Add Your Code</router-link>
           </li>
         </ul>
 

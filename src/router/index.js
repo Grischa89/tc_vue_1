@@ -13,6 +13,12 @@ const routes = [
   },
 
   {
+    path: '/add',
+    name: 'AddCode',
+    component: AddCode,
+  },
+
+  {
     path: '/carousel',
     name: 'CardCarousel',
     component: CardCarousel
@@ -28,12 +34,6 @@ const routes = [
     path: '/:continent/:country',
     name: 'Country',
     component: Country
-  },
-
-  {
-    path: '/add',
-    name: 'AddCode',
-    component: AddCode,
   },
 
   {
