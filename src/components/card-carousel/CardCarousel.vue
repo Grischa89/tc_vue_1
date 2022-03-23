@@ -243,7 +243,8 @@ export default {
     list-style: none;
     position: relative;
     width: 100%;
-    height: 300px;
+    min-height: 31.25rem; // 500px
+    // height: 100%; // 300px
     align-items: center;
     justify-content: center;
     perspective: 300px;
@@ -256,10 +257,10 @@ export default {
     justify-content: center;
     color: #000;
     font-size: 20px;
-    width: 150px;
-    height: 250px;
+    width: 15.625rem; // 250px
+    height: 25rem; // 400px
     border-radius: 12px;
-    box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.5);
+    box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
     position: absolute;
     transition: all .3s ease-in;
     background: #FFF;
@@ -277,30 +278,31 @@ export default {
     }
     
     &[data-pos="-1"] {
-      transform: translateX(-35%) scale(.9);
+      transform: translateX(-20%) scale(.9);
       z-index: 4;
     }
     
     &[data-pos="1"] {
-      transform: translateX(35%) scale(.9);
+      transform: translateX(20%) scale(.9);
       z-index: 4;
     }
     
-    &[data-pos="-2"],
-    &[data-pos="2"] {
-      opacity: 0.4;
-      filter: blur(1px) grayscale(20%);
-    }
+    // only visible for @desktop
+    // &[data-pos="-2"],
+    // &[data-pos="2"] {
+    //   opacity: 0.4;
+    //   filter: blur(1px) grayscale(20%);
+    // }
     
-    &[data-pos="-2"] {
-      transform: translateX(-70%) scale(.8);
-      z-index: 3;
-    }
+    // &[data-pos="-2"] {
+    //   transform: translateX(-70%) scale(.8);
+    //   z-index: 3;
+    // }
     
-    &[data-pos="2"] {
-      transform: translateX(70%) scale(.8);
-      z-index: 3;
-    }
+    // &[data-pos="2"] {
+    //   transform: translateX(70%) scale(.8);
+    //   z-index: 3;
+    // }
 
     @for $j from -100 through 100 {
       &[data-pos="#{$j}"] {

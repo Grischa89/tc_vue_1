@@ -6,7 +6,7 @@
   >
     <div class="carousel__item__heading">{{ code.country }}</div>
 
-    <qrcode-vue :value="code.player_code" level="H"/>
+    <qrcode-vue class="carousel__item__qrcode" :value="code.player_code" :size="size" level="H"/>
 
     <div class="carousel__item__code">{{ code.player_code }}</div>
 
@@ -46,6 +46,12 @@ export default {
     },
   },
 
+  data() {
+    return {
+      size: 200,
+    }
+  },
+
   methods: {
     copyCodeToClipboard(e) {
       const currentSlide = e.target.closest('.carousel__item');
@@ -59,7 +65,7 @@ export default {
 <style lang="scss" scoped>
 .carousel__item {
   & div {
-    font-size: .875rem;
+    font-size: $mobile-subheading;
     word-wrap: break-word;
     line-height: 1.25rem;
     margin-top: .75rem;
@@ -71,6 +77,10 @@ export default {
     font-weight: 700;
     letter-spacing: 0.05em;
     margin-bottom: .75rem;
+  }
+
+  &__qrcode {
+    margin: 1.5rem auto;
   }
 
   &__code {
