@@ -6,6 +6,8 @@ const state = {
 
   testCodes: null,
 
+  loadStatus: null,
+
 };
 
 const getters = {
@@ -18,24 +20,30 @@ const getters = {
     return state.testCodes;
   },
 
+  loadStatus: state => {
+    return state.loadStatus;
+  }
+
 };
 
 const actions = {
 
   fetchLatestCodes({ state, commit }) {
 
+    commit('setStatus', 'loading');
+
     axios.get('/api/v1/codes/')
       .then(res => {
         commit('addDataPositions', res.data);
         commit('prettyCode', res.data);
+        commit('setStatus', 'success');
         // console.log('After setLatestCodes: ', res.data);
       })
-      .then()
       .catch(err => {
         console.log(err);
         console.log('An error occured.');
-        
-      })
+        commit('setStatus', 'error');
+      });
   },
 
   fetchTestCodes({ state, commit }) {
@@ -133,6 +141,10 @@ const actions = {
 };
 
 const mutations = {
+
+  setStatus(state, status) {
+    state.loadStatus = status;
+  },
 
   addDataPositions(state, codes) {
     // Check if codes array needs to be altered
