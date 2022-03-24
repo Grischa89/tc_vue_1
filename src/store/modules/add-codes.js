@@ -23,7 +23,7 @@ const getters = {
 const actions = {
 
   getCountries({ commit }) {
-    axios.get('/api/v1/codes/all-countries/')
+    axios.get('/api/v1/codes/all-countries-cached/')
       .then(res => {
         commit('setCountries', res.data);
       })
