@@ -44,14 +44,14 @@ export default {
   },
 
   created() {
-    this.$store.dispatch('fetchLatestCodes');
-    console.log('After dispatching fetchLatestCodes in Home');
+    this.$store.dispatch('fetchRecentCodes');
+    console.log('After dispatching fetchRecentCodes in Home');
   },
   
   computed: {
     ...mapGetters({
-      latestCodes: 'latestCodes',
-      loadStatus: 'loadStatus',
+      latestCodes: 'codeGetter',
+      loadStatus: 'recentLoadStatus',
     })
   },
 

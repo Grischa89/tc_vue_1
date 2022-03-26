@@ -2,37 +2,44 @@ import axios from 'axios';
 
 const state = {
 
-  codes: null,
+  continentLoadStatus: null,
 };
 
 const getters = {
 
-  codes: state => {
-    return state.codes;
+  continentLoadStatus: state => {
+    return state.continentLoadStatus;
   },
 
-  continentCodesTitle: state => {
-    return state.codes[0].continent;
-  }
 };
 
 const actions = {
 
-  fetchLatestContinentCodes({ commit }, continent) {
+  fetchContinentCodes({ commit, rootState }, continent) {
 
     console.log('continent', continent);
-    
+    commit('setContinentStatus', 'loading');
 
     axios.get(`/api/v1/codes/${continent}/`)
       .then(res => {
-        // commit('setLatestContinentCodes', res.data);
-        commit('continentAddDataPositions', res.data);
-        commit('prettyCode', res.data);
+        console.log(res);
+        if (res.data.new_cache_key) {
+          console.log('new_cache_key set in res fetchContinentCodes');
+          // TODO: Here not new_cache_key but recent codes or sth
+          const slugs = { 'invalidSlug': `/${continent}`, 'validSlug': res.data.new_cache_key };
+          commit('setURLMessage', slugs);
+        }
+
+        return commit('addDataPositions', res.data.data);
+      })
+      .then(() => {
+        commit('prettyCode', rootState.codes);
+        commit('setContinentStatus', 'success');
       })
       .catch(err => {
+        commit('setContinentStatus', 'error');
         console.log(err);
-        console.log('An error occured.');
-        
+        console.log('An error occured in fetchContinentCodes.');
       })
   },
 
@@ -55,37 +62,8 @@ const actions = {
 
 const mutations = {
 
-  continentAddDataPositions(state, codes) {
-    // Check if codes array needs to be altered
-    if (codes.length % 2 === 0) {
-      console.log('This array\'s length is an even number!');
-      codes = codes.slice(0, -1);
-    }
-    let len = codes.length;
-    console.log('codes.length', codes.length)
-    // Set middle value value of array length
-    let limit = (len - 1) / 2;
-
-    // Set iterators
-    let i = 0
-    let j = limit;
-
-    while (i < len) {
-
-      // Assign positive positional values to elements until limit
-      if (i <= limit){
-        codes[i].dataPos = i;
-        i++;
-      } else {
-        // Assign negative positional values
-        // For array elements with index greater than limit
-        codes[i].dataPos = -j;
-        j--;
-        i++;
-      }
-    }
-
-    state.codes = codes;
+  setContinentStatus(state, status) {
+    state.continentLoadStatus = status;
   },
 
   prettyCode(state, codes) {

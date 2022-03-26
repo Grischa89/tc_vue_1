@@ -1,20 +1,24 @@
 <template>
-  <div v-if="codes">
+  <div v-if="loadStatus === 'loading'">
+    <TableSkeleton />
+    <CardCarouselSkeleton />
+  </div>
 
+  <div v-if="loadStatus === 'success' && continentCodes">
     <Table
-      :codes="codes"
+      :codes="continentCodes"
       :title="continentCodesTitle" />
     
     <CardCarousel
-    v-if="codes"
-    :codes="codes" />
-
+    :codes="continentCodes" />
   </div>
 </template>
 
 <script>
 import Table from '../components/Table.vue';
 import CardCarousel from '../components/card-carousel/CardCarousel.vue';
+import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
+import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -25,11 +29,13 @@ name: 'Continent',
   components: {
     Table,
     CardCarousel,
+    TableSkeleton,
+    CardCarouselSkeleton,
   },
 
   mounted() {
-    this.$store.dispatch('fetchLatestContinentCodes', this.$route.params.continent);
-    console.log('After dispatching fetchLatestContinentCodes in Continent');
+    this.$store.dispatch('fetchContinentCodes', this.$route.params.continent);
+    console.log('After dispatching fetchContinentCodes in Continent');
   },
 
   // watch: {
@@ -41,8 +47,9 @@ name: 'Continent',
   
   computed: {
     ...mapGetters({
-      codes: 'codes',
+      continentCodes: 'codeGetter',
       continentCodesTitle: 'continentCodesTitle',
+      loadStatus: 'continentLoadStatus',
     })
   },
 }

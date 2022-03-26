@@ -1,5 +1,10 @@
 <template>
-  <div v-if="countryCodes">
+  <div v-if="loadStatus === 'loading'">
+    <TableSkeleton />
+    <CardCarouselSkeleton />
+  </div>
+
+  <div v-if="loadStatus === 'success' && countryCodes">
     <Table
     :title="countryCodesTitle"
     :codes="countryCodes" />
@@ -12,6 +17,8 @@
 <script>
 import Table from '../components/Table.vue';
 import CardCarousel from '../components/card-carousel/CardCarousel.vue';
+import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
+import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -22,16 +29,19 @@ name: 'Country',
   components: {
     Table,
     CardCarousel,
+    TableSkeleton,
+    CardCarouselSkeleton,
   },
 
   mounted() {
-    this.$store.dispatch('fetchLatestCountryCodes', { continent: this.$route.params.continent, country: this.$route.params.country });
+    this.$store.dispatch('fetchCountryCodes', { continent: this.$route.params.continent, country: this.$route.params.country });
   },
   
   computed: {
     ...mapGetters({
-      countryCodes: 'countryCodes',
+      countryCodes: 'codeGetter',
       countryCodesTitle: 'countryCodesTitle',
+      loadStatus: 'countryLoadStatus',
     })
   },
 }

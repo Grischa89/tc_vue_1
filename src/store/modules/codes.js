@@ -2,60 +2,37 @@ import axios from 'axios';
 
 const state = {
 
-  codes: null,
-
-  testCodes: null,
-
-  loadStatus: null,
+  recentLoadStatus: null,
 
 };
 
 const getters = {
 
-  latestCodes: state => {
-    return state.codes;
+  recentLoadStatus: state => {
+    return state.recentLoadStatus;
   },
-
-  testCodes: state => {
-    return state.testCodes;
-  },
-
-  loadStatus: state => {
-    return state.loadStatus;
-  }
 
 };
 
 const actions = {
 
-  fetchLatestCodes({ state, commit }) {
+  fetchRecentCodes({ state, commit, rootState }) {
 
-    commit('setStatus', 'loading');
+    commit('setRecentStatus', 'loading');
 
     axios.get('/api/v1/codes/')
       .then(res => {
-        commit('addDataPositions', res.data);
-        commit('prettyCode', res.data);
-        commit('setStatus', 'success');
-        // console.log('After setLatestCodes: ', res.data);
+        return commit('addDataPositions', res.data.data);
+      })
+      .then(() => {
+        commit('prettyCode', rootState.codes);
+        commit('setRecentStatus', 'success');
       })
       .catch(err => {
+        commit('setRecentStatus', 'error');
         console.log(err);
         console.log('An error occured.');
-        commit('setStatus', 'error');
       });
-  },
-
-  fetchTestCodes({ state, commit }) {
-    axios.get('/api/v1/codes/')
-      .then(res => {
-        commit('setTestCodes', res.data);
-      })
-      .catch(err => {
-        console.log(err);
-        console.log('An error occured in fetchTestCodes.');
-        
-      })
   },
 
   // fetchFeedQuestions({ commit }) {
@@ -142,85 +119,12 @@ const actions = {
 
 const mutations = {
 
-  setStatus(state, status) {
-    state.loadStatus = status;
+  setRecentStatus(state, status) {
+    state.recentLoadStatus = status;
   },
-
-  addDataPositions(state, codes) {
-    // Check if codes array needs to be altered
-    if (codes.length % 2 === 0) {
-      console.log('This array\'s length is an even number!');
-      codes = codes.slice(0, -1);
-    }
-    let len = codes.length;
-    // Set middle value value of array length
-    let limit = (len - 1) / 2;
-
-    // Set iterators
-    let i = 0
-    let j = limit;
-
-    while (i < len) {
-
-      // Assign positive positional values to elements until limit
-      if (i <= limit){
-        codes[i].dataPos = i;
-        i++;
-      } else {
-        // Assign negative positional values
-        // For array elements with index greater than limit
-        codes[i].dataPos = -j;
-        j--;
-        i++;
-      }
-    }
-
-    state.codes = codes;
-  },
-
-  setTestCodes(state, codes) {
-    state.testCodes = codes;
-  },
-
-  prettyCode(state, codes) {
-    for (let item of codes) {
-      item.prettyCode = item.player_code.replace(/.{4}/g, '$& ').trim();
-    }
-
-    state.codes = codes;
-  },
-
-  // setQuestionsStatus(state, status) {
-  //   state.questionsStatus = status;
-  // },
-
-  // createTitle(state, title) {
-  //   state.questionTitle = title;
-  // },
-
-  // createDescription(state, description) {
-  //   state.questionDescription = description;
-  // },
 
   // pushQuestion(state, question) {
   //   state.questions.data.unshift(question);
-  // },
-
-  // setQuestion(state, question) {
-  //   state.question = question;
-  // },
-
-  // setAnswers(state, answers) {
-  //   state.answers = answers;
-  // },
-
-  // setAnswerCount(state, count) {
-  //   state.answerCount = count;
-  // },
-
-  // createAnswerBody(state, answer) {
-  //   state.answerBody = answer;
-  // },
 
 };
 

@@ -2,36 +2,48 @@ import axios from 'axios';
 
 const state = {
 
-  countryCodes: null,
+  countryLoadStatus: null,
 
 };
 
 const getters = {
 
-  countryCodes: state => {
-    return state.countryCodes;
+  countryLoadStatus: state => {
+    return state.countryLoadStatus;
   },
 
-  countryCodesTitle: state => {
-    return state.countryCodes[0].country;
-  }
+  // countryCodesTitle: state => {
+  //   return state.countryCodes[0].country;
+  // }
 
 };
 
 const actions = {
 
-  fetchLatestCountryCodes({ commit }, data) {
+  fetchCountryCodes({ commit, rootState }, data) {
 
     console.log('data', data.continent, data.country);
-    
+    commit('setCountryStatus', 'loading');
 
-    // axios.get(`/api/v1/codes/asia/japan`)
+    // axios.get(`/api/v1/codes/asia/japan/`)
     axios.get(`/api/v1/codes/${data.continent}/${data.country}/`)
       .then(res => {
-        commit('countryAddDataPositions', res.data);
-        commit('prettyCode', res.data);
+        console.log('res', res);
+        if (res.data.new_cache_key) {
+          console.log('new_cache_key set in res fetchCountryCodes');
+          const slugs = { 'invalidSlug': `/${data.continent}/${data.country}`, 'validSlug': res.data.new_cache_key };
+          commit('setURLMessage', slugs);
+        }
+
+        return commit('addDataPositions', res.data.data);
+      })
+      .then(() => {
+        console.log('rootState.myCodes', rootState.codes);
+        commit('prettyCode', rootState.codes);
+        commit('setCountryStatus', 'success');
       })
       .catch(err => {
+        commit('setCountryStatus', 'error');
         console.log(err);
         console.log('An error occured.');
         
@@ -57,46 +69,9 @@ const actions = {
 
 const mutations = {
 
-  countryAddDataPositions(state, codes) {
-    // Check if codes array needs to be altered
-    if (codes.length % 2 === 0) {
-      console.log('This array\'s length is an even number!');
-      codes = codes.slice(0, -1);
-    }
-    let len = codes.length;
-    console.log('codes.length', codes.length)
-    // Set middle value value of array length
-    let limit = (len - 1) / 2;
-
-    // Set iterators
-    let i = 0
-    let j = limit;
-
-    while (i < len) {
-
-      // Assign positive positional values to elements until limit
-      if (i <= limit){
-        codes[i].dataPos = i;
-        i++;
-      } else {
-        // Assign negative positional values
-        // For array elements with index greater than limit
-        codes[i].dataPos = -j;
-        j--;
-        i++;
-      }
-    }
-
-    state.countryCodes = codes;
-  },
-
-  prettyCode(state, codes) {
-    for (let item of codes) {
-      item.prettyCode = item.player_code.replace(/.{4}/g, '$& ').trim();
-    }
-
-    state.countryCodes = codes;
-  },
+  setCountryStatus(state, status) {
+    state.countryLoadStatus = status;
+  }
 
   // setLatestCountryCodes(state, countryCodes) {
   //   state.countryCodes = countryCodes;
