@@ -2,7 +2,7 @@
   <div class="flex flex-col justify-around items-center">
 
     
-    <h1 class="text-lg font-bold uppercase tracking-wider my-2 skeleton skeleton__heading"></h1>
+    <h1 class="text-lg font-bold uppercase tracking-wider my-2 skeleton skeleton__heading" :class="{ loading: loading }"></h1>
 
     <!-- For small devices table has width of 11/12, from sm-breakpoint on has max-width of md (448px) -->
     <div class="flex flex-col mx-auto my-2 py-1 bg-white rounded shadow border-b border-gray-300 w-10/12 sm:max-w-md">
@@ -12,10 +12,10 @@
         <thead class="border-b border-gray-300">
           <tr class="thead-row">
             <th scope="col" class="w-2/5 py-2 px-4 text-left uppercase ">
-              <div class="skeleton skeleton__table__head"></div>
+              <div class="skeleton skeleton__table__head" :class="{ loading: loading }"></div>
             </th>
             <th scope="col" class="w-2/5 py-2 px-4 text-left uppercase">
-              <div class="skeleton skeleton__table__head"></div>
+              <div class="skeleton skeleton__table__head" :class="{ loading: loading }"></div>
             </th>
             <!-- <th scope="col" class="w-1/5 py-2 px-4 text-left">Copy!</th> -->
           </tr>
@@ -23,13 +23,13 @@
         <tbody class="divide-y divide-gray-300">
           <tr v-for="i in 3" :key="i">
             <td class="py-4 px-4 text-left font-bold">
-                <div class="skeleton skeleton__table__data"></div>
+                <div class="skeleton skeleton__table__data" :class="{ loading: loading }"></div>
                 <!-- <router-link :to="{ name: country, params: { continent: code.continent_slug, country: country_slug } }">{{ code.country }}</router-link> -->
             </td>
             <td class="py-4 px-4 flex">
-              <div class="skeleton skeleton__code"></div>
-              <div class="skeleton skeleton__code"></div>
-              <div class="skeleton skeleton__code"></div>
+              <div class="skeleton skeleton__code" :class="{ loading: loading }"></div>
+              <div class="skeleton skeleton__code" :class="{ loading: loading }"></div>
+              <div class="skeleton skeleton__code" :class="{ loading: loading }"></div>
               <!-- <div class="flex justify-between items-center"> -->
                 <!-- <div class="mr-4 copy-code cursor-pointer whitespace-nowrap"
                   id="code-playercode"
@@ -51,19 +51,33 @@
 export default {
   name: 'TableSkeleton',
 
+  data() {
+    return {
+      loading: true,
+    }
+  },
+
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.loading {
+  animation: skeleton-loading .9s linear infinite alternate;
+}
+
 .skeleton {
   opacity: .7;
-  animation: skeleton-loading 1s linear infinite alternate;
+  // animation: skeleton-loading 1s linear infinite alternate;
   border-radius: .125rem;
 
   &__heading {
     height: 1.5rem;
-    width: 50%;
+    width: 40%;
     border-radius: .125rem;
+
+    @media(min-width: 512px) {
+      max-width: 12.5rem;
+    }
   }
 
   &__table__head {
@@ -98,7 +112,7 @@ export default {
 
 @keyframes skeleton-loading {
   0% {
-    background-color: hsl(200, 20%, 70%);
+    background-color: hsl(200, 20%, 80%);
   }
 
   100% {

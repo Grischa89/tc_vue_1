@@ -8,6 +8,8 @@ otherwise no classes -->
     <CardCarouselSkeleton />
   </div>
 
+  <AsyncCodesNotFound v-if="loadStatus === 'error'" />
+
   <div v-if="loadStatus === 'success' && latestCodes">
     <Table 
       :title="tableTitle"

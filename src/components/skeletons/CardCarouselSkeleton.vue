@@ -7,15 +7,15 @@
         class="carousel__item"
         :data-pos="dataPos[i-1]"
       >
-        <div class="carousel__item__heading skeleton skeleton__heading"></div>
+        <div class="carousel__item__heading skeleton skeleton__heading" :class="{ loading: loading }"></div>
 
-        <div class="skeleton skeleton__qrcode"></div>
+        <div class="skeleton skeleton__qrcode" :class="{ loading: loading }"></div>
         <!-- <qrcode-vue class="carousel__item__qrcode" :value="code.player_code" :size="size" level="H"/> -->
 
         <div class="carousel__item__code">
-          <div class="skeleton skeleton__code"></div>
-          <div class="skeleton skeleton__code"></div>
-          <div class="skeleton skeleton__code"></div>
+          <div class="skeleton skeleton__code" :class="{ loading: loading }"></div>
+          <div class="skeleton skeleton__code" :class="{ loading: loading }"></div>
+          <div class="skeleton skeleton__code" :class="{ loading: loading }"></div>
         </div>
 
       </li>
@@ -30,6 +30,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       size: 200,
       dataPos: [-1, 0, 1],
     }
@@ -147,7 +148,7 @@ export default {
 
   .skeleton {
     opacity: .7;
-    animation: skeleton-loading 1s linear infinite alternate;
+    // animation: skeleton-loading 1s linear infinite alternate;
 
     &__heading {
       height: 1.5rem;
@@ -169,15 +170,15 @@ export default {
 
   }
 
-  @keyframes skeleton-loading {
-    0% {
-      background-color: hsl(200, 20%, 70%);
-    }
+  // @keyframes skeleton-loading {
+  //   0% {
+  //     background-color: hsl(200, 20%, 70%);
+  //   }
 
-    100% {
-      background-color: hsl(200, 20%, 95%);
-    }
-  }
+  //   100% {
+  //     background-color: hsl(200, 20%, 95%);
+  //   }
+  // }
 
 }
 

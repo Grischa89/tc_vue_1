@@ -6,6 +6,7 @@ import countries from './modules/countries';
 import nav from './modules/nav';
 import copy from './modules/copy';
 import addCodes from './modules/add-codes';
+import auth from './modules/auth';
 
 export default createStore({
   
@@ -90,7 +91,8 @@ export default createStore({
     countries,
     nav,
     copy,
-    addCodes
+    addCodes,
+    auth
   },
 
 });

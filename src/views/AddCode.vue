@@ -231,8 +231,14 @@ $input-disabled-bg: #dedede;
 .form__container {
   // display: flex;
   // justify-content: center;
-  width: 90%;
+  // width: 90%;
+  padding: 2rem;
+  max-width: 24.3076923rem;
   margin: 0 auto;
+
+  // @media(min-width: 1024px) {
+  //   width: 40%;
+  // }
 }
 
 .form {
