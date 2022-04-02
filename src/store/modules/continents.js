@@ -23,12 +23,15 @@ const actions = {
     axios.get(`/api/v1/codes/${continent}/`)
       .then(res => {
         console.log(res);
+        // TODO: What if new_cache_key is empty? ''
         if (res.data.new_cache_key) {
           console.log('new_cache_key set in res fetchContinentCodes');
           // TODO: Here not new_cache_key but recent codes or sth
           const slugs = { 'invalidSlug': `/${continent}`, 'validSlug': res.data.new_cache_key };
           commit('setURLMessage', slugs);
         }
+
+        window.document.title = res.data.new_cache_key ? 'Recent Codes From Around The World | trainercodes.net' : `${res.data.data[0].continent} | Recent Codes From ${res.data.data[0].continent} | trainercodes.net`;
 
         return commit('addDataPositions', res.data.data);
       })

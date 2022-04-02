@@ -22,6 +22,7 @@ const actions = {
 
     axios.get('/api/v1/codes/')
       .then(res => {
+        window.document.title = 'Recent Codes From Around The World | trainercodes.net';
         return commit('addDataPositions', res.data.data);
       })
       .then(() => {
@@ -29,9 +30,8 @@ const actions = {
         commit('setRecentStatus', 'success');
       })
       .catch(err => {
+        // TODO: Ist es hier überhaupt wichtig, Ob ein 404 ausgegeben wird oder wollen wir bei jedem error code dieselbe antwort haben?
         commit('setRecentStatus', 'error');
-        console.log(err);
-        console.log('An error occured.');
       });
   },
 

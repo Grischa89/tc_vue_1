@@ -35,6 +35,9 @@ const actions = {
           commit('setURLMessage', slugs);
         }
 
+        // TODO: if new_cache_key { if === 'recent_codes' document.title = recent_codes, else document.title = value} else document.title = requested value
+        // TODO: Make global mutation that sets document title mit getter in beforeEach?
+
         return commit('addDataPositions', res.data.data);
       })
       .then(() => {
