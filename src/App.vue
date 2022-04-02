@@ -1,7 +1,8 @@
 <template>
 <div id="wrapper">
   <LastUpdatedInfoBanner />
-  <Navbar />
+  <Navbar
+    :isAuthenticated="isAuthenticated" />
   
   <router-view :key="$route.fullPath" />
 
@@ -40,6 +41,8 @@
 import LastUpdatedInfoBanner from './components/LastUpdatedInfoBanner.vue';
 import Navbar from './components/navbar/Navbar.vue';
 
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'App',
 
@@ -75,8 +78,49 @@ export default {
     }
   },
 
+  async beforeCreate() {
+    console.log('beforeCreate');
+
+    const isAuthenticated = Boolean(JSON.parse(sessionStorage.getItem('isAuthenticated')));
+    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
+
+    // known user + not closed tab
+    if (isAuthenticated) {
+      this.$store.commit('setAuthenticated', true);
+    } else if (accessToken) {
+      // known user + closed tab
+      const verifyJWTSuccess = await this.$store.dispatch('verifyJWT');
+
+      if (verifyJWTSuccess !== 200) {
+        console.log('verifySuccess', verifyJWTSuccess);
+
+        const refreshJWTSuccess = await this.$store.dispatch('refreshJWT');
+
+        if (refreshJWTSuccess !== 200) {
+          console.log('refreshSuccess', refreshJWTSuccess);
+          this.$router.push('/log-in');
+        }
+
+      }
+    } else {
+      // not known / not logged in user
+      this.$store.commit('removeToken');
+    }
+
+    if (localStorage.user !== null) {
+      this.$store.commit('setUser', JSON.parse(localStorage.user));
+      console.log('After setUser commit in App.vue!');
+    }
+  },
+
   created() {
     this.initCookieConsent();
+  },
+
+  computed: {
+    ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
+    })
   },
 
   methods: {
