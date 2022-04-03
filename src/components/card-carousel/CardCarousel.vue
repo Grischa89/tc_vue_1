@@ -1,5 +1,6 @@
 <template>
   <div class="carousel">
+    <h1 class="carousel__title">QR Codes</h1>
     <ul class="carousel__list" ref="carouselList" @click="registerClick" @touchstart="captureTouchstart" @touchend="captureTouchend">
 
       <CardCarouselSlide
@@ -54,9 +55,6 @@ export default {
   },
 
   mounted() {
-    console.log('mounted hook run');
-    // this.addDataPos();
-
     const state = {};
     // Parent to list elements
     this.carouselList = this.$refs.carouselList;
@@ -89,9 +87,6 @@ export default {
   },
 
   methods: {
-    // addDataPos() {
-    //   // Use unevenCodes length in case codes prop had even length
-    //   this.arrLength = this.unevenCodes.length;
 
     //   // Set middle value value of array length
     //   this.limit = (this.arrLength - 1) / 2;
@@ -154,11 +149,11 @@ export default {
     registerClick(event) {
       // Delegate newActive to alsways be closest li item (no matter where click happened)
       this.newActive = event.target.closest('.carousel__item');
-      console.log('this.newActive', this.newActive);
+      // console.log('this.newActive', this.newActive);
 
       // If click was outside of an li item OR on li item with pos value 0 (front)
       if (!this.newActive || this.newActive.classList.contains('carousel__item_active')) {
-        console.log('No item or item already in front!');
+        // console.log('No item or item already in front!');
         return;
       };
       
@@ -166,13 +161,13 @@ export default {
     },
 
     updatePos(newActive) {
-      console.log('newActive', newActive);
+      // console.log('newActive', newActive);
       // Get pos value of clicked item
       const newActivePos = newActive.dataset.pos;
-      console.log('newActivePos', newActivePos);
+      // console.log('newActivePos', newActivePos);
 
       if (!newActivePos) {
-        console.log('Has now data-pos set!');
+        // console.log('Has now data-pos set!');
         return;
       }
 
@@ -210,14 +205,14 @@ export default {
     },
 
     prevSlide() {
-      console.log('Previous button was clicked!');
+      // console.log('Previous button was clicked!');
       const prevSlide = this.elems.find((elem) => elem.dataset.pos == -1);
 
       this.updatePos(prevSlide);
     },
 
     nextSlide() {
-      console.log('Next button was clicked!');
+      // console.log('Next button was clicked!');
       const nextSlide = this.elems.find((elem) => elem.dataset.pos == 1);
 
       this.updatePos(nextSlide);
@@ -230,20 +225,28 @@ export default {
 <style lang="scss" scoped>
 
 .carousel {
-  margin: 1rem auto;
+  margin: 2rem auto;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   align-items: center;
-  font-family: Arial;
+
+  &__title {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    // TODO: heading
+    font-size: $mobile-heading;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 
   &__list {
     display: flex;
     list-style: none;
     position: relative;
     width: 100%;
-    min-height: 31.25rem; // 500px
+    min-height: 26.5rem; //31.25rem; // 500px
     // height: 100%; // 300px
     align-items: center;
     justify-content: center;
@@ -256,15 +259,16 @@ export default {
     align-items: center;
     justify-content: center;
     color: #000;
-    font-size: 20px;
+    font-size: $mobile-subheading;
     width: 15.625rem; // 250px
     height: 25rem; // 400px
     border-radius: 12px;
     box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
     position: absolute;
-    transition: all .3s ease-in;
+    transition: all .1s ease-in;
     background: #FFF;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
     
     &[data-pos="0"] {
       z-index: 5;
