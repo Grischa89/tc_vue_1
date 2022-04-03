@@ -47,6 +47,7 @@ export default {
       limit: '',
       newActive: '',
       clickedElem: '',
+      touchRect: '',
       touchstartX: '',
       touchstartY: '',
       touchendX: '',
@@ -62,88 +63,44 @@ export default {
     this.carouselItems = document.querySelectorAll('.carousel__item');
     this.elems = Array.from(this.carouselItems);
 
-    // this.addDataPos();
-  },
-
-  beforeUpdate() {
-    console.log('beforeUpdate hook run');
-    // this.addDataPos();
-  },
-
-  // watch: {
-  //   unevenCodes: 'addDataPos',
-  // },
-
-  computed: {
-    // unevenCodes() {
-    //   // Check if codes array needs to be altered
-    //   if (this.codes.length % 2 === 0) {
-    //     console.log('This array\'s length is an even number!')
-    //     return this.codes.slice(0, -1);
-    //   } else {
-    //     return this.codes;
-    //   }
-    // }
+    this.touchRect = this.carouselList;
   },
 
   methods: {
 
-    //   // Set middle value value of array length
-    //   this.limit = (this.arrLength - 1) / 2;
-      
-    //   // Set iterators
-    //   let i = 0
-    //   let j = this.limit;
-
-    //   // NOTE: This is a solution for arrays with uneven array length (handled in computed)
-    //   // For even arrays j must be adjusted (++/--) before assigning pos value i
-    //   // Range of carousel is chosen to be from -limit to +limit
-    //   // No second iterator (j) needed if pos value should be positive integers only
-    //   while (i < this.arrLength) {
-
-    //     // Assign positive positional values to elements until limit
-    //     if (i <= this.limit){
-    //       this.unevenCodes[i].dataPos = i;
-    //       i++;
-    //     } else {
-    //       // Assign negative positional values
-    //       // For array elements with index greater than limit
-    //       this.unevenCodes[i].dataPos = -j;
-    //       j--;
-    //       i++;
-    //     }
-
-    //   }
-    // },
-
-    captureTouchstart(event) {
-      this.touchstartX = event.changedTouches[0].screenX;
-      this.touchstartY = event.changedTouches[0].screenY;
-      // console.log('this.touchstartX', this.touchstartX);
-      // console.log('this.touchstartY', this.touchstartY);
-      console.log('captureTouchstart', event.changedTouches);
+    captureTouchstart(e) {
+      this.touchstartX = e.changedTouches[0].screenX;
+      this.touchstartY = e.changedTouches[0].screenY;
     },
 
-    captureTouchend(event) {
-      this.touchendX = event.changedTouches[0].screenX;
-      this.touchendY = event.changedTouches[0].screenY;
-      // console.log('this.touchendX', this.touchendX);
-      // console.log('this.touchendY', this.touchendY);
-      console.log('captureTouchend', event.changedTouches);
+    captureTouchend(e) {
+      this.touchendX = e.changedTouches[0].screenX;
+      this.touchendY = e.changedTouches[0].screenY;
 
-      this.handleSwipe();
+      this.handleSwipe(e);
     },
 
     handleSwipe() {
-      if (this.touchendX < this.touchstartX) {
-        console.log('Swiped Left');
-        this.nextSlide();
-      }
+      // Thanks to peterver https://gist.github.com/SleepWalker/da5636b1abcbaff48c4d?permalink_comment_id=2335244#gistcomment-2335244
 
-      if (this.touchendX > this.touchstartX) {
-        console.log('Swiped Right');
+      // Get width and height of carousel__list ul
+      const { width, height } = this.touchRect.getBoundingClientRect();
+
+      // Get horizontal and vertical ratios of touch gesture
+      const ratioHorizontal = (this.touchendX - this.touchstartX) / width;
+      const ratioVertical = (this.touchendY - this.touchstartY) / height;
+
+      // If horizontal ratio of touch gesture is bigger than vertical and exceeds certain threshold (has certain length)
+      if (ratioHorizontal > ratioVertical && ratioHorizontal > 0.15) {
+        // Swipe right
         this.prevSlide();
-      }
+      } else if (ratioHorizontal < ratioVertical && ratioHorizontal < -0.15) {
+        // Swipe left
+        this.nextSlide();
+      } 
+      // else {
+      //   return false;
+      // }
     },
 
     registerClick(event) {
