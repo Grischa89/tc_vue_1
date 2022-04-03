@@ -12,6 +12,6 @@ const AsyncCodesNotFound = defineAsyncComponent(() =>
     import('./components/errors/CodesNotFound.vue')
 )
 
-// axios.defaults.baseURL = 'https://api.trainercodes.tk/'
-axios.defaults.baseURL = 'http://127.0.0.1:8000/'
+axios.defaults.baseURL = 'https://api.trainercodes.tk/'
+// axios.defaults.baseURL = 'http://127.0.0.1:8000/'
 createApp(App).use(store).use(router, axios).use(VueCookieComply).component('AsyncCodesNotFound', AsyncCodesNotFound).mount('#app')
