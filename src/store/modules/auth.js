@@ -53,7 +53,7 @@ const actions = {
 
     console.log('formData in auth.js activate', formData);
 
-    return axios.post(`api/v1/accounts/auth/users/activation/`, formData)
+    return axios.post(`/api/v1/accounts/auth/users/activation/`, formData)
       .then(res => {
         console.log('res.status after auth/users/activation/', res.status);
         // set state.user zu res.data??? stein: this.user = response.data (in component)
@@ -70,7 +70,7 @@ const actions = {
 
   resendActivationEmail({ commit }, formData) {
 
-    return axios.post(`api/v1/accounts/auth/users/resend_activation/`, formData)
+    return axios.post(`/api/v1/accounts/auth/users/resend_activation/`, formData)
       .then(res => {
         console.log('res.status after auth/users/activation/', res.status);
 
@@ -89,7 +89,7 @@ const actions = {
 
   requestPasswordReset({ commit }, formData) {
 
-    return axios.post(`api/v1/accounts/auth/users/reset_password/`, formData)
+    return axios.post(`/api/v1/accounts/auth/users/reset_password/`, formData)
       .then(res => {
         console.log('res.status after reset_password', res.status);
 
@@ -131,7 +131,7 @@ const actions = {
       }
     };
 
-    return axios.post(`api/v1/accounts/auth/jwt/verify/`,  {"token": accessToken})
+    return axios.post(`/api/v1/accounts/auth/jwt/verify/`,  {"token": accessToken})
       .then(res => {
 
         sessionStorage.setItem('isAuthenticated', JSON.stringify('true'));
@@ -194,7 +194,7 @@ const actions = {
 
   login({ commit }, formData) {
 
-    return axios.post("/api/v1/accounts/auth/jwt/create/", formData)
+    return axios.post('/api/v1/accounts/auth/jwt/create/', formData)
       .then(res => {
 
         // TODO: /users/me get user info
@@ -216,14 +216,16 @@ const actions = {
 
   getUserProfile({ commit }, email) {
 
-    // const config = {
-    //   headers: {
-    //      'Authorization': "JWT " + accessToken,
-    //      'Content-Type': 'application/json',
-    //   }
-    // };
+    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
 
-    return axios.get(`/api/v1/accounts/profile/${email}`)
+    const config = {
+      headers: {
+         'Authorization': "JWT " + accessToken,
+         'Content-Type': 'application/json',
+      }
+    };
+
+    return axios.get(`/api/v1/accounts/profile/${email}/`, config)
       .then(res => {
         // const config = {
         //   headers: {
