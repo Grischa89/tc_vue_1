@@ -15,14 +15,46 @@ export default {
 
 <style lang="scss" scoped>
 .button {
-  height: 1.25rem;
-  width: 1.25rem;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  // height: 1.25rem;
+  // width: 1.25rem;
   cursor: pointer;
+  border-radius: 50%;
+  background-color: #E5E7EB;
+  padding: .375rem;
+  -webkit-tap-highlight-color: hsl(220, 13%, 99%);
 
   &__prepend {
     height: 1.25rem;
     width: 1.25rem;
   }
+
+  &:hover, &:active {
+    color: #a6a8ac;
+  }
+
+  @media(min-width: 612px) {
+    &:hover, &:active {
+      background-color: #a6a8ac;
+      color: black;
+    }
+  }
+
+  // TODO: Wenn Farben stehen für @mobile mehr suttle wählen als
+  
+
+  
+
+  // &:active, {
+  //   background-color: #E5E7EB;
+  //   // transform: translateY(3px)
+  // }
+
+  // &:focus {
+  //   color: white;
+  // }
 }
 
 </style>
