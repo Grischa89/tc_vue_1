@@ -8,10 +8,9 @@ import './tailwind.css'
 import VueCookieComply from 'vue-cookie-comply'
 import 'vue-cookie-comply/dist/style.css'
 
-const AsyncCodesNotFound = defineAsyncComponent(() => 
-    import('./components/errors/CodesNotFound.vue')
-)
+const AsyncCodesNotFound = defineAsyncComponent(() => import('./components/errors/CodesNotFound.vue'));
+const AsyncInvalidSlug = defineAsyncComponent(() => import('./components/errors/InvalidSlug.vue'));
 
 axios.defaults.baseURL = 'https://api.trainercodes.tk/'
 // axios.defaults.baseURL = 'http://127.0.0.1:8000/'
-createApp(App).use(store).use(router, axios).use(VueCookieComply).component('AsyncCodesNotFound', AsyncCodesNotFound).mount('#app')
+createApp(App).use(store).use(router, axios).use(VueCookieComply).component('AsyncCodesNotFound', AsyncCodesNotFound).component('AsyncInvalidSlug', AsyncInvalidSlug).mount('#app')

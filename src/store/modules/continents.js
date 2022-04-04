@@ -19,19 +19,30 @@ const actions = {
 
     console.log('continent', continent);
     commit('setContinentStatus', 'loading');
+    commit('setURLMessage', '');
 
     axios.get(`/api/v1/codes/${continent}/`)
       .then(res => {
         console.log(res);
-        // TODO: What if new_cache_key is empty? ''
+        // NOTE: If valid continent request res.data.new_cache_key: ''
+
         if (res.data.new_cache_key) {
+          // 'recent_codes', incorrect continent slug (/asfa/)
           console.log('new_cache_key set in res fetchContinentCodes');
+          console.log(res.data.new_cache_key);
           // TODO: Here not new_cache_key but recent codes or sth
-          const slugs = { 'invalidSlug': `/${continent}`, 'validSlug': res.data.new_cache_key };
+          // NOTE: validSlug is here '/', Home
+          const slugs = { 'invalidSlug': `/${continent}/`, 'validSlug': '/' };
           commit('setURLMessage', slugs);
+          commit('setTableTitle', 'Recent Codes');
+          window.document.title = 'Recent Codes From Around The World — trainercodes.net';
+        } else {
+          // correct url (/asia)
+          window.document.title = `${res.data.data[0].continent} — Recent Codes From ${res.data.data[0].continent} — trainercodes.net`;
+          commit('setTableTitle', res.data.data[0].continent);
         }
 
-        window.document.title = res.data.new_cache_key ? 'Recent Codes From Around The World | trainercodes.net' : `${res.data.data[0].continent} | Recent Codes From ${res.data.data[0].continent} | trainercodes.net`;
+        // window.document.title = res.data.new_cache_key ? 'Recent Codes From Around The World | trainercodes.net' : `${res.data.data[0].continent} | Recent Codes From ${res.data.data[0].continent} | trainercodes.net`;
 
         return commit('addDataPositions', res.data.data);
       })

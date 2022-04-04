@@ -14,9 +14,12 @@ export default createStore({
 
     codes: null,
 
-    invalidSlug: null,
+    // invalidSlug: null,
 
-    validSlug: null,
+    // validSlug: null,
+    invalidURLMessage: null,
+
+    tableTitle: null,
 
   },
 
@@ -27,8 +30,12 @@ export default createStore({
     },
 
     invalidURLMessage: state => {
-      return `No match was found for the URL you entered (${state.invalidSlug}). Displaying codes for ${state.validSlug} instead.`
+      return state.invalidURLMessage;
     },
+
+    tableTitle: state => {
+      return state.tableTitle;
+    }
 
   },
 
@@ -75,9 +82,17 @@ export default createStore({
     },
 
     setURLMessage(state, slugs) {
-      state.invalidSlug = slugs.invalidSlug;
-      state.validSlug = slugs.validSlug;
+      // state.invalidSlug = slugs.invalidSlug;
+      // state.validSlug = slugs.validSlug;
+      // if (slugs === '') {
+      //   state.invalidURLMessage
+      // }
+      slugs === '' ? state.invalidURLMessage = '' : state.invalidURLMessage = `No match was found for the URL you entered ('${slugs.invalidSlug}'). Displaying codes for '${slugs.validSlug}' instead.`;
     },
+
+    setTableTitle(state, title) {
+      state.tableTitle = title;
+    }
 
   },
 

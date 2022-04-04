@@ -5,9 +5,13 @@
   </div>
 
   <div v-if="loadStatus === 'success' && continentCodes">
+    <AsyncInvalidSlug
+      v-if="invalidURLMessage"
+      :message="invalidURLMessage" />
+      
     <Table
       :codes="continentCodes"
-      :title="continentCodesTitle" />
+      :title="tableTitle" />
     
     <CardCarousel
     :codes="continentCodes" />
@@ -48,8 +52,9 @@ name: 'Continent',
   computed: {
     ...mapGetters({
       continentCodes: 'codeGetter',
-      continentCodesTitle: 'continentCodesTitle',
+      tableTitle: 'tableTitle',
       loadStatus: 'continentLoadStatus',
+      invalidURLMessage: 'invalidURLMessage',
     })
   },
 }

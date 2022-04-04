@@ -19,6 +19,7 @@ const actions = {
   fetchRecentCodes({ state, commit, rootState }) {
 
     commit('setRecentStatus', 'loading');
+    commit('setURLMessage', '');
 
     axios.get('/api/v1/codes/')
       .then(res => {
