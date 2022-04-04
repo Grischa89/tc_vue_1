@@ -20,7 +20,7 @@
 
       <div class="form__group">
         <label class="form__group__label" for="country">Country</label>
-        <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCountry}" name="country" id="country"  @change="getCountry($event)" @blur="validateCountry(data.country)" v-model="data.country">
+        <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCountry}" name="country" id="country" @change="selectCountry($event)" @blur="validateCountry(data.country)" v-model="data.country">
           <option value selected disabled >Choose A Country</option>
           <option
             v-for="(country, i) in countries"
@@ -91,10 +91,6 @@ export default {
       cities: 'cities',
     }),
 
-    codeToAdd() {
-      return this.data;
-    },
-
     formatCode() {
       // Replace every 4 chars with the 4 chars plus a space
       return this.codeInput.replace(/.{4}/g, '$& ');
@@ -118,11 +114,11 @@ export default {
       }
     },
 
-    getCountry(event) {
-      console.log('event.target.value', event.target.value);
+    selectCountry(e) {
+      console.log('e.target.value', e.target.value);
 
-      this.validateCountry(event.target.value);
-      this.$store.dispatch('getCities', event.target.value);
+      this.validateCountry(e.target.value);
+      this.$store.dispatch('getCities', e.target.value);
     },
 
     cancelForm() {
