@@ -9,6 +9,7 @@ const state = {
   isLoading: false,
   requestEmail: '',
   prevRouteName: '',
+  toRouteName: '',
 };
 
 const getters = {
@@ -27,6 +28,10 @@ const getters = {
 
   prevRouteName: state => {
     return state.prevRouteName;
+  },
+
+  toRouteName: state => {
+    return state.toRouteName;
   },
 
 };
@@ -375,7 +380,11 @@ const mutations = {
 
   setPrevRouteName(state, prevRouteName) {
     state.prevRouteName = prevRouteName;
-  }
+  },
+
+  setToRouteName(state, toRouteName) {
+    state.toRouteName = toRouteName;
+  },
 
 
     // initializeStore(state){

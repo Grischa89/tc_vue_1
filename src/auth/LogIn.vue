@@ -87,6 +87,13 @@ import { mapGetters } from 'vuex';
 export default {
     name: 'LogIn',
 
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            console.log('to.redirectedFrom.name', to.redirectedFrom.name);
+            vm.$store.commit('setToRouteName', to.redirectedFrom.name);
+        });
+    },
+
     data() {
         return {
             email: '',
@@ -102,6 +109,7 @@ export default {
     computed: {
         ...mapGetters({
             user: 'user',
+            toRouteName: 'toRouteName',
         }),
     },
 
@@ -149,7 +157,9 @@ export default {
                     console.log('loginSuccess', loginSuccess);
                     // sessionStorage.setItem('isAuthenticated', JSON.stringify('true'));
                     this.$store.dispatch('getUserProfile', formData.email);
-                    this.$router.push(`/my-account`);
+
+                    this.toRouteName === 'AddCode' ? this.$router.push({ name: 'AddCode' }) : this.$router.push(`/my-account`);
+                    
                 } else {
                     // Hier wird direkt error message ausgegeben
                     this.errors.unauthorized = loginSuccess;
