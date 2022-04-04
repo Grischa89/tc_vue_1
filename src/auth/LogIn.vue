@@ -89,8 +89,9 @@ export default {
 
     beforeRouteEnter(to, from, next) {
         next(vm => {
-            console.log('to.redirectedFrom.name', to.redirectedFrom.name);
-            vm.$store.commit('setToRouteName', to.redirectedFrom.name);
+            if (to.redirectedFrom) {
+                vm.$store.commit('setToRouteName', to.redirectedFrom.name);
+            }
         });
     },
 
