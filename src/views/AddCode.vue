@@ -1,5 +1,9 @@
 <template>
   <div class="form__container">
+
+    <div v-if="errors.postFailure" class="user__info">
+        {{ errors.postFailure }}
+    </div>
     
     <!-- NOTE: div instead of form prevents form submit from numpad @mobile "Go" button -->
     <form class="form" @submit.prevent="submitForm">
@@ -68,7 +72,8 @@ export default {
       errors: {
         invalidCode: '',
         invalidCountry: '',
-        invalidCity: ''
+        invalidCity: '',
+        postFailure: '',
       },
       codeInput: '',
       maxLen: 12,
@@ -97,7 +102,7 @@ export default {
   },
 
   methods: {
-    submitForm() {
+    async submitForm() {
       const validCode = this.validateCode(this.data.player_code);
       const validCountry = this.validateCountry(this.data.country);
       const validCity = this.validateCity(this.data.city);
@@ -106,17 +111,11 @@ export default {
       
       if (validCode && this.data.country && this.data.city) {
         console.log('data', this.data);
-        this.$store.dispatch('addCode', this.data)
-        .then(() => {
-          this.$router.push(`/`);
-        });
-      } 
-      // this.$store.dispatch('addCode', this.data)
-      //   .then(() => {
-      //     this.$router.push(`/`);
-      //   });
+        const postSuccess = await this.$store.dispatch('addCode', this.data);
 
-      // TODO: Catch error!
+        // TODO: Currently Zeitverzögerung bei /
+        postSuccess === 201 ? this.$router.push(`/`) : this.errors.postFailure = 'Something went wrong. Please try again later.';
+      }
     },
 
     getCountry(event) {

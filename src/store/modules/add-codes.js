@@ -46,14 +46,16 @@ const actions = {
   },
 
   addCode({ commit }, data) {
-    axios.post('/api/v1/codes/add/', data)
+    return axios.post('/api/v1/codes/add/', data)
       .then(res => {
         console.log('addCode res', res);
         console.log('addCode res.data', res.data);
+        return res.status;
       })
       .catch(err => {
         console.log(err.message);
         console.log('An error occured in addCode.');
+        return err.response.status;
       });
   }
 
