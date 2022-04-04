@@ -1,7 +1,8 @@
 <template>
   <div class="form__container">
     
-    <div class="form">
+    <!-- NOTE: div instead of form prevents form submit from numpad @mobile "Go" button -->
+    <form class="form" @submit.prevent="submitForm">
       <h2 class="form__title">Add Your Own Code</h2>
 
       <div class="form__group">
@@ -42,11 +43,10 @@
       </div>
 
       <div class="form__btn__container">
-        <button class="form__btn form__btn--submit" @click="postCode">Save</button>
-        <button class="form__btn form__btn--cancel" @click="cancelForm">Cancel</button>
+        <button class="form__btn form__btn--submit" type="submit">Submit</button>
+        <button class="form__btn form__btn--cancel" type="button" @click="cancelForm">Cancel</button>
       </div>
-      <!-- <a href="{% url 'person_changelist' %}">Nevermind</a> -->
-    </div>
+    </form>
 
     
   </div>
@@ -71,7 +71,6 @@ export default {
         invalidCity: ''
       },
       codeInput: '',
-      // inputLen: '',
       maxLen: 12,
     }
   },
@@ -98,7 +97,7 @@ export default {
   },
 
   methods: {
-    postCode() {
+    submitForm() {
       const validCode = this.validateCode(this.data.player_code);
       const validCountry = this.validateCountry(this.data.country);
       const validCity = this.validateCity(this.data.city);
@@ -107,6 +106,10 @@ export default {
       
       if (validCode && this.data.country && this.data.city) {
         console.log('data', this.data);
+        this.$store.dispatch('addCode', this.data)
+        .then(() => {
+          this.$router.push(`/`);
+        });
       } 
       // this.$store.dispatch('addCode', this.data)
       //   .then(() => {
@@ -124,13 +127,11 @@ export default {
     },
 
     cancelForm() {
-      this.$router.go();
+      this.data.player_code = '';
+      this.codeInput = '';
+      this.data.country = '';
+      this.data.city = '';
     },
-
-    // This can also prevent copy + paste invalid character
-    // filterInput(e){
-    //   e.target.value = e.target.value.replace(/[^0-9]+/g, '');
-    // }
 
     restrictKeys(e) {
       this.errors.invalidCode = '';
@@ -161,7 +162,7 @@ export default {
     },
 
     checkLength(input, inputLen) {
-      console.log('len', inputLen);
+      // console.log('len', inputLen);
       // @keyup logic! -- NOTE: @keydown will be more difficult to implement for mobile.
       // On keydown you cannot use e.target.value since it is empty on first keydown.
       // So theoretically e.key or e.code are needed, but they are not available mobile.
