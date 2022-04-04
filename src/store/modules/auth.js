@@ -88,7 +88,7 @@ const actions = {
         // Für user ausgeben: Diese email schon aktiviert errors.resendActivation
         console.log('err in auth.js activate', err.response);
 
-        return 'Something went wrong. Please enter your email address again.';
+        return err.response.status;
       });
   },
 

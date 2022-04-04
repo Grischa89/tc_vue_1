@@ -11,6 +11,8 @@ $desktop-subheading: 1.5rem; // 24px
 $desktop-input: $mobile-body;
 
 // COLORS
+$error-color: #c80000;
+$error-shadow: rgba($error-color, 0.4);
 
 // BUTTONS
 $input-color: #999999;

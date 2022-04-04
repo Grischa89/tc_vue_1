@@ -4,8 +4,8 @@
         <form class="form" @submit.prevent="submitForm">
             <h2 class="form__title">Resend Activation Email</h2>
 
-            <div v-if="errors.badRequest" class="form__info">
-                {{ errors.badRequest }}
+            <div v-if="errors.badRequest" class="form__info form__info--error">
+                {{ errors.badRequest }} Please <router-link :to="{ name: 'LogIn' }" class="form__info__link">log in</router-link>.
             </div>
 
             <div v-else class="form__info">
@@ -72,7 +72,7 @@ export default {
                 } else {
                     // TODO: Wohin weiterleiten wenn 400?
                     // Für user ausgeben: Diese email schon aktiviert errors.resendActivation
-                    this.errors.badRequest = resendSuccess;
+                    this.errors.badRequest = 'This account has already been activated.';
                 }
             }
         },
@@ -81,6 +81,14 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.form__info {
+    &--error {
+        color: $error-color;
+    }
+    
+    &__link {
+        font-weight: bold;
+    }
+}
 </style>
