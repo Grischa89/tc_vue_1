@@ -7,8 +7,12 @@
             <h2 v-if="user.username" class="form__title">Welcome Back, {{ user.username }}!</h2>
             <h2 v-else class="form__title">Welcome Back!</h2>
 
-            <div v-if="errors.unauthorized" class="form__info">
+            <div v-if="errors.unauthorized" class="form__info form__info--error">
                 {{ errors.unauthorized }}. Please try again.
+            </div>
+
+            <div v-if="this.errors.unauthorized" class="form__link form__link--error">
+                <router-link :to="{ name: 'ResendActivationEmail' }">Resend Activation Email?</router-link>
             </div>
 
             <div class="form__group">
@@ -25,7 +29,7 @@
                 <span v-if="errors.invalidPassword" class="form__group__help" :class="{'form__group__help--error': errors.invalidPassword}">{{ errors.invalidPassword }}</span>     
             </div>
 
-            <div class="form__link form__link--password">
+            <div class="form__link">
                 <router-link :to="{ name: 'RequestPasswordReset' }">Forgot Password?</router-link>
             </div>
 
@@ -41,44 +45,6 @@
 
     
     </div>
-
-    <!-- <div class="page-log-in">
-        <div class="columns">
-            <div class="column is-4 is-offset-4">
-                <h1 class="title">Log in</h1>
-
-                <form @submit.prevent="submitForm">
-                    <div class="field">
-                        <label>Email: project.abramov@gmail.com</label>
-                        <div class="control">
-                            <input type="text" class="input" v-model="email" autocomplete="on">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>Password</label>
-                        <div class="control">
-                            <input type="password" class="input" v-model="password" autocomplete="on">
-                        </div>
-                    </div>
-
-                    <div class="notification is-danger" v-if="errors.length">
-                        <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-                    </div>
-
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-dark">Log in</button>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    Or <router-link to="/sign-up">sign up here</router-link>!
-                </form>
-            </div>
-        </div>
-    </div> -->
 </template>
 
 <script>
@@ -166,42 +132,7 @@ export default {
                     this.errors.unauthorized = loginSuccess;
                 }
 
-            }
-
-            // await axios
-            //     .post("/api/v1/accounts/auth/jwt/create/", formData)
-            //     .then(response => {
-            //         const token = "Bearer " + response.data.access;
-            //         // TODO: /users/me get user info
-            //         // const username = JSON.parse(response.config.data)['email']
-            //         this.$store.commit('setBearer', token);
-                    
-            //         axios.defaults.headers.common["Authorization"] = token;
-            //         axios.defaults.headers.post['Content-Type'] = 'application/json';
-
-            //         // localStorage.setItem('username', username)
-            //         // localStorage.setItem("token", token);
-            //         // localStorage.setItem('tcAccess', JSON.stringify(response.data.access));
-            //         // localStorage.setItem('tcRefresh', JSON.stringify(response.data.refresh));
-
-            //         this.$router.push(`/my-account/`)
-            //         console.log('axios.defaults.headers.common["Authorization"]:', axios.defaults.headers.common["Authorization"])
-            //         // console.log("username:", username)
-            //         console.log("token:", token)
-
-            //     })
-            //     .catch(error => {
-            //         // if (error.response) {
-            //         //     for (const property in error.response.data) {
-            //         //         this.errors.push(`${property}: ${error.response.data[property]}`)
-            //         //     }
-            //         // } else {
-            //         //     this.errors.push('Something went wrong. Please try again')
-                    
-            //         // TODO: redirect to login with error message
-            //         console.log(error);
-            //         // }
-            //     })   
+            }  
         }
     }
 }
@@ -209,7 +140,11 @@ export default {
 
 <style lang="scss">
 .form__info {
-    margin: 2rem auto;
+    margin: 1rem auto;
+
+    &--error {
+        color: $error-color;
+    }
 
     &__link {
         font-weight: bold;
@@ -222,8 +157,9 @@ export default {
     font-size: $mobile-help;
     padding: 0 1.125rem;
 
-    &--password {
-        //
+    &--error {
+        color: $error-color;
+        font-weight: bold;
     }
 }
 </style>
