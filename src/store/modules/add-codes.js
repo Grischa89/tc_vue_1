@@ -23,13 +23,13 @@ const getters = {
 const actions = {
 
   getCountries({ commit }) {
-    axios.get('/api/v1/codes/all-countries-cached/')
+    return axios.get('/api/v1/codes/all-countries-cached/')
       .then(res => {
         commit('setCountries', res.data);
+        return res.status;
       })
       .catch(err => {
-        console.log(err);
-        console.log('An error occured in getCountries.');
+        return err.response.status;
       });
   },
 
@@ -37,11 +37,10 @@ const actions = {
     return axios.get('/api/v1/codes/ajax/load-cities/?country=' + selectedCountry)
       .then(res => {
         commit('setCities', res.data.cities);
-        return res.data;
+        return res.status;
       })
       .catch(err => {
-        console.log(err);
-        console.log('An error occured in getCities.');
+        return err.response.status;
       });
   },
 

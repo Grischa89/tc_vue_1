@@ -1,8 +1,14 @@
 <template>
   <div class="form__container">
 
-    <div v-if="errors.postFailure" class="user__info">
-        {{ errors.postFailure }}
+    <div v-if="errors.submitFailure" class="user__info">
+        {{ errors.submitFailure }}
+    </div>
+    <div v-if="errors.loadCountries" class="user__info">
+        {{ errors.loadCountries }}
+    </div>
+    <div v-if="errors.loadCities" class="user__info">
+        {{ errors.loadCities }}
     </div>
     
     <!-- NOTE: div instead of form prevents form submit from numpad @mobile "Go" button -->
@@ -70,10 +76,12 @@ export default {
         player_code: '',
       },
       errors: {
+        loadCountries: '',
+        loadCities: '',
         invalidCode: '',
         invalidCountry: '',
         invalidCity: '',
-        postFailure: '',
+        submitFailure: '',
       },
       codeInput: '',
       maxLen: 12,
@@ -81,8 +89,10 @@ export default {
   },
 
   created() {
-    this.$store.dispatch('getCountries');
-    console.log('typeof this.data.player_code', typeof this.data.player_code);
+    this.$store.dispatch('getCountries')
+      .catch(() => {
+        this.errors.loadCountries = 'Something went wrong retrieving countries. Please reload the page or try again later.';
+      });
   },
 
   computed: {
@@ -107,10 +117,10 @@ export default {
       
       if (validCode && this.data.country && this.data.city) {
         console.log('data', this.data);
-        const postSuccess = await this.$store.dispatch('addCode', this.data);
+        const submitSuccess = await this.$store.dispatch('addCode', this.data);
 
         // TODO: Currently Zeitverzögerung bei /
-        postSuccess === 201 ? this.$router.push(`/`) : this.errors.postFailure = 'Something went wrong. Please try again later.';
+        submitSuccess === 201 ? this.$router.push(`/`) : this.errors.submitFailure = 'Something went wrong. Please try again later.';
       }
     },
 
@@ -118,7 +128,10 @@ export default {
       console.log('e.target.value', e.target.value);
 
       this.validateCountry(e.target.value);
-      this.$store.dispatch('getCities', e.target.value);
+      this.$store.dispatch('getCities', e.target.value)
+        .catch(() => {
+          this.errors.loadCities = 'Something went wrong retrieving cities. Please reload the page or try again later.';
+        });
     },
 
     cancelForm() {
