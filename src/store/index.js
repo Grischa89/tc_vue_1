@@ -7,6 +7,7 @@ import nav from './modules/nav';
 import copy from './modules/copy';
 import addCodes from './modules/add-codes';
 import auth from './modules/auth';
+import validation from './modules/validation';
 
 export default createStore({
   
@@ -107,7 +108,8 @@ export default createStore({
     nav,
     copy,
     addCodes,
-    auth
+    auth,
+    validation
   },
 
 });

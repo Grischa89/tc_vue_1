@@ -28,8 +28,8 @@
             </div>
 
             <div class="form__group">
-                <label class="form__group__label" :class="{'form__group__label--error': errors.invalidPassword}" for="password">Password</label>
-                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidPassword}" type="password" id="password" name="password" placeholder="" autocomplete="on" v-model="data.password" @input="validateLetter(data.password); validateDigit(data.password); validateLength(data.password);" @blur="validatePW(data.password)">
+                <label class="form__group__label" :class="{'form__group__label--error': invalidPassword}" for="password">Password</label>
+                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': invalidPassword}" type="password" id="password" name="password" placeholder="" autocomplete="on" v-model="data.password" @input="validateOnInput(data.password)" @blur="validatePassword(data.password)">
             
                 <!-- <span v-if="errors.invalidPassword" class="form__group__help" :class="{'form__group__help--error': errors.invalidPassword}">{{ errors.invalidPassword }}</span>      -->
 
@@ -95,26 +95,26 @@ export default {
             errors: {
                 invalidUsername: '',
                 invalidEmail: '',
-                invalidPassword: '',
+                // invalidPassword: '',
                 invalidRePassword: '',
                 badRequest: '',
                 unauthorized: '',
             },
-            passwordRequirements: {
-                validPassword: null,
-                letter: {
-                    message: 'include at least one letter.',
-                    valid: false,
-                },
-                digit: {
-                    message: 'include at least one number.',
-                    valid: false,
-                },
-                length: {
-                    message: 'be at least 8 characters long.',
-                    valid: false,
-                },
-            },
+            // passwordRequirements: {
+            //     validPassword: null,
+            //     letter: {
+            //         message: 'include at least one letter.',
+            //         valid: false,
+            //     },
+            //     digit: {
+            //         message: 'include at least one number.',
+            //         valid: false,
+            //     },
+            //     length: {
+            //         message: 'be at least 8 characters long.',
+            //         valid: false,
+            //     },
+            // },
         }
     },
 
@@ -122,6 +122,8 @@ export default {
         ...mapGetters({
             regexEmail: 'regexEmail',
             regexPassword: 'regexPassword',
+            passwordRequirements: 'passwordRequirements',
+            invalidPassword: 'invalidPassword',
         }),
     },
 
@@ -133,8 +135,14 @@ export default {
 
             const validUsername = this.validateUsername(this.data.username);
             const validEmail = this.validateEmail(this.data.email);
-            const validPassword = this.validatePW(this.data.password);
+            const validPassword = await this.validatePassword(this.data.password);
             const validRePassword = this.validateRePassword(this.data.re_password);
+
+            console.log('validUsername', validUsername);
+            console.log('validEmail', validEmail);
+            console.log('validPassword', validPassword);
+            console.log('validRePassword', validRePassword);
+
             
             if (!validUsername || !validEmail || !validPassword || !validRePassword) return false;
 
@@ -197,60 +205,68 @@ export default {
             }
         },
 
-        validateLetter(password) {
-            if (!this.regexPassword.letter.test(password)) {
-                this.passwordRequirements.validPassword = false;
-                return this.passwordRequirements.letter.valid = false;
-            }
+        // validateLetter(password) {
+        //     if (!this.regexPassword.letter.test(password)) {
+        //         this.passwordRequirements.validPassword = false;
+        //         return this.passwordRequirements.letter.valid = false;
+        //     }
 
-            return this.passwordRequirements.letter.valid = true;
-        },
+        //     return this.passwordRequirements.letter.valid = true;
+        // },
 
-        validateDigit(password) {
-            if (password.length < 8) {
-                this.passwordRequirements.validPassword = false;
-                return this.passwordRequirements.length.valid = false;
-            }
+        // validateDigit(password) {
+        //     if (password.length < 8) {
+        //         this.passwordRequirements.validPassword = false;
+        //         return this.passwordRequirements.length.valid = false;
+        //     }
 
-            return this.passwordRequirements.length.valid = true;
-        },
+        //     return this.passwordRequirements.length.valid = true;
+        // },
 
-        validateLength(password) {
-            if (!this.regexPassword.digit.test(password)) {
-                this.passwordRequirements.validPassword = false;
-                return this.passwordRequirements.digit.valid = false;
-            }
+        // validateLength(password) {
+        //     if (!this.regexPassword.digit.test(password)) {
+        //         this.passwordRequirements.validPassword = false;
+        //         return this.passwordRequirements.digit.valid = false;
+        //     }
 
-            return this.passwordRequirements.digit.valid = true;
-        },
+        //     return this.passwordRequirements.digit.valid = true;
+        // },
 
-        validatePW (password) {
-            if (!password || !this.passwordRequirements.letter.valid || !this.passwordRequirements.digit.valid || !this.passwordRequirements.length.valid) {
-                this.errors.invalidPassword = 'Please enter a valid password.';
-                return false;
-            }
-            this.passwordRequirements.validPassword = true;
-            this.errors.invalidPassword = '';
-            return true;
+        // validatePW (password) {
+        //     if (!password || !this.passwordRequirements.letter.valid || !this.passwordRequirements.digit.valid || !this.passwordRequirements.length.valid) {
+        //         this.errors.invalidPassword = 'Please enter a valid password.';
+        //         return false;
+        //     }
+        //     this.passwordRequirements.validPassword = true;
+        //     this.errors.invalidPassword = '';
+        //     return true;
+        // },
+
+        validateOnInput (password) {
+            this.$store.dispatch('validateOnInput', password);
         },
 
         validatePassword(password) {
-            if (!password) {
-                this.errors.invalidPassword = 'Please enter a password.';
-                return false;
-            } else if (password.length < 8) {
-                this.errors.invalidPassword = 'Your password must contain at least 8 characters.';
-                return false;
-            } else if (!this.regexPassword.test(password)) {
-                this.errors.invalidPassword = 'Your password MUST contain at least one letter and one number!\
-                It CAN contain only these special characters: @$!%*#?&+_-^';
-                return false;
-            } 
-            else {
-                this.errors.invalidPassword = '';
-                return true;
-            }
+            return this.$store.dispatch('validatePassword', password);
         },
+
+        // validatePassword(password) {
+        //     if (!password) {
+        //         this.errors.invalidPassword = 'Please enter a password.';
+        //         return false;
+        //     } else if (password.length < 8) {
+        //         this.errors.invalidPassword = 'Your password must contain at least 8 characters.';
+        //         return false;
+        //     } else if (!this.regexPassword.test(password)) {
+        //         this.errors.invalidPassword = 'Your password MUST contain at least one letter and one number!\
+        //         It CAN contain only these special characters: @$!%*#?&+_-^';
+        //         return false;
+        //     } 
+        //     else {
+        //         this.errors.invalidPassword = '';
+        //         return true;
+        //     }
+        // },
 
         validateRePassword(re_password) {
             if (!re_password) {

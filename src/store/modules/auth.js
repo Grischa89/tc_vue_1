@@ -10,15 +10,6 @@ const state = {
   requestEmail: '',
   prevRouteName: '',
   toRouteName: '',
-  regexUsername: '',
-  regexEmail: /^\S+@\S+\.\S+$/,
-  // /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\$/
-  // regexPassword: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&+_\-\^]{8,}$/, // >= 1 letter, >= digit, else letters / digits / @$!%*#?&+_\-
-  // [A-Za-z0-9]
-  regexPassword: {
-    letter: /[a-zA-Z]/,
-    digit: /\d/,
-  }
 };
 
 const getters = {
@@ -42,14 +33,6 @@ const getters = {
   toRouteName: state => {
     return state.toRouteName;
   },
-
-  regexEmail: state => {
-    return state.regexEmail;
-  },
-
-  regexPassword: state => {
-    return state.regexPassword;
-  }
 
 };
 
@@ -339,10 +322,6 @@ const mutations = {
     state.accessToken = token.access;
   },
 
-  // setBearer(state, bearer) {
-  //   state.token = bearer;
-  // },
-
   setAuthenticated(state, isAuthenticated) {
     state.isAuthenticated = isAuthenticated;
   },
@@ -357,40 +336,6 @@ const mutations = {
     state.isAuthenticated = false;
   },
 
-  // initStore(state, accessToken) {
-    
-  //   state.isAuthenticated = true;
-  //   state.accessToken = accessToken;
-
-    // known user + not closed tab
-    // if (isAuthenticated) {
-      
-    //   console.log("isAuthenticated1", isAuthenticated)
-    //   console.log("accessToken1", accessToken)
-    //   // user with known brower/tab
-      
-     
-    // }  else 
-    
-    // if (accessToken) {
-    //   // known user + closed tab
-    //   console.log("isAuthenticated2", isAuthenticated)
-    //   console.log("accessToken2", accessToken)
-    //   // this case happens when sesesionstore is empty but localstorage is has token (new browser old user)
-    //   state.isAuthenticated = true;
-    //   state.accessToken = accessToken;
-       //  run jwt validate (verify)
-      
-    // } else {
-    //   // not known / not logged in user
-    //   console.log("isAuthenticated3", isAuthenticated)
-    //   console.log("accessToken3", accessToken)
-    //   state.isAuthenticated = false;
-    //   state.token = '';
-      
-    // }
-  // },
-
   setRequestEmail(state, email) {
     state.requestEmail = email;
   },
@@ -402,56 +347,6 @@ const mutations = {
   setToRouteName(state, toRouteName) {
     state.toRouteName = toRouteName;
   },
-
-
-    // initializeStore(state){
-    //     if (localStorage.getItem('cart')){
-    //       state.cart = JSON.parse(localStorage.getItem('cart'))
-    //     } else {
-    //       localStorage.setItem('cart', JSON.stringify(state.cart))
-    //     }
-  
-    //     if (localStorage.getItem('token')) {
-    //       console.log("vuex: ", localStorage.getItem('token'))
-    //       state.token = localStorage.getItem('token')
-    //       state.isAuthenticated = true
-    //     } else {
-    //         state.token = ''
-    //         state.isAuthenticated = false
-    //     } 
-    //   },
-    //   addToCart(state, item){
-    //     console.log("item in index.js", item)
-    //     const exists = state.cart.items.filter(i => i.product.id === item.product.id)
-  
-    //     if (exists.length){
-    //       exists[0].quantity = parseInt(exists[0].quantity) + parseInt(item.quantity)
-    //     } else{
-    //       state.cart.items.push(item)
-    //     }
-    //       localStorage.setItem('cart', JSON.stringify(state.cart))
-    //   },
-      // setIsLoading(state, status){
-      //   state.isLoading = status;
-      // },
-      // setToken(state, username, token) {
-      //   console.log("setToken im state")
-      //   state.username = username
-      //   state.token = token
-      //   state.isAuthenticated = true
-      // },
-      // removeToken(state) {
-      //   state.username = ''
-      //   state.token = ''
-      //   state.isAuthenticated = false
-      //     },
-      // clearCart(state) {
-      //   console.log("we are in clearCart1")
-      //   state.cart = { items: [] }
-  
-      //   localStorage.setItem('cart', JSON.stringify(state.cart))
-      //   console.log("we are in clearCart2")
-      // },
 };
 
 export default {
