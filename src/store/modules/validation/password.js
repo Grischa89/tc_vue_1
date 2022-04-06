@@ -22,6 +22,7 @@ const state = {
   },
   errors: {
     invalidPassword: '',
+    invalidRePassword: '',
   },
 };
 
@@ -30,8 +31,8 @@ const getters = {
     return state.passwordRequirements;
   },
 
-  invalidPassword: state => {
-    return state.errors.invalidPassword;
+  passwordErrors: state => {
+    return state.errors;
   },
 
   regexEmail: state => {
@@ -60,7 +61,22 @@ const actions = {
       commit('setPasswordInvalidMessage', '');
       return true;
     }
-  }
+  },
+
+  validateRePassword({ state, commit }, data) {
+    console.log('data', data);
+    if (!data.re_password) {
+      commit('setRePasswordInvalidMessage', 'Please repeat the password.');
+      return false;
+    } else if (data.re_password !== data.password) {
+      commit('setRePasswordInvalidMessage', 'The passwords do not match.');
+      return false;
+    } else {
+      commit('setRePasswordInvalidMessage', '');
+      return true;
+    }
+  },
+
 };
 
 const mutations = {
@@ -97,7 +113,12 @@ const mutations = {
 
   setPasswordValidity(state, boolean) {
     state.passwordRequirements.validPassword = boolean;
+  },
+
+  setRePasswordInvalidMessage(state, message) {
+    state.errors.invalidRePassword = message;
   }
+  
 };
 
 export default {
