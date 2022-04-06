@@ -111,19 +111,12 @@ export default {
         async submitForm() {
             this.errors.badRequest = '';
             this.errors.unauthorized = '';
-            console.log('this.data', this.data);
 
             const validUsername = this.validateUsername(this.data.username);
             const validEmail = this.validateEmail(this.data.email);
             const validPassword = await this.$store.dispatch('validatePassword', this.data.password);
             const validRePassword = await this.$store.dispatch('validateRePassword', { re_password: this.data.re_password, password: this.data.password });
 
-            console.log('validUsername', validUsername);
-            console.log('validEmail', validEmail);
-            console.log('validPassword', validPassword);
-            console.log('validRePassword', validRePassword);
-
-            
             if (!validUsername || !validEmail || !validPassword || !validRePassword) return false;
 
             // TODO: Richtige Validierung wie bei AddCode.vue machen
