@@ -9,24 +9,36 @@
             </div>
 
             <div class="form__group">
-                <label class="form__group__label" :class="{'form__group__label--error': errors.invalidPassword}" for="password">New Password</label>
-                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidPassword}" type="password" id="password" name="password" placeholder="" autocomplete="on" v-model="password">
+                <label class="form__group__label" :class="{'form__group__label--error': passwordErrors.invalidPassword}" for="password">New Password</label>
+                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': passwordErrors.invalidPassword}" type="password" id="password" name="password" placeholder="" autocomplete="on" v-model="data.password" @input="$store.dispatch('validateOnInput', data.password)" @blur="$store.dispatch('validatePassword', data.password)">
             
-                <span v-if="errors.invalidPassword" class="form__group__help" :class="{'form__group__help--error': errors.invalidPassword}">{{ errors.invalidPassword }}</span>     
+                <div v-if="passwordRequirements.validPassword === false"
+                    class="form__group__req">
+                        <span  class="form__group__rdata.eq--info">
+                            Your password needs to:
+                        </span>
+                        <span :class="{'form__group__req--error': !passwordRequirements.letter.valid, 'form__group__req--success': passwordRequirements.letter.valid }">
+                            {{ passwordRequirements.letter.message }}
+                        </span>
+                        <span :class="{'form__group__req--error': !passwordRequirements.digit.valid, 'form__group__req--success': passwordRequirements.digit.valid }">
+                            {{ passwordRequirements.digit.message }}
+                        </span>
+                        <span :class="{'form__group__req--error': !passwordRequirements.length.valid, 'form__group__req--success': passwordRequirements.length.valid }">
+                            {{ passwordRequirements.length.message }}
+                        </span>
+                    </div>  
             </div>
 
             <div class="form__group">
-                <label class="form__group__label" :class="{'form__group__label--error': errors.invalidRePassword}" for="re_password">Repeat New Password</label>
-                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidRePassword}" type="password" id="re_password" name="re_password" placeholder="" autocomplete="on" v-model="re_password">
+                <label class="form__group__label" :class="{'form__group__label--error': passwordErrors.invalidRePassword}" for="re_password">Repeat New Password</label>
+                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': passwordErrors.invalidRePassword}" type="password" id="re_password" name="re_password" placeholder="" autocomplete="on" v-model="data.re_password" @blur="$store.dispatch('validateRePassword', { re_password: data.re_password, password: data.password})">
             
-                <span v-if="errors.invalidRePassword" class="form__group__help" :class="{'form__group__help--error': errors.invalidRePassword}">{{ errors.invalidRePassword }}</span>     
+                <span v-if="passwordErrors.invalidRePassword" class="form__group__help" :class="{'form__group__help--error': passwordErrors.invalidRePassword}">{{ passwordErrors.invalidRePassword }}</span>     
             </div>
 
             <div class="form__btn__container">
                 <button class="form__btn form__btn--submit">Reset</button>
             </div>
-
-        <!-- <a href="{% url 'person_changelist' %}">Nevermind</a> -->
         </form>
 
     
@@ -34,45 +46,55 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 
     name: 'ResetPassword',
 
     data() {
         return {
-            password: '',
-            re_password: '',
+            data: {
+                password: '',
+                re_password: '',
+            },
             errors: {
-                invalidPassword: '',
-                invalidRePassword: '',
                 badRequest: '',
             },
         }
     },
 
+    computed: {
+        ...mapGetters({
+            regexPassword: 'regexPassword',
+            passwordRequirements: 'passwordRequirements',
+            passwordErrors: 'passwordErrors',
+        }),
+    },
+
     methods: {
 
         async submitForm() {
+            this.errors.badRequest = '';
 
-            if (this.password === '') {
-                // TODO: Min amount of chars password has to have
-                this.errors.invalidPassword = 'The password is too short.';
-            }
+            console.log('this.data', this.data);
 
-            if (this.password !== this.re_password) {
-                this.errors.invalidRePassword = 'The passwords do not match.';
-            }
+            const validPassword = await this.$store.dispatch('validatePassword', this.data.password);
+            const validRePassword = await this.$store.dispatch('validateRePassword', { re_password: this.data.re_password, password: this.data.password });
 
-            if (!this.errors.invalidPassword && !this.errors.invalidRePassword) {
+            console.log('validPassword || !validRePassword', validPassword, validRePassword);
 
-                const formData = {
+            if (!validPassword || !validRePassword) return false;
+
+            if (validPassword && validRePassword) {
+                const data = {
                     'uid': this.$route.params.uid,
                     'token': this.$route.params.token,
-                    'new_password': this.password,
-                    're_new_password': this.re_password
+                    'new_password': this.data.password,
+                    're_new_password': this.data.re_password
                 }
 
-                const resetPasswordSuccess = await this.$store.dispatch('resetPasswordConfirm', formData);
+                const resetPasswordSuccess = await this.$store.dispatch('resetPasswordConfirm', data);
 
                 if (resetPasswordSuccess === 204) {
                     this.$router.push({ name: 'LogIn'});
@@ -88,7 +110,7 @@ export default {
                     this.$router.push({ name: 'RequestPasswordReset' });
                 }
             }
-        }
+        },
     }
 
 }
