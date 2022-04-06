@@ -10,6 +10,15 @@ const state = {
   requestEmail: '',
   prevRouteName: '',
   toRouteName: '',
+  regexUsername: '',
+  regexEmail: /^\S+@\S+\.\S+$/,
+  // /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\$/
+  // regexPassword: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&+_\-\^]{8,}$/, // >= 1 letter, >= digit, else letters / digits / @$!%*#?&+_\-
+  // [A-Za-z0-9]
+  regexPassword: {
+    letter: /[a-zA-Z]/,
+    digit: /\d/,
+  }
 };
 
 const getters = {
@@ -33,6 +42,14 @@ const getters = {
   toRouteName: state => {
     return state.toRouteName;
   },
+
+  regexEmail: state => {
+    return state.regexEmail;
+  },
+
+  regexPassword: state => {
+    return state.regexPassword;
+  }
 
 };
 
