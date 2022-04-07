@@ -13,10 +13,10 @@
             </div>
 
             <div class="form__group">
-                <label class="form__group__label" :class="{'form__group__label--error': errors.invalidEmail}" for="email">Email</label>
-                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidEmail}" type="email" id="email" name="email" placeholder="" autocomplete="on" v-model="email" required>
+                <label class="form__group__label" :class="{'form__group__label--error': emailErrors.invalidEmail}" for="email">Email</label>
+                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': emailErrors.invalidEmail}" type="email" id="email" name="email" placeholder="" autocomplete="on" v-model="data.email" @blur="$store.dispatch('validateEmail', data.email)">
             
-                <!-- <span v-if="errors.invalidEmail" class="form__group__help" :class="{'form__group__help--error': errors.invalidEmail}">{{ errors.invalidEmail }}</span> -->
+                <span v-if="emailErrors.invalidEmail" class="form__group__help" :class="{'form__group__help--error': emailErrors.invalidEmail}">{{ emailErrors.invalidEmail }}</span>
             </div>
 
             <div class="form__btn__container">
@@ -33,12 +33,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'ResendActivationEmail',
 
     data() {
         return {
-            email: '',
+            data: {
+                email: '',
+            },
             errors: {
                 invalidEmail: '',
                 badRequest: '',
@@ -46,32 +50,27 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters({
+            emailErrors: 'emailErrors',
+        })
+    },
+
     methods: {
         async submitForm() {
-            this.errors.invalidEmail = '';
             this.errors.badRequest = '';
 
-            // TODO: Better email validation not only check for set but also for @ etc
-            if (this.email === '') {
-                this.errors.invalidEmail = 'Please enter an email address.';
-            }
+            const validEmail = await this.$store.dispatch('validateEmail', this.data.email);
 
-            if (!this.errors.invalidEmail) {
+            if (!validEmail) return false;
 
-                const formData = {
-                    email: this.email,
-                }
+            if (validEmail) {
 
-                const resendSuccess = await this.$store.dispatch('resendActivationEmail', formData);
-
-                console.log('resendSuccess', resendSuccess);
-                console.log('resendSuccess typeof', typeof resendSuccess);
+                const resendSuccess = await this.$store.dispatch('resendActivationEmail', this.data);
 
                 if (resendSuccess === 204) {
                     this.$router.push({ name: 'RequestSuccess' });
                 } else {
-                    // TODO: Wohin weiterleiten wenn 400?
-                    // Für user ausgeben: Diese email schon aktiviert errors.resendActivation
                     this.errors.badRequest = 'This account has already been activated.';
                 }
             }

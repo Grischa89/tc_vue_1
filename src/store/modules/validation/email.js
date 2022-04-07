@@ -21,7 +21,7 @@ const actions = {
 
   validateEmail({ state, commit }, email) {
     if (!email) {
-      commit('setEmailInvalidMessage', 'Please enter an email address.');
+      commit('setEmailInvalidMessage', 'Please enter your email address.');
       return false;
     } else if (!state.regexEmail.test(email)) {
       commit('setEmailInvalidMessage', 'Please enter a valid email address.');
