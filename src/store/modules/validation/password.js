@@ -1,6 +1,5 @@
 const state = {
   regexUsername: '',
-  regexEmail: /^\S+@\S+\.\S+$/,
   regexPassword: {
     letter: /[a-zA-Z]/,
     digit: /\d/,
@@ -33,10 +32,6 @@ const getters = {
 
   passwordErrors: state => {
     return state.errors;
-  },
-
-  regexEmail: state => {
-    return state.regexEmail;
   },
 
   regexPassword: state => {

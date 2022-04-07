@@ -21,10 +21,10 @@
             </div>
 
             <div class="form__group">
-                <label class="form__group__label" :class="{'form__group__label--error': errors.invalidEmail}" for="email">Email</label>
-                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidEmail}" type="email" id="email" name="email" placeholder="" autocomplete="on" v-model="data.email" @blur="validateEmail(data.email)">
+                <label class="form__group__label" :class="{'form__group__label--error': emailErrors.invalidEmail}" for="email">Email</label>
+                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': emailErrors.invalidEmail}" type="email" id="email" name="email" placeholder="" autocomplete="on" v-model="data.email" @blur="$store.dispatch('validateEmail', data.email)">
             
-                <span v-if="errors.invalidEmail" class="form__group__help" :class="{'form__group__help--error': errors.invalidEmail}">{{ errors.invalidEmail }}</span>
+                <span v-if="emailErrors.invalidEmail" class="form__group__help" :class="{'form__group__help--error': emailErrors.invalidEmail}">{{ emailErrors.invalidEmail }}</span>
             </div>
 
             <div class="form__group">
@@ -90,7 +90,6 @@ export default {
             re_password: '',
             errors: {
                 invalidUsername: '',
-                invalidEmail: '',
                 badRequest: '',
                 unauthorized: '',
             },
@@ -103,6 +102,7 @@ export default {
             regexPassword: 'regexPassword',
             passwordRequirements: 'passwordRequirements',
             passwordErrors: 'passwordErrors',
+            emailErrors: 'emailErrors',
         }),
     },
 
@@ -113,7 +113,7 @@ export default {
             this.errors.unauthorized = '';
 
             const validUsername = this.validateUsername(this.data.username);
-            const validEmail = this.validateEmail(this.data.email);
+            const validEmail = await this.$store.dispatch('validateEmail', this.data.email);
             const validPassword = await this.$store.dispatch('validatePassword', this.data.password);
             const validRePassword = await this.$store.dispatch('validateRePassword', { re_password: this.data.re_password, password: this.data.password });
 
@@ -163,20 +163,20 @@ export default {
             }
         },
 
-        validateEmail(email) {
-            if (!email) {
-                this.errors.invalidEmail = 'Please enter an email address.';
-                console.log('Missing email!');
-                return false;
-            } else if (!this.regexEmail.test(email)) {
-                this.errors.invalidEmail = 'Please enter a valid email address.';
-                console.log('Invalid email!');
-                return false;
-            } else {
-                this.errors.invalidEmail = '';
-                return true;
-            }
-        },
+        // validateEmail(email) {
+        //     if (!email) {
+        //         this.errors.invalidEmail = 'Please enter an email address.';
+        //         console.log('Missing email!');
+        //         return false;
+        //     } else if (!this.regexEmail.test(email)) {
+        //         this.errors.invalidEmail = 'Please enter a valid email address.';
+        //         console.log('Invalid email!');
+        //         return false;
+        //     } else {
+        //         this.errors.invalidEmail = '';
+        //         return true;
+        //     }
+        // },
     }
 }
 </script>

@@ -8,6 +8,7 @@ import copy from './modules/copy';
 import addCodes from './modules/add-codes';
 import auth from './modules/auth';
 import password from './modules/validation/password';
+import email from './modules/validation/email';
 
 export default createStore({
   
@@ -110,6 +111,7 @@ export default createStore({
     addCodes,
     auth,
     password,
+    email,
   },
 
 });
