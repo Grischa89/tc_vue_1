@@ -41,7 +41,7 @@ const getters = {
 };
 
 const actions = {
-  validateOnInput({ state, commit }, password) {
+  validateOnInput({ commit }, password) {
     commit('validateLetter', password);
     commit('validateDigit', password);
     commit('validateLength', password);
@@ -58,7 +58,7 @@ const actions = {
     }
   },
 
-  validateRePassword({ state, commit }, data) {
+  validateRePassword({ commit }, data) {
     console.log('data', data);
     if (!data.re_password) {
       commit('setRePasswordInvalidMessage', 'Please repeat the password.');
@@ -68,6 +68,17 @@ const actions = {
       return false;
     } else {
       commit('setRePasswordInvalidMessage', '');
+      return true;
+    }
+  },
+
+  validateLoginPassword({ commit }, password) {
+    if (!password) {
+      commit('setPasswordInvalidMessage', 'Please enter your password.');
+      return false;
+    } else {
+      commit('setPasswordValidity', true);
+      commit('setPasswordInvalidMessage', '');
       return true;
     }
   },

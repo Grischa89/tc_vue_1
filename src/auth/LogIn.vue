@@ -16,17 +16,17 @@
             </div>
 
             <div class="form__group">
-                <label class="form__group__label" :class="{'form__group__label--error': errors.invalidEmail}" for="email">Email</label>
-                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidEmail}" type="email" id="email" name="email" placeholder="" autocomplete="on" v-model="email">
+                <label class="form__group__label" :class="{'form__group__label--error': emailErrors.invalidEmail}" for="email">Email</label>
+                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': emailErrors.invalidEmail}" type="email" id="email" name="email" placeholder="" autocomplete="on" v-model="data.email" @blur="$store.dispatch('validateEmail', data.email)">
             
-                <span v-if="errors.invalidEmail" class="form__group__help" :class="{'form__group__help--error': errors.invalidEmail}">{{ errors.invalidEmail }}</span>
+                <span v-if="emailErrors.invalidEmail" class="form__group__help" :class="{'form__group__help--error': emailErrors.invalidEmail}">{{ emailErrors.invalidEmail }}</span>
             </div>
 
             <div class="form__group">
-                <label class="form__group__label" :class="{'form__group__label--error': errors.invalidPassword}" for="password">Password</label>
-                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidPassword}" type="password" id="password" name="password" placeholder="" autocomplete="on" v-model="password">
+                <label class="form__group__label" :class="{'form__group__label--error': passwordErrors.invalidPassword}" for="password">Password</label>
+                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': passwordErrors.invalidPassword}" type="password" id="password" name="password" placeholder="" autocomplete="on" v-model="data.password" @blur="$store.dispatch('validateLoginPassword', data.password)">
             
-                <span v-if="errors.invalidPassword" class="form__group__help" :class="{'form__group__help--error': errors.invalidPassword}">{{ errors.invalidPassword }}</span>     
+                <span v-if="passwordErrors.invalidPassword" class="form__group__help" :class="{'form__group__help--error': passwordErrors.invalidPassword}">{{ passwordErrors.invalidPassword }}</span>     
             </div>
 
             <div class="form__link">
@@ -63,11 +63,11 @@ export default {
 
     data() {
         return {
-            email: '',
-            password: '',
+            data: {
+                email: '',
+                password: '',
+            },
             errors: {
-                invalidEmail: '',
-                invalidPassword: '',
                 unauthorized: '',
             },
         }
@@ -77,53 +77,33 @@ export default {
         ...mapGetters({
             user: 'user',
             toRouteName: 'toRouteName',
+            emailErrors: 'emailErrors',
+            passwordErrors: 'passwordErrors',
         }),
     },
 
-    mounted() {
-        // document.title = 'Log In | Djackets'
-    },
     methods: {
         async submitForm() {
-
-            this.errors.invalidEmail = '';
-            this.errors.invalidPassword = '';
             this.errors.unauthorized = '';
 
-            // TODO: Richtige Validierung wie bei AddCode.vue machen
-            // TODO: W
+            const validEmail = await this.$store.dispatch('validateEmail', this.data.email);
+            const validPassword = await this.$store.dispatch('validateLoginPassword', this.data.password);
 
-            if (this.email === '') {
-                this.errors.invalidEmail = 'Please enter an email address.';
-            }
+            if (!validEmail || !validPassword) return false;
 
-            if (this.password === '') {
-                // TODO: Min amount of chars password has to have
-                this.errors.invalidPassword = 'The password is too short.';
-            }
+            if (validEmail && validPassword) {
 
-            if (!this.errors.invalidEmail && !this.errors.invalidPassword) {
-
-                // axios.defaults.headers.common["Authorization"] = ""
                 localStorage.removeItem('tcAccess');
                 localStorage.removeItem('tcRefresh');
 
                 sessionStorage.removeItem('isAuthenticated');
-                
-                const formData = {
-                    email: this.email,
-                    password: this.password
-                };
 
-                const loginSuccess = await this.$store.dispatch('login', formData);
+                const loginSuccess = await this.$store.dispatch('login', this.data);
 
                 if (loginSuccess === 200) {
-                    // this.$store.dispatch('getAuthUser');
-                    // TODO: Dispatch some action tr retrieve user data
                     // TODO: Hier wie cose with stein zu ehemaligem to.patch weiterleiten??
-                    console.log('loginSuccess', loginSuccess);
-                    // sessionStorage.setItem('isAuthenticated', JSON.stringify('true'));
-                    this.$store.dispatch('getUserProfile', formData.email);
+                    // TODO: Error handling when user object was not retrieved
+                    this.$store.dispatch('getUserProfile', this.data.email);
 
                     this.toRouteName === 'AddCode' ? this.$router.push({ name: 'AddCode' }) : this.$router.push(`/my-account`);
                     
