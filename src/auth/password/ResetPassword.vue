@@ -5,7 +5,8 @@
         :view="view"
         :title="title"
         :actionBtn="actionBtn"
-        :errors="errors" />
+        :errors="errors"
+        :forwardSuggestion="forwardSuggestion" />
 
 </template>
 
@@ -27,6 +28,10 @@ export default {
             actionBtn: 'Reset',
             errors: {
                 badRequestResetPassword: '',
+            },
+            forwardSuggestion: {
+                routeName: '',
+                textContent: '',
             },
         }
     },
@@ -56,13 +61,16 @@ export default {
                 } else if (resetPasswordSuccess === 400) {
                     console.log('Need to request reset link again. 400', resetPasswordSuccess);
 
-                    this.errors.badRequestResetPassword = 'Something went wrong. Please request a new reset link.'; // TODO: Wenn PW mit token schon resetted, kommt 400 "token":["Invalid token for given user."], msg an user mit Weiterleitung an RequestFailure (ähnlich wie bei RequestSuccess)
+                    this.errors.badRequestResetPassword = 'Invalid token for password reset.'; // TODO: Wenn PW mit token schon resetted, kommt 400 "token":["Invalid token for given user."], msg an user mit Weiterleitung an RequestFailure (ähnlich wie bei RequestSuccess)
                     // this.$router.push({ name: 'RequestPasswordReset' });
+                    this.forwardSuggestion.routeName = 'RequestPasswordReset';
+                    this.forwardSuggestion.textContent = 'Request New Reset Email?';
                 } else {
                     console.log('Need to request reset link again. other than 400', resetPasswordSuccess);
 
-                    this.errors.badRequestResetPassword = 'Something went wrong. Please request a new reset link.';
-                    // this.$router.push({ name: 'RequestPasswordReset' });
+                    this.errors.badRequestResetPassword = 'Something went wrong.';
+                    this.forwardSuggestion.routeName = 'RequestPasswordReset';
+                    this.forwardSuggestion.textContent = 'Request New Reset Email?';
                 }
             }
         },

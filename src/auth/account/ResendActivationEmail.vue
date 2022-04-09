@@ -5,7 +5,8 @@
         :view="view"
         :title="title"
         :actionBtn="actionBtn"
-        :errors="errors" />
+        :errors="errors"
+        :forwardSuggestion="forwardSuggestion" />
 
 </template>
 
@@ -26,6 +27,10 @@ export default {
             actionBtn: 'Send',
             errors: {
                 badRequest: '',
+            },
+            forwardSuggestion: {
+                routeName: '',
+                textContent: '',
             },
         };
     },
@@ -49,6 +54,8 @@ export default {
                     this.$router.push({ name: 'RequestSuccess' });
                 } else {
                     this.errors.badRequest = `This account has already been activated.`;
+                    this.forwardSuggestion.routeName = 'LogIn';
+                    this.forwardSuggestion.textContent = 'Log in, please!';
                 }
             }
         },

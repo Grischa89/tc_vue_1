@@ -60,7 +60,7 @@ export default {
                     // Catch api/v1/accounts/auth/users
                     // Handle 400 Bad Request TODO: Oder err.response.data.detail anzeigen?
                     // TODO: Sollen auch alle input felder geleert werden?
-                    this.errors.badRequest = 'Something went wrong. Please try again.111';
+                    this.errors.badRequest = 'Something went wrong. Please try again.';
                 }
 
                 if (loginSuccess === 200) {
@@ -72,7 +72,7 @@ export default {
                     // catch /api/v1/accounts/auth/jwt/create/
                     // Hier wird direkt error message ausgegeben
                     if (!this.errors.badRequest) {
-                        this.errors.unauthorized = 'Something went wrong. Please try again.222';
+                        this.errors.unauthorized = 'Something went wrong. Please try again.';
                     }
                 }
             }

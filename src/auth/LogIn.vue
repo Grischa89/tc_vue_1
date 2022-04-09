@@ -5,7 +5,8 @@
         :view="view"
         :title="title"
         :actionBtn="actionBtn"
-        :errors="errors" />
+        :errors="errors"
+        :redirectProposal="redirectProposal" />
 
 </template>
 
@@ -36,6 +37,10 @@ export default {
             actionBtn: 'Login',
             errors: {
                 unauthorized: '',
+            },
+            redirectProposal: {
+                routeName: '',
+                textContent: '',
             },
         }
     },
@@ -78,6 +83,8 @@ export default {
                     
                 } else {
                     this.errors.unauthorized = 'No active account found with the given credentials. Please try again.';
+                    this.redirectProposal.routeName = 'ResendActivationEmail';
+                    this.redirectProposal.textContent = 'Resend Activation Email?';
                 }
 
             }  
