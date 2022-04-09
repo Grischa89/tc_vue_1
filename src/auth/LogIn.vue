@@ -6,7 +6,7 @@
         :title="title"
         :actionBtn="actionBtn"
         :errors="errors"
-        :redirectProposal="redirectProposal" />
+        :forwardSuggestion="forwardSuggestion" />
 
 </template>
 
@@ -38,7 +38,7 @@ export default {
             errors: {
                 unauthorized: '',
             },
-            redirectProposal: {
+            forwardSuggestion: {
                 routeName: '',
                 textContent: '',
             },
@@ -83,8 +83,8 @@ export default {
                     
                 } else {
                     this.errors.unauthorized = 'No active account found with the given credentials. Please try again.';
-                    this.redirectProposal.routeName = 'ResendActivationEmail';
-                    this.redirectProposal.textContent = 'Resend Activation Email?';
+                    this.forwardSuggestion.routeName = 'ResendActivationEmail';
+                    this.forwardSuggestion.textContent = 'Resend Activation Email?';
                 }
 
             }  
