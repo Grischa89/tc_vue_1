@@ -35,7 +35,7 @@ export default {
             view: 'LogIn',
             actionBtn: 'Login',
             errors: {
-                unauthorizedLogin: '',
+                unauthorized: '',
             },
         }
     },
@@ -49,7 +49,7 @@ export default {
 
     methods: {
         async submitForm(data) {
-            this.errors.unauthorizedLogin = '';
+            this.errors.unauthorized = '';
 
             const loginData = {
                 email: data.email,
@@ -77,8 +77,7 @@ export default {
                     this.toRouteName === 'AddCode' ? this.$router.push({ name: 'AddCode' }) : this.$router.push(`/my-account`);
                     
                 } else {
-                    // Hier wird direkt error message ausgegeben
-                    this.errors.unauthorizedLogin = loginSuccess;
+                    this.errors.unauthorized = 'No active account found with the given credentials. Please try again.';
                 }
 
             }  

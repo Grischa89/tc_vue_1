@@ -26,8 +26,8 @@ export default {
             view: 'SignUp',
             actionBtn: 'Sign up',
             errors: {
-                badRequestSignup: '',
-                unauthorizedSignup: '',
+                badRequest: '',
+                unauthorized: '',
             },
         }
     },
@@ -35,8 +35,8 @@ export default {
     methods: {
         
         async submitForm(data) {
-            this.errors.badRequestSignup = '';
-            this.errors.unauthorizedSignup = '';
+            this.errors.badRequest = '';
+            this.errors.unauthorized = '';
 
             const validUsername = await this.$store.dispatch('validateUsername', data.username);
             const validEmail = await this.$store.dispatch('validateEmail', data.email);
@@ -44,8 +44,6 @@ export default {
             const validRePassword = await this.$store.dispatch('validateRePassword', { re_password: data.re_password, password: data.password });
 
             if (!validUsername || !validEmail || !validPassword || !validRePassword) return false;
-
-            // TODO: Richtige Validierung wie bei AddCode.vue machen
 
             if (validUsername && validEmail && validPassword && validRePassword) {
                 const createSuccess = await this.$store.dispatch('createUser', data);
@@ -62,16 +60,20 @@ export default {
                     // Catch api/v1/accounts/auth/users
                     // Handle 400 Bad Request TODO: Oder err.response.data.detail anzeigen?
                     // TODO: Sollen auch alle input felder geleert werden?
-                    this.errors.badRequestSignup = createSuccess;
+                    this.errors.badRequest = 'Something went wrong. Please try again.111';
                 }
 
                 if (loginSuccess === 200) {
                     this.$store.dispatch('getUserProfile', data.email);
+
+                    // TODO: Weiterleiten zu /my-account wie bei LogIn?
                     this.$router.push(`/`);
                 } else {
                     // catch /api/v1/accounts/auth/jwt/create/
                     // Hier wird direkt error message ausgegeben
-                    this.errors.unauthorizedSignup = loginSuccess;
+                    if (!this.errors.badRequest) {
+                        this.errors.unauthorized = 'Something went wrong. Please try again.222';
+                    }
                 }
             }
         },

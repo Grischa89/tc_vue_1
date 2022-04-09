@@ -57,12 +57,12 @@ export default {
                     console.log('Need to request reset link again. 400', resetPasswordSuccess);
 
                     this.errors.badRequestResetPassword = 'Something went wrong. Please request a new reset link.'; // TODO: Wenn PW mit token schon resetted, kommt 400 "token":["Invalid token for given user."], msg an user mit Weiterleitung an RequestFailure (ähnlich wie bei RequestSuccess)
-                    this.$router.push({ name: 'RequestPasswordReset' });
+                    // this.$router.push({ name: 'RequestPasswordReset' });
                 } else {
                     console.log('Need to request reset link again. other than 400', resetPasswordSuccess);
 
                     this.errors.badRequestResetPassword = 'Something went wrong. Please request a new reset link.';
-                    this.$router.push({ name: 'RequestPasswordReset' });
+                    // this.$router.push({ name: 'RequestPasswordReset' });
                 }
             }
         },

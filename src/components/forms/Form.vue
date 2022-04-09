@@ -7,35 +7,40 @@
             <h2 v-else class="form__title">Welcome Back!</h2> -->
 
             <FormTitle
-              :title="title" />
+                :title="title" />
 
-            <div v-if="errors.unauthorizedSignup" class="form__info">
+            <FormSubmitErrorMessage
+                v-for="(error, i) in errors" :key="i"
+                :error="error" />
+
+            <!-- <div v-if="errors.unauthorizedSignup" class="form__info form__info--error">
                 {{ errors.unauthorizedSignup }}. Please try again.
-            </div>
+            </div> -->
 
-            <div v-if="errors.badRequestSignup" class="form__info">
+            <!-- <div v-if="errors.badRequestSignup" class="form__info form__info--error">
                 {{ errors.badRequestSignup }}
-            </div>
+            </div> -->
 
-            <div v-if="errors.unauthorizedLogin" class="form__info form__info--error">
+            <!-- <div v-if="errors.unauthorizedLogin" class="form__info form__info--error">
                 {{ errors.unauthorizedLogin }}. Please try again.
-            </div>
+            </div> -->
 
-            <div v-if="errors.unauthorizedLogin" class="form__link form__link--error">
-                <router-link :to="{ name: 'ResendActivationEmail' }">Resend Activation Email?</router-link>
-            </div>
-
-            <div v-if="errors.badRequestResendActivaion" class="form__info form__info--error">
+            <!-- <div v-if="errors.badRequestResendActivaion" class="form__info form__info--error">
                 {{ errors.badRequestResendActivaion }} Please <router-link :to="{ name: 'LogIn' }" class="form__info__link">log in</router-link>.
-            </div>
+            </div> -->
 
-            <div v-if="errors.badRequestPasswordReset" class="form__info">
+            <!-- <div v-if="errors.badRequestPasswordReset" class="form__info form__info--error">
                 {{ errors.badRequestPasswordReset }}
-            </div>
+            </div> -->
 
-            <div v-if="errors.badRequestResetPassword" class="form__info">
+            <!-- <div v-if="errors.badRequestResetPassword" class="form__info form__info--error">
                 {{ errors.badRequestResetPassword }}
-            </div>
+            </div> -->
+            
+            <!-- check route LogIn (this) + ResendActivationEmail: `Please <router-link :to="{ name: 'LogIn' }" class="form__info__link">log in</router-link>.` + password/ bla request-password-reset link-->
+            <!-- <div v-if="errors.unauthorizedLogin" class="form__link form__link--error">
+                <router-link :to="{ name: 'ResendActivationEmail' }">Resend Activation Email?</router-link> 
+            </div> -->
 
             <div v-if="view === 'SignUp'" class="form__group">
                 <label class="form__group__label" :class="{'form__group__label--error': usernameErrors.invalidUsername}" for="username">Username</label>
@@ -111,6 +116,7 @@
 
 <script>
 import FormTitle from './FormTitle.vue';
+import FormSubmitErrorMessage from './FormSubmitErrorMessage.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -119,6 +125,7 @@ export default {
 
   components: {
     FormTitle,
+    FormSubmitErrorMessage,
   },
 
   emits: ['onSubmit'],
@@ -128,6 +135,11 @@ export default {
     title: String,
     actionBtn: String,
     errors: Object,
+  },
+
+  created() {
+    // props are exposed on `this`
+    console.log(this.errors)
   },
 
   data() {

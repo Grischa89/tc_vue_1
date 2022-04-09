@@ -25,14 +25,14 @@ export default {
             title: 'Resend Activation Email',
             actionBtn: 'Send',
             errors: {
-                badRequestResendActivaion: '',
+                badRequest: '',
             },
         };
     },
     
     methods: {
         async submitForm(data) {
-            this.errors.badRequestResendActivaion = '';
+            this.errors.badRequest = '';
 
             const resendActivationData = {
                 email: data.email,
@@ -48,7 +48,7 @@ export default {
                 if (resendSuccess === 204) {
                     this.$router.push({ name: 'RequestSuccess' });
                 } else {
-                    this.errors.badRequestResendActivaion = 'This account has already been activated.';
+                    this.errors.badRequest = `This account has already been activated.`;
                 }
             }
         },

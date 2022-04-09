@@ -51,7 +51,7 @@ const actions = {
         // TODO: Oder err.response.status ausgeben?
         console.log('err', err);
         console.log('err.response', err.response);
-        return 'Something went wrong. Please enter your information again.';
+        return err.response.status;
     });
   },
 
@@ -108,7 +108,7 @@ const actions = {
         // Für user ausgeben: Diese email schon aktiviert errors.resendActivation
         console.log('err in auth.js reset_password', err.response);
 
-        return 'Something went wrong. Please enter your email address again.';
+        return err.response.status;
       });
   },
 
@@ -161,7 +161,6 @@ const actions = {
          // 'Something went wrong. Please enter your email address again.';
       });
   },
-
 
   refreshJWT({ commit }) {
     const refreshToken = JSON.parse(localStorage.getItem('tcRefresh'));
@@ -216,7 +215,7 @@ const actions = {
       .catch(err => {
         console.log('err in auth.js login()', err.data, err.response);
         // TODO: Alternativ ganzes err.response mitgeben und status code überprüfen? 401
-        return err.response.data.detail;
+        return err.response.status;
       });
   },
 
@@ -250,6 +249,7 @@ const actions = {
         console.log('err in auth.js /api/v1/accounts/profile', err.data, err.response);
         // TODO: Alternativ ganzes err.response mitgeben und status code überprüfen? 401
         // return err.response.data.detail;
+        return err.response.status;
       });
   },
 
@@ -260,50 +260,6 @@ const actions = {
 
     commit('removeToken');
   },
-
-  getAuthUser({ commit }) {
-    console.log("getAuthUser")
-
-    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
-    console.log("accessToken", accessToken)
-
-    const yourConfig = {
-      headers: {
-         'Authorization': "JWT " + accessToken,
-         'Content-Type': 'application/json',
-      }
-    };
-
-    // const yourConfig1 = {
-    //   headers: {
-    //      Authorization: accessToken
-    //   }
-    // };
-
-    console.log("yourConfig", yourConfig)
-
-   axios.put('/api/v1/accounts/auth/users/me/', {"username": 'gregorij.abramov@gmail.com'},  yourConfig)
-    .then(res => {
-      console.log("getAuthUser res: ", res)
-    })
-    .then(res => {
-      console.log("111")
-      axios.get('/api/v1/accounts/auth/users/me/', yourConfig)
-      .then(res =>{
-        console.log("getAuthUser with GET res: ", res)
-      })
-      console.log("222")
-    })
-    // .then(res => {
-    //   console.log("333")
-    //   axios.get('/api/v1/accounts/auth/users/me/',  yourConfig)
-    //   console.log("444")
-    // })
-    .catch(err => {
-      console.log('err in auth.js getAuthUser()', err);
-    });
-  },
-
 
 };
 

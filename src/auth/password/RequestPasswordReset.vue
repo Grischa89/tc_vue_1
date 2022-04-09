@@ -25,14 +25,14 @@ export default {
             title: 'Request Passwort Reset',
             actionBtn: 'Send',
             errors: {
-                badRequestPasswordReset: '',
+                badRequest: '',
             },
         }
     },
 
     methods: {
         async submitForm(data) {
-            this.errors.badRequestPasswordReset = '';
+            this.errors.badRequest = '';
 
             const resendActivationData = {
                 email: data.email,
@@ -50,7 +50,7 @@ export default {
                     console.log('resetSuccess', resetSuccess);
                     this.$router.push({ name: 'RequestSuccess' });
                 } else {
-                    console.log('no success', resetSuccess);
+                    this.errors.badRequest = 'Something went wrong. Please try again.';
                 }
             }
         },
