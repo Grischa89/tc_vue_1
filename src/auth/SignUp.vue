@@ -5,7 +5,8 @@
         :view="view"
         :title="title"
         :actionBtn="actionBtn"
-        :errors="errors" />
+        :errors="errors"
+        :forwardSuggestion="{}" />
         
 </template>
 
