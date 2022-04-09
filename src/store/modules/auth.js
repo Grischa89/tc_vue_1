@@ -49,7 +49,8 @@ const actions = {
       })
       .catch(err => {
         // TODO: Oder err.response.status ausgeben?
-
+        console.log('err', err);
+        console.log('err.response', err.response);
         return 'Something went wrong. Please enter your information again.';
     });
   },

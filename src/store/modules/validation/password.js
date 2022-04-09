@@ -59,7 +59,6 @@ const actions = {
   },
 
   validateRePassword({ commit }, data) {
-    console.log('data', data);
     if (!data.re_password) {
       commit('setRePasswordInvalidMessage', 'Please repeat the password.');
       return false;
