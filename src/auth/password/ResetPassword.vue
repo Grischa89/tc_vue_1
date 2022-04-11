@@ -1,9 +1,10 @@
 <template>
 
-    <Form
+    <AuthForm
         @on-submit="submitForm"
         :view="view"
         :title="title"
+        :formGroups="formGroups"
         :actionBtn="actionBtn"
         :errors="errors"
         :forwardSuggestion="forwardSuggestion" />
@@ -11,14 +12,14 @@
 </template>
 
 <script>
-import Form from '../../components/forms/Form.vue';
+import AuthForm from '../../components/forms/AuthForm.vue';
 
 export default {
 
     name: 'ResetPassword',
 
     components: {
-        Form,
+        AuthForm,
     },
 
     data() {
@@ -26,6 +27,13 @@ export default {
             view: 'ResetPassword',
             title: 'Reset Your Password',
             actionBtn: 'Reset',
+            formGroups: {
+                username: false,
+                email: false,
+                passwordBasic: false,
+                passwordRegex: true,
+                rePassword: true,
+            },
             errors: {
                 badRequestResetPassword: '',
             },

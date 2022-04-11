@@ -1,9 +1,10 @@
 <template>
 
-    <Form
+    <AuthForm
         @on-submit="submitForm"
         :view="view"
         :title="title"
+        :formGroups="formGroups"
         :actionBtn="actionBtn"
         :errors="errors"
         :forwardSuggestion="forwardSuggestion" />
@@ -11,7 +12,7 @@
 </template>
 
 <script>
-import Form from '../components/forms/Form.vue';
+import AuthForm from '../components/forms/AuthForm.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -19,7 +20,7 @@ export default {
     name: 'LogIn',
     
     components: {
-        Form,
+        AuthForm,
     },
 
     beforeRouteEnter(to, from, next) {
@@ -35,6 +36,13 @@ export default {
             title: 'Welcome back!',
             view: 'LogIn',
             actionBtn: 'Login',
+            formGroups: {
+                username: false,
+                email: true,
+                passwordBasic: true,
+                passwordRegex: false,
+                rePassword: false,
+            },
             errors: {
                 unauthorized: '',
             },

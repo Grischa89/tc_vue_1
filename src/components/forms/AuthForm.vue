@@ -14,28 +14,25 @@
                 :error="error" />
 
             <FormSubmitErrorForward
-                v-if="forwardSuggestion.routeName"
                 :forwardSuggestion="forwardSuggestion" />
 
-            <div v-if="view === 'SignUp'" class="form__group">
+            <div v-if="formGroups.username" class="form__group">
                 <label class="form__group__label" :class="{'form__group__label--error': usernameErrors.invalidUsername}" for="username">Username</label>
                 <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': usernameErrors.invalidUsername}" type="text" id="username" name="username" placeholder="" autocomplete="on" v-model="data.username"  @blur="$store.dispatch('validateUsername', data.username)">
             
                 <span v-if="usernameErrors.invalidUsername" class="form__group__help" :class="{'form__group__help--error': usernameErrors.invalidUsername}">{{ usernameErrors.invalidUsername }}</span>
             </div>
 
-            <div v-if="view === 'LogIn' || view === 'SignUp' || view === 'ResendActivationEmail' || view === 'RequestPasswordReset'" class="form__group">
+            <div v-if="formGroups.email" class="form__group">
                 <label class="form__group__label" :class="{'form__group__label--error': emailErrors.invalidEmail}" for="email">Email</label>
                 <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': emailErrors.invalidEmail}" type="email" id="email" name="email" placeholder="" autocomplete="on" v-model="data.email" @blur="$store.dispatch('validateEmail', data.email)">
             
                 <span v-if="emailErrors.invalidEmail" class="form__group__help" :class="{'form__group__help--error': emailErrors.invalidEmail}">{{ emailErrors.invalidEmail }}</span>
             </div>
 
-            <div v-if="view === 'SignUp' || view === 'ResetPassword'" class="form__group">
+            <div v-if="formGroups.passwordRegex" class="form__group">
                 <label class="form__group__label" :class="{'form__group__label--error': passwordErrors.invalidPassword}" for="password">Password</label>
                 <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': passwordErrors.invalidPassword}" type="password" id="password" name="password" placeholder="" autocomplete="on" v-model="data.password" @input="$store.dispatch('validateOnInput', data.password)" @blur="$store.dispatch('validatePassword', data.password)">
-
-                    <span v-if="passwordErrors.invalidPassword" class="form__group__help" :class="{'form__group__help--error': passwordErrors.invalidPassword}">{{ passwordErrors.invalidPassword }}</span> 
 
                     <div v-if="passwordRequirements.validPassword === false"
                     class="form__group__req">
@@ -54,14 +51,14 @@
                     </div>
             </div>
 
-            <div v-if="view === 'SignUp' || view === 'ResetPassword'" class="form__group">
+            <div v-if="formGroups.rePassword" class="form__group">
                 <label class="form__group__label" :class="{'form__group__label--error': passwordErrors.invalidRePassword}" for="re_password">Repeat Password</label>
                 <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': passwordErrors.invalidRePassword}" type="password" id="re_password" name="re_password" placeholder="" autocomplete="on" v-model="data.re_password" @blur="$store.dispatch('validateRePassword', { re_password: data.re_password, password: data.password})">
             
                 <span v-if="passwordErrors.invalidRePassword" class="form__group__help" :class="{'form__group__help--error': passwordErrors.invalidRePassword}">{{ passwordErrors.invalidRePassword }}</span>     
             </div>
 
-            <div v-if="view === 'LogIn'" class="form__group">
+            <div v-if="formGroups.passwordBasic" class="form__group">
                 <label class="form__group__label" :class="{'form__group__label--error': passwordErrors.invalidPassword}" for="password">Password</label>
                 <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': passwordErrors.invalidPassword}" type="password" id="password" name="password" placeholder="" autocomplete="on" v-model="data.password" @blur="$store.dispatch('validateLoginPassword', data.password)">
             
@@ -97,7 +94,7 @@ import FormSubmitErrorForward from './FormSubmitErrorForward.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'Form',
+  name: 'AuthForm',
 
   components: {
     FormTitle,
@@ -110,14 +107,10 @@ export default {
   props: {
     view: String,
     title: String,
+    formGroups: Object,
     actionBtn: String,
     errors: Object,
     forwardSuggestion: Object,
-  },
-
-  created() {
-    // props are exposed on `this`
-    console.log(this.errors)
   },
 
   data() {
@@ -128,9 +121,6 @@ export default {
           password: '',
           re_password: '',
       },
-      // errors: {
-      //     unauthorized: '',
-      // },
     }
   },
 

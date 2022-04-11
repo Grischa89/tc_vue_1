@@ -1,24 +1,25 @@
 <template>
     
-    <Form
+    <AuthForm
         @on-submit="submitForm"
         :view="view"
         :title="title"
         :actionBtn="actionBtn"
+        :formGroups="formGroups"
         :errors="errors"
         :forwardSuggestion="{}" />
         
 </template>
 
 <script>
-import Form from '../components/forms/Form.vue';
+import AuthForm from '../components/forms/AuthForm.vue';
 
 export default {
 
     name: 'SignUp',
 
     components: {
-        Form,
+        AuthForm,
     },
 
     data() {
@@ -26,6 +27,13 @@ export default {
             title: 'Create an Account',
             view: 'SignUp',
             actionBtn: 'Sign up',
+            formGroups: {
+                username: true,
+                email: true,
+                passwordBasic: false,
+                passwordRegex: true,
+                rePassword: true,
+            },
             errors: {
                 badRequest: '',
                 unauthorized: '',
