@@ -69,7 +69,7 @@
           </li>
 
           <li v-if="isAuthenticated" class="navbar__menu__item">
-            <router-link to="/my-account" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>My Account</router-link>
+            <router-link :to="{ name: 'Profile' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Profile</router-link>
           </li>
         </ul>
 
