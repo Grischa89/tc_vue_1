@@ -1,42 +1,36 @@
 <template>
-  <div class="flex flex-col justify-around items-center">
+  <div class="table__wrapper">
 
-    <h1 v-if="title" class="text-lg font-bold uppercase tracking-wider my-2">{{ title }}</h1>
-    <h1 v-else class="text-lg font-bold uppercase tracking-wider my-2">Default title</h1>
+    <h1 v-if="title" class="table__wrapper__title">{{ title }}</h1>
+    <h1 v-else class="table__wrapper__title">Recent Codes</h1>
 
     <!-- For small devices table has width of 11/12, from sm-breakpoint on has max-width of md (448px) -->
-    <div class="flex flex-col mx-auto my-2 py-1 bg-white rounded shadow border-b border-gray-300 w-10/12 sm:max-w-md">
+    <div class="table__wrapper__card">
       <!-- Alternative width proportions: w-10/12 sm:w-8/12 md:w-6/12 lg:max-w-md -->
       
-      <table class="table-fixed text-sm">
-        <thead class="border-b border-gray-300">
-          <tr class="thead-row">
-            <th scope="col" class="w-2/5 py-2 px-4 text-left uppercase">Country</th>
-            <th scope="col" class="w-2/5 py-2 px-4 text-left uppercase">Trainercode</th>
-            <!-- <th scope="col" class="w-1/5 py-2 px-4 text-left">Copy!</th> -->
+      <table class="table">
+        <thead class="table__head">
+          <tr class="table__head__row">
+            <th scope="col" class="table__head__row__cell">Country</th>
+            <th scope="col" class="table__head__row__cell">Trainercode</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-300">
-          <tr v-for="(code, i) in codes" :key="i" class="">
-            <td class="py-4 px-4 text-left font-bold">
-                <router-link :to="`/${code.continent_slug}/${code.country_slug}`">{{ code.country }}</router-link>
-                <!-- <router-link :to="{ name: country, params: { continent: code.continent_slug, country: country_slug } }">{{ code.country }}</router-link> -->
+        <tbody class="table__body">
+          <tr v-for="(code, i) in codes" :key="i" class="table__body__row">
+            <td class="table__body__row__cell">
+              <router-link class="tooltip table__body__row__cell__link" :to="`/${code.continent_slug}/${code.country_slug}`">{{ code.country }}</router-link>
             </td>
-            <td class="py-4 px-4"
+
+            <td class="table__body__row__cell"
               :data-code="code.player_code"
-              @click="copyCodeToClipboard($event)">
+              >
+              <div class="table__body__row__cell__container">
+                <div v-if="code.prettyCode" class="table__body__row__cell__container__item tap tooltip" data-tooltip="Click to copy!" @click="copyCodeToClipboard($event)">{{ code.prettyCode }}</div>
 
-              <div class="flex justify-between items-center">
-                <div v-if="code.prettyCode" class="mr-4 copy-code cursor-pointer whitespace-nowrap"
-                  id="code-playercode"
-                  >{{ code.prettyCode }}</div>
-                <div v-else class="mr-4 copy-code cursor-pointer whitespace-nowrap"
-                  id="code-playercode"
-                  >{{ code.player_code }}</div>
+                <div v-else class="table__body__row__cell__container__item" @click="copyCodeToClipboard($event)" >{{ code.player_code }}</div>
 
-                <CopyButton />
+                <CopyButton @click="copyCodeToClipboard($event)" />
               </div>
-
             </td>
           </tr>
         </tbody>
@@ -72,7 +66,9 @@ export default {
   methods: {
     
     copyCodeToClipboard(e) {
-      this.$store.dispatch('copyCodeToClipboard', e.currentTarget.dataset.code);
+      const parent = e.target.closest('td');
+      // console.log('parent', parent, parent.dataset.code);
+      this.$store.dispatch('copyCodeToClipboard', parent.dataset.code);
     },
 
   },
@@ -80,7 +76,143 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+.table__wrapper {
+  // flex flex-col justify-around items-center
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  &__title {
+    // text-lg font-bold uppercase tracking-wider my-2
+    font-size: $mobile-heading;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .05rem;
+    margin: .5rem 0;
+  }
+
+  &__card {
+    // flex flex-col mx-auto my-2 py-1 bg-white rounded shadow border-b border-gray-300 w-10/12 sm:max-w-md
+    display: flex;
+    flex-direction: column;
+    margin: .5rem auto;
+    // padding: .25rem 0;
+    background-color: #FFF;
+    border-radius: .25rem;
+    width: 83.333333%;
+    box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.324);
+    // TODO: @media für alles > mobile
+  }
+}
+
+.table {
+  // table-fixed text-sm
+  table-layout: fixed;
+  font-size: $mobile-body;
+
+  &__head {
+    border-bottom: 1px solid rgba(0, 0, 0, .3);
+
+    &__row__cell {
+      // w-2/5 py-2 px-4 text-left uppercase
+      padding:.5rem 1rem;
+      text-align: left;
+      text-transform: uppercase;
+      width: 50%;
+    }
+  }
+
+  &__body {
+//     border-top-width: 0px;
+// border-bottom-width: 1px;
+// border-style: solid;
+// border-color: black;
+    // border-bottom: 1px solid rgba(0, 0, 0, .3);
+
+    &__row__cell {
+      text-align: left;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(0, 0, 0, .1);
+
+      &__link {
+        font-weight: bold;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      &__container {
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+
+        &__item {
+          margin-right: 1rem;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+.tap {
+  -webkit-tap-highlight-color: rgba($accent-light, .5);
+}
+
+// .tooltip {
+//   position: relative;
+//   text-decoration: none;
+// }
+
+// a.tooltip::after {
+//   content: 'Awesome tooltip!';
+//   position: absolute;
+//   bottom: 130%;
+//   left: 20%;
+//   background: $secondary;
+//   padding: 5px 15px;
+//   color: #FFF;
+//   -webkit-border-radius: 10px;
+//   -moz-border-radius : 10px;
+//   border-radius : 10px;
+//   white-space: nowrap;
+//   opacity: 0;
+//   -webkit-transition: all 0.4s ease;
+//   -moz-transition : all 0.4s ease;
+//   transition : all 0.4s ease;
+// }
+
+// a.tooltip::before {
+//   content: "";
+//   position: absolute;
+//   width: 0;
+//   height: 0;
+//   border-top: 20px solid $secondary;
+//   border-left: 20px solid transparent;
+//   border-right: 20px solid transparent;
+//   -webkit-transition: all 0.4s ease;
+//   -moz-transition : all 0.4s ease;
+//   transition : all 0.4s ease;
+//   opacity: 0;
+//   left: 30%;
+//   bottom: 90%;
+// }
+
+// a.tooltip:hover::after {
+//   bottom: 100%;
+// }
+
+// a.tooltip:hover::before {
+//   bottom: 70%;
+// }
+
+// a.tooltip:hover::after, a:hover::before {
+//   opacity: 0;
+// }
 
   /* tr:nth-of-type(odd) {
     //background: rgb(209, 213, 219);
