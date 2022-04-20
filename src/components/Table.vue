@@ -100,7 +100,7 @@ export default {
     margin: .5rem auto;
     // padding: .25rem 0;
     background-color: #FFF;
-    border-radius: .25rem;
+    border-radius: .75rem;
     width: 83.333333%;
     box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.324);
     // TODO: @media für alles > mobile
@@ -117,7 +117,7 @@ export default {
 
     &__row__cell {
       // w-2/5 py-2 px-4 text-left uppercase
-      padding:.5rem 1rem;
+      padding:1rem;
       text-align: left;
       text-transform: uppercase;
       width: 50%;
@@ -150,6 +150,8 @@ export default {
         text-align: center;
 
         &__item {
+          margin-top: auto;
+          margin-bottom: auto;
           margin-right: 1rem;
           cursor: pointer;
           white-space: nowrap;
