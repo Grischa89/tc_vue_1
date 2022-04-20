@@ -11,9 +11,20 @@ $desktop-subheading: 1.5rem; // 24px
 $desktop-input: $mobile-body;
 
 // COLORS
-$error-color: #c80000;
+$primary: hsl(60, 67%, 99%); // Linen: FFF6EB
+$secondary: hsl(0, 3%, 14%);
+$accent: hsl(33, 100%, 50%);
+$accen-lighter: hsl(33, 100%, 64%);
+$accent-light: hsl(33, 100%, 80%);
+// $accent-light: #ffd199;
+
+// SEMANTIC COLORS
+$error-color: #b00020;
 $error-shadow: rgba($error-color, 0.4);
-$success-color: green;
+$success-color: #04902B;
+$helper-color: rgba(0, 0, 0, .6);
+$info: #0066F5;
+// $selected-color: 
 
 // BUTTONS
 $input-color: #999999;
