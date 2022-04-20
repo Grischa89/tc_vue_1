@@ -87,7 +87,7 @@ export default {
                     // TODO: Error handling when user object was not retrieved
                     this.$store.dispatch('getUserProfile', data.email);
 
-                    this.toRouteName === 'AddCode' ? this.$router.push({ name: 'AddCode' }) : this.$router.push(`/my-account`);
+                    this.toRouteName === 'AddCode' ? this.$router.push({ name: 'AddCode' }) : this.$router.push({ name: 'Profile' });
                     
                 } else {
                     this.errors.unauthorized = 'No active account found with the given credentials. Please try again.';
