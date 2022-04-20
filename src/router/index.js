@@ -9,7 +9,7 @@ import Country from '../views/Country.vue'
 import AddCode from '../views/AddCode.vue'
 import CardCarousel from '../views/CardCarousel.vue'
 import ActivateUser from '../auth/account/ActivateUser.vue'
-import MyAccount from '../profile/MyAccount.vue'
+import Profile from '../profile/Profile.vue'
 import LogIn from '../auth/LogIn.vue'
 import SignUp from '../auth/SignUp.vue'
 import ResendActivationEmail from '../auth/account/ResendActivationEmail.vue'
@@ -62,9 +62,9 @@ const routes = [
   },
 
   {
-    path: '/my-account',
-    name: 'MyAccount',
-    component: MyAccount,
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
     meta: {
       requiresAuth: true,
       title: 'Your Profile',
