@@ -115,21 +115,20 @@ export default {
   &__head {
     border-bottom: 1px solid rgba(0, 0, 0, .3);
 
-    &__row__cell {
-      // w-2/5 py-2 px-4 text-left uppercase
-      padding:1rem;
-      text-align: left;
-      text-transform: uppercase;
-      width: 50%;
+    &__row {
+      background-color: #FFF;
+
+      &__cell {
+        // w-2/5 py-2 px-4 text-left uppercase
+        padding:1rem;
+        text-align: left;
+        text-transform: uppercase;
+        width: 50%;
+      }
     }
   }
 
   &__body {
-//     border-top-width: 0px;
-// border-bottom-width: 1px;
-// border-style: solid;
-// border-color: black;
-    // border-bottom: 1px solid rgba(0, 0, 0, .3);
 
     &__row__cell {
       text-align: left;
