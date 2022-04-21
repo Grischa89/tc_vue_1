@@ -17,7 +17,7 @@
 
       <div class="form__group">
         <label class="form__group__label" :class="{'form__group__label--error': errors.invalidCode}" for="trainercode">Trainercode</label>
-        <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidCode}" type="number" step="1" id="trainercode" name="trainercode" placeholder="0000 1111 2222" v-model="data.player_code" @keydown="restrictKeys($event)" @keyup="typeCode($event)" @paste="pasteCode($event)" @blur="validateCode(data.player_code)" required>
+        <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidCode}" type="number" step="1" id="trainercode" name="trainercode" placeholder="0000 1111 2222" v-model="data.player_code" @keydown="restrictKeys($event)" @keyup="typeCode($event)" @paste="pasteCode($event)" @blur="validateCode(data.player_code)">
 
         
         <span v-if="formatCode" class="form__group__help">Your Trainer Code: {{ formatCode }}</span>
@@ -139,6 +139,10 @@ export default {
       this.codeInput = '';
       this.data.country = '';
       this.data.city = '';
+      
+      this.errors.invalidCode = '';
+      this.errors.invalidCountry = '';
+      this.errors.invalidCity = '';
     },
 
     restrictKeys(e) {
