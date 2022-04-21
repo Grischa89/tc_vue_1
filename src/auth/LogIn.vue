@@ -103,7 +103,7 @@ export default {
 
 <style lang="scss">
 .form__info {
-    margin: 1rem auto;
+    margin: .5rem 1rem;
 
     &--error {
         color: $error-color;
