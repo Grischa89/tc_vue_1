@@ -17,6 +17,7 @@ import ResendActivationEmail from '../auth/account/ResendActivationEmail.vue'
 import RequestPasswordReset from '../auth/password/RequestPasswordReset.vue'
 import ResetPassword from '../auth/password/ResetPassword.vue'
 import RequestSuccess from '../auth/_shared/RequestSuccess.vue'
+import AddSubscription from '../views/AddSubscription.vue'
 
 // Sorry, this page isn't available.
 // The link you followed may be broken, or the page may have been removed. Go back to Instagram.
@@ -126,6 +127,15 @@ const routes = [
     component: ActivateUser,
     meta: {
       title: 'Activate User Account',
+    },
+  },
+
+  {
+    path: '/subscriptions/add',
+    name: 'AddSubscription',
+    component: AddSubscription,
+    meta: {
+      title: 'Add A Subscription',
     },
   },
 
