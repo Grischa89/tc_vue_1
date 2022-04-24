@@ -27,18 +27,18 @@ $selection: $primary-darker;
 
 // SEMANTIC COLORS
 $error: #b00020;
-$error-shadow: rgba($error, 0.4);
+$error-shadow: rgba($error, .4);
 
 $success: #04902B;
-$success-shadow: rgba($success, 0.4);
+$success-shadow: rgba($success, .4);
 
 $help: rgba($black, .4);
-$help-shadow: rgba($black, 0.2);
+$help-shadow: rgba($black, .2);
 
 $disabled: rgba($help, .2);
 
 $info: #0066F5;
-$info-shadow: rgba($info, 0.4);
+$info-shadow: rgba($info, .4);
 
 // GRADIENTS
 $primary-gradient: 135deg, hsla(0, 0%, 100%, 1) 0%, hsla(33, 100%, 96%, 1) 67%, hsla(33, 100%, 85%, 1) 100%;

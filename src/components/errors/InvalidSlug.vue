@@ -24,22 +24,22 @@ export default {
   margin: 1rem auto;
   padding: .5rem;
   border-radius: .25rem;
-  background-color: rgba($help, .15);
-  border: 2px solid rgba($help, .4);
+  background-color: rgba($help, .1);
+  box-shadow: 0 0 0 2px $help-shadow;
 
     &--info {
       background-color: rgba($info, .15);
-      border: 2px solid rgba($info, .4);
+      box-shadow: 0 0 0 2px $info-shadow;
     }
 
     &--error {
       background-color: rgba($error, .15);
-      border: 2px solid rgba($error, .4);;
+      box-shadow: 0 0 0 2px $error-shadow;
     }
 
     &--success {
       background-color: rgba($success, .15);
-      border: 2px solid rgba($success, .4);;
+      box-shadow: 0 0 0 2px $success-shadow;
     }
 
     &--highlight {
