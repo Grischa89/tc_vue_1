@@ -45,7 +45,7 @@ const actions = {
   },
 
   addCode({ commit }, data) {
-    return axios.post('/api/v1/codes/add/', data)
+    return axios.post('/api/v1/codes/', data)
       .then(res => {
         console.log('addCode res', res);
         console.log('addCode res.data', res.data);
