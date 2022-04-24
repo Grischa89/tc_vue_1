@@ -19,7 +19,7 @@
         <tbody class="table__body">
           <tr v-for="(code, i) in codes" :key="i" class="table__body__row">
             <td v-if="isCity" class="table__body__row__cell">
-              <span class="table__body__row__cell__link">{{ code.city }}</span>
+              <span class="table__body__row__cell__link table__body__row__cell__link--non-link">{{ code.city }}</span>
             </td>
             <td v-else class="table__body__row__cell">
               <router-link class="tooltip table__body__row__cell__link" :to="`/${code.continent_slug}/${code.country_slug}`">{{ code.country }}</router-link>
@@ -163,6 +163,12 @@ export default {
 
           &:hover {
             text-decoration: underline;
+          }
+
+          &--non-link {
+            &:hover {
+              text-decoration: none;
+            }
           }
         }
 
