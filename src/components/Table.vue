@@ -11,8 +11,8 @@
       <table class="table">
         <thead class="table__head">
           <tr class="table__head__row">
-            <th scope="col" class="table__head__row__cell">Country</th>
-            <th scope="col" class="table__head__row__cell">Trainercode</th>
+            <th scope="col" class="table__head__row__cell"><span class="line-behind--thead">Country</span></th>
+            <th scope="col" class="table__head__row__cell"><span class="line-behind--thead">Trainercode</span></th>
           </tr>
         </thead>
         <tbody class="table__body">
@@ -99,9 +99,9 @@ export default {
     flex-direction: column;
     margin: .5rem auto;
     // padding: .25rem 0;
-    background-color: #FFF;
     border-radius: .75rem;
-    width: 83.333333%;
+    width: 90%;
+    // width: 83.333333%;
     box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.324);
     // TODO: @media für alles > mobile
   }
@@ -116,7 +116,7 @@ export default {
     border-bottom: 1px solid rgba(0, 0, 0, .3);
 
     &__row {
-      background-color: #FFF;
+      // background-color: $primary-darker;
 
       &__cell {
         // w-2/5 py-2 px-4 text-left uppercase
@@ -130,90 +130,137 @@ export default {
 
   &__body {
 
-    &__row__cell {
-      text-align: left;
-      padding: 1rem;
+    &__row {
+
       border-bottom: 1px solid rgba(0, 0, 0, .1);
 
-      &__link {
-        font-weight: bold;
-
-        &:hover {
-          text-decoration: underline;
-        }
+      &:hover {
+        background-color: $primary;
       }
 
-      &__container {
-        display: flex;
-        justify-content: space-between;
-        text-align: center;
+      &:last-of-type {
+        border: none;
+      }
+      
+      &__cell {
+        text-align: left;
+        padding: 1rem;
+        
 
-        &__item {
-          margin-top: auto;
-          margin-bottom: auto;
-          margin-right: 1rem;
-          cursor: pointer;
-          white-space: nowrap;
+        &__link {
+          font-weight: bold;
+          // white-space: nowrap;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        &__container {
+          display: flex;
+          justify-content: space-between;
+          text-align: center;
+
+          &__item {
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-right: 1rem;
+            cursor: pointer;
+            white-space: nowrap;
+          }
         }
       }
     }
+
+    // &__row
+
+    // &__row__cell
   }
 }
 
-.tap {
-  -webkit-tap-highlight-color: rgba($accent-light, .5);
+.line-behind--thead {
+  box-shadow: inset 0 -10px 0 0 $primary-darker;
 }
 
-// .tooltip {
-//   position: relative;
-//   text-decoration: none;
-// }
+.tap {
+  -webkit-tap-highlight-color: $primary;
+}
 
-// a.tooltip::after {
-//   content: 'Awesome tooltip!';
-//   position: absolute;
-//   bottom: 130%;
-//   left: 20%;
-//   background: $secondary;
-//   padding: 5px 15px;
-//   color: #FFF;
-//   -webkit-border-radius: 10px;
-//   -moz-border-radius : 10px;
-//   border-radius : 10px;
-//   white-space: nowrap;
-//   opacity: 0;
-//   -webkit-transition: all 0.4s ease;
-//   -moz-transition : all 0.4s ease;
-//   transition : all 0.4s ease;
-// }
+.tooltip {
+  position: relative;
+  text-decoration: none;
+  // display: inline;
+}
 
-// a.tooltip::before {
+// .tooltip:hover:after{
+//   display: -webkit-flex;
+//   display: flex;
+//   -webkit-justify-content: center;
+//   justify-content: center;
+//   background: #444;
+//   border-radius: 8px;
+//   color: #fff;
+//   content: 'Hello!';
+//   margin: -82px auto 0;
+//   font-size: 16px;
+//   padding: 13px;
+//   width: 220px;
+// }
+// .tooltip:hover:before{
+//   border: solid;
+//   border-color: #444 transparent;
+//   border-width: 12px 6px 0 6px;
 //   content: "";
+//   left: 45%;
+//   bottom: 30px;
 //   position: absolute;
-//   width: 0;
-//   height: 0;
-//   border-top: 20px solid $secondary;
-//   border-left: 20px solid transparent;
-//   border-right: 20px solid transparent;
-//   -webkit-transition: all 0.4s ease;
-//   -moz-transition : all 0.4s ease;
-//   transition : all 0.4s ease;
-//   opacity: 0;
-//   left: 30%;
-//   bottom: 90%;
 // }
 
-// a.tooltip:hover::after {
-//   bottom: 100%;
-// }
+.tooltip::after {
+  content: 'Awesome tooltip!';
+  position: absolute;
+  bottom: 130%;
+  left: 20%;
+  background: $secondary;
+  padding: 5px 15px;
+  color: #FFF;
+  -webkit-border-radius: 10px;
+  -moz-border-radius : 10px;
+  border-radius : 10px;
+  white-space: nowrap;
+  opacity: 0;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition : all 0.4s ease;
+  transition : all 0.4s ease;
+}
 
-// a.tooltip:hover::before {
-//   bottom: 70%;
-// }
+.tooltip::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 20px solid $secondary;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  // -webkit-transition: all 0.4s ease;
+  // -moz-transition : all 0.4s ease;
+  // transition : all 0.4s ease;
+  opacity: 0;
+  left: 30%;
+  bottom: 90%;
+}
 
-// a.tooltip:hover::after, a:hover::before {
-//   opacity: 0;
-// }
+.tooltip:hover::after {
+  bottom: 100%;
+}
+
+.tooltip:hover::before {
+  bottom: 70%;
+}
+
+.tooltip:hover::after, .table__body__row__cell_link:hover::before {
+  opacity: 0;
+}
 
   /* tr:nth-of-type(odd) {
     //background: rgb(209, 213, 219);

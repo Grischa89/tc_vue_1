@@ -78,40 +78,40 @@ export default {
     }
   },
 
-  async beforeCreate() {
-    console.log('beforeCreate');
+  // async beforeCreate() {
+  //   console.log('beforeCreate');
 
-    const isAuthenticated = Boolean(JSON.parse(sessionStorage.getItem('isAuthenticated')));
-    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
+  //   const isAuthenticated = Boolean(JSON.parse(sessionStorage.getItem('isAuthenticated')));
+  //   const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
 
-    // known user + not closed tab
-    if (isAuthenticated) {
-      this.$store.commit('setAuthenticated', true);
-    } else if (accessToken) {
-      // known user + closed tab
-      const verifyJWTSuccess = await this.$store.dispatch('verifyJWT');
+  //   // known user + not closed tab
+  //   if (isAuthenticated) {
+  //     this.$store.commit('setAuthenticated', true);
+  //   } else if (accessToken) {
+  //     // known user + closed tab
+  //     const verifyJWTSuccess = await this.$store.dispatch('verifyJWT');
 
-      if (verifyJWTSuccess !== 200) {
-        console.log('verifySuccess', verifyJWTSuccess);
+  //     if (verifyJWTSuccess !== 200) {
+  //       console.log('verifySuccess', verifyJWTSuccess);
 
-        const refreshJWTSuccess = await this.$store.dispatch('refreshJWT');
+  //       const refreshJWTSuccess = await this.$store.dispatch('refreshJWT');
 
-        if (refreshJWTSuccess !== 200) {
-          console.log('refreshSuccess', refreshJWTSuccess);
-          this.$router.push('/log-in');
-        }
+  //       if (refreshJWTSuccess !== 200) {
+  //         console.log('refreshSuccess', refreshJWTSuccess);
+  //         this.$router.push('/log-in');
+  //       }
 
-      }
-    } else {
-      // not known / not logged in user
-      this.$store.commit('removeToken');
-    }
+  //     }
+  //   } else {
+  //     // not known / not logged in user
+  //     this.$store.commit('removeToken');
+  //   }
 
-    if (localStorage.user !== null) {
-      this.$store.commit('setUser', JSON.parse(localStorage.user));
-      console.log('After setUser commit in App.vue!');
-    }
-  },
+  //   if (localStorage.user !== null) {
+  //     this.$store.commit('setUser', JSON.parse(localStorage.user));
+  //     console.log('After setUser commit in App.vue!');
+  //   }
+  // },
 
   created() {
     this.initCookieConsent();
@@ -229,12 +229,19 @@ export default {
 
 
 <style lang="scss">
-#app {
-  font-family: Helvetica, Arial, sans-serif;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  // font-family: Helvetica, sans-serif;
+  // font-family: Monaco, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: $black;
+
+}
+#app {
   text-align: center;
-  color: #2c3e50;
+  background-color: $white;
+  // background-image: linear-gradient(to right bottom, #fefefa, #fdfcf3, #fcf9ec, #fcf6e5, #fdf3de, #fcedd0, #fce6c3, #fddfb6, #fcd39f, #fcc689, #fbb974, #fbab60);
 }
 
 #nav {

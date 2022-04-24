@@ -16,7 +16,7 @@ export default {
 
 <style lang="scss">
 .last-updated__banner {
-  background-color: rgba($accent-light, .3);
+  background-color: $primary-darker;
 
   &__help {
     font-size: $mobile-help;

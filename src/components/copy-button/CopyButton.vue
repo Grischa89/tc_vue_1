@@ -22,9 +22,9 @@ export default {
   // width: 1.25rem;
   cursor: pointer;
   border-radius: 50%;
-  background-color: rgba($accent-light, .5);
+  background-color: $primary-darker;
   padding: .375rem;
-  -webkit-tap-highlight-color: rgba($accent-light, .5);
+  -webkit-tap-highlight-color: $primary;
 
   &__prepend {
     height: 1.25rem;
@@ -33,14 +33,14 @@ export default {
 
   &:hover, &:active {
     // color: #a6a8ac;
-    -webkit-tap-highlight-color: rgba($accent-light, .5);
+    -webkit-tap-highlight-color: $primary;
 
   }
 
   @media(min-width: 612px) {
     &:hover, &:active {
-      background-color: $accent-light;
-      -webkit-tap-highlight-color: rgba($accent-light, .5);
+      background-color: $primary-darker;
+      -webkit-tap-highlight-color: $primary;
     }
   }
 
