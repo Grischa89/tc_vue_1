@@ -17,10 +17,12 @@ otherwise no classes -->
 
     <Table 
       :title="tableTitle"
-      :codes="cityCodes" />
+      :codes="cityCodes"
+      :isCity="isCity" />
 
     <CardCarousel
-      :codes="cityCodes" />
+      :codes="cityCodes"
+      :isCity="isCity" />
 
   </div>
 </template>
@@ -56,6 +58,7 @@ export default {
   
   computed: {
     ...mapGetters({
+      isCity: 'isCity',
       cityCodes: 'codeGetter',
       tableTitle: 'tableTitle',
       loadStatus: 'cityLoadStatus',

@@ -11,13 +11,17 @@
       <table class="table">
         <thead class="table__head">
           <tr class="table__head__row">
-            <th scope="col" class="table__head__row__cell"><span class="line-behind--thead">Country</span></th>
+            <th v-if="isCity" scope="col" class="table__head__row__cell"><span class="line-behind--thead">City</span></th>
+            <th v-else scope="col" class="table__head__row__cell"><span class="line-behind--thead">Country</span></th>
             <th scope="col" class="table__head__row__cell"><span class="line-behind--thead">Trainercode</span></th>
           </tr>
         </thead>
         <tbody class="table__body">
           <tr v-for="(code, i) in codes" :key="i" class="table__body__row">
-            <td class="table__body__row__cell">
+            <td v-if="isCity" class="table__body__row__cell">
+              <span class="table__body__row__cell__link">{{ code.city }}</span>
+            </td>
+            <td v-else class="table__body__row__cell">
               <router-link class="tooltip table__body__row__cell__link" :to="`/${code.continent_slug}/${code.country_slug}`">{{ code.country }}</router-link>
             </td>
 
@@ -54,13 +58,18 @@ export default {
   props: {
     codes: {
       type: Array,
-      // required: true,
+      required: true,
     },
 
     title: {
       type: String,
-      // required: true,
+      required: true,
     },
+
+    isCity: {
+      type: Boolean,
+      required: false,
+    }
   },
 
   methods: {
@@ -147,7 +156,6 @@ export default {
       &__cell {
         text-align: left;
         padding: 1rem;
-        
 
         &__link {
           font-weight: bold;

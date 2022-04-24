@@ -4,6 +4,8 @@ const state = {
 
   cityLoadStatus: null,
 
+  isCity: false,
+
 };
 
 const getters = {
@@ -12,9 +14,9 @@ const getters = {
     return state.cityLoadStatus;
   },
 
-  // countryCodesTitle: state => {
-  //   return state.countryCodes[0].country;
-  // }
+  isCity: state => {
+    return state.isCity;
+  },
 
 };
 
@@ -59,9 +61,10 @@ const actions = {
         } else {
           // correct url (/europe/spain/madrid-madrid) or only correct city slug
           window.document.title = `${res.data.data[0].city} — Recent Codes From ${res.data.data[0].city} — trainercodes.net`;
-         commit('setTableTitle', res.data.data[0].city);
+          commit('setTableTitle', res.data.data[0].city);
+          commit('setIsCity', true);
         }
-        
+
         // // TODO: Make global mutation that sets document title mit getter in beforeEach?
 
         return commit('addDataPositions', res.data.data);
@@ -100,7 +103,11 @@ const mutations = {
 
   setCityStatus(state, status) {
     state.cityLoadStatus = status;
-  }
+  },
+
+  setIsCity(state, isCity) {
+    state.isCity = isCity;
+  },
 
   // setLatestCountryCodes(state, countryCodes) {
   //   state.countryCodes = countryCodes;

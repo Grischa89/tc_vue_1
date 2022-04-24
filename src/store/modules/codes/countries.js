@@ -49,7 +49,7 @@ const actions = {
             window.document.title = `${res.data.data[0].continent} — Recent Codes From ${res.data.data[0].continent} — trainercodes.net`;
           }
         } else {
-          // completely correct url (/asia/japan/) or only incorrect continent-slug
+          // completely correct url (/asia/japan/) or only correct country-slug (/asfa/japan/)
           window.document.title = `${res.data.data[0].country} — Recent Codes From ${res.data.data[0].country} — trainercodes.net`;
           commit('setTableTitle', res.data.data[0].country);
         }

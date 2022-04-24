@@ -4,7 +4,8 @@
     :data-pos="code.dataPos"
     :data-code="code.player_code"
   >
-    <div class="carousel__item__heading">{{ code.country }}</div>
+    <div v-if="isCity" class="carousel__item__heading">{{ code.city }}</div>
+    <div v-else class="carousel__item__heading">{{ code.country }}</div>
 
     <qrcode-vue class="carousel__item__qrcode" :value="code.player_code" :size="size" level="H"/>
 
@@ -45,6 +46,11 @@ export default {
     index: {
       type: Number,
     },
+
+    isCity: {
+      type: Boolean,
+      required: false,
+    }
   },
 
   data() {

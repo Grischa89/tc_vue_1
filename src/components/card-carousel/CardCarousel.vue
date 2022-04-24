@@ -10,7 +10,8 @@
         :code="code"
         ref="carouselItems"
         :index="i"
-        :data-pos="code.dataPos" />
+        :data-pos="code.dataPos"
+        :isCity="isCity" />
 
     </ul>
 
@@ -30,6 +31,12 @@ export default {
   props: {
     codes: {
       type: Array,
+      required: true,
+    },
+
+    isCity: {
+      type: Boolean,
+      required: false,
     }
   },
 
