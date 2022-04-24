@@ -85,7 +85,7 @@ export default {
   }
 
   &__code {
-    margin-bottom: .25rem;
+    margin-bottom: .5rem;
   }
 
   .button {

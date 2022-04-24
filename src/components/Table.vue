@@ -181,7 +181,8 @@ export default {
 }
 
 .line-behind--thead {
-  box-shadow: inset 0 -10px 0 0 $primary-darker;
+  box-shadow: $line-behind;
+  padding: 0 .25rem;
 }
 
 .tap {

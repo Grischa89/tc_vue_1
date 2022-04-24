@@ -234,6 +234,8 @@ export default {
     background-color: $selection;
     color: $black;
   }
+
+  -webkit-tap-highlight-color: $primary;
 }
 
 body {

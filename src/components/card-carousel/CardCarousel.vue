@@ -1,6 +1,6 @@
 <template>
   <div class="carousel">
-    <h1 class="carousel__title">QR Codes</h1>
+    <h1 class="carousel__title"><span class="line-behind--card-title">QR Codes</span></h1>
     <ul class="carousel__list" ref="carouselList" @click="registerClick" @touchstart="captureTouchstart" @touchend="captureTouchend">
 
       <CardCarouselSlide
@@ -183,19 +183,29 @@ export default {
 
 .carousel {
   margin: 2rem auto;
+  padding: 1.5rem 0;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   align-items: center;
+  background: hsla(0, 0%, 100%, 1);
+  background: linear-gradient($primary-gradient);
+  background: -webkit-linear-gradient($primary-gradient);
+  background: -moz-linear-gradient($primary-gradient);
 
   &__title {
-    margin-top: 1.5rem;
+    // margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     // TODO: heading
     font-size: $mobile-heading;
     font-weight: bold;
     text-transform: uppercase;
+
+    .line-behind--card-title {
+      box-shadow: $line-behind;
+      padding: 0 .5rem;
+    }
   }
 
   &__list {

@@ -40,5 +40,9 @@ $disabled: rgba($help, .2);
 $info: #0066F5;
 $info-shadow: rgba($info, 0.4);
 
+// GRADIENTS
+$primary-gradient: 135deg, hsla(0, 0%, 100%, 1) 0%, hsla(33, 100%, 96%, 1) 67%, hsla(33, 100%, 85%, 1) 100%;
+
 // SHADOWS
 $card-shadow: 5px 5px 20px;
+$line-behind: inset 0 -.625rem 0 0 $primary-darker;
