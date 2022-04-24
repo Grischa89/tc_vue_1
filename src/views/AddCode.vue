@@ -389,8 +389,8 @@ $input-disabled-bg: #dedede;
 
     &--submit {
       border-radius: 25px;
-      color: #fff;
-      background-color: #000;
+      color: $white;
+      background-color: $secondary;
     }
 
     &--cancel {
