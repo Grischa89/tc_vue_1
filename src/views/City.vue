@@ -11,6 +11,10 @@ otherwise no classes -->
   <AsyncCodesNotFound v-if="loadStatus === 'error'" />
 
   <div v-if="loadStatus === 'success' && cityCodes">
+    <Breadcrumb
+      	v-if="breadcrumb"
+        :breadcrumb="breadcrumb" />
+
     <AsyncInvalidSlug
       v-if="invalidURLMessage"
       :message="invalidURLMessage" />
@@ -32,6 +36,7 @@ import Table from '../components/Table.vue';
 import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
 import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
+import Breadcrumb from '../components/Breadcrumb.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -49,6 +54,7 @@ export default {
     CardCarousel,
     TableSkeleton,
     CardCarouselSkeleton,
+    Breadcrumb,
   },
 
   created() {
@@ -63,6 +69,7 @@ export default {
       tableTitle: 'tableTitle',
       loadStatus: 'cityLoadStatus',
       invalidURLMessage: 'invalidURLMessage',
+      breadcrumb: 'breadcrumb',
     })
   },
 

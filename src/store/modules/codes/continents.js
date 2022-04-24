@@ -42,7 +42,7 @@ const actions = {
           commit('setTableTitle', res.data.data[0].continent);
         }
 
-        // window.document.title = res.data.new_cache_key ? 'Recent Codes From Around The World | trainercodes.net' : `${res.data.data[0].continent} | Recent Codes From ${res.data.data[0].continent} | trainercodes.net`;
+        commit('setBreadcrumb', '');
 
         return commit('addDataPositions', res.data.data);
       })

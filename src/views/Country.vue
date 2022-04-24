@@ -5,6 +5,10 @@
   </div>
 
   <div v-if="loadStatus === 'success' && countryCodes">
+    <Breadcrumb
+      v-if="breadcrumb"
+      :breadcrumb="breadcrumb" />
+
     <AsyncInvalidSlug
       v-if="invalidURLMessage"
       :message="invalidURLMessage" />
@@ -23,6 +27,7 @@ import Table from '../components/Table.vue';
 import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
 import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
+import Breadcrumb from '../components/Breadcrumb.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -35,6 +40,7 @@ name: 'Country',
     CardCarousel,
     TableSkeleton,
     CardCarouselSkeleton,
+    Breadcrumb,
   },
 
   mounted() {
@@ -47,6 +53,7 @@ name: 'Country',
       tableTitle: 'tableTitle',
       loadStatus: 'countryLoadStatus',
       invalidURLMessage: 'invalidURLMessage',
+      breadcrumb: 'breadcrumb',
     })
   },
 }

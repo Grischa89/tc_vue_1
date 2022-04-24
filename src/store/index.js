@@ -26,6 +26,8 @@ export default createStore({
 
     tableTitle: null,
 
+    breadcrumb: null,
+
   },
 
   getters: {
@@ -40,7 +42,11 @@ export default createStore({
 
     tableTitle: state => {
       return state.tableTitle;
-    }
+    },
+
+    breadcrumb: state => {
+      return state.breadcrumb;
+    },
 
   },
 
@@ -97,7 +103,11 @@ export default createStore({
 
     setTableTitle(state, title) {
       state.tableTitle = title;
-    }
+    },
+
+    setBreadcrumb(state, breadcrumb) {
+      state.breadcrumb = breadcrumb;
+    },
 
   },
 

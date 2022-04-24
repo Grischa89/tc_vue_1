@@ -42,6 +42,7 @@ const actions = {
             const slugs = { 'invalidSlug': `/${data.continent}/${data.country}/${data.city}/`, 'validSlug': '/' };
             commit('setURLMessage', slugs);
             commit('setTableTitle', 'Recent Codes');
+            commit('setBreadcrumb', '');
             window.document.title = 'Recent Codes From Around The World — trainercodes.net';
           } else {
             // correct continent and/or country, only city incorrect (/europe/spain/madr/ || /euro/spain/madr)
@@ -51,10 +52,12 @@ const actions = {
             // Check if new_cache_key contains more than 2 / (is country: /europe/spain/madr || /euro/spain/)
             if ((res.data.new_cache_key.match(/\//g) || []).length > 2) {
               commit('setTableTitle', res.data.data[0].country);
+              commit('setBreadcrumb', { continentName: res.data.data[0].continent, continentSlug: res.data.data[0].continent_slug });
               window.document.title = `${res.data.data[0].country} — Recent Codes From ${res.data.data[0].country} — trainercodes.net`;
             } else {
               // (is continent: /europe/span/madr)
               commit('setTableTitle', res.data.data[0].continent);
+              commit('setBreadcrumb', '');
               window.document.title = `${res.data.data[0].continent} — Recent Codes From ${res.data.data[0].continent} — trainercodes.net`;
             } 
           }
@@ -62,6 +65,7 @@ const actions = {
           // correct url (/europe/spain/madrid-madrid) or only correct city slug
           window.document.title = `${res.data.data[0].city} — Recent Codes From ${res.data.data[0].city} — trainercodes.net`;
           commit('setTableTitle', res.data.data[0].city);
+          commit('setBreadcrumb', { continentName: res.data.data[0].continent, continentSlug: res.data.data[0].continent_slug, countryName: res.data.data[0].country, countrySlug: res.data.data[0].country_slug });
           commit('setIsCity', true);
         }
 

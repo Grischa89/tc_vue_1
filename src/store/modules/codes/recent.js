@@ -24,6 +24,7 @@ const actions = {
     axios.get('/api/v1/codes/')
       .then(res => {
         window.document.title = 'Recent Codes From Around The World | trainercodes.net';
+        commit('setBreadcrumb', '');
         return commit('addDataPositions', res.data.data);
       })
       .then(() => {
