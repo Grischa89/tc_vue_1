@@ -232,12 +232,6 @@ export default {
 </script>
 
 <style lang="scss">
-$input-shadow: rgba($help, 0.4);
-$placeholder-color: #7e7e7e;
-$help-color: $placeholder-color;
-$input-disabled-bg: #dedede;
-
-
 .form__container {
   // display: flex;
   // justify-content: center;
@@ -299,20 +293,20 @@ $input-disabled-bg: #dedede;
       width: 100%;
 
       &::placeholder {
-        color: $placeholder-color;
+        color: $help;
       }
 
       &:-ms-input-placeholder {
-        color: $placeholder-color;
+        color: $help;
       }
 
       &::-ms-input-placeholder {
-        color: $placeholder-color;
+        color: $help;
       }
 
       &:focus {
         outline: none;
-        box-shadow: 0 0 0 2px $input-shadow;
+        box-shadow: 0 0 0 2px $help-shadow;
         // box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.324);
       }
   
@@ -343,7 +337,7 @@ $input-disabled-bg: #dedede;
         background-color: #fff;
 
         &:disabled {
-          background-color: $input-disabled-bg;
+          background-color: $disabled;
         }
       }
 
@@ -351,7 +345,7 @@ $input-disabled-bg: #dedede;
     }
 
     &__help {
-      color: $help-color;
+      color: $help;
       font-size: $mobile-help;
       margin-top: .25rem;
       // color: rgb(200, 0, 0);
@@ -384,17 +378,18 @@ $input-disabled-bg: #dedede;
 
     &:active {
       outline: none;
-      box-shadow: 0 0 0 2px $input-shadow;
+      box-shadow: 0 0 0 2px $primary-darker;
     }
 
     &--submit {
       border-radius: 25px;
       color: $white;
       background-color: $secondary;
+      -webkit-tap-highlight-color: $primary-darker;
     }
 
     &--cancel {
-      color: #000;
+      color: $black;
     }
   }
 }
