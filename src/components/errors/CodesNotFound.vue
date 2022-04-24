@@ -83,7 +83,7 @@ export default {
 
     &:active {
       outline: none;
-      box-shadow: 0 0 0 2px $input-shadow;
+      box-shadow: 0 0 0 2px $help-shadow;
     }
 
     &--home {

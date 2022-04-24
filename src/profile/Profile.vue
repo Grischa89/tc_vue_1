@@ -197,10 +197,10 @@ export default {
             &--warning {
                 justify-content: center;
                 align-items: center;
-                color: $error-color;
+                color: $error;
                 border-style: solid;
-                border-color: $error-color;
-                background-color: rgba($error-color, .1);
+                border-color: $error;
+                background-color: rgba($error, .1);
             }
 
             &__divider {

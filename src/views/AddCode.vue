@@ -232,10 +232,7 @@ export default {
 </script>
 
 <style lang="scss">
-$input-color: #999999;
-$input-shadow: rgba($input-color, 0.4);
-$error-color: #c80000;
-$error-shadow: rgba($error-color, 0.4);
+$input-shadow: rgba($help, 0.4);
 $placeholder-color: #7e7e7e;
 $help-color: $placeholder-color;
 $input-disabled-bg: #dedede;
@@ -257,7 +254,8 @@ $input-disabled-bg: #dedede;
 .form {
   background-color: #fff;
   padding: .75rem 0;
-  border-radius: 0.75em;
+  border-radius: 0.75rem;
+  box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
 
   &__title {
     margin-top: 1.5rem;
@@ -292,7 +290,9 @@ $input-disabled-bg: #dedede;
     &__input {
       display: block;
       font-size: $mobile-input;
-      border: 1.5px solid $input-color;
+      text-indent: .5rem;
+      border: 1.5px solid $help;
+      // box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
       border-radius: 0.25em;
       height: 3rem;
       // Width needed to stretch input fields to evenly
@@ -313,6 +313,7 @@ $input-disabled-bg: #dedede;
       &:focus {
         outline: none;
         box-shadow: 0 0 0 2px $input-shadow;
+        // box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.324);
       }
   
       &--code {
@@ -330,7 +331,8 @@ $input-disabled-bg: #dedede;
 
       &--error {
         outline: none;
-        border: 1.5px solid $error-color;
+        border: 1.5px solid $error;
+        // box-shadow: 0px 2px 8px 0px rgba($error, 0.2);
       }
 
       &--error:focus {
@@ -355,8 +357,12 @@ $input-disabled-bg: #dedede;
       // color: rgb(200, 0, 0);
 
       &--error {
-        color: $error-color;
-      } 
+        color: $error;
+      }
+      
+      &--success {
+        color: $success;
+      }
     }
   }
 

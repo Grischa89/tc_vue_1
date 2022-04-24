@@ -106,7 +106,7 @@ export default {
     margin: .5rem 1rem;
 
     &--error {
-        color: $error-color;
+        color: $error;
     }
 
     &__link {
@@ -121,7 +121,7 @@ export default {
     padding: 0 1.125rem;
 
     &--error {
-        color: $error-color;
+        color: $error;
         font-weight: bold;
     }
 }

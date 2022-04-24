@@ -229,6 +229,13 @@ export default {
 
 
 <style lang="scss">
+* {
+  ::selection, &::-webkit-selection {
+    background-color: $selection;
+    color: $black;
+  }
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   // font-family: Helvetica, sans-serif;

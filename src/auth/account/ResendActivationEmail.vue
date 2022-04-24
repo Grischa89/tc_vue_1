@@ -74,7 +74,7 @@ export default {
 <style lang="scss">
 .form__info {
     &--error {
-        color: $error-color;
+        color: $error;
     }
     
     &__link {

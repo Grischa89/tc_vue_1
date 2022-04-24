@@ -103,7 +103,7 @@ export default {
     &--error {
         display: flex;
         align-items: center;
-        color: $error-color;
+        color: $error;
     }
 
     &--error:before {
@@ -117,7 +117,7 @@ export default {
     &--success {
         display: flex;
         align-items: center;
-        color: $success-color;
+        color: $success;
     }
 
     &--success:before {

@@ -23,14 +23,17 @@ $accent: hsla(256, 71%, 53%, 1); // Han Purple: #5f32dcff;
 // $accent-light: hsl(33, 100%, 80%);
 // $accent-light: #ffd199;
 
-// SEMANTIC COLORS
-$error-color: #b00020;
-$error-shadow: rgba($error-color, 0.4);
-$success-color: #04902B;
-$helper-color: rgba(0, 0, 0, .6);
-$info: #0066F5;
-// $selected-color: 
+$selection: $primary-darker;
 
-// BUTTONS
-$input-color: #999999;
-$input-shadow: rgba($input-color, 0.4);
+// SEMANTIC COLORS
+$error: #b00020;
+$error-shadow: rgba($error, 0.4);
+
+$success: #04902B;
+$success-shadow: rgba($success, 0.4);
+
+$help: rgba($black, .6);
+$help-shadow: rgba($help, 0.4);
+
+$info: #0066F5;
+$info-shadow: rgba($info, 0.4);
