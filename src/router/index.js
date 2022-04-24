@@ -33,7 +33,7 @@ const routes = [
   },
 
   {
-    path: '/add',
+    path: '/codes/add',
     name: 'AddCode',
     component: AddCode,
     meta: {

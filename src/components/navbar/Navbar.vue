@@ -61,7 +61,7 @@
           </li>
 
           <li class="navbar__menu__item">
-            <router-link to="/add" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Add Your Code</router-link>
+            <router-link :to="{ name: 'AddCode' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Add Your Code</router-link>
           </li>
 
           <li v-if="!isAuthenticated" class="navbar__menu__item">
