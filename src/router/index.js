@@ -6,6 +6,7 @@ import store from '../store'
 import Home from '../views/Home.vue'
 import Continent from '../views/Continent.vue'
 import Country from '../views/Country.vue'
+import City from '../views/City.vue'
 import AddCode from '../views/AddCode.vue'
 import CardCarousel from '../views/CardCarousel.vue'
 import ActivateUser from '../auth/account/ActivateUser.vue'
@@ -155,6 +156,12 @@ const routes = [
     path: '/:continent/:country',
     name: 'Country',
     component: Country
+  },
+
+  {
+    path: '/:continent/:country/:city',
+    name: 'City',
+    component: City
   },
 
   {

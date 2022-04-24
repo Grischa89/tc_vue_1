@@ -3,6 +3,7 @@ import location from './modules/location';
 import recent from './modules/codes/recent';
 import continents from './modules/codes/continents';
 import countries from './modules/codes/countries';
+import cities from './modules/codes/cities';
 import nav from './modules/nav';
 import copy from './modules/copy';
 import add from './modules/codes/add';
@@ -108,6 +109,7 @@ export default createStore({
     recent,
     continents,
     countries,
+    cities,
     nav,
     copy,
     add,

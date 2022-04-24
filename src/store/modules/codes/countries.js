@@ -37,7 +37,7 @@ const actions = {
 
           if (res.data.new_cache_key === 'recent_codes') {
             // 'recent_codes', both slugs incorrect (/asfa/jpna/)
-            const slugs = { 'invalidSlug': `/${continent}/`, 'validSlug': '/' };
+            const slugs = { 'invalidSlug': `/${data.continent}/${data.country}/`, 'validSlug': '/' };
             commit('setURLMessage', slugs);
             commit('setTableTitle', 'Recent Codes');
             window.document.title = 'Recent Codes From Around The World — trainercodes.net';
@@ -49,7 +49,7 @@ const actions = {
             window.document.title = `${res.data.data[0].continent} — Recent Codes From ${res.data.data[0].continent} — trainercodes.net`;
           }
         } else {
-          // correct url (/asia/japan/)
+          // completely correct url (/asia/japan/) or only incorrect continent-slug
           window.document.title = `${res.data.data[0].country} — Recent Codes From ${res.data.data[0].country} — trainercodes.net`;
           commit('setTableTitle', res.data.data[0].country);
         }
