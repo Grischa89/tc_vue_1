@@ -57,13 +57,4 @@ export default {
 </script>
 
 <style lang="scss">
-.user__info {
-    &--error {
-        color: $error;
-    }
-    
-    &__link {
-        font-weight: bold;
-    }
-}
 </style>

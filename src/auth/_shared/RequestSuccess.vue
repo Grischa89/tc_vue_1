@@ -34,14 +34,5 @@ export default {
 </script>
 
 <style lang="scss">
-.user__info {
-    max-width: 24.3076923rem;
-    padding: 1rem;
-    margin: 3rem auto;
-    // background-color: white;
 
-    &--highlight {
-        font-weight: bold;
-    }
-}
 </style>
