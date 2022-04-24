@@ -1,11 +1,11 @@
 import { createStore } from 'vuex';
 import location from './modules/location';
-import recentCodes from './modules/codes';
-import continents from './modules/continents';
-import countries from './modules/countries';
+import recent from './modules/codes/recent';
+import continents from './modules/codes/continents';
+import countries from './modules/codes/countries';
 import nav from './modules/nav';
 import copy from './modules/copy';
-import addCodes from './modules/add-codes';
+import add from './modules/codes/add';
 import auth from './modules/auth';
 import password from './modules/validation/password';
 import email from './modules/validation/email';
@@ -105,12 +105,12 @@ export default createStore({
 
   modules: {
     location,
-    recentCodes,
+    recent,
     continents,
     countries,
     nav,
     copy,
-    addCodes,
+    add,
     auth,
     password,
     email,
