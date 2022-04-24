@@ -16,6 +16,17 @@ const getters = {
   //   return state.countryCodes[0].country;
   // }
 
+  citySuggestions: (state, getters, rootState) => {
+    // return rootState.codes.filter(item => item.city !== null);
+// info: "scheduler flush. This is likely a Vue internals bug. Please open an issue at https://new-issue.vuejs.org/?repo=vuejs/vue-next"
+
+    // const uniqueCities = rootState.codes.filter((item, i) => rootState.codes.findIndex(a => a['city'] === item['city']) === i);
+    // const realCities = uniqueCities.filter(item => item.city !== null);
+    // realCities.length > 6 ? 
+    return rootState.codes.filter((item, i) => rootState.codes.findIndex(a => (a['city'] === item['city']) && a['city'] !== null) === i);
+    // return rootState.codes.filter((item, i) => rootState.codes.findIndex(a => a['city'] === item['city']) === i);
+  }
+
 };
 
 const actions = {

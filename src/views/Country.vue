@@ -13,6 +13,10 @@
       v-if="invalidURLMessage"
       :message="invalidURLMessage" />
 
+    <CitySuggestions
+      v-if="citySuggestions"
+      :citySuggestions="citySuggestions" />
+
     <Table
     :title="tableTitle"
     :codes="countryCodes" />
@@ -28,6 +32,7 @@ import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
 import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
+import CitySuggestions from '../components/CitySuggestions.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -41,6 +46,7 @@ name: 'Country',
     TableSkeleton,
     CardCarouselSkeleton,
     Breadcrumb,
+    CitySuggestions,
   },
 
   mounted() {
@@ -54,7 +60,8 @@ name: 'Country',
       loadStatus: 'countryLoadStatus',
       invalidURLMessage: 'invalidURLMessage',
       breadcrumb: 'breadcrumb',
-    })
+      citySuggestions: 'citySuggestions',
+    }),
   },
 }
 </script>
