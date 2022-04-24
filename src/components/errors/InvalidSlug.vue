@@ -18,6 +18,7 @@ export default {
 <style lang="scss">
 .user__info {
   font-size: $mobile-help;
+  font-weight: 600;
   text-align: left;
   // max-width: 24.3076923rem;
   width: 90%;
