@@ -220,7 +220,10 @@ export default {
     width: 15.625rem; // 250px
     height: 25rem; // 400px
     border-radius: 12px;
-    box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
+    // box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
+    box-shadow: $card-shadow rgba($black, 0.2); 
+    -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
+    -moz-box-shadow: $card-shadow rgba($black, 0.2);
     position: absolute;
     transition: all .1s ease-in;
     background: #FFF;

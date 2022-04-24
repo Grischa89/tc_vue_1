@@ -69,7 +69,7 @@
 
       <div class="form__btn__container">
         <button class="form__btn form__btn--submit" type="submit">Submit</button>
-        <button class="form__btn form__btn--cancel" type="button" @click="cancelForm">Cancel</button>
+        <!-- <button class="form__btn form__btn--cancel" type="button" @click="cancelForm">Cancel</button> -->
       </div>
     </form>
     
@@ -203,19 +203,19 @@ export default {
       }
     },
 
-    cancelForm() {
-      this.data.player_code = '';
-      this.data.event = '';
-      this.data.code_action = '';
-      this.data.user_timezone = '';
-      this.data.country = '';
-      this.codeInput = '';
+    // cancelForm() {
+    //   this.data.player_code = '';
+    //   this.data.event = '';
+    //   this.data.code_action = '';
+    //   this.data.user_timezone = '';
+    //   this.data.country = '';
+    //   this.codeInput = '';
 
-      this.errors.invalidCode = '';
-      this.errors.invalidEvent = '';
-      this.errors.invalidCodeAction = '';
-      this.errors.invalidCountry = '';
-    },
+    //   this.errors.invalidCode = '';
+    //   this.errors.invalidEvent = '';
+    //   this.errors.invalidCodeAction = '';
+    //   this.errors.invalidCountry = '';
+    // },
 
     restrictKeys(e) {
       this.errors.invalidCode = '';

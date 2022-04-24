@@ -102,7 +102,9 @@ export default {
     border-radius: .75rem;
     width: 90%;
     // width: 83.333333%;
-    box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.324);
+    box-shadow: $card-shadow rgba($black, 0.2); 
+    -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
+    -moz-box-shadow: $card-shadow rgba($black, 0.2);
     // TODO: @media für alles > mobile
   }
 }

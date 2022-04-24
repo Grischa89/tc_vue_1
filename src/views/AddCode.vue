@@ -54,7 +54,7 @@
 
       <div class="form__btn__container">
         <button class="form__btn form__btn--submit" type="submit">Submit</button>
-        <button class="form__btn form__btn--cancel" type="button" @click="cancelForm">Cancel</button>
+        <!-- <button class="form__btn form__btn--cancel" type="button" @click="cancelForm">Cancel</button> -->
       </div>
     </form>
 
@@ -134,16 +134,16 @@ export default {
         });
     },
 
-    cancelForm() {
-      this.data.player_code = '';
-      this.codeInput = '';
-      this.data.country = '';
-      this.data.city = '';
+    // cancelForm() {
+    //   this.data.player_code = '';
+    //   this.codeInput = '';
+    //   this.data.country = '';
+    //   this.data.city = '';
       
-      this.errors.invalidCode = '';
-      this.errors.invalidCountry = '';
-      this.errors.invalidCity = '';
-    },
+    //   this.errors.invalidCode = '';
+    //   this.errors.invalidCountry = '';
+    //   this.errors.invalidCity = '';
+    // },
 
     restrictKeys(e) {
       this.errors.invalidCode = '';
@@ -249,7 +249,10 @@ export default {
   background-color: #fff;
   padding: .75rem 0;
   border-radius: 0.75rem;
-  box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
+  // box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
+  box-shadow: $card-shadow rgba($black, 0.2); 
+	-webkit-box-shadow: $card-shadow rgba($black, 0.2); 
+	-moz-box-shadow: $card-shadow rgba($black, 0.2);
 
   &__title {
     margin-top: 1.5rem;
@@ -361,7 +364,8 @@ export default {
   }
 
   &__btn__container {
-    margin-top: 1.5rem;
+    margin-top: 1.75rem;
+    margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
   }

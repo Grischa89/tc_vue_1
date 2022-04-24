@@ -32,7 +32,7 @@ $error-shadow: rgba($error, 0.4);
 $success: #04902B;
 $success-shadow: rgba($success, 0.4);
 
-$help: rgba($black, .6);
+$help: rgba($black, .4);
 $help-shadow: rgba($black, 0.2);
 
 $disabled: rgba($help, .2);
@@ -40,3 +40,5 @@ $disabled: rgba($help, .2);
 $info: #0066F5;
 $info-shadow: rgba($info, 0.4);
 
+// SHADOWS
+$card-shadow: 5px 5px 20px;

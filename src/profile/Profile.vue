@@ -127,7 +127,10 @@ export default {
             padding: 1rem;
             background-color: #FFF;
             // background-color: rgba($accent-light, .5);
-            box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
+            // box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
+            box-shadow: $card-shadow rgba($black, 0.2); 
+            -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
+            -moz-box-shadow: $card-shadow rgba($black, 0.2);
             border-radius: .5rem;
 
             &__heading {
