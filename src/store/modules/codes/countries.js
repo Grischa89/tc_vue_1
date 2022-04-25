@@ -4,6 +4,8 @@ const state = {
 
   countryLoadStatus: null,
 
+  suggestionCodes: null,
+
 };
 
 const getters = {
@@ -24,8 +26,7 @@ const getters = {
     // So it might be that a['city'] === item['city'] is true, but the index which findIndex will return will not match the filter method's criteria of === i
     // That way object with duplicate entries will have a different index (a['city'].index) from i
     // So only the first occurrence of item['city'] === a['city'] will meet the filter method's criteria since the index that is returned from findIndex === i
-
-    return rootState.codes.filter((item, i) => rootState.codes.findIndex(a => (a['city'] === item['city']) && (a['city'] !== null)) === i);
+    if (state.suggestionCodes) return state.suggestionCodes.filter((item, i) => state.suggestionCodes.findIndex(a => (a['city'] === item['city']) && (a['city'] !== null)) === i);
   }
 
 };
@@ -69,6 +70,8 @@ const actions = {
           commit('setBreadcrumb', { continentName: res.data.data[0].continent, continentSlug: res.data.data[0].continent_slug });
         }
 
+        commit('setSuggestionCodes', res.data.data);
+
         return commit('addDataPositions', res.data.data);
       })
       .then(() => {
@@ -105,7 +108,11 @@ const mutations = {
 
   setCountryStatus(state, status) {
     state.countryLoadStatus = status;
-  }
+  },
+
+  setSuggestionCodes(state, codes) {
+    state.suggestionCodes = codes;
+  },
 
   // setLatestCountryCodes(state, countryCodes) {
   //   state.countryCodes = countryCodes;

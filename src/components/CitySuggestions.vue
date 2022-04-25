@@ -1,6 +1,6 @@
 <template>
   <div class="suggestions">
-    <!-- <h2 class="suggestions__title">Popular Cities</h2> -->
+    <h2 v-if="currentRouteName === 'City'" class="suggestions__title">Explore More Cities&nbsp;&mdash;</h2>
     <div class="suggestions__grid">
       <div
         v-for="(city, i) in slicedSuggestions"
@@ -8,6 +8,11 @@
         class="suggestions__grid__item">
           <router-link class="suggestions__grid__item__link" :to="`/${city.continent_slug}/${city.country_slug}/${city.city_slug}`">{{ city.city }}</router-link>
       </div>
+    </div>
+    <div v-if="currentRouteName === 'City'" class="suggestions__link">
+      <router-link :to="`/${countrySuggestion.continentSlug}/${countrySuggestion.countrySlug}`">
+        Show Codes from  {{ countrySuggestion.name }}
+      </router-link>
     </div>
     <!-- <div class="suggestions__item">City</div>
     <div class="suggestions__item">City</div>
@@ -18,8 +23,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
   name: 'CitySuggestions',
 
@@ -32,11 +35,20 @@ export default {
 
   computed: {
     slicedSuggestions() {
-      if (this.citySuggestions) {
+      // if (this.citySuggestions) {
+        // TODO: Filter array for current city_slug to not be displayed
         // Sort citySuggestions array in descending order by city_ranking
         const sortByCityRanking = this.citySuggestions.sort((a, b) => b.city_ranking - a.city_ranking);
         return sortByCityRanking.slice(0, 6);
-      }
+      // }
+    },
+
+    currentRouteName() {
+      return this.$route.name;
+    },
+
+    countrySuggestion() {
+      return { name: this.citySuggestions[0].country, countrySlug: this.citySuggestions[0].country_slug, continentSlug: this.citySuggestions[0].continent_slug }
     }
   }
 
@@ -52,17 +64,43 @@ export default {
   width: 90%;
   margin: 1rem auto;
 
-  // &__title {
+  &__title {
+    margin: 1.25rem 0;
+    padding: 0 .25rem;
+    font-size: $mobile-subheading;
+    letter-spacing: .0625rem;
+    box-shadow: $line-behind-light;
+    -webkit-box-shadow: $line-behind-light; 
+    -moz-box-shadow: $line-behind-light;
+  }
 
-  // }
+  &__link {
+    display: flex;
+    align-items: center;
+    margin-top: 1.25rem;
+    font-size: $mobile-body;
+    font-weight: bold;
+    text-decoration: underline;
+
+    &::after {
+      content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" class="suggestions__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="show-country-codes"><title id="show-country-codes">Show Codes from Country</title><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>');
+      display: block;
+      height: 1rem;
+      width: 1rem;
+      margin-left: .25rem;
+    }
+  }
 
   &__grid {
     display: grid;
+    justify-items: stretch;
     gap: .5rem;
     height: 100%;
-    margin: .5rem auto;
+    width: 100%;
+    // margin: .5rem auto;
     // padding: 2rem 1rem;
     grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     background: hsla(0, 0%, 100%, 1);
     // background: linear-gradient($primary-gradient);
     // background: -webkit-linear-gradient($primary-gradient);
@@ -73,7 +111,7 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: left;
-    padding: .25rem .5rem;
+    padding: .25rem 1.125rem;
     border-radius:2rem;
     // border-radius: .75rem;
     grid-column: span 2;

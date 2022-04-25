@@ -24,6 +24,10 @@ otherwise no classes -->
       :codes="cityCodes"
       :isCity="isCity" />
 
+    <CitySuggestions
+      v-if="citySuggestions"
+      :citySuggestions="citySuggestions" />
+
     <CardCarousel
       :codes="cityCodes"
       :isCity="isCity" />
@@ -37,6 +41,7 @@ import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
 import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
+import CitySuggestions from '../components/CitySuggestions.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -55,6 +60,7 @@ export default {
     TableSkeleton,
     CardCarouselSkeleton,
     Breadcrumb,
+    CitySuggestions,
   },
 
   created() {
@@ -70,6 +76,7 @@ export default {
       loadStatus: 'cityLoadStatus',
       invalidURLMessage: 'invalidURLMessage',
       breadcrumb: 'breadcrumb',
+      citySuggestions: 'citySuggestions',
     })
   },
 
