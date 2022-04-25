@@ -5,7 +5,7 @@
       v-for="(city, i) in slicedSuggestions"
       :key="i"
       class="suggestions__item">
-        <router-link :to="`/${city.continent_slug}/${city.country_slug}/${city.city_slug}`">{{ city.city }}</router-link>
+        <router-link class="suggestions__item__link" :to="`/${city.continent_slug}/${city.country_slug}/${city.city_slug}`">{{ city.city }}</router-link>
     </div>
     <!-- <div class="suggestions__item">City</div>
     <div class="suggestions__item">City</div>
@@ -58,23 +58,35 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: left;
-    padding: 1rem;
+    padding: .25rem .5rem;
     border-radius:2rem;
+    // border-radius: .75rem;
     grid-column: span 2;
-    word-break: break-word;
-    // word-wrap: break-word;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    min-height: 4rem;
-    background-color: $white;
-    color: $secondary-lighter;
-    font-weight: bold;
-    line-height: 100%;
-    text-transform: uppercase;
-    box-shadow: 0 0 0 1px $primary-darker;
+    min-height: 3rem;
+
+    // background: hsla(33, 91%, 62%, 1);
+    // background: linear-gradient(90deg, hsla(33, 91%, 62%, 1) 10%, hsla(33, 91%, 50%, 1) 80%);
+    // background: -webkit-linear-gradient(90deg, hsla(33, 91%, 62%, 1) 10%, hsla(33, 91%, 50%, 1) 80%);
+    // background: -moz-linear-gradient(90deg, hsla(33, 91%, 62%, 1) 10%, hsla(33, 91%, 50%, 1) 80%);
+
+    background-color: $primary;
+    // box-shadow: 0 0 0 1px $in-between;
+    border: solid $in-between 1px; 
+    box-shadow: 2px 2px 5px rgba($black, 0.1); 
+    -webkit-box-shadow: 2px 2px 5px rgba($black, 0.1); 
+    -moz-box-shadow: 2px 2px 5px rgba($black, 0.1); 
+    color: $black;
+    font-weight: 600;
+    font-size: $mobile-body;
+    // text-transform: uppercase;
+    word-break: break-all;
+    word-wrap: break-word;
 
     &__link {
-      
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;  
+      overflow: hidden;
 
       &:hover {
         text-decoration: underline;
