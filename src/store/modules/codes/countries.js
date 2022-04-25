@@ -18,13 +18,14 @@ const getters = {
 
   citySuggestions: (state, getters, rootState) => {
     // return rootState.codes.filter(item => item.city !== null);
-// info: "scheduler flush. This is likely a Vue internals bug. Please open an issue at https://new-issue.vuejs.org/?repo=vuejs/vue-next"
 
-    // const uniqueCities = rootState.codes.filter((item, i) => rootState.codes.findIndex(a => a['city'] === item['city']) === i);
-    // const realCities = uniqueCities.filter(item => item.city !== null);
-    // realCities.length > 6 ? 
-    return rootState.codes.filter((item, i) => rootState.codes.findIndex(a => (a['city'] === item['city']) && a['city'] !== null) === i);
-    // return rootState.codes.filter((item, i) => rootState.codes.findIndex(a => a['city'] === item['city']) === i);
+    // filter wil start with the first item in the array, then findIndex will iterate over that item
+    // Once findIndex is at the end of its array, filter will increase the array index and findIndex will iterate over that item again
+    // So it might be that a['city'] === item['city'] is true, but the index which findIndex will return will not match the filter method's criteria of === i
+    // That way object with duplicate entries will have a different index (a['city'].index) from i
+    // So only the first occurrence of item['city'] === a['city'] will meet the filter method's criteria since the index that is returned from findIndex === i
+
+    return rootState.codes.filter((item, i) => rootState.codes.findIndex(a => (a['city'] === item['city']) && (a['city'] !== null)) === i);
   }
 
 };
