@@ -19,9 +19,6 @@ export default createStore({
 
     codes: null,
 
-    // invalidSlug: null,
-
-    // validSlug: null,
     invalidURLMessage: null,
 
     tableTitle: null,
@@ -98,7 +95,7 @@ export default createStore({
       // if (slugs === '') {
       //   state.invalidURLMessage
       // }
-      slugs === '' ? state.invalidURLMessage = '' : state.invalidURLMessage = `No match was found for the URL you entered ('${slugs.invalidSlug}'). Displaying codes for '${slugs.validSlug}' instead.`;
+      slugs === '' ? state.invalidURLMessage = '' : state.invalidURLMessage = `No match was found for the URL you entered: ${slugs.invalidSlug}\/. Instead displaying codes for ${slugs.validSlug}.`;
     },
 
     setTableTitle(state, title) {
