@@ -111,7 +111,7 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: left;
-    padding: .25rem 1.125rem;
+    padding: .25rem .75rem;
     border-radius:2rem;
     // border-radius: .75rem;
     grid-column: span 2;
