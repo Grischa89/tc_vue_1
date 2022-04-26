@@ -30,12 +30,6 @@
       </div>
     </div>
 
-    <!-- Von Twitter - GitHub, Apache License 2.0, https://commons.wikimedia.org/w/index.php?curid=112280645 
-    
-    <style type="text/css">
-	.st0{fill:#1D9BF0;}
-</style>-->
-
     <div class="footer__container">
       <div class="footer__container__item">
         &copy; {{ currentYear }} trainercodes.net by // TODO
@@ -125,6 +119,7 @@ export default {
       line-height: 110%;
 
       .footer__container__item {
+        // font-family: Monaco, monospace;
         color: rgba($white, .5);
         margin: 0;
       }
