@@ -68,9 +68,8 @@ const actions = {
           window.document.title = `${res.data.data[0].country} — Recent Codes From ${res.data.data[0].country} — trainercodes.net`;
           commit('setTableTitle', res.data.data[0].country);
           commit('setBreadcrumb', { continentName: res.data.data[0].continent, continentSlug: res.data.data[0].continent_slug });
+          commit('setSuggestionCodes', res.data.data);
         }
-
-        commit('setSuggestionCodes', res.data.data);
 
         return commit('addDataPositions', res.data.data);
       })

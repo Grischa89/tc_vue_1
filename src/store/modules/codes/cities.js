@@ -53,6 +53,7 @@ const actions = {
             if ((res.data.new_cache_key.match(/\//g) || []).length > 2) {
               commit('setTableTitle', res.data.data[0].country);
               commit('setBreadcrumb', { continentName: res.data.data[0].continent, continentSlug: res.data.data[0].continent_slug });
+              commit('setSuggestionCodes', res.data.data);
               window.document.title = `${res.data.data[0].country} — Recent Codes From ${res.data.data[0].country} — trainercodes.net`;
             } else {
               // (is continent: /europe/span/madr)
