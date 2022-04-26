@@ -190,7 +190,7 @@ export default {
 
 .carousel {
   margin: 2rem auto;
-  padding: 1.5rem 0;
+  padding: 4rem 0;
   display: flex;
   flex-direction: column;
   width: 100%;
