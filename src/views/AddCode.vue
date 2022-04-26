@@ -238,7 +238,7 @@ export default {
   // width: 90%;
   padding: 2rem;
   max-width: 24.3076923rem;
-  margin: 0 auto;
+  margin: 1.5rem auto 0 auto;
 
   // @media(min-width: 1024px) {
   //   width: 40%;

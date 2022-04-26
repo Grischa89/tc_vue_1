@@ -1,10 +1,13 @@
 <template>
-<div id="wrapper">
   <LastUpdatedInfoBanner />
   <Navbar
     :isAuthenticated="isAuthenticated" />
   
-  <router-view :key="$route.fullPath" />
+  <div class="main-wrapper">
+    <router-view :key="$route.fullPath" />
+  </div>
+
+  <Footer />
 
   <vue-cookie-comply
     class="cookie-comply--sticky"
@@ -33,13 +36,12 @@
       </footer>
     </template> -->
   </vue-cookie-comply>
-
-</div>
 </template>
 
 <script>
 import LastUpdatedInfoBanner from './components/LastUpdatedInfoBanner.vue';
 import Navbar from './components/navbar/Navbar.vue';
+import Footer from './components/Footer.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -49,6 +51,7 @@ export default {
   components: {
     LastUpdatedInfoBanner,
     Navbar,
+    Footer,
   },
 
   data() {
@@ -238,19 +241,32 @@ export default {
   -webkit-tap-highlight-color: $primary;
 }
 
-body {
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   // font-family: Helvetica, sans-serif;
   // font-family: Monaco, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $black;
-
 }
+
 #app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  // position: relative;
+  // min-height: 100vh;
   text-align: center;
   background-color: $white;
   // background-image: linear-gradient(to right bottom, #fefefa, #fdfcf3, #fcf9ec, #fcf6e5, #fdf3de, #fcedd0, #fce6c3, #fddfb6, #fcd39f, #fcc689, #fbb974, #fbab60);
+}
+
+.main-wrapper {
+  flex: 1;
+  margin-bottom: 5rem;
 }
 
 #nav {
