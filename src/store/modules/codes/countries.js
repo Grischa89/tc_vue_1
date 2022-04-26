@@ -18,7 +18,7 @@ const getters = {
   //   return state.countryCodes[0].country;
   // }
 
-  citySuggestions: (state, getters, rootState) => {
+  citySuggestions: state => {
     // return rootState.codes.filter(item => item.city !== null);
 
     // filter wil start with the first item in the array, then findIndex will iterate over that item
