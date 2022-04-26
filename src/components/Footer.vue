@@ -36,7 +36,7 @@
 	.st0{fill:#1D9BF0;}
 </style>-->
 
-    <div class="footer__container footer__container--bottom">
+    <div class="footer__container">
       <div class="footer__container__item">
         &copy; {{ currentYear }} trainercodes.net by // TODO
       </div>
@@ -75,12 +75,60 @@ export default {
   background-color: $black;
   padding-top: 1rem;
 
+  @media(min-width: 550px) { // TODO width wenn copyright steht
+    .footer {
+      grid-template-columns: repeat(2, 1fr);
+
+      &__container {
+        grid-column: span 1;
+
+        &:nth-child(1) {
+          grid-row: span 2;
+        }
+
+        &:last-of-type {
+          grid-column: span 1;
+        }
+      }
+
+    }
+  }
+
+  @media(min-width: 900px) { // TODO width wenn copyright steht
+    .footer {
+      grid-template-columns: repeat(2, 1fr);
+
+      &__container {
+        grid-column: span 1;
+
+        &:nth-child(1) {
+          grid-row: span 1;
+          flex-direction: row;
+        }
+
+        &:last-of-type {
+          grid-column: span 2;
+        }
+      }
+    }
+  }
+
   &__container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1rem;
     grid-column: span 2;
+
+    &:last-of-type {
+      grid-column: span 2;
+      line-height: 110%;
+
+      .footer__container__item {
+        color: rgba($white, .5);
+        margin: 0;
+      }
+    }
 
     &__item {
       display: flex;
@@ -97,19 +145,6 @@ export default {
         color: $secondary;
       }
 
-    }
-  }
-
-  &__container--bottom {
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    grid-column: span 2;
-    line-height: 110%;
-
-    .footer__container__item {
-      color: rgba($white, .5);
-      margin: 0;
     }
   }
 }
