@@ -33,11 +33,22 @@
                 </svg>
             </div>
         </div>
-        <div class="profile__item">
+        <div class="profile__item profile__item--action">
+            <div class="profile__item__buttons profile__item__buttons--action">
+                <router-link :to="{ name: 'AddSubscription' }" class="profile__item__buttons__btn profile__item__buttons__btn--action">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__buttons__btn__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="add-subscription">
+                    <title id="add-subscription">Add Subscription</title>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                </router-link>
+            </div>
             <h2 class="profile__item__heading">Your Subscriptions</h2>
-            <ul class="profile__item__list">
+            <ul v-if="subscriptions" class="profile__item__list">
                 <li class="profile__item__list__item">Post Trainer Code before Raid Hour</li>
                 <li class="profile__item__list__item">Get new Trainer Codes in your mail</li>
+            </ul>
+            <ul v-else class="profile__item__list">
+                <li>You don't have any subscriptions yet.</li>
             </ul>
         </div>
         <div class="profile__item">
@@ -62,6 +73,7 @@ export default {
 
     data() {
         return {
+            subscriptions: false,
         }
     },
 
@@ -118,6 +130,24 @@ export default {
             box-shadow: none;
         }
 
+        &--action {
+            position: relative;
+
+            .profile__item__buttons--action {
+                position: absolute;
+                top: 0;
+                right: .25rem;
+
+                .profile__item__buttons__btn--action {
+                    background-color: $accent;
+                    color: $white;
+                    border-radius: 50%;
+                    padding: .25rem;
+                    box-shadow: $card-shadow rgba($black, 0.2);
+                }
+            }
+        }
+
         &__heading {
             font-size: $mobile-heading;
             text-transform: uppercase;
@@ -155,6 +185,11 @@ export default {
                     margin-right: .25rem;
                 }
 
+                &__icon {
+                    height: 1.625rem;
+                    width: 1.625rem;
+                }
+
                 &--edit {
                     padding: .5em 1.5em;
                     color: $secondary;
@@ -171,7 +206,7 @@ export default {
             // display: flex;
             // flex-direction: column;
             // align-items: flex-start;
-            // margin: 1rem auto;
+            margin-top: 1rem;
 
             &__item {
                 // display: flex;
@@ -196,6 +231,8 @@ export default {
                 width: $mobile-subheading;
             }
         }
+
+        
     }
 }
 
