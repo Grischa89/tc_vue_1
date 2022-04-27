@@ -167,19 +167,6 @@ export default {
             }
         }
 
-        // &--warning {
-        //     justify-content: center;
-        //     align-items: center;
-        //     color: $error;
-        //     border-style: solid;
-        //     border-color: $error;
-        //     background-color: rgba($error, .1);
-        // }
-
-        &__divider {
-            border-bottom: .5px solid black;
-        }
-
         &__list {
             // display: flex;
             // flex-direction: column;
@@ -260,7 +247,7 @@ export default {
     }
 
     &__link {
-        font-weight: bold;
+        font-weight: 500;
         text-decoration: underline;
     }
 
