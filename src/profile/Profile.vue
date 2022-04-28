@@ -5,12 +5,12 @@
             <h1 class="profile__item__heading">Hi long_username!</h1>
             <div class="profile__item__buttons">
                 <button type="button" class="profile__item__buttons__btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__buttons__btn__prepend" viewBox="0 0 20 20" fill="currentColor" aria-labelledby="edit-profile">
-                            <title id="edit-profile">Edit Your Profile</title>
-                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                            <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
-                        </svg>
-                        <span>Edit</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__buttons__btn__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="edit-profile">
+                        <title id="user-settings">User Settings</title>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Settings</span>
                 </button>
             </div>
         </div>
@@ -128,6 +128,11 @@ export default {
             // padding-top: 3rem;
             background-color: transparent;
             box-shadow: none;
+
+            .profile__item__heading {
+                padding: 0 .5rem;
+                box-shadow: inset 0 -.75rem 0 0 $in-between;
+            }
         }
 
         &--action {
@@ -152,13 +157,18 @@ export default {
             font-size: $mobile-heading;
             text-transform: uppercase;
             font-weight: bold;
+
+            // &:first-child {
+            //     padding: 0 .5rem;
+            //     box-shadow: inset 0 -.75rem 0 0 $in-between;
+            // }
         }
 
         &__image {
             height: 5rem;
             width: 5rem;
             border-radius: 50%;
-            background-color: coral;
+            background-color: $primary;
             margin-bottom: 1rem;
         }
 
