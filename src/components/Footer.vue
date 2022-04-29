@@ -2,16 +2,16 @@
   <footer class="footer">
     <div class="footer__container">
       <div class="footer__container__item">
-        <router-link to="#">About Us</router-link>
+        <router-link to="#" class="footer__container__item__link">About Us</router-link>
       </div>
       <div class="footer__container__item">
-        <router-link to="#">Privacy Policy</router-link>
+        <router-link to="#" class="footer__container__item__link">Privacy Policy</router-link>
       </div>
       <div class="footer__container__item">
-        <router-link to="#">Legal Notice</router-link>
+        <router-link to="#" class="footer__container__item__link">Legal Notice</router-link>
       </div>
       <div class="footer__container__item">
-        <router-link to="#">Contact</router-link>
+        <router-link to="#" class="footer__container__item__link">Contact</router-link>
       </div>
     </div>
 
@@ -67,7 +67,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   background-color: $black;
-  padding-top: 1rem;
+  padding-top: .5rem .5rem;
 
   @media(min-width: 550px) { // TODO width wenn copyright steht
     .footer {
@@ -135,6 +135,11 @@ export default {
       color: rgba($white, 1);
       text-align: left;
       margin: .5rem auto;
+
+      &__link:hover {
+        -webkit-tap-highlight-color: $primary;
+        text-decoration: underline;
+      }
 
       &__prepend {
         height: $mobile-body;
