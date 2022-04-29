@@ -25,16 +25,39 @@ const getters = {
 
 const actions = {
 
-  fetchClientLocation({ commit }) {
+  async fetchClientLocation({ commit }) {
+
+    try {
+      // throw new Error('No Timezone');
+      let res = await Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      if (res) {
+        return res;
+      } else {
+        throw new Error('No Timezone');
+      }
+    } catch(err) {
+      return err.message;
+    }
+
+    // return 
+
+    // return axios.get(`https://api.ipbase.com/v2/info?apikey=${process.env.VUE_APP_GEO_API_KEY}&ip=1.1.1.1`)
+    // .then(res => {
+    //   console.log('res.data', res.data.data);
+    //   commit('setClientLocation', res.data.data);
+    //   return res.data.data;
+    // })
     
-    return axios.get(`https://api.freegeoip.app/json/?apikey=${process.env.VUE_APP_GEO_API_KEY}`)
-    .then(res => {
-      commit('setClientLocation', res.data);
-      return res.data;
-    })
-    .catch(err => {
-      console.log('error', err);
-    });
+    // return axios.get(`https://api.ipbase.com/v2/info?apikey=${process.env.VUE_APP_GEO_API_KEY}&ip=1.1.1.1`)
+    // .then(res => {
+    //   console.log('res.data', res.data.data);
+    //   commit('setClientLocation', res.data.data);
+    //   return res.data.data;
+    // })
+    // .catch(err => {
+    //   console.log('error', err);
+    // });
   },
 };
 

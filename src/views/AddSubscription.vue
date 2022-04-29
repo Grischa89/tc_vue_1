@@ -115,10 +115,14 @@ export default {
     //   .catch(() => {
     //     this.errors.loadSubscriptionOptions = 'Something went wrong retrieving possible subscriptions. Please reload the page or try again later.';
     //   });
-    
+
     this.$store.dispatch('fetchClientLocation')
       .then(res => {
-        this.data.user_timezone = res.time_zone;
+        if (res && res !== 'No Timezone') {
+          this.data.user_timezone = res;
+        } else {
+          this.data.user_timezone = '';
+        }
       });
   },
 

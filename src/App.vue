@@ -11,7 +11,7 @@
 
   <vue-cookie-comply
     class="cookie-comply--sticky"
-    v-if="isEurope"
+    v-if="consentNeeded"
     :headerTitle="headerTitle"
     :headerDescription="headerDescription"
     :preferences="preferences"
@@ -56,7 +56,7 @@ export default {
 
   data() {
     return {
-      isEurope: false,
+      consentNeeded: false,
       headerTitle: 'Cookie consent',
       headerDescription: 'We use cookies to ensure you get the best experience on our website. You can opt-out or customize the cookie settings under \"Preferences\".',
       preferences: [
@@ -130,7 +130,6 @@ export default {
     initCookieConsent() {
       // Get 'cookie-comply' item from localStorage
       let cookieComply = JSON.parse(localStorage.getItem('cookie-comply'));
-      let location;
       
       // If cookie-comply key exists in localStorage
       if (cookieComply) {
@@ -144,31 +143,33 @@ export default {
           localStorage.removeItem('cookie-comply');
           localStorage.removeItem('answeredAt');
 
-          this.isEurope = true;
+          this.consentNeeded = true;
         }
       } // When 'cookie-comply' is not set in localStorage (new user)
       else {
-         // Save 'fetchClientLocation's response data
-        location = this.$store.dispatch('fetchClientLocation');
 
-        location
-        .then(res => {
-          // Get time zone
-          let timeZoneEurope = res.time_zone.includes('Europe');
+        this.$store.dispatch('fetchClientLocation')
+          .then(res => {
+
+            console.log('res', res.message);
+            // Get time zone
+            const userTimezone = res.time_zone.includes('Europe') || res.time_zone.includes('America/Los_Angeles') || res.includes('No Timezone');
+            
+            // Check if time zone property includes 'Europe'
+            if(userTimezone) {
+              console.log('EU/ CAL/ No Timezone, show banner.');
+              this.consentNeeded = true;
+            } // If fromEurope is false, set localStorage item and invoke runPrefScripts()
+            else {
+              console.log('NON-EU/ NON-CAL, no banner needed.');
+              this.acceptedAll();
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            this.consentNeeded = true;
+          });
           
-          // Check if time zone property includes 'Europe'
-          if(timeZoneEurope) {
-            console.log('EU, show banner.');
-            this.isEurope = true;
-          } // If fromEurope is false, set localStorage item and invoke runPrefScripts()
-          else {
-            console.log('NON-EU, no banner needed.');
-            this.acceptedAll();
-          }
-        })
-        .catch(err => {
-          console.log('err in App.vue', err);
-        });
       }
     },
 
