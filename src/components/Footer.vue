@@ -80,7 +80,10 @@ export default {
           grid-row: span 2;
         }
 
-        &:last-of-type {
+        &:last-of-type, &:nth-child(2) {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
           grid-column: span 1;
         }
       }
