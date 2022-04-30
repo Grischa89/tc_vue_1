@@ -19,6 +19,7 @@ import RequestPasswordReset from '../auth/password/RequestPasswordReset.vue'
 import ResetPassword from '../auth/password/ResetPassword.vue'
 import RequestSuccess from '../auth/_shared/RequestSuccess.vue'
 import AddSubscription from '../views/AddSubscription.vue'
+import SubscriptionsAll from '../views/subscriptions/SubscriptionsAll.vue'
 
 // Sorry, this page isn't available.
 // The link you followed may be broken, or the page may have been removed. Go back to Instagram.
@@ -136,7 +137,18 @@ const routes = [
     name: 'AddSubscription',
     component: AddSubscription,
     meta: {
+      // requiresAuth: true,
       title: 'Add A Subscription',
+    },
+  },
+
+  {
+    path: '/subscriptions/all',
+    name: 'SubscriptionsAll',
+    component: SubscriptionsAll,
+    meta: {
+      // requiresAuth: true,
+      title: 'All Your Subscriptions',
     },
   },
 

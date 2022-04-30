@@ -5,6 +5,8 @@ const state = {
   eventOptions: '',
 
   codeActionOptions: '',
+
+  subscriptions: '',
 };
 
 const getters = {
@@ -16,6 +18,10 @@ const getters = {
   codeActionOptions: state => {
     return state.codeActionOptions;
   },
+
+  subscriptions: state => {
+    return state.subscriptions;
+  }
 
 };
 
@@ -35,6 +41,27 @@ const actions = {
       console.log('error', err);
       return err.response.status;
     });
+  },
+
+  fetchAllSubscriptions({ commit }, user) {
+
+    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
+
+    // const config = {
+    //   headers: {
+    //      'Authorization': "JWT " + accessToken,
+    //      'Content-Type': 'application/json',
+    //   }
+    // };
+
+    return axios.get('/api/v1/subscription/list_subscriptions/')
+      .then(res => {
+        console.log('res in list_subscr', res);
+        commit('setSubscriptions', res.data);
+      })
+      .catch(err => {
+        console.log('err in list_subscr', err);
+      })
   },
 
   addSubscription({ commit }, data) {
@@ -63,6 +90,10 @@ const mutations = {
   setCodeActionOptions(state, codeActionOptions) {
     state.codeActionOptions = codeActionOptions;
   },
+
+  setSubscriptions(state, subscriptions) {
+    state.subscriptions = subscriptions;
+  }
 
   // setTimeZone(state, clientTimeZone) {
   //   // res.data.time_zone will look sth like 'Europe/Berlin'
