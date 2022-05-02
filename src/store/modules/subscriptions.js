@@ -20,7 +20,7 @@ const getters = {
   },
 
   subscriptions: state => {
-    return state.subscriptions;
+    if (state.subscriptions) return state.subscriptions.sort((a, b) => b.created_at.localeCompare(a.created_at));
   }
 
 };
@@ -57,6 +57,8 @@ const actions = {
     return axios.get('/api/v1/subscription/list_subscriptions/')
       .then(res => {
         console.log('res in list_subscr', res);
+        // console.dir(res.data[4]);
+        // console.dir(res.data[4].action);
         commit('setSubscriptions', res.data);
       })
       .catch(err => {
@@ -79,6 +81,34 @@ const actions = {
       return err.response.status;
     });
   },
+
+  updateSubscription({ commit }, data) {
+
+    return axios.patch(`/api/v1/subscription/${data.pk}/`, data.data)
+      .then(res => {
+        console.log('res in editSubscription', res);
+        commit('setUpdatedSubscriptions', { index: data.index, item: res.data });
+        return res.status;
+      })
+      .catch(err => {
+        console.log('err in editSubscription', err)
+        return err.response.status;
+      })
+  },
+
+  deleteSubscription({ commit }, data) {
+
+    return axios.delete(`/api/v1/subscription/${data.pk}/`)
+      .then(res => {
+        console.log('res in deleteSubscription', res);
+        commit('setDeletedSubscriptions', data.index);
+        return res.status;
+      })
+      .catch(err => {
+        console.log('err in deleteSubscription', err);
+        return err.response.status;
+      })
+  }
 };
 
 const mutations = {
@@ -93,7 +123,19 @@ const mutations = {
 
   setSubscriptions(state, subscriptions) {
     state.subscriptions = subscriptions;
+  },
+
+  setUpdatedSubscriptions(state, data) {
+    // TODO: data.index undefined auffangen mit Array.findIndex
+    console.log('data in setEditedSubscriptions', data);
+    state.subscriptions.splice(data.index, 1, data.item);
+  },
+
+  setDeletedSubscriptions(state, index) {
+    // TODO: index undefined auffangen mit Array.findIndex
+    state.subscriptions.splice(index, 1);
   }
+
 
   // setTimeZone(state, clientTimeZone) {
   //   // res.data.time_zone will look sth like 'Europe/Berlin'
