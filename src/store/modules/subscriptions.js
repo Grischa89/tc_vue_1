@@ -7,6 +7,8 @@ const state = {
   codeActionOptions: '',
 
   subscriptions: '',
+
+  subscriptionLoadStatus: null,
 };
 
 const getters = {
@@ -20,8 +22,13 @@ const getters = {
   },
 
   subscriptions: state => {
+    // Sort subscriptions in descending order y created_at
     if (state.subscriptions) return state.subscriptions.sort((a, b) => b.created_at.localeCompare(a.created_at));
-  }
+  },
+
+  subscriptionLoadStatus: state => {
+    return state.subscriptionLoadStatus;
+  },
 
 };
 
@@ -45,24 +52,23 @@ const actions = {
 
   fetchAllSubscriptions({ commit }, user) {
 
-    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
-
-    // const config = {
-    //   headers: {
-    //      'Authorization': "JWT " + accessToken,
-    //      'Content-Type': 'application/json',
-    //   }
-    // };
+    commit('setSubscriptionStatus', 'loading');
 
     return axios.get('/api/v1/subscription/list_subscriptions/')
       .then(res => {
         console.log('res in list_subscr', res);
-        // console.dir(res.data[4]);
-        // console.dir(res.data[4].action);
+
         commit('setSubscriptions', res.data);
+        commit('setSubscriptionStatus', 'success');
+
+        return res.status;
       })
       .catch(err => {
         console.log('err in list_subscr', err);
+        commit('setSubscriptionStatus', 'error');
+
+        // TODO: right err handling in component (profile/ subscriptions/all)
+        return err.response.status;
       })
   },
 
@@ -123,6 +129,10 @@ const mutations = {
 
   setSubscriptions(state, subscriptions) {
     state.subscriptions = subscriptions;
+  },
+
+  setSubscriptionStatus(state, status) {
+    state.subscriptionLoadStatus = status;
   },
 
   setUpdatedSubscriptions(state, data) {
