@@ -1,11 +1,26 @@
 <template>
   <div class="subscription">
 
+    <!-- TODO: LOADING SKELETON -->
     <div v-if="loadStatus === 'loading'">LOADING! .....</div>
 
-    <AsyncCodesNotFound v-if="loadStatus === 'error'" />
+    <AsyncErrorFetchingData v-if="loadStatus === 'success'">
+      <template #title>
+        Sorry &#128533;
+      </template>
 
-    <template v-if="loadStatus === 'success' && subscriptions">
+      <template #text>
+        {{ errorRetrievingSubscriptions }}
+      </template>
+
+      <template #action>
+        <button class="error__page__btn error__page__btn--action">
+          <router-link :to="{ name: 'Profile' }">Back to Profile</router-link>
+        </button>
+      </template>
+    </AsyncErrorFetchingData>
+
+    <!-- <template v-if="loadStatus === 'success' && subscriptions">
       <div class="subscription__item">
         <h1 class="profile__item__heading">Manage Subscriptions</h1>
       </div>
@@ -76,7 +91,7 @@
           </form>
         </div>
       </div>
-    </template>
+    </template> -->
   </div>
 </template>
 
@@ -106,6 +121,7 @@ export default {
       },
       codeInput: '',
       maxLen: 12,
+      errorRetrievingSubscriptions: 'Something went wrong retrieving your subscriptions.',
     }
   },
 

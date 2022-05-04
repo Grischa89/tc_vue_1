@@ -8,7 +8,21 @@ otherwise no classes -->
     <CardCarouselSkeleton />
   </div>
 
-  <AsyncCodesNotFound v-if="loadStatus === 'error'" />
+  <AsyncErrorFetchingData v-if="loadStatus === 'error'">
+    <template #title>
+      Sorry &#128533;
+    </template>
+
+    <template #text>
+      {{ errorRetrievingCity }}
+    </template>
+
+    <template #action>
+      <button class="error__page__btn error__page__btn--action">
+        <router-link :to="{ name: 'Home' }">Back to Home</router-link>
+      </button>
+    </template>
+  </AsyncErrorFetchingData>
 
   <div v-if="loadStatus === 'success' && cityCodes">
     <Breadcrumb
@@ -48,11 +62,11 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'City',
 
-  // data() {
-  //   return {
-  //     tableTitle: 'Latest Codes',
-  //   }
-  // },
+  data() {
+    return {
+      errorRetrievingCity: 'Something went wrong retrieving recent Trainer Codes for this city.',
+    }
+  },
 
   components: {
     Table,

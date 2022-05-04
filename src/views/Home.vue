@@ -8,7 +8,15 @@ otherwise no classes -->
     <CardCarouselSkeleton />
   </div>
 
-  <AsyncCodesNotFound v-if="loadStatus === 'error'" />
+  <AsyncErrorFetchingData v-if="loadStatus === 'error'">
+    <template #title>
+      Sorry &#128533;
+    </template>
+
+    <template #text>
+      {{ errorRetrievingRecent }}
+    </template>
+  </AsyncErrorFetchingData>
 
   <div v-if="loadStatus === 'success' && latestCodes">
     <Table 
@@ -35,6 +43,7 @@ export default {
   data() {
     return {
       tableTitle: 'Latest Codes',
+      errorRetrievingRecent: 'Something went wrong retrieving recent Trainer Codes.',
     }
   },
 
