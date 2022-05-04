@@ -64,7 +64,7 @@
         </div>
         <div class="profile__item">
             <div class="profile__item__buttons">
-                <button type="button" class="profile__item__buttons__btn" @click="logout">
+                <button type="button" class="profile__item__buttons__btn">
                     <router-link :to="{ name: 'SubscriptionsAll' }">All</router-link>
                 </button>
             </div>
