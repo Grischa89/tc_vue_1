@@ -4,7 +4,7 @@
     <!-- TODO: LOADING SKELETON -->
     <div v-if="loadStatus === 'loading'">LOADING! .....</div>
 
-    <AsyncErrorFetchingData v-if="loadStatus === 'success'">
+    <AsyncErrorFetchingData v-if="loadStatus === 'error'">
       <template #title>
         Sorry &#128533;
       </template>
@@ -20,7 +20,7 @@
       </template>
     </AsyncErrorFetchingData>
 
-    <!-- <template v-if="loadStatus === 'success' && subscriptions">
+    <template v-if="loadStatus === 'success' && subscriptions">
       <div class="subscription__item">
         <h1 class="profile__item__heading">Manage Subscriptions</h1>
       </div>
@@ -40,13 +40,23 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
             </button>
-            <button class="subscription__item__actions__btn" @click="deleteSubscription(subscription.pk, i)">
+            <!-- deleteSubscription(subscription.pk, i) -->
+            <button class="subscription__item__actions__btn" @click="openDeleteModal(subscription, i)">
               <svg xmlns="http://www.w3.org/2000/svg" class="subscription__item__display__actions__btn--delete" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-labelledby="delete-subscription">
                 <title id="delete-subscription">Delete Subscription</title>
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
             </button>
           </div>
+
+          <Teleport to="body">
+            <ModalDialog 
+              v-if="openModal"
+              :subscription="subscriptionToDelete"
+              @on-confirm="deleteSubscription"
+              @on-cancel="cancelDelete" />
+          </Teleport>
+
         </div>
         
         <div class="subscription__item__edit" :data-edit-id="subscription.pk"  ref="subscriptionItemEdit">
@@ -91,15 +101,21 @@
           </form>
         </div>
       </div>
-    </template> -->
+    </template>
   </div>
 </template>
 
 <script>
+import ModalDialog from '../../components/ModalDialog.vue';
+
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'SubscriptionAll',
+
+  components: {
+    ModalDialog,
+  },
 
   data() {
     return {
@@ -121,6 +137,14 @@ export default {
       },
       codeInput: '',
       maxLen: 12,
+      openModal: false,
+      subscriptionToDelete: {
+        pk: '',
+        action: '',
+        event: '',
+        player_code: '',
+        index: '',
+      },
       errorRetrievingSubscriptions: 'Something went wrong retrieving your subscriptions.',
     }
   },
@@ -190,12 +214,29 @@ export default {
       }
     },
 
-    deleteSubscription(pk, index) {
-      console.log('iddd', pk);
-      const deleteSuccess = this.$store.dispatch('deleteSubscription', { pk: pk, index: index });
-      console.log('deleteSuccess', deleteSuccess);
+    openDeleteModal(subscription, index) {
+      this.subscriptionToDelete.pk = subscription.pk;
+      this.subscriptionToDelete.action = subscription.action;
+      this.subscriptionToDelete.event = subscription.event;
+      this.subscriptionToDelete.player_code = subscription.player_code;
+      this.subscriptionToDelete.index = index;
 
-      // TODO: if deleteSuccess !== 204
+      this.openModal = true;
+    },
+
+    cancelDelete() {
+      this.openModal = false;
+    },
+
+    deleteSubscription(data) {
+      console.log('iddd', data.pk, data.index);
+      // { pk: pk, index: index }
+      // console.log('data from modal', data);
+      const deleteSuccess = this.$store.dispatch('deleteSubscription', { pk: data.pk, index: data.index });
+      // console.log('deleteSuccess', deleteSuccess);
+
+      // TODO: if deleteSuccess !== 204 modal schließen, wenn error im modal message anzeigen
+      this.openModal = false;
     },
 
     restrictKeys(e) {

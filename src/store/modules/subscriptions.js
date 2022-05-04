@@ -99,22 +99,25 @@ const actions = {
       .catch(err => {
         console.log('err in editSubscription', err)
         return err.response.status;
-      })
+      });
   },
 
   deleteSubscription({ commit }, data) {
 
-    return axios.delete(`/api/v1/subscription/${data.pk}/`)
-      .then(res => {
-        console.log('res in deleteSubscription', res);
-        commit('setDeletedSubscriptions', data.index);
-        return res.status;
-      })
-      .catch(err => {
-        console.log('err in deleteSubscription', err);
-        return err.response.status;
-      })
-  }
+    console.log('deleteSubscription dispatched! ', 'pk: ', data.pk, 'index: ', data.index);
+
+    // TODO: Turn on before deployment
+    // return axios.delete(`/api/v1/subscription/${data.pk}/`)
+    //   .then(res => {
+    //     console.log('res in deleteSubscription', res);
+    //     commit('setDeletedSubscriptions', data.index);
+    //     return res.status;
+    //   })
+    //   .catch(err => {
+    //     console.log('err in deleteSubscription', err);
+    //     return err.response.status;
+    //   });
+  },
 };
 
 const mutations = {
