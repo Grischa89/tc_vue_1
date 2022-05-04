@@ -56,7 +56,7 @@ export default {
   
   &__header {
     margin-bottom: .5rem;
-    font-size: $mobile-subheading;
+    font-size: $mobile-heading;
     font-weight: bold;
   }
 
@@ -68,11 +68,16 @@ export default {
     display: flex;
     justify-content: space-evenly;
     margin-top: 1rem;
-    font-size: $mobile-subheading;
+    
 
     &__btn {
-      letter-spacing: .0125rem;
+      text-transform: uppercase;
+      font-size: $mobile-body;
+      letter-spacing: .05rem;
+      font-weight: bold;
+      color: $help;
       padding: .375rem 1.5rem;
+      -webkit-tap-highlight-color: $primary-darker;
 
       &--confirm {
         color: $white;

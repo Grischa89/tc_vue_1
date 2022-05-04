@@ -27,9 +27,12 @@
       <div v-for="(subscription, i) in subscriptions" :key="i" class="subscription__item">
         <div class="subscription__item__display" :data-subscription-id="subscription.pk">
           <div class="subscription__item__display__task">
-            <p>Trainer Code: {{ subscription.player_code }} -- {{ i }}</p>
-            <p>Event: {{ subscription.event_name }}</p>
-            <p>Type: {{ subscription.action_name }}</p>
+            <div class="subscription__item__display__task__header">
+              <h2># {{ i + 1 }}</h2>
+            </div>
+            <p class="subscription__item__display__task__row"><span>Trainer Code:</span> {{ subscription.player_code }} -- {{ i }}</p>
+            <p class="subscription__item__display__task__row"><span>Event:</span> {{ subscription.event_name }}</p>
+            <p class="subscription__item__display__task__row"><span>Type:</span> {{ subscription.action_name }}</p>
       
       
           </div>
@@ -41,7 +44,7 @@
               </svg>
             </button>
             <!-- deleteSubscription(subscription.pk, i) -->
-            <button class="subscription__item__actions__btn" @click="openDeleteModal(subscription, i)">
+            <button class="subscription__item__display__actions__btn" @click="openDeleteModal(subscription, i)">
               <svg xmlns="http://www.w3.org/2000/svg" class="subscription__item__display__actions__btn--delete" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-labelledby="delete-subscription">
                 <title id="delete-subscription">Delete Subscription</title>
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -95,7 +98,7 @@
             </div>
             <div class="inline-form__btn__container">
               <button class="inline-form__btn inline-form__btn--submit" type="submit">Save</button>
-              <button class="inline-form__btn inline-form__btn--cancel" type="button" @click="cancelForm">Cancel</button>
+              <button class="inline-form__btn inline-form__btn--cancel" type="button" @click="cancelEditForm(subscription.pk)">Cancel</button>
             </div>
       
           </form>
@@ -212,6 +215,10 @@ export default {
         editArea.style.display = 'none';
         return false;
       }
+    },
+
+    cancelEditForm(pk) {
+      document.querySelector(`[data-edit-id="${pk}"]`).style.display = 'none';
     },
 
     openDeleteModal(subscription, index) {
@@ -336,7 +343,7 @@ export default {
     justify-content: flex-start;
     align-items: center;
     // position: relative;
-    padding: 1rem .75rem;
+    padding: .75rem;
     background-color: $white;
     // background: linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, hsla(33, 90%, 96%, 1) 19%, hsla(33, 92%, 85%, 1) 60%, hsla(33, 91%, 73%, 1) 100%);
     // border-left: 6px solid $in-between;
@@ -360,19 +367,60 @@ export default {
         // display: flex;
         // flex-direction: column;
         text-align: left;
+
+        &__header {
+          display: flex;
+          justify-content: flex-start;
+          margin-bottom: .5rem;
+          // text-transform: uppercase;
+          font-weight: 600;
+          font-size: $mobile-subheading;
+        
+          h2 {
+            padding: 0 .25rem;
+            box-shadow: inset 0 -.625rem 0 0 $in-between;
+          }
+
+          // h2:nth-of-type(2n) {
+          //   box-shadow: inset 0 -.625rem 0 0 gray;
+          //   color: red;
+          // }
+          
+        }
+        
         // background-color: rgba($black, .1);
+
+        &__row {
+          // margin: .25rem auto;
+          margin-bottom: .25rem;
+
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+
+          span {
+            text-transform: uppercase;
+            font-weight: 600;
+          }
+        }
+        
       }
 
       &__actions {
         display: flex;
-        justify-content: flex-end;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         // min-width: 33.3%;
+        // background-color: gray;
+        height: 100%;
 
         &__btn {
           border-radius: .5rem;
-          background-color: rgba($white, .5);
+          // background-color: rgba($white, .5);
           padding: .5rem;
-          margin-left: .5rem;
+          margin: .25rem 0;
+          // margin-left: .5rem;
 
           &--edit {
             width: 1.5rem;
@@ -384,6 +432,14 @@ export default {
             width: 1.5rem;
             height: 1.5rem;
             color: $error;
+          }
+        }
+
+        @media(min-width: 768px) {
+          flex-direction: row;
+
+          &__btn {
+            margin: .25rem;
           }
         }
       }
@@ -421,12 +477,13 @@ export default {
       // background: linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, hsla(33, 100%, 95%, 1) 40%, hsla(33, 100%, 94%, 1) 60%, hsla(33, 100%, 85%, 1) 100%);
       // border-left: 6px solid $primary-darker;
       border-left-color: $primary-darker;
+
+      .subscription__item__display__task__header {
+        h2 {
+          box-shadow: $line-behind-light;
+        }
+      }
     }
-
-    
-
-    
-
     
   }
 }
@@ -549,7 +606,7 @@ export default {
     letter-spacing: .05rem;
     font-weight: bold;
     border-radius: 25px;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: $primary-darker;
 
     &:active {
       outline: none;
@@ -560,7 +617,6 @@ export default {
       border-radius: 25px;
       color: $white;
       background-color: $black;
-      -webkit-tap-highlight-color: $primary-darker;
     }
 
     &--cancel {

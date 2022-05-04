@@ -26,30 +26,48 @@
                 <li class="profile__item__list__item">Posted Trainer Code 5454 8688 7536</li>
             </ul>
             <div class="profile__item__link">
-                <span>Show all activity</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="all-activity">
-                    <title id="all-activity">Show all activity</title>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+                <router-link to="#">Show all activity
+                    <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="all-activity">
+                        <title id="all-activity">Show all activity</title>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </router-link>
             </div>
         </div>
         <div class="profile__item profile__item--action">
             <div class="profile__item__buttons profile__item__buttons--action">
                 <router-link :to="{ name: 'AddSubscription' }" class="profile__item__buttons__btn profile__item__buttons__btn--action">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__buttons__btn__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="add-subscription">
-                    <title id="add-subscription">Add Subscription</title>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <title id="add-subscription">Add Subscription</title>
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
                 </router-link>
             </div>
             <h2 class="profile__item__heading">Your Subscriptions</h2>
-            <ul v-if="subscriptions" class="profile__item__list">
-                <li class="profile__item__list__item">Post Trainer Code before Raid Hour</li>
-                <li class="profile__item__list__item">Get new Trainer Codes in your mail</li>
-            </ul>
+            <template v-if="!subscriptions">
+                <ul class="profile__item__list">
+                    <li class="profile__item__list__item">Post Trainer Code before Raid Hour</li>
+                    <li class="profile__item__list__item">Get new Trainer Codes in your mail</li>
+                </ul>
+                <div class="profile__item__link">
+                    <router-link to="#">Change subscriptions
+                        <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="change-subscriptions">
+                            <title id="change-subscriptions">Change subscriptions</title>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </router-link>
+                </div>
+            </template>
             <ul v-else class="profile__item__list">
                 <li>You don't have any subscriptions yet.</li>
             </ul>
+        </div>
+        <div class="profile__item">
+            <div class="profile__item__buttons">
+                <button type="button" class="profile__item__buttons__btn" @click="logout">
+                    <router-link :to="{ name: 'SubscriptionsAll' }">All</router-link>
+                </button>
+            </div>
         </div>
         <div class="profile__item">
             <div class="profile__item__buttons">
@@ -229,19 +247,18 @@ export default {
             }
         }
 
-        &__link {
+        &__link, &__link a {
             display: flex;
             align-items: center;
             margin-top: .5rem;
             text-decoration: underline;
 
-            &__append {
+            &__append, a .profile__item__link__append {
                 margin-left: .5rem;
                 height: $mobile-subheading;
                 width: $mobile-subheading;
             }
         }
-
         
     }
 }
