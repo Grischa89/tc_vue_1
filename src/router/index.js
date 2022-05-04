@@ -39,7 +39,7 @@ const routes = [
     name: 'AddCode',
     component: AddCode,
     meta: {
-      requiresAuth: true,
+      requiresAuth: true, //, TODO: REMOVE before push
       title: 'Add Your Own Code',
     },
   },
@@ -69,7 +69,7 @@ const routes = [
     name: 'Profile',
     component: Profile,
     meta: {
-      requiresAuth: true,
+      requiresAuth: true, //, TODO: REMOVE before push
       title: 'Your Profile',
     },
   },
