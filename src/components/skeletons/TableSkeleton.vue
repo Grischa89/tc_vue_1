@@ -69,6 +69,9 @@ export default {
   opacity: .7;
   // animation: skeleton-loading 1s linear infinite alternate;
   border-radius: .125rem;
+  box-shadow: $card-shadow rgba($black, 0.2); 
+  -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
+  -moz-box-shadow: $card-shadow rgba($black, 0.2);
 
   &__heading {
     height: 1.5rem;
