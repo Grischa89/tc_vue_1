@@ -4,6 +4,22 @@
     <CardCarouselSkeleton />
   </div>
 
+  <AsyncErrorFetchingData v-if="loadStatus === 'error'">
+    <template #title>
+      Sorry &#128533;
+    </template>
+
+    <template #text>
+      {{ errorRetrievingCountry }}
+    </template>
+
+    <template #action>
+      <button class="error__page__btn error__page__btn--action">
+        <router-link :to="{ name: 'Home' }">Back to Home</router-link>
+      </button>
+    </template>
+  </AsyncErrorFetchingData>
+
   <div v-if="loadStatus === 'success' && countryCodes">
     <Breadcrumb
       v-if="breadcrumb"
@@ -37,8 +53,7 @@ import CitySuggestions from '../components/CitySuggestions.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-
-name: 'Country',
+  name: 'Country',
 
   components: {
     Table,
@@ -47,6 +62,12 @@ name: 'Country',
     CardCarouselSkeleton,
     Breadcrumb,
     CitySuggestions,
+  },
+
+  data() {
+    return {
+      errorRetrievingCountry: 'Something went wrong retrieving recent Trainer Codes for this country.',
+    }
   },
 
   mounted() {

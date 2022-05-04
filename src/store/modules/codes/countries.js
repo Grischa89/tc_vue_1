@@ -14,10 +14,6 @@ const getters = {
     return state.countryLoadStatus;
   },
 
-  // countryCodesTitle: state => {
-  //   return state.countryCodes[0].country;
-  // }
-
   citySuggestions: state => {
     // return rootState.codes.filter(item => item.city !== null);
 
@@ -86,21 +82,6 @@ const actions = {
       })
   },
 
-  // fetchQuestion({ commit }, questionId) {
-
-  //   axios.get('/api/questions/' + questionId)
-  //     .then(res => {
-  //       commit('setQuestion', res.data);
-  //       commit('setAnswers', res.data.data.attributes.answers.data);
-  //       console.log('setAnswerCount', res.data.data.attributes.answers.answer_count);
-  //       commit('setAnswerCount', res.data.data.attributes.answers.answer_count);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log('Unable to fetch question.');
-  //     })
-  // },
-
 };
 
 const mutations = {
@@ -112,10 +93,6 @@ const mutations = {
   setSuggestionCodes(state, codes) {
     state.suggestionCodes = codes;
   },
-
-  // setLatestCountryCodes(state, countryCodes) {
-  //   state.countryCodes = countryCodes;
-  // },
 
 };
 
