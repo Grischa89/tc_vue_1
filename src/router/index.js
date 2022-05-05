@@ -221,7 +221,7 @@ router.beforeEach((to, from, next) => {
   window.document.title = to.meta && to.meta.title ? (to.meta.title += ` — trainercodes.net`) : 'trainercodes.net';
 
   if(requiresAuth && !isAuthenticated) {
-    console.log('router.beforeEach if', isAuthenticated, requiresAuth, requiresGuest);
+    // console.log('router.beforeEach if', isAuthenticated, requiresAuth, requiresGuest);
 
     // const isJWTvalid = await store.dispatch('verifyJWT');
 
@@ -239,19 +239,26 @@ router.beforeEach((to, from, next) => {
     //     next({ name: 'LogIn' });
     //   }
     // }
-    next({ name: 'LogIn' });
-     // TODO: weiterleitung zu vorheriger seite const toPath = this.$route.query.to || '/cart'
+
+    // NOTE: Changed from next() to router.push() due to "expected" error:
+    // Navigating to /profile while being !isAuthenticated should redirect to /log-in --
+    // Vue router threw an error because the resolving of the route /profile didn't go as expected
+    // but was redirected
+    router.push({ name: 'LogIn' });
+    // next({ name: 'LogIn' });
+    // TODO: weiterleitung zu vorheriger seite const toPath = this.$route.query.to || '/cart'
 
   } else if (requiresGuest && isAuthenticated) {
-    console.log('router.beforeEach else if', isAuthenticated,  requiresAuth, requiresGuest);
-    next({ name: 'MyAccount'});
+    // console.log('router.beforeEach else if', isAuthenticated,  requiresAuth, requiresGuest);
+
+    // NOTE: See notice above
+    router.push({ name: 'Profile' });
+    // next({ name: 'Profile'});
   } 
   else {
-    console.log('router.beforeEach else', isAuthenticated, requiresAuth, requiresGuest);
+    // console.log('router.beforeEach else', isAuthenticated, requiresAuth, requiresGuest);
     next();
   }
-
-  // next('/');
 
   // NOTE! Wenn ich mich registetriere und dann nochmal auf sign-up gehe: 
   // log: router.beforeEach else false false true
