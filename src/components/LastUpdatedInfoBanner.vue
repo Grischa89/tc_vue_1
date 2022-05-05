@@ -1,7 +1,7 @@
 <template>
   <div class="last-updated__banner">
     <div class="last-updated__banner__help">
-      Last updated 12 minutes ago.
+      Last updated {{ elapsedInfo }} ago.
     </div>
   </div>
 </template>
@@ -10,6 +10,13 @@
 export default {
 
   name: 'LastUpdatedInfoBanner',
+
+  props: {
+    elapsedInfo: {
+      // type: String,
+      required: false,
+    }
+  }
 
 }
 </script>

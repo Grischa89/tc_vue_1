@@ -1,5 +1,7 @@
 <template>
-  <LastUpdatedInfoBanner />
+  <LastUpdatedInfoBanner
+    v-if="elapsedInfo"
+    :elapsedInfo="elapsedInfo" />
   <Navbar
     :isAuthenticated="isAuthenticated" />
   
@@ -118,11 +120,13 @@ export default {
 
   created() {
     this.initCookieConsent();
+    this.$store.dispatch('fetchLastUpdated');
   },
 
   computed: {
     ...mapGetters({
       isAuthenticated: 'isAuthenticated',
+      elapsedInfo: 'elapsedInfo',
     })
   },
 
