@@ -54,7 +54,16 @@ const actions = {
 
     commit('setSubscriptionStatus', 'loading');
 
-    return axios.get('/api/v1/subscription/list_subscriptions/')
+    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
+
+    const config = {
+      headers: {
+        'Authorization': "JWT " + accessToken,
+        'Content-Type': 'application/json',
+      }
+    };
+
+    return axios.get('/api/v1/subscription/list_subscriptions/', config)
       .then(res => {
         console.log('res in list_subscr', res);
 
@@ -73,8 +82,17 @@ const actions = {
   },
 
   addSubscription({ commit }, data) {
+
+    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
+
+    const config = {
+      headers: {
+        'Authorization': "JWT " + accessToken,
+        'Content-Type': 'application/json',
+      }
+    };
     
-    return axios.post('/api/v1/subscription/add/', data)
+    return axios.post('/api/v1/subscription/add/', data, config)
     .then(res => {
       console.log('addSubscription', res);
 
@@ -90,7 +108,16 @@ const actions = {
 
   updateSubscription({ commit }, data) {
 
-    return axios.patch(`/api/v1/subscription/${data.pk}/`, data.data)
+    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
+
+    const config = {
+      headers: {
+        'Authorization': "JWT " + accessToken,
+        'Content-Type': 'application/json',
+      }
+    };
+
+    return axios.patch(`/api/v1/subscription/${data.pk}/`, data.data, config)
       .then(res => {
         console.log('res in editSubscription', res);
         commit('setUpdatedSubscriptions', { index: data.index, item: res.data });
@@ -104,19 +131,28 @@ const actions = {
 
   deleteSubscription({ commit }, data) {
 
-    console.log('deleteSubscription dispatched! ', 'pk: ', data.pk, 'index: ', data.index);
+    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
+
+    const config = {
+      headers: {
+        'Authorization': "JWT " + accessToken,
+        'Content-Type': 'application/json',
+      }
+    };
+
+    // console.log('deleteSubscription dispatched! ', 'pk: ', data.pk, 'index: ', data.index);
 
     // TODO: Turn on before deployment
-    // return axios.delete(`/api/v1/subscription/${data.pk}/`)
-    //   .then(res => {
-    //     console.log('res in deleteSubscription', res);
-    //     commit('setDeletedSubscriptions', data.index);
-    //     return res.status;
-    //   })
-    //   .catch(err => {
-    //     console.log('err in deleteSubscription', err);
-    //     return err.response.status;
-    //   });
+    return axios.delete(`/api/v1/subscription/${data.pk}/`, config)
+      .then(res => {
+        console.log('res in deleteSubscription', res);
+        commit('setDeletedSubscriptions', data.index);
+        return res.status;
+      })
+      .catch(err => {
+        console.log('err in deleteSubscription', err);
+        return err.response.status;
+      });
   },
 };
 
