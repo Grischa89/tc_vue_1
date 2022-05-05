@@ -1,17 +1,30 @@
 <template>
     <div class="profile">
         <div class="profile__item">
-            <div class="profile__item__image"></div>
-            <h1 class="profile__item__heading">Hi long_username!</h1>
+
+            <div class="profile__item__image">
+                <img class="profile__item__image__img" :src="require('../assets/user.png')"/>
+                <div class="profile__item__image__overlay">
+                    <router-link to="#">
+                        <!-- TODO: Accessibility -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__image__overlay__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </router-link>
+                </div>
+            </div>
+
+            <h1 class="profile__item__heading">Hi {{ user.username }}!</h1>
             <div class="profile__item__buttons">
-                <button type="button" class="profile__item__buttons__btn">
+                <router-link class="profile__item__buttons__btn" :to="{ name: 'ProfileSettings' }">
                     <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__buttons__btn__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="edit-profile">
                         <title id="user-settings">User Settings</title>
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                     <span>Settings</span>
-                </button>
+                </router-link>
             </div>
         </div>
         <div v-if="user && !user.is_active" class="user__info">
@@ -44,15 +57,17 @@
                 </router-link>
             </div>
             <h2 class="profile__item__heading">Your Subscriptions</h2>
+            <!-- TODO: Wenn subs funktionieren, muss hier subscriptions truthy -->
             <template v-if="!subscriptions">
                 <ul class="profile__item__list">
+                    <!-- TODO: Wenn subs funktionieren, muss hier durch subs geloopt werden und jeweils 3 Werte anzeigen -->
                     <li class="profile__item__list__item">Post Trainer Code before Raid Hour</li>
                     <li class="profile__item__list__item">Get new Trainer Codes in your mail</li>
                 </ul>
                 <div class="profile__item__link">
-                    <router-link to="#">Change subscriptions
-                        <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="change-subscriptions">
-                            <title id="change-subscriptions">Change subscriptions</title>
+                    <router-link :to="{ name: 'SubscriptionsAll' }">Manage subscriptions
+                        <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="manage-subscriptions">
+                            <title id="manage-subscriptions">Manage subscriptions</title>
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
                     </router-link>
@@ -61,13 +76,6 @@
             <ul v-else class="profile__item__list">
                 <li>You don't have any subscriptions yet.</li>
             </ul>
-        </div>
-        <div class="profile__item">
-            <div class="profile__item__buttons">
-                <button type="button" class="profile__item__buttons__btn">
-                    <router-link :to="{ name: 'SubscriptionsAll' }">All</router-link>
-                </button>
-            </div>
         </div>
         <div class="profile__item">
             <div class="profile__item__buttons">
@@ -183,11 +191,55 @@ export default {
         }
 
         &__image {
+            position: relative;
             height: 5rem;
             width: 5rem;
             border-radius: 50%;
             background-color: $primary;
             margin-bottom: 1rem;
+             box-shadow: $card-shadow rgba($black, 0.2); 
+            -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
+            -moz-box-shadow: $card-shadow rgba($black, 0.2);
+
+            &__img {
+                height: 5rem;
+                width: 5rem;
+                border-radius: 50%;
+            }
+
+            &__overlay {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 100%;
+                width: 100%;
+                opacity: 0;
+                background-color: rgba($black, .2);
+                border-radius: 50%;
+
+                &:hover {
+                    opacity: 1;
+                    cursor: pointer;
+                }
+
+                &__icon {
+                    color: rgba($black, .6);
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    position: absolute; // to center
+                    top: 50%; // to center
+                    left: 50%; // to center
+                    transform: translate(-50%, -50%); // to center
+                    -ms-transform: translate(-50%, -50%); // to center
+                    // text-align: center;
+
+                    &:hover {
+                        color: rgba($black, .8);
+                    }
+                }
+            }
         }
 
         &__buttons {

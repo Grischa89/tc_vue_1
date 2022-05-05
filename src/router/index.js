@@ -11,6 +11,7 @@ import AddCode from '../views/AddCode.vue'
 import CardCarousel from '../views/CardCarousel.vue'
 import ActivateUser from '../auth/account/ActivateUser.vue'
 import Profile from '../profile/Profile.vue'
+import ProfileSettings from '../profile/ProfileSettings.vue'
 import LogIn from '../auth/LogIn.vue'
 import SignUp from '../auth/SignUp.vue'
 import ResendActivationEmail from '../auth/account/ResendActivationEmail.vue'
@@ -69,8 +70,18 @@ const routes = [
     name: 'Profile',
     component: Profile,
     meta: {
-      requiresAuth: true, //, TODO: REMOVE before push
+      requiresAuth: true,
       title: 'Your Profile',
+    },
+  },
+
+  {
+    path: '/profile/settings',
+    name: 'ProfileSettings',
+    component: ProfileSettings,
+    meta: {
+      requiresAuth: true,
+      title: 'View and Change Your Profile Settings',
     },
   },
 
