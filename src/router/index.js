@@ -148,7 +148,7 @@ const routes = [
     name: 'AddSubscription',
     component: AddSubscription,
     meta: {
-      // requiresAuth: true,
+      requiresAuth: true,
       title: 'Add A Subscription',
     },
   },
@@ -158,7 +158,7 @@ const routes = [
     name: 'SubscriptionsAll',
     component: SubscriptionsAll,
     meta: {
-      // requiresAuth: true,
+      requiresAuth: true,
       title: 'All Your Subscriptions',
     },
   },
