@@ -30,7 +30,8 @@
             <div class="subscription__item__display__task__header">
               <h2># {{ i + 1 }}</h2>
             </div>
-            <p class="subscription__item__display__task__row"><span>Trainer Code:</span> {{ subscription.player_code }} -- {{ i }}</p>
+            <!-- TODO: Code in module formatieren -->
+            <p class="subscription__item__display__task__row"><span>Trainer Code:</span> {{ subscription.player_code.replace(/.{4}/g, '$& ') }} -- {{ i }}</p>
             <p class="subscription__item__display__task__row"><span>Event:</span> {{ subscription.event_name }}</p>
             <p class="subscription__item__display__task__row"><span>Type:</span> {{ subscription.action_name }}</p>
       
