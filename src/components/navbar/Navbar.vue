@@ -68,9 +68,15 @@
             <router-link to="/log-in" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Login</router-link>
           </li>
 
-          <li v-if="isAuthenticated" class="navbar__menu__item">
-            <router-link :to="{ name: 'Profile' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Profile</router-link>
-          </li>
+          <template v-if="isAuthenticated">
+            <li class="navbar__menu__item">
+              <router-link :to="{ name: 'Profile' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Profile</router-link>
+            </li>
+
+            <li class="navbar__menu__item">
+              <button class="navbar__menu__item__link" @click="logout" data-toggle-menu>Logout</button>
+            </li>
+          </template>
         </ul>
 
       </div>
@@ -144,6 +150,18 @@ export default {
       const dropdownCheckbox = this.$refs.dropdownContinents.$refs.dropdown;
       dropdownCheckbox.checked = false;
       this.toggleNavbar();
+    },
+
+    logout() {
+      this.toggleNavbar();
+
+      this.$store.dispatch('logout')
+        .then(() => {
+            this.$router.push(`/`);
+        })
+        .catch(err => { // TODO: How to catch failed logout
+            console.log('err in Navbar logout()', err);
+        });
     },
     
   },

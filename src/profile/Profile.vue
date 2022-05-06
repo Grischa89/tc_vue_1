@@ -120,7 +120,7 @@ export default {
                     this.$router.push(`/`);
                 })
                 .catch(err => { // TODO: How to catch failed logout
-                    console.log('err in MyAccount logout()', err);
+                    console.log('err in Profile logout()', err);
                 });
         },
     }
@@ -233,7 +233,7 @@ export default {
                     left: 50%; // to center
                     transform: translate(-50%, -50%); // to center
                     -ms-transform: translate(-50%, -50%); // to center
-                    // text-align: center;
+                    cursor: pointer;
 
                     &:hover {
                         color: rgba($black, .8);
