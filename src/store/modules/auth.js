@@ -1,3 +1,4 @@
+import { whileStatement } from '@babel/types';
 import axios from 'axios';
 
 const state = {
@@ -42,8 +43,6 @@ const actions = {
     return axios.post("/api/v1/accounts/auth/users/", userCreateData)
       .then(res => {
         console.log("res in createUser", res);
-
-        // TODO: some mutation to set username?
 
         return res.status;
       })
@@ -126,21 +125,12 @@ const actions = {
       });
   },
 
-  verifyJWT({ commit }) {
+  verifyJWT({ commit }, access) {
 
-    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
-
-    const config = {
-      headers: {
-         'Authorization': "JWT " + accessToken,
-         'Content-Type': 'application/json',
-      }
-    };
-
-    return axios.post(`/api/v1/accounts/auth/jwt/verify/`,  {"token": accessToken})
+    return axios.post(`/api/v1/accounts/auth/jwt/verify/`,  {"token": access})
       .then(res => {
 
-        sessionStorage.setItem('isAuthenticated', JSON.stringify('true'));
+        sessionStorage.isAuthenticated = JSON.stringify(true);
         commit('setAuthenticated', true);
 
         return res.status;
@@ -162,21 +152,19 @@ const actions = {
       });
   },
 
-  refreshJWT({ commit }) {
-    const refreshToken = JSON.parse(localStorage.getItem('tcRefresh'));
+  refreshJWT({ commit }, refresh) {
 
-    // const config = {
-    //   headers: {
-    //      'Authorization': "JWT " + refreshToken,
-    //      'Content-Type': 'application/json',
-    //   }
-    // };
-    return axios.post(`api/v1/accounts/auth/jwt/refresh/`, {"refresh": refreshToken})
+    // If tc_user in App.vue is an empty object, refresh (tc_user.refresh) will be undefined
+    return axios.post(`api/v1/accounts/auth/jwt/refresh/`, {"refresh": refresh})
       .then(res => {
         console.log('res.status afterapi/v1/accounts/auth/jwt/refresh/', res.status);
 
-        localStorage.setItem('tcAccess', JSON.stringify(res.data.access));
-        sessionStorage.setItem('isAuthenticated', JSON.stringify('true'));
+        const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
+        tc_user.access = res.data.access;
+        localStorage.tc_user = JSON.stringify(tc_user);
+        sessionStorage.isAuthenticated = JSON.stringify(true);
+
+        axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}`;
 
         commit('setAccess', res.data);
         commit('setAuthenticated', true);
@@ -187,6 +175,9 @@ const actions = {
         // TODO: Wohin weiterleiten bei 400?
         // Für user ausgeben: Diese email schon aktiviert errors.resendActivation
         console.log('err in auth.js auth/jwt/refresh/', err.response);
+
+        delete axios.defaults.headers.common['Authorization'];
+        localStorage.removeItem('tc_user');
 
         if (err.response.request.status === 401){
           return err.response.request.status
@@ -201,12 +192,16 @@ const actions = {
 
     return axios.post('/api/v1/accounts/auth/jwt/create/', formData)
       .then(res => {
+        console.log("login:: ", res.data);
 
-        // TODO: /users/me get user info
-        console.log("login:: ", res.data)
-        localStorage.setItem('tcAccess', JSON.stringify(res.data.access));
-        localStorage.setItem('tcRefresh', JSON.stringify(res.data.refresh));
-        sessionStorage.setItem('isAuthenticated', JSON.stringify('true'));
+        const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
+        tc_user.access = res.data.access;
+        tc_user.refresh = res.data.refresh;
+        localStorage.tc_user = JSON.stringify(tc_user);
+        
+        sessionStorage.isAuthenticated = JSON.stringify(true);
+
+        axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}`;
 
         commit('setToken', res.data);
         commit('setAuthenticated', true);
@@ -221,28 +216,19 @@ const actions = {
 
   getUserProfile({ commit }, email) {
 
-    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
-
-    const config = {
-      headers: {
-         'Authorization': "JWT " + accessToken,
-         'Content-Type': 'application/json',
-      }
-    };
-
-    return axios.get(`/api/v1/accounts/profile/${email}/`, config)
+    return axios.get(`/api/v1/accounts/profile/${email}/`)
       .then(res => {
-        // const config = {
-        //   headers: {
-        //      'Authorization': "JWT " + accessToken,
-        //      'Content-Type': 'application/json',
-        //   }
-        // };
-        localStorage.user = JSON.stringify(res.data);
-        commit('setUser', res.data);
-        // localStorage.setItem('username', res.data.username);
-        // localStorage.setItem('email', res.data.email);
         console.log('res.data in getUserProfile', res.data);
+
+        const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
+        tc_user.username = res.data.username;
+        tc_user.is_active = res.data.is_active;
+        localStorage.tc_user = JSON.stringify(tc_user);
+        
+        // NOTE / TODO: This mutation uses the whole res.data object while in localSTorage
+        // only username and is_active are set
+        commit('setUser', res.data);
+        
         return res.status;
       })
       .catch(err => {
@@ -254,10 +240,20 @@ const actions = {
   },
 
   logout({ commit }) {
-    localStorage.removeItem('tcAccess');
-    localStorage.removeItem('tcRefresh');
+    const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
+
+    delete tc_user.access;
+    delete tc_user.refresh;
+
+    // Still re-set tc_user with username and is_active
+    localStorage.tc_user = JSON.stringify(tc_user);
     sessionStorage.removeItem('isAuthenticated');
 
+    delete axios.defaults.headers.common['Authorization'];
+
+    commit('setAuthenticated', false);
+
+    // TODO: removeToken mutation not needed
     commit('removeToken');
   },
 

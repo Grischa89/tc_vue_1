@@ -54,18 +54,11 @@ const actions = {
 
     commit('setSubscriptionStatus', 'loading');
 
-    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
-
-    const config = {
-      headers: {
-        'Authorization': "JWT " + accessToken,
-        'Content-Type': 'application/json',
-      }
-    };
-
-    return axios.get('/api/v1/subscription/list_subscriptions/', config)
+    return axios.get('/api/v1/subscription/list_subscriptions/')
       .then(res => {
         console.log('res in list_subscr', res);
+
+        
 
         commit('setSubscriptions', res.data);
         commit('setSubscriptionStatus', 'success');
@@ -82,22 +75,11 @@ const actions = {
   },
 
   addSubscription({ commit }, data) {
-
-    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
-
-    const config = {
-      headers: {
-        'Authorization': "JWT " + accessToken,
-        'Content-Type': 'application/json',
-      }
-    };
     
-    return axios.post('/api/v1/subscription/add/', data, config)
+    return axios.post('/api/v1/subscription/add/', data)
     .then(res => {
       console.log('addSubscription', res);
 
-      // commit('setEventOptions', res.data.events);
-      // commit('setCodeActionOptions', res.data.code_actions);
       return res.status;
     })
     .catch(err => {
@@ -108,16 +90,7 @@ const actions = {
 
   updateSubscription({ commit }, data) {
 
-    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
-
-    const config = {
-      headers: {
-        'Authorization': "JWT " + accessToken,
-        'Content-Type': 'application/json',
-      }
-    };
-
-    return axios.patch(`/api/v1/subscription/${data.pk}/`, data.data, config)
+    return axios.patch(`/api/v1/subscription/${data.pk}/`, data.data)
       .then(res => {
         console.log('res in editSubscription', res);
         commit('setUpdatedSubscriptions', { index: data.index, item: res.data });
@@ -131,19 +104,10 @@ const actions = {
 
   deleteSubscription({ commit }, data) {
 
-    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
-
-    const config = {
-      headers: {
-        'Authorization': "JWT " + accessToken,
-        'Content-Type': 'application/json',
-      }
-    };
-
     // console.log('deleteSubscription dispatched! ', 'pk: ', data.pk, 'index: ', data.index);
 
     // TODO: Turn on before deployment
-    return axios.delete(`/api/v1/subscription/${data.pk}/`, config)
+    return axios.delete(`/api/v1/subscription/${data.pk}/`)
       .then(res => {
         console.log('res in deleteSubscription', res);
         commit('setDeletedSubscriptions', data.index);

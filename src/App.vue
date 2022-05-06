@@ -86,40 +86,53 @@ export default {
   async beforeCreate() {
     console.log('beforeCreate');
 
-    const isAuthenticated = Boolean(JSON.parse(sessionStorage.getItem('isAuthenticated')));
-    const accessToken = JSON.parse(localStorage.getItem('tcAccess'));
+    const isAuthenticated = JSON.parse(sessionStorage.getItem('isAuthenticated')) || false;
+    const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
 
-    // known user + not closed tab
+    // "known user + not closed session"
     if (isAuthenticated) {
+      console.log('%cknown user + not closed session - isAuthenticated:', 'color: green; font-weight: bold;', isAuthenticated, typeof isAuthenticated);
+
       this.$store.commit('setAuthenticated', true);
-    } else if (accessToken) {
-      // known user + closed tab
-      const verifyJWTSuccess = await this.$store.dispatch('verifyJWT');
+    } else if (tc_user.access) {
+      // "known, not logged out user + closed session"
+
+      // NOTE: tc_user.access will be undefined if access not set.
+      // It will not result in TypeError: Cannot read properties of null (reading 'access')
+      // because tc_user was set to truthy fallback {}
+      console.log('%cknown, not logged out user + closed session - tc_user.access:', 'color: green; font-weight: bold;', tc_user.access);
+
+      const verifyJWTSuccess = await this.$store.dispatch('verifyJWT', tc_user.access);
 
       if (verifyJWTSuccess !== 200) {
-        console.log('verifySuccess', verifyJWTSuccess);
+        console.log('%cinvalid access token, need to check refresh - verifyJWTSuccess:', 'color: red; font-weight: bold;', verifyJWTSuccess);
 
-        const refreshJWTSuccess = await this.$store.dispatch('refreshJWT');
+        const refreshJWTSuccess = await this.$store.dispatch('refreshJWT', tc_user.refresh);
 
         if (refreshJWTSuccess !== 200) {
-          console.log('refreshSuccess', refreshJWTSuccess);
-          this.$router.push('/log-in');
+          console.log('%ctreat as unknown user - refreshJWTSuccess:', 'color: red; font-weight: bold;', refreshJWTSuccess);
+          // TODO: Is it necessary to redirect to login? Why?
+          // this.$router.push('/log-in');
         }
 
       }
     } else {
-      // not known / not logged in user
+      // "not known / logged out user"
+      console.log('%cnot known / logged out user - tc_user.access:', 'color: green; font-weight: bold;', tc_user.access);
+
+      // TODO: removeToken mutation not needed
       this.$store.commit('removeToken');
+      this.$store.commit('setAuthenticated', false);
     }
 
-    // if (localStorage.user !== null) {
-    //   this.$store.commit('setUser', JSON.parse(localStorage.user));
-    //   console.log('After setUser commit in App.vue!');
-    // }
+    // If tc_user has keys (no empty object) set 
+    if (Object.keys(tc_user).length !== 0 && tc_user.constructor === Object) {
+      this.$store.commit('setUser', tc_user);
+    }
   },
 
   created() {
-    this.initCookieConsent();
+    // this.initCookieConsent();
     this.$store.dispatch('fetchLastUpdated');
   },
 
@@ -133,7 +146,9 @@ export default {
   methods: {
     initCookieConsent() {
       // Get 'cookie-comply' item from localStorage
+      console.log('%cBefore JSON.pars in initCookieConsent', 'color: red; font-weight: bold; background-color: white;');
       let cookieComply = JSON.parse(localStorage.getItem('cookie-comply'));
+      console.log('%cAfter JSON.pars in initCookieConsent', 'color: red; font-weight: bold; background-color: white;');
       
       // If cookie-comply key exists in localStorage
       if (cookieComply) {
@@ -203,7 +218,9 @@ export default {
     },
 
     runPrefScripts() {
+      console.log('%cBefore JSON.pars in runPrefScripts', 'color: red; font-weight: bold; background-color: white;');
       const prefScripts = JSON.parse(localStorage.getItem('cookie-comply'));
+      console.log('%cAfter JSON.pars in runPrefScripts', 'color: red; font-weight: bold; background-color: white;');
       
       const answeredAt = Date.now();
       console.log('answeredAt', answeredAt);

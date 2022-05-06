@@ -3,7 +3,7 @@
     <AuthForm
         @on-submit="submitForm"
         :view="view"
-        :title="title"
+        :title="loginTitle"
         :formGroups="formGroups"
         :actionBtn="actionBtn"
         :errors="errors"
@@ -33,7 +33,6 @@ export default {
 
     data() {
         return {
-            title: 'Welcome back!',
             view: 'LogIn',
             actionBtn: 'Login',
             formGroups: {
@@ -58,6 +57,11 @@ export default {
             user: 'user',
             toRouteName: 'toRouteName',
         }),
+        loginTitle() {
+            const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
+
+            return tc_user.username ? `Welcome back, ${tc_user.username}!` : `Welcome back!`;
+        },
     },
 
     methods: {
