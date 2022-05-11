@@ -49,10 +49,7 @@ axios.interceptors.response.use(function (response) {
       // Let user enter credentials again
       router.push({ name: 'LogIn' });
 
-      return new Promise((resolve, reject) => {
-        console.log('%crefresh error', 'color: red; font-weight: bold;',error);
-        reject(error);
-      });
+      return Promise.reject(error);
     } 
   }
 
@@ -104,16 +101,14 @@ axios.interceptors.response.use(function (response) {
         // Error with refreshing the access token
         console.log('%cUnsuccessful refresh JWT, refreshSuccess: ', 'color: red; font-weight: bold;', error);
 
-        Promise.reject(error);
+        return Promise.reject(error);
       });
     } else {
       // Handle all errors of requests with method GET which are not a 401
       console.log('%cWe are rejecting the GET error, status: ', 'color: orange; font-weight: bold;', error.response.status);
 
       // Reject error as intended, let display be handled by vue (e.g. 404 when trying to retrieve codes should display async error component for user)
-      return new Promise((resolve, reject) => {
-      reject(error);
-    });
+      return Promise.reject(error);
     }
     
   } // Handle errors of non-GET methods
@@ -156,7 +151,7 @@ axios.interceptors.response.use(function (response) {
       console.log('%cUnsuccessful refresh JWT, refreshSuccess: ', 'color: red; font-weight: bold;', error);
       // sessionStorage.removeItem('isAuthenticated');
 
-      Promise.reject(error);
+      return Promise.reject(error);
     });
   }
   
