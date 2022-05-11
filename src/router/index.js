@@ -215,53 +215,32 @@ router.beforeEach((to, from, next) => {
   const requiresGuest = to.matched.some(record => record.meta.requiresGuest);
   const isAuthenticated = store.state.auth.isAuthenticated;
 
-  console.log('isAuthenticated', isAuthenticated);
+  console.log('Router isAuthenticated', isAuthenticated);
 
   // TODO: How to concatenate unicode with string: https://www.compart.com/en/unicode/U+2014
   window.document.title = to.meta && to.meta.title ? (to.meta.title += ` — trainercodes.net`) : 'trainercodes.net';
 
   if(requiresAuth && !isAuthenticated) {
-    // console.log('router.beforeEach if', isAuthenticated, requiresAuth, requiresGuest);
 
-    // const isJWTvalid = await store.dispatch('verifyJWT');
-
-    // if (isJWTvalid === 200) {
-    //   console.log('isJWTvalid', isJWTvalid);
-    //   next();
-    // } else if (isJWTvalid === 401 || (isJWTvalid === 400)) {
-    //   console.log('isJWTvalid0', isJWTvalid);
-    //   const hasNewJWT = await store.dispatch('refreshJWT');
-    //   if (hasNewJWT === 200) {
-    //     console.log('hasNewJWT1', hasNewJWT);
-    //     next();
-    //   } else if (isJWTvalid === 401 || (hasNewJWT === 400)) {
-    //     console.log('hasNewJWT2', hasNewJWT);
-    //     next({ name: 'LogIn' });
-    //   }
-    // }
+    console.log('%cROUTER requiresAuth && !isAuthenticated ', 'color: plum; font-weight: bold;', requiresAuth, isAuthenticated);
 
     // NOTE: Changed from next() to router.push() due to "expected" error:
     // Navigating to /profile while being !isAuthenticated should redirect to /log-in --
     // Vue router threw an error because the resolving of the route /profile didn't go as expected
     // but was redirected
     router.push({ name: 'LogIn' });
-    // next({ name: 'LogIn' });
     // TODO: weiterleitung zu vorheriger seite const toPath = this.$route.query.to || '/cart'
 
   } else if (requiresGuest && isAuthenticated) {
-    // console.log('router.beforeEach else if', isAuthenticated,  requiresAuth, requiresGuest);
+    console.log('%cROUTER requiresGuest && isAuthenticated ', 'color: plum; font-weight: bold;', requiresGuest, isAuthenticated);
 
     // NOTE: See notice above
     router.push({ name: 'Profile' });
-    // next({ name: 'Profile'});
   } 
   else {
     // console.log('router.beforeEach else', isAuthenticated, requiresAuth, requiresGuest);
     next();
   }
-
-  // NOTE! Wenn ich mich registetriere und dann nochmal auf sign-up gehe: 
-  // log: router.beforeEach else false false true
 })
 // why is this better ? https://router.vuejs.org/guide/advanced/meta.html
 

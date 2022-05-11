@@ -46,6 +46,7 @@ import Navbar from './components/navbar/Navbar.vue';
 import Footer from './components/Footer.vue';
 
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 
 export default {
   name: 'App',
@@ -84,49 +85,30 @@ export default {
   },
 
   async beforeCreate() {
-    console.log('beforeCreate');
-
-    const isAuthenticated = JSON.parse(sessionStorage.getItem('isAuthenticated')) || false;
     const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
+    
+    if (tc_user.refresh) {
+      // "known / not logged out user"
 
-    // "known user + not closed session"
-    if (isAuthenticated) {
-      console.log('%cknown user + not closed session - isAuthenticated:', 'color: green; font-weight: bold;', isAuthenticated, typeof isAuthenticated);
-
+      // Setting isAuthenticated true so relevant data is already set + router beforeEach will NOT redirect us to Login
+      // In cas refreshJWT resolves with new access token this is what we want
+      // If refreshJWT gets rejected due to invalid token the redirect gets handled in response interceptor in main.js
       this.$store.commit('setAuthenticated', true);
-    } else if (tc_user.access) {
-      // "known, not logged out user + closed session"
+      
+      console.log('%cknown, not logged out user + closed session - tc_user.access:', 'color: green; font-weight: bold;', tc_user.refresh);
 
-      // NOTE: tc_user.access will be undefined if access not set.
-      // It will not result in TypeError: Cannot read properties of null (reading 'access')
-      // because tc_user was set to truthy fallback {}
-      console.log('%cknown, not logged out user + closed session - tc_user.access:', 'color: green; font-weight: bold;', tc_user.access);
+      this.$store.dispatch('refreshJWT');
 
-      const verifyJWTSuccess = await this.$store.dispatch('verifyJWT', tc_user.access);
-
-      if (verifyJWTSuccess !== 200) {
-        console.log('%cinvalid access token, need to check refresh - verifyJWTSuccess:', 'color: red; font-weight: bold;', verifyJWTSuccess);
-
-        const refreshJWTSuccess = await this.$store.dispatch('refreshJWT', tc_user.refresh);
-
-        if (refreshJWTSuccess !== 200) {
-          console.log('%ctreat as unknown user - refreshJWTSuccess:', 'color: red; font-weight: bold;', refreshJWTSuccess);
-          // TODO: Is it necessary to redirect to login? Why?
-          // this.$router.push('/log-in');
-        }
-
-      }
     } else {
       // "not known / logged out user"
-      console.log('%cnot known / logged out user - tc_user.access:', 'color: green; font-weight: bold;', tc_user.access);
+      console.log('%cnot known / logged out user - tc_user.access:', 'color: green; font-weight: bold;', tc_user.refresh);
 
-      // TODO: removeToken mutation not needed
-      this.$store.commit('removeToken');
-      this.$store.commit('setAuthenticated', false);
+      this.$store.dispatch('logout');
     }
 
     // If tc_user has keys (no empty object) set 
     if (Object.keys(tc_user).length !== 0 && tc_user.constructor === Object) {
+      console.log('%cWe have a user object in localStorage', 'color: aqua; font-weight: bold;', tc_user);
       this.$store.commit('setUser', tc_user);
     }
   },

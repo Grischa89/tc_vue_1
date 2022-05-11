@@ -1,5 +1,6 @@
 import { whileStatement } from '@babel/types';
 import axios from 'axios';
+import { resolve } from 'path';
 
 const state = {
   user: {},
@@ -125,66 +126,51 @@ const actions = {
       });
   },
 
-  verifyJWT({ commit }, access) {
+  // TODOOOOOOOOOOOOOO: Überprüfen, ob isAuthenticated im session gesetzt wird
+  // + kann  `JWT ${tc_user.access}`; durch  `JWT ${access}`; ersetzt werde, da mit übergeben
+  verifyJWT({ commit, state }, access) {
 
     return axios.post(`/api/v1/accounts/auth/jwt/verify/`,  {"token": access})
       .then(res => {
+        const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
 
-        sessionStorage.isAuthenticated = JSON.stringify(true);
+        axios.defaults.headers.common['Authorization'] = `JWT ${tc_user.access}`;
         commit('setAuthenticated', true);
-
+        sessionStorage.isAuthenticated = JSON.stringify(true);
+        
         return res.status;
       })
       .catch(err => {
-        // TODO: Wohin weiterleiten bei 400?
-        // Für user ausgeben: Diese email schon aktiviert errors.resendActivation
-        console.log('err inn auth.js activate jwt/verify/', err.response);
-        if (err.response.request.status === 401 || (err.response.request.status === 400)){
-          console.log('err inn auth.js activate jwt/verify/', err.response);
-          console.log("error code for activate: ", err.response.status)
-          return  err.response.status
-        } else {
-          return 'Did not expect this status code.'
-        }
-        
-
-         // 'Something went wrong. Please enter your email address again.';
+        // TODO: Better error handling
+        console.log('err in jwt/verify/', err);
       });
   },
 
-  refreshJWT({ commit }, refresh) {
+  refreshJWT({ commit }) {
+    const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
 
-    // If tc_user in App.vue is an empty object, refresh (tc_user.refresh) will be undefined
-    return axios.post(`api/v1/accounts/auth/jwt/refresh/`, {"refresh": refresh})
+    console.log('%cTry to refresh JWT in auth.js', 'color: cornflowerblue; font-weight: bold;', tc_user.refresh);
+
+    return axios.post(`/api/v1/accounts/auth/jwt/refresh/`, {"refresh": tc_user.refresh})
       .then(res => {
-        console.log('res.status afterapi/v1/accounts/auth/jwt/refresh/', res.status);
 
-        const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
+        // Da tc_user schon geladen ist, nächste Zeile sparen? TODO
+        // const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
         tc_user.access = res.data.access;
         localStorage.tc_user = JSON.stringify(tc_user);
         sessionStorage.isAuthenticated = JSON.stringify(true);
 
-        axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}`;
+        console.log('%c refreshJWT() set sessionStorage.isAuthenticated ', 'color: lime; font-weight: bold;', sessionStorage.isAuthenticated);
 
-        commit('setAccess', res.data);
+        axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}`;
         commit('setAuthenticated', true);
 
-        return res.status;
+        return res.data.access;
       })
       .catch(err => {
-        // TODO: Wohin weiterleiten bei 400?
-        // Für user ausgeben: Diese email schon aktiviert errors.resendActivation
-        console.log('err in auth.js auth/jwt/refresh/', err.response);
-
-        delete axios.defaults.headers.common['Authorization'];
-        localStorage.removeItem('tc_user');
-
-        if (err.response.request.status === 401){
-          return err.response.request.status
-        } else {
-          return 'Did not expect this status code.'
-        }
-
+        console.log('%cerr in refreshJWT in auth.js', 'color: red; font-weight: bold;', err);
+        if (err.response) return err.response.status;
+        return err;
       });
   },
 
@@ -192,24 +178,22 @@ const actions = {
 
     return axios.post('/api/v1/accounts/auth/jwt/create/', formData)
       .then(res => {
-        console.log("login:: ", res.data);
-
         const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
         tc_user.access = res.data.access;
         tc_user.refresh = res.data.refresh;
         localStorage.tc_user = JSON.stringify(tc_user);
-        
         sessionStorage.isAuthenticated = JSON.stringify(true);
 
+        console.log('%c login() set sessionStorage.isAuthenticated ', 'color: lime; font-weight: bold;', sessionStorage.isAuthenticated);
         axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}`;
 
-        commit('setToken', res.data);
         commit('setAuthenticated', true);
+
         return res.status;
       })
       .catch(err => {
-        console.log('err in auth.js login()', err.data, err.response);
-        // TODO: Alternativ ganzes err.response mitgeben und status code überprüfen? 401
+        if (err.response) console.log('err in auth.js login()', err.response);
+
         return err.response.status;
       });
   },
@@ -218,28 +202,25 @@ const actions = {
 
     return axios.get(`/api/v1/accounts/profile/${email}/`)
       .then(res => {
-        console.log('res.data in getUserProfile', res.data);
-
         const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
         tc_user.username = res.data.username;
         tc_user.is_active = res.data.is_active;
         localStorage.tc_user = JSON.stringify(tc_user);
-        
-        // NOTE / TODO: This mutation uses the whole res.data object while in localSTorage
-        // only username and is_active are set
+
+        // Set state.user to retrieved user
         commit('setUser', res.data);
         
         return res.status;
       })
       .catch(err => {
-        console.log('err in auth.js /api/v1/accounts/profile', err.data, err.response);
-        // TODO: Alternativ ganzes err.response mitgeben und status code überprüfen? 401
+        console.log('err in auth.js /api/v1/accounts/profile', err);
+        // TODO: Alternativ ganzes err.response mitgeben und status code überprüfen? 401 BETTER HANDLING
         // return err.response.data.detail;
         return err.response.status;
       });
   },
 
-  logout({ commit }) {
+  logout({ commit, state }) {
     const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
 
     delete tc_user.access;
@@ -253,13 +234,10 @@ const actions = {
 
     commit('setAuthenticated', false);
 
-    // TODO: removeToken mutation not needed
-    commit('removeToken');
+    return Promise.resolve(true);
   },
 
 };
-
-
 
 const mutations = {
   setUser(state, user) {
