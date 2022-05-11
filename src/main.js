@@ -38,28 +38,22 @@ axios.interceptors.response.use(function (response) {
 
     // Refresh JWT failed
     // Treat user as unknown and log them out
-    store.dispatch('logout')
-    .then((logout) => {
-      console.log('logout', logout);
-      console.log('%crouter', 'color: fuchsia; font-weight: bold;', router, router.currentRoute._value.meta.requiresAuth, router.currentRoute.value.meta.requiresAuth);
+    await store.dispatch('logout');
 
-      // Get meta info of current route
-      const routeRequiresAuth = router.currentRoute.value.meta.requiresAuth;
-      if (routeRequiresAuth) {
-        // If current route requires a logged in user
-        console.log('%cIF requiresAuth ', 'color: aqua; font-weight: bold;', routeRequiresAuth);
+    // Get meta info of current route
+    const routeRequiresAuth = router.currentRoute.value.meta.requiresAuth;
+    if (routeRequiresAuth) {
+      // If current route requires a logged in user
+      console.log('%cIF requiresAuth ', 'color: aqua; font-weight: bold;', routeRequiresAuth);
 
-        // Let user nter credentials again
-        router.push({ name: 'LogIn' });
-        return Promise.reject(error); 
-      } else {
-        console.log('%cELSE requiresAuth ', 'color: aqua; font-weight: bold;', routeRequiresAuth);
+      // Let user enter credentials again
+      router.push({ name: 'LogIn' });
 
-        // Let route resolve normally since no authentication required
-        return true;
-      }
-      
-    });  
+      return new Promise((resolve, reject) => {
+        console.log('%crefresh error', 'color: red; font-weight: bold;',error);
+        reject(error);
+      });
+    } 
   }
 
   // Error returned from login() - should be handled as intended (e.g. let user know that no account with the entered credentials was found)
