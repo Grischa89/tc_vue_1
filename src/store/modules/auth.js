@@ -48,10 +48,10 @@ const actions = {
         return res.status;
       })
       .catch(err => {
-        // TODO: Oder err.response.status ausgeben?
-        console.log('err', err);
-        console.log('err.response', err.response);
-        return err.response.status;
+        console.log('err in createUSER', err);
+
+        if (err.response) return err.response.status;
+        return Promise.reject(err);
     });
   },
 
@@ -67,9 +67,10 @@ const actions = {
         return res.status;
       })
       .catch(err => {
-        // NOTE: Stein hat hier zu /sign-up weitergeleitet
+        console.log('err in auth.js activate', err);
 
-        return err.response.request.status;
+        if (err.response) return err.response.status;
+        return Promise.reject(err);
       });
 
   },
@@ -87,9 +88,10 @@ const actions = {
       .catch(err => {
         // TODO: Wohin weiterleiten bei 400?
         // Für user ausgeben: Diese email schon aktiviert errors.resendActivation
-        console.log('err in auth.js activate', err.response);
+        console.log('err in auth.js resend_activation', err);
 
-        return err.response.status;
+        if (err.response) return err.response.status;
+        return Promise.reject(err);
       });
   },
 
@@ -106,9 +108,10 @@ const actions = {
       .catch(err => {
         // TODO: Wohin weiterleiten bei 400?
         // Für user ausgeben: Diese email schon aktiviert errors.resendActivation
-        console.log('err in auth.js reset_password', err.response);
+        console.log('err in auth.js reset_password', err);
 
-        return err.response.status;
+        if (err.response) return err.response.status;
+        return Promise.reject(err);
       });
   },
 
@@ -121,8 +124,9 @@ const actions = {
         return res.status;
       })
       .catch(err => {
-        console.log('error in reset_password_confirm', err.response.status);
-        return err.response.status;
+        console.log('error in reset_password_confirm', err);
+        if (err.response) return err.response.status;
+        return Promise.reject(err);
       });
   },
 
@@ -142,7 +146,8 @@ const actions = {
       })
       .catch(err => {
         // TODO: Better error handling
-        console.log('err in jwt/verify/', err);
+        if (err.response) return err.response.status;
+        return Promise.reject(err);
       });
   },
 
@@ -170,7 +175,7 @@ const actions = {
       .catch(err => {
         console.log('%cerr in refreshJWT in auth.js', 'color: red; font-weight: bold;', err);
         if (err.response) return err.response.status;
-        return err;
+        return Promise.reject(err);
       });
   },
 
@@ -192,9 +197,8 @@ const actions = {
         return res.status;
       })
       .catch(err => {
-        if (err.response) console.log('err in auth.js login()', err.response);
-
-        return err.response.status;
+        if (err.response) return err.response.status;
+        return Promise.reject(err);
       });
   },
 
@@ -213,14 +217,12 @@ const actions = {
         return res.status;
       })
       .catch(err => {
-        console.log('err in auth.js /api/v1/accounts/profile', err);
-        // TODO: Alternativ ganzes err.response mitgeben und status code überprüfen? 401 BETTER HANDLING
-        // return err.response.data.detail;
-        return err.response.status;
+        if (err.response) return err.response.status;
+        return Promise.reject(err);
       });
   },
 
-  logout({ commit, state }) {
+  logout({ commit }) {
     const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
 
     delete tc_user.access;
