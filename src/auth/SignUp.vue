@@ -76,7 +76,7 @@ export default {
                     this.$store.dispatch('getUserProfile', data.email);
 
                     // TODO: Weiterleiten zu /my-account wie bei LogIn?
-                    this.$router.push(`/`);
+                    this.$router.push({ name: 'Profile' });
                 } else {
                     // catch /api/v1/accounts/auth/jwt/create/
                     // Hier wird direkt error message ausgegeben

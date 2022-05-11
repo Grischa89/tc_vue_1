@@ -49,8 +49,8 @@ axios.interceptors.response.use(function (response) {
     } 
   }
 
-  // Error returned from login() - should be handled as intended (e.g. let user know that no account with the entered credentials was found)
-  if (error.config.url === '/api/v1/accounts/auth/jwt/create/') {
+  // Error returned from login() / createUser() - should be handled as intended (e.g. let user know that no account with the entered credentials was found)
+  if (error.config.url === '/api/v1/accounts/auth/jwt/create/' || error.config.url === '/api/v1/accounts/auth/users/') {
     return Promise.reject(error);
   }
 

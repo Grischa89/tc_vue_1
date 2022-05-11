@@ -41,7 +41,7 @@ const getters = {
 const actions = {
   createUser({ commit }, userCreateData) {
 
-    return axios.post("/api/v1/accounts/auth/users/", userCreateData)
+    return axios.post('/api/v1/accounts/auth/users/', userCreateData)
       .then(res => {
         console.log("res in createUser", res);
 
