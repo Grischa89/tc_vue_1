@@ -11,10 +11,6 @@ import 'vue-cookie-comply/dist/style.css'
 const AsyncErrorFetchingData = defineAsyncComponent(() => import('./components/errors/ErrorFetchingData.vue'));
 const AsyncInvalidSlug = defineAsyncComponent(() => import('./components/errors/InvalidSlug.vue'));
 
-// TODO: tc_user probably not needed
-// NOTE: If tc_user is not set yet in localStorage we set the truthy fallback {}
-// const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
-
 axios.interceptors.response.use(function (response) {
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Let response pass
