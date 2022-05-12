@@ -114,7 +114,7 @@ export default {
   },
 
   created() {
-    // this.initCookieConsent();
+    this.initCookieConsent();
     this.$store.dispatch('fetchLastUpdated');
   },
 
@@ -126,16 +126,16 @@ export default {
   },
 
   methods: {
-    initCookieConsent() {
+    async initCookieConsent() {
       // Get 'cookie-comply' item from localStorage
-      console.log('%cBefore JSON.pars in initCookieConsent', 'color: red; font-weight: bold; background-color: white;');
-      let cookieComply = JSON.parse(localStorage.getItem('cookie-comply'));
-      console.log('%cAfter JSON.pars in initCookieConsent', 'color: red; font-weight: bold; background-color: white;');
+      const cookieComply = JSON.parse(localStorage.getItem('cookie-comply'));
+      console.log('%cAfter JSON.pars in initCookieConsent', 'color: red; font-weight: bold; background-color: white;', cookieComply);
       
       // If cookie-comply key exists in localStorage
       if (cookieComply) {
         const elapsedDays = this.checkDate();
 
+        // TODO Set limit for banner to be shown again (90 days?)
         // If cookie-comply value is '[]' (user saved empty preferences)
         // if (cookieComply === '[]' && elapsedDays > 0.0001) {
         if (!cookieComply.length && elapsedDays > 0.0001) {
@@ -149,28 +149,21 @@ export default {
       } // When 'cookie-comply' is not set in localStorage (new user)
       else {
 
-        this.$store.dispatch('fetchClientLocation')
-          .then(res => {
+        try {
+          const userTimezone = await this.$store.dispatch('fetchClientLocation');
 
-            console.log('res', res.message);
-            // Get time zone
-            const userTimezone = res.time_zone.includes('Europe') || res.time_zone.includes('America/Los_Angeles') || res.includes('No Timezone');
-            
-            // Check if time zone property includes 'Europe'
-            if(userTimezone) {
-              console.log('EU/ CAL/ No Timezone, show banner.');
-              this.consentNeeded = true;
-            } // If fromEurope is false, set localStorage item and invoke runPrefScripts()
-            else {
-              console.log('NON-EU/ NON-CAL, no banner needed.');
-              this.acceptedAll();
-            }
-          })
-          .catch(err => {
-            console.log(err);
+          if (userTimezone.includes('Europe') || userTimezone.includes('America/Los_Angeles')) {
+            console.log('EU/ CAL/ No Timezone, show banner.');
             this.consentNeeded = true;
-          });
-          
+          } else {
+            console.log('NON-EU/ NON-CAL, no banner needed.');
+            this.acceptedAll();
+          }
+
+        } catch (err) {
+          console.log('err in try catch', err);
+          this.consentNeeded = true;
+        }
       }
     },
 
@@ -178,10 +171,9 @@ export default {
       console.log('I need to check the date');
 
       // Compare local storage date with current date
-      const answeredAt = localStorage.getItem('answeredAt');
+      // Get 'answeredAt' item from localStorage, or fallback Jan 2022, or 0
+      const answeredAt = JSON.parse(localStorage.getItem('answeredAt') || Date.parse('01 Jan 2022 00:00:00 GMT') || '0');
       const elapsedTime = Date.now() - answeredAt;
-
-      console.log('elapsedTime', elapsedTime);
 
       // (toSeconds * toMinutes * toHours * toDays)
       const elapsedDays = elapsedTime / (1000 * 60 * 60 * 24)
@@ -192,21 +184,19 @@ export default {
     
     acceptedAll() {
       console.log('acceptedAll');
-      // Hier JSON.stringify([new String('_ga','_hjid')]) TODO
-      // Damit unten if else oder so möglich ist und loopens
+      // Extend allScripts array if new script shall be included
       const allScripts = ['_ga','_hjid'];
       localStorage.setItem('cookie-comply', JSON.stringify(allScripts));
       this.runPrefScripts();
     },
 
     runPrefScripts() {
-      console.log('%cBefore JSON.pars in runPrefScripts', 'color: red; font-weight: bold; background-color: white;');
-      const prefScripts = JSON.parse(localStorage.getItem('cookie-comply'));
-      console.log('%cAfter JSON.pars in runPrefScripts', 'color: red; font-weight: bold; background-color: white;');
+      // If user chooses no script, an empty array [] is saved to cookie-comply
+      const prefScripts = JSON.parse(localStorage.getItem('cookie-comply')) || [];
+      console.log('%cAfter JSON.pars in runPrefScripts', 'color: red; font-weight: bold; background-color: white;', prefScripts);
       
       const answeredAt = Date.now();
-      console.log('answeredAt', answeredAt);
-      localStorage.setItem('answeredAt', answeredAt);
+      localStorage.answeredAt = JSON.stringify(answeredAt);
 
       if (!prefScripts.length) return
 

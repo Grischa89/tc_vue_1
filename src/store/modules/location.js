@@ -27,37 +27,17 @@ const actions = {
 
   async fetchClientLocation({ commit }) {
 
-    try {
-      // throw new Error('No Timezone');
-      let res = await Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timezone = await Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-      if (res) {
-        return res;
+    return new Promise((resolve, reject) => {
+      console.log('fetchClientLocation', timezone);
+
+      if (timezone) {
+        resolve(timezone);
       } else {
-        throw new Error('No Timezone');
+        reject('No timezone');
       }
-    } catch(err) {
-      return err.message;
-    }
-
-    // return 
-
-    // return axios.get(`https://api.ipbase.com/v2/info?apikey=${process.env.VUE_APP_GEO_API_KEY}&ip=1.1.1.1`)
-    // .then(res => {
-    //   console.log('res.data', res.data.data);
-    //   commit('setClientLocation', res.data.data);
-    //   return res.data.data;
-    // })
-    
-    // return axios.get(`https://api.ipbase.com/v2/info?apikey=${process.env.VUE_APP_GEO_API_KEY}&ip=1.1.1.1`)
-    // .then(res => {
-    //   console.log('res.data', res.data.data);
-    //   commit('setClientLocation', res.data.data);
-    //   return res.data.data;
-    // })
-    // .catch(err => {
-    //   console.log('error', err);
-    // });
+    });
   },
 };
 
