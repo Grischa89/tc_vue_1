@@ -64,9 +64,14 @@
             <router-link :to="{ name: 'AddCode' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Add Your Code</router-link>
           </li>
 
-          <li v-if="!isAuthenticated" class="navbar__menu__item">
-            <router-link to="/log-in" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Login</router-link>
-          </li>
+          <template v-if="!isAuthenticated">
+            <li class="navbar__menu__item">
+              <router-link :to="{ name: 'LogIn' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Login</router-link>
+            </li>
+            <li class="navbar__menu__item">
+              <router-link :to="{ name: 'SignUp' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Signup</router-link>
+            </li>
+          </template>
 
           <template v-if="isAuthenticated">
             <li class="navbar__menu__item">
