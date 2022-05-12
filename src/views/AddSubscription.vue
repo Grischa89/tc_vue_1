@@ -116,14 +116,12 @@ export default {
     //     this.errors.loadSubscriptionOptions = 'Something went wrong retrieving possible subscriptions. Please reload the page or try again later.';
     //   });
 
-    this.$store.dispatch('fetchClientLocation')
-      .then(res => {
-        if (res && res !== 'No Timezone') {
-          this.data.user_timezone = res;
-        } else {
-          this.data.user_timezone = '';
-        }
-      });
+    try {
+      const userTimezone = await this.$store.dispatch('fetchClientLocation');
+      this.data.user_timezone = userTimezone;
+    } catch (err) {
+      this.data.user_timezone = '';
+    };
   },
 
   computed: {
