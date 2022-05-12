@@ -174,7 +174,6 @@ const actions = {
       })
       .catch(err => {
         console.log('%cerr in refreshJWT in auth.js', 'color: red; font-weight: bold;', err);
-        if (err.response) return err.response.status;
         return Promise.reject(err);
       });
   },
@@ -185,12 +184,12 @@ const actions = {
       .then(res => {
         const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
         tc_user.access = res.data.access;
-        tc_user.refresh = res.data.refresh;
+        tc_user.refresh = res.data.refresh + 'haha';
         localStorage.tc_user = JSON.stringify(tc_user);
         sessionStorage.isAuthenticated = JSON.stringify(true);
 
         console.log('%c login() set sessionStorage.isAuthenticated ', 'color: lime; font-weight: bold;', sessionStorage.isAuthenticated);
-        axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}`;
+        axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}GJ`;
 
         commit('setAuthenticated', true);
 

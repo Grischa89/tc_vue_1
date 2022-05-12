@@ -68,7 +68,7 @@ axios.interceptors.response.use(function (response) {
       return store.dispatch('refreshJWT')
       .then((access) => {
         // New access token being returned
-        console.log('%cWe got a new token for a GET method: ', 'color: orange; font-weight: bold;', access);
+        console.log('%cWe got a new token for a GET method: ', 'color: orange; font-weight: bold;', access, typeof access);
 
         console.log('%cThis is the GET request we want to repeat', 'color: orange; font-weight: bold;', originalRequest);
         // NOTE: Now for the original request the new access token needs to be set
