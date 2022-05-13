@@ -255,12 +255,11 @@ export default {
 	-moz-box-shadow: $card-shadow rgba($black, 0.2);
 
   &__title {
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-    // TODO: heading
+    margin: 1.5rem auto;
     font-size: $mobile-heading;
     font-weight: bold;
     text-transform: uppercase;
+    width: 80%;
   }
 
   &__group {
