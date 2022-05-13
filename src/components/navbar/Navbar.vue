@@ -49,10 +49,6 @@
       <div :class="{'navbar__menu-wrapper--hide': !showMenu }" class="navbar__menu-wrapper">
         <ul class="navbar__menu">
           <li class="navbar__menu__item">
-            <router-link to="/" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Great</router-link>
-          </li>
-
-          <li class="navbar__menu__item">
             <NavbarDropdownMenu
               ref="dropdownContinents"
               v-if="continentNames"
@@ -319,6 +315,7 @@ export default {
     font-weight: bold;
     letter-spacing: 0.05em;
     cursor: pointer;
+    white-space: nowrap;
     // TODO: Ensure accessibility for links!
     outline: none;
     box-shadow: none;
