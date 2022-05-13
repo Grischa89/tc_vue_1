@@ -220,16 +220,21 @@ router.beforeEach((to, from, next) => {
   // TODO: How to concatenate unicode with string: https://www.compart.com/en/unicode/U+2014
   window.document.title = to.meta && to.meta.title ? (to.meta.title += ` — trainercodes.net`) : 'trainercodes.net';
 
+  if (to.redirectedFrom) {
+    store.commit('setToRoute', to.redirectedFrom);
+  }
+
   if(requiresAuth && !isAuthenticated) {
 
     console.log('%cROUTER requiresAuth && !isAuthenticated ', 'color: plum; font-weight: bold;', requiresAuth, isAuthenticated);
 
     // NOTE: Changed from next() to router.push() due to "expected" error:
     // Navigating to /profile while being !isAuthenticated should redirect to /log-in --
-    // Vue router threw an error because the resolving of the route /profile didn't go as expected
-    // but was redirected
-    router.push({ name: 'LogIn' });
-    // TODO: weiterleitung zu vorheriger seite const toPath = this.$route.query.to || '/cart'
+    // Vue router threw an error because the resolving of the route /profile didn't go as expected, but was redirected
+    // router.push({ name: 'LogIn' });
+    // to.redirectedFrom object was not available when using router.push, switching back to next()
+    // NOTE: to.redirectedFrom is crucial fo redirecting user to a route they intended to visit
+    next({ name: 'LogIn' });
 
   } else if (requiresGuest && isAuthenticated) {
     console.log('%cROUTER requiresGuest && isAuthenticated ', 'color: plum; font-weight: bold;', requiresGuest, isAuthenticated);

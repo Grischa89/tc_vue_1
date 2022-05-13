@@ -23,14 +23,6 @@ export default {
         AuthForm,
     },
 
-    beforeRouteEnter(to, from, next) {
-        next(vm => {
-            if (to.redirectedFrom) {
-                vm.$store.commit('setToRouteName', to.redirectedFrom.name);
-            }
-        });
-    },
-
     data() {
         return {
             view: 'LogIn',
@@ -87,11 +79,21 @@ export default {
                 const loginSuccess = await this.$store.dispatch('login', loginData);
 
                 if (loginSuccess === 200) {
-                    // TODO: Hier wie cose with stein zu ehemaligem to.patch weiterleiten??
-                    // TODO: Error handling when user object was not retrieved
-                    this.$store.dispatch('getUserProfile', data.email);
 
-                    this.toRouteName === 'AddCode' ? this.$router.push({ name: 'AddCode' }) : this.$router.push({ name: 'Profile' });
+                    try {
+                        // Get user data
+                        // Either push to route user intended to visit (but was not authenticated) or to profile
+                        await this.$store.dispatch('getUserProfile', data.email);
+                        this.toRouteName ? this.$router.push({ name: `${this.toRouteName}` }) : this.$router.push({ name: 'Profile' });
+                    } catch (err) {
+                        // Handle error in getUserProfile (404)
+                        // Perform logout() so user is treated as unauthenticated (tokens deleted + sessionStorage empty)
+                        this.$store.dispatch('logout');
+                        
+                        this.errors.unauthorized = 'Your profile information could not be retrieved. Please log in again.';
+                        this.forwardSuggestion.routeName = 'ResendActivationEmail';
+                        this.forwardSuggestion.textContent = 'Resend Activation Email?';
+                    }
                     
                 } else {
                     this.errors.unauthorized = 'No active account found with the given credentials. Please try again.';

@@ -11,7 +11,7 @@ const state = {
   isLoading: false,
   requestEmail: '',
   prevRouteName: '',
-  toRouteName: '',
+  toRoute: {},
 };
 
 const getters = {
@@ -33,7 +33,7 @@ const getters = {
   },
 
   toRouteName: state => {
-    return state.toRouteName;
+    return state.toRoute.name;
   },
 
 };
@@ -214,7 +214,6 @@ const actions = {
         return res.status;
       })
       .catch(err => {
-        if (err.response) return err.response.status;
         return Promise.reject(err);
       });
   },
@@ -274,8 +273,8 @@ const mutations = {
     state.prevRouteName = prevRouteName;
   },
 
-  setToRouteName(state, toRouteName) {
-    state.toRouteName = toRouteName;
+  setToRoute(state, toRoute) {
+    state.toRoute = toRoute;
   },
 };
 
