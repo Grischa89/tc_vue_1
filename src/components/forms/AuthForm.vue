@@ -53,7 +53,7 @@
 
             <div v-if="formGroups.rePassword" class="form__group">
                 <label class="form__group__label" :class="{'form__group__label--error': passwordErrors.invalidRePassword}" for="re_password">Repeat Password</label>
-                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': passwordErrors.invalidRePassword}" type="password" id="re_password" name="re_password" placeholder="" autocomplete="on" v-model="data.re_password" @blur="$store.dispatch('validateRePassword', { re_password: data.re_password, password: data.password})">
+                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': passwordErrors.invalidRePassword}" type="password" id="re_password" name="re_password" placeholder="" autocomplete="on" v-model="data.re_password" @input="$store.dispatch('validateRePassword', { re_password: data.re_password, password: data.password})" @blur="$store.dispatch('validateRePassword', { re_password: data.re_password, password: data.password})">
             
                 <span v-if="passwordErrors.invalidRePassword" class="form__group__help" :class="{'form__group__help--error': passwordErrors.invalidRePassword}">{{ passwordErrors.invalidRePassword }}</span>     
             </div>
@@ -111,6 +111,13 @@ export default {
     actionBtn: String,
     errors: Object,
     forwardSuggestion: Object,
+  },
+
+  mounted() {
+      this.$store.commit('setUsernameInvalidMessage', '');
+      this.$store.commit('setEmailInvalidMessage', '');
+      this.$store.commit('setPasswordInvalidMessage', '');
+      this.$store.commit('setRePasswordInvalidMessage', '');
   },
 
   data() {
