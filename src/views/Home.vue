@@ -42,7 +42,7 @@ export default {
 
   data() {
     return {
-      tableTitle: 'Latest Codes',
+      tableTitle: 'Recent Codes',
       errorRetrievingRecent: 'Something went wrong retrieving recent Trainer Codes.',
     }
   },
