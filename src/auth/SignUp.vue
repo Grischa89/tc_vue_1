@@ -14,6 +14,8 @@
 <script>
 import AuthForm from '../components/forms/AuthForm.vue';
 
+import { mapGetters } from 'vuex';
+
 export default {
 
     name: 'SignUp',
@@ -39,6 +41,12 @@ export default {
                 unauthorized: '',
             },
         }
+    },
+
+    computed: {
+        ...mapGetters({
+            toRouteName: 'toRouteName',
+        }),
     },
 
     methods: {
@@ -73,10 +81,21 @@ export default {
                 }
 
                 if (loginSuccess === 200) {
-                    this.$store.dispatch('getUserProfile', data.email);
 
-                    // TODO: Weiterleiten zu /my-account wie bei LogIn?
-                    this.$router.push({ name: 'Profile' });
+                    try {
+                        // Get user data
+                        // Either push to route user intended to visit (but was not authenticated) or to profile
+                        await this.$store.dispatch('getUserProfile', data.email);
+                        this.toRouteName ? this.$router.push({ name: `${this.toRouteName}` }) : this.$router.push({ name: 'Profile' });
+                    } catch (err) {
+                        // Handle error in getUserProfile (404)
+                        // Perform logout() so user is treated as unauthenticated (tokens deleted + sessionStorage empty)
+                        this.$store.dispatch('logout');
+
+                        if (!this.errors.badRequest) {
+                            this.errors.unauthorized = 'Your profile information could not be retrieved. Please try again.';
+                        }
+                    }
                 } else {
                     // catch /api/v1/accounts/auth/jwt/create/
                     // Hier wird direkt error message ausgegeben
