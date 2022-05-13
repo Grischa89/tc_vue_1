@@ -145,8 +145,6 @@ const actions = {
         return res.status;
       })
       .catch(err => {
-        // TODO: Better error handling
-        if (err.response) return err.response.status;
         return Promise.reject(err);
       });
   },
@@ -184,12 +182,12 @@ const actions = {
       .then(res => {
         const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
         tc_user.access = res.data.access;
-        tc_user.refresh = res.data.refresh + 'haha';
+        tc_user.refresh = res.data.refresh;
         localStorage.tc_user = JSON.stringify(tc_user);
         sessionStorage.isAuthenticated = JSON.stringify(true);
 
         console.log('%c login() set sessionStorage.isAuthenticated ', 'color: lime; font-weight: bold;', sessionStorage.isAuthenticated);
-        axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}GJ`;
+        axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}`;
 
         commit('setAuthenticated', true);
 
