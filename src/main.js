@@ -30,23 +30,29 @@ axios.interceptors.response.use(function (response) {
     // originalRequest.url should not be repeated (no loop)
     originalRequest._retry = true;
     
-    console.log('%cInvalid refresh token! ', 'color: maroon; font-weight: bold;', error.response.status, error.config.url);
+    console.log('%cInvalid refresh token! ', 'color: red; font-weight: bold;', error.response.status, error.config.baseURL);
 
     // Refresh JWT failed
     // Treat user as unknown and log them out
     await store.dispatch('logout');
 
+    console.log('%crouter', 'color: plum; font-weight: bold;', router);
+
     // Get meta info of current route
     const routeRequiresAuth = router.currentRoute.value.meta.requiresAuth;
     if (routeRequiresAuth) {
       // If current route requires a logged in user
-      console.log('%cIF requiresAuth ', 'color: aqua; font-weight: bold;', routeRequiresAuth);
-
       // Let user enter credentials again
       router.push({ name: 'LogIn' });
 
       return Promise.reject(error);
-    } 
+    }
+
+    // If routeRequiresAuth is undefined, refresh the current route for request can be send without JWT and refresh was expired
+    // IMPORTANT: The error needs to be returned also (or anything for that matter) - otherwise 'Unsuccessful refresh JWT, refreshSuccess:' (below) will will try to return undefined res.data + might retry originalRequest with undefined as JWT, ~ just NASTY ~, simply reject error here!!!
+    // NOTE: I wanted to avoid router.go(), but apparently at this point the routing has already happened (still with false and not needed JWT in header) and the only solution I see at this point is reloading the page so the data can be requested anew without a JWT
+    router.go();
+    return Promise.reject(error);
   }
 
   // Error returned from login() / createUser() / requestPasswortReset() / resetPasswordConfirm() / resendActivationEmail() / activate() - should be handled as intended (e.g. let user know that no account with the entered credentials was found)

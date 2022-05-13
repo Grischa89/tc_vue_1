@@ -156,9 +156,6 @@ const actions = {
 
     return axios.post(`/api/v1/accounts/auth/jwt/refresh/`, {"refresh": tc_user.refresh})
       .then(res => {
-
-        // Da tc_user schon geladen ist, nächste Zeile sparen? TODO
-        // const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
         tc_user.access = res.data.access;
         localStorage.tc_user = JSON.stringify(tc_user);
         sessionStorage.isAuthenticated = JSON.stringify(true);
@@ -232,6 +229,7 @@ const actions = {
 
     commit('setAuthenticated', false);
 
+    console.log('%cUser was logged out', 'color: fuchsia; font-weight: bold;');
     return Promise.resolve(true);
   },
 

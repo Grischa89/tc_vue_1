@@ -89,10 +89,12 @@ export default {
                         // Handle error in getUserProfile (404)
                         // Perform logout() so user is treated as unauthenticated (tokens deleted + sessionStorage empty)
                         this.$store.dispatch('logout');
-                        
-                        this.errors.unauthorized = 'Your profile information could not be retrieved. Please log in again.';
-                        this.forwardSuggestion.routeName = 'ResendActivationEmail';
-                        this.forwardSuggestion.textContent = 'Resend Activation Email?';
+
+                        if (err.response && err.response.status !== 401) {
+                            this.errors.unauthorized = 'Your profile information could not be retrieved. Please log in again.';
+                            this.forwardSuggestion.routeName = 'ResendActivationEmail';
+                            this.forwardSuggestion.textContent = 'Resend Activation Email?';
+                        }
                     }
                     
                 } else {
