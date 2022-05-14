@@ -159,7 +159,7 @@ axios.interceptors.response.use(function (response) {
   
 });
 
-axios.defaults.baseURL = 'https://api.trainercodes.tk/'
+axios.defaults.baseURL = 'https://api.abramov.app/'
 // axios.defaults.baseURL = 'http://127.0.0.1:8000/'
 
 createApp(App).use(store).use(router, axios).use(VueCookieComply).component('AsyncErrorFetchingData', AsyncErrorFetchingData).component('AsyncInvalidSlug', AsyncInvalidSlug).mount('#app')
