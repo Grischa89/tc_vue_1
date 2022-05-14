@@ -45,6 +45,7 @@ const actions = {
     commit('validateLetter', password);
     commit('validateDigit', password);
     commit('validateLength', password);
+    commit('passwordRequirementsMet');
   },
 
   validatePassword({ state, commit }, password) {
@@ -122,6 +123,15 @@ const mutations = {
 
   setRePasswordInvalidMessage(state, message) {
     state.errors.invalidRePassword = message;
+  },
+
+  passwordRequirementsMet (state) {
+    if (state.passwordRequirements.letter.valid && state.passwordRequirements.digit.valid && state.passwordRequirements.length.valid) {
+      setTimeout(() => {
+        state.passwordRequirements.validPassword = true;
+      }, 200);
+      
+    }
   }
   
 };
