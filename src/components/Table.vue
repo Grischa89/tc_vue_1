@@ -33,10 +33,32 @@
 
                 <div v-else class="table__body__row__cell__container__item" @click="copyCodeToClipboard($event)" >{{ code.player_code }}</div>
 
-                <CopyButton @click="copyCodeToClipboard($event)" />
+                <IconButton @click="copyCodeToClipboard($event)">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor"  id="icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                  </svg>
+                </IconButton>
+              </div>
+
+              <div  class="table__body__row__cell__container">
+                
+
+                <IconButton @click="openQRCodeModal(code)">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h1v1H5zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm2 2v-1h1v1H5zM13 3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1V4a1 1 0 00-1-1h-3zm1 2v1h1V5h-1z" clip-rule="evenodd" />
+                    <path d="M11 4a1 1 0 10-2 0v1a1 1 0 002 0V4zM10 7a1 1 0 011 1v1h2a1 1 0 110 2h-3a1 1 0 01-1-1V8a1 1 0 011-1zM16 9a1 1 0 100 2 1 1 0 000-2zM9 13a1 1 0 011-1h1a1 1 0 110 2v2a1 1 0 11-2 0v-3zM7 11a1 1 0 100-2H4a1 1 0 100 2h3zM17 13a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM16 17a1 1 0 100-2h-3a1 1 0 100 2h3z" />
+                  </svg>
+                </IconButton>
               </div>
             </td>
           </tr>
+          <Teleport to="body">
+                  <ModalQRCode 
+                    v-if="openModal"
+                      @on-close="closeModal"
+                      @copy-code="copyCodeToClipboard"
+                      :code="qrCode" />
+                </Teleport>
         </tbody>
       </table>
     </div>
@@ -45,13 +67,31 @@
 </template>
 
 <script>
-import CopyButton from './copy-button/CopyButton.vue';
+import IconButton from './icon-button/IconButton.vue';
+import ModalQRCode from './ModalQRCode.vue';
 
 export default {
   name: 'Table',
 
   components: {
-    CopyButton,
+    IconButton,
+    ModalQRCode,
+  },
+
+  data() {
+    return {
+      openModal: false,
+      qrCode: {
+        city: '',
+        city_slug: '',
+        continent: '',
+        continent_slug: '',
+        country: '',
+        country_slug: '',
+        player_code: '',
+        prettyCode: '',
+      }
+    }
   },
 
   // Maybe list props as object, props: { latestCodes: { type: Array, required: true } }
@@ -75,10 +115,29 @@ export default {
   methods: {
     
     copyCodeToClipboard(e) {
-      const parent = e.target.closest('td');
-      // console.log('parent', parent, parent.dataset.code);
+      const parent = e.target.closest('[data-code]');
+      console.log('parent', parent, parent.dataset.code);
       this.$store.dispatch('copyCodeToClipboard', parent.dataset.code);
     },
+
+    openQRCodeModal(code) {
+      this.qrCode.city = code.city;
+      this.qrCode.city_slug = code.city_slug;
+      this.qrCode.continent = code.continent;
+      this.qrCode.continent_slug = code.continent_slug;
+      this.qrCode.country = code.country;
+      this.qrCode.country_slug = code.country_slug;
+      this.qrCode.player_code = code.player_code;
+      this.qrCode.prettyCode = code.prettyCode;
+
+      document.body.style.overflow= 'hidden';
+      this.openModal = true;
+    },
+
+    closeModal(target) {
+      document.body.style.overflow= 'auto';
+      this.openModal = false;
+    }
 
   },
  
@@ -115,6 +174,7 @@ export default {
     -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
     -moz-box-shadow: $card-shadow rgba($black, 0.2);
     // TODO: @media für alles > mobile
+    max-width: 450px;
   }
 }
 
@@ -155,7 +215,21 @@ export default {
       
       &__cell {
         text-align: left;
-        padding: 1rem;
+        // white-space: nowrap;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-left: .75rem;
+        padding-right: 0;
+
+        &:nth-of-type(2n) {
+          display: flex;
+          justify-content: space-between;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+          padding-left: 0rem;
+          padding-right: .375rem;
+          // TODO: padding-right + left (__cell) @media erhöhen
+        }
 
         &__link {
           font-weight: bold;
@@ -174,15 +248,16 @@ export default {
 
         &__container {
           display: flex;
-          justify-content: space-between;
+          // justify-content: space-between;
           text-align: center;
 
           &__item {
             margin-top: auto;
             margin-bottom: auto;
-            margin-right: 1rem;
+            // margin-right: 1rem;
             cursor: pointer;
             white-space: nowrap;
+            // TODO: margin @media einfügen
           }
         }
       }

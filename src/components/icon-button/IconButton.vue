@@ -1,19 +1,20 @@
 <template>
   <button class="button">
-    <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor"  id="icon">
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor"  id="icon">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-    </svg>
+    </svg> -->
+    <slot></slot>
   </button>
 </template>
 
 <script>
 export default {
-  name: 'CopyButton',
+  name: 'IconButton',
 
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .button {
   // display: flex;
   // align-items: center;
@@ -22,13 +23,13 @@ export default {
   // width: 1.25rem;
   cursor: pointer;
   border-radius: 50%;
-  background-color: $primary-darker;
+  // background-color: $primary-darker;
   padding: .375rem;
   -webkit-tap-highlight-color: $primary;
 
   &__prepend {
     height: 1.25rem;
-    width: 1.25rem;
+    width: 1.25em;
   }
 
   &:hover, &:active {
