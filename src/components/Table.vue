@@ -175,6 +175,7 @@ export default {
     -moz-box-shadow: $card-shadow rgba($black, 0.2);
     // TODO: @media für alles > mobile
     max-width: 450px;
+    background-color: $white;
   }
 }
 

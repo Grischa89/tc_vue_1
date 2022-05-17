@@ -254,13 +254,14 @@ html, body {
   // position: relative;
   // min-height: 100vh;
   text-align: center;
-  background-color: $white;
+  background-color: rgba($primary, .3);
+
   // background-image: linear-gradient(to right bottom, #fefefa, #fdfcf3, #fcf9ec, #fcf6e5, #fdf3de, #fcedd0, #fce6c3, #fddfb6, #fcd39f, #fcc689, #fbb974, #fbab60);
 }
 
 .main-wrapper {
   flex: 1;
-  margin-bottom: 5rem;
+  padding-bottom: 3rem;
 }
 
 #nav {
