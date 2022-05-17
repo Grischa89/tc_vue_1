@@ -168,7 +168,7 @@ export default {
     margin: .5rem auto;
     // padding: .25rem 0;
     border-radius: .75rem;
-    width: 90%;
+    width: 100%;
     // width: 83.333333%;
     box-shadow: $card-shadow rgba($black, 0.2); 
     -webkit-box-shadow: $card-shadow rgba($black, 0.2); 

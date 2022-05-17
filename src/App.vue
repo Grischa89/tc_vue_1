@@ -261,7 +261,7 @@ html, body {
 
 .main-wrapper {
   flex: 1;
-  padding-bottom: 3rem;
+  padding: 5%;
 }
 
 #nav {

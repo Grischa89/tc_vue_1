@@ -68,6 +68,7 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   background-color: $black;
   padding-top: .5rem .5rem;
+  margin-top: .75rem;
 
   @media(min-width: 550px) { // TODO width wenn copyright steht
     .footer {
