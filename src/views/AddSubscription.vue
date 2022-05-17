@@ -51,7 +51,7 @@
         <span v-if="errors.invalidCodeAction" class="form__group__help" :class="{'form__group__help--error': errors.invalidCodeAction}" >{{ errors.invalidCodeAction }}</span>
       </div>
 
-      <div v-if="countries" class="form__group">
+      <div v-if="countries && !data.user_timezone" class="form__group">
         <div v-if="errors.loadTimezone" class="form__group__help form__group__help--error">
           {{ errors.loadTimezone }}
         </div>
@@ -119,7 +119,9 @@ export default {
     try {
       const userTimezone = await this.$store.dispatch('fetchClientLocation');
       this.data.user_timezone = userTimezone;
+      console.log('%cuserTimezone', 'color: darkseagreen; font-weight: bold;', userTimezone);
     } catch (err) {
+      console.log('%cerr', 'color: darkseagreen; font-weight: bold;', err);
       this.data.user_timezone = '';
     };
   },
