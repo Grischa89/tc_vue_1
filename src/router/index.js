@@ -11,6 +11,10 @@ import AddCode from '../views/AddCode.vue'
 import CardCarousel from '../views/CardCarousel.vue'
 import ActivateUser from '../auth/account/ActivateUser.vue'
 import Profile from '../profile/Profile.vue'
+import ProfileTest from '../profile/ProfileTest.vue'
+import UserOverview from '../profile/UserOverview.vue'
+import UserCodes from '../profile/UserCodes.vue'
+import UserSubscriptions from '../profile/UserSubscriptions.vue'
 import ProfileSettings from '../profile/ProfileSettings.vue'
 import LogIn from '../auth/LogIn.vue'
 import SignUp from '../auth/SignUp.vue'
@@ -73,6 +77,32 @@ const routes = [
       requiresAuth: true,
       title: 'Your Profile',
     },
+  },
+
+  {
+    path: '/profiletest',
+    name: 'ProfileTest',
+    component: ProfileTest,
+    meta: {
+      requiresAuth: true,
+      title: 'Your Profile',
+    },
+    children: [
+      {
+        path: '',
+        name: 'UserOverview',
+        component: UserOverview,
+      },
+      {
+        path: 'codes',
+        name: 'UserCodes',
+        component: UserCodes,
+      },
+      {
+        path: 'subscriptions',
+        name: 'UserSubscriptions',
+        component: UserSubscriptions,
+      }]
   },
 
   {
@@ -202,8 +232,19 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
+      console.log('%crouter savedPosition', 'color: gold; font-weight: bold;', savedPosition);
       return savedPosition
     } else {
+      const position = {};
+      if (to.hash) {
+        console.log('%crouter to.hash', 'color: gold; font-weight: bold;', to.hash);
+        position.selector = to.hash;
+        if(document.querySelector(to.hash)) {
+          return position;
+        }
+        return { top: 0 }
+      }
+      console.log('%crouter to.hash', 'color: gold; font-weight: bold;', to.hash);
       return { top: 0 }
     }
   },

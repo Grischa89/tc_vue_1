@@ -9,6 +9,10 @@ const state = {
   subscriptions: '',
 
   subscriptionLoadStatus: null,
+
+  userCodes: '',
+
+  userCodeLoadStatus: null,
 };
 
 const getters = {
@@ -22,13 +26,57 @@ const getters = {
   },
 
   subscriptions: state => {
-    // Sort subscriptions in descending order y created_at
-    if (state.subscriptions) return state.subscriptions.sort((a, b) => b.created_at.localeCompare(a.created_at));
+    // TODO: Time until event starts in usertime as new prop
+    // const now = new Date().getTime();
+
+    // Sort subscriptions in descending order created_at
+    if (state.subscriptions) {
+      state.subscriptions.forEach(sub => {
+        // const eventUserTimeMs = new Date(sub.)
+        sub.prettyCode = sub.player_code.replace(/.{4}/g, '$& ');
+
+        switch (sub.action) {
+          case 'POST_YOUR_CODE_ON_TWITTER':
+            sub.message = `Post ${sub.prettyCode} on Twitter for ${sub.event_name}`;
+            break;
+          case 'POST_YOUR_CODE_ON_REDDIT':
+            sub.message = `Post ${sub.prettyCode} on Reddit for ${sub.event_name}`;
+            break;
+          case 'GET_CODES_TO_YOUR_EMAIL':
+            sub.message = `Get codes send to your email`;
+            break;
+          default:
+            console.log('%cdefault', 'color: red; font-weight: bold;', sub.action);
+            sub.message = `We have a new action!`;
+            break;
+        }
+      });
+
+    console.log('%creturned subs', 'color: darkseagreen; font-weight: bold;', state.subscriptions);
+    return state.subscriptions.sort((a, b) => a.start_date_in_user_timezone.localeCompare(b.start_date_in_user_timezone));
+  }
+    // return state.subscriptions.sort((a, b) => b.created_at.localeCompare(a.created_at));
   },
 
   subscriptionLoadStatus: state => {
     return state.subscriptionLoadStatus;
   },
+
+  userCodes: state => {
+    if (state.userCodes) {
+
+      state.userCodes.forEach(code => {
+        code.prettyCode = code.player_code.replace(/.{4}/g, '$& ');
+      });
+
+      return state.userCodes.sort((a, b) => b.created_at.localeCompare(a.created_at));
+    }
+    // return state.userCodes;
+  },
+
+  userCodeLoadStatus: state => {
+    return state.userCodeLoadStatus;
+  }
 
 };
 
@@ -56,22 +104,17 @@ const actions = {
 
     return axios.get('/api/v1/subscription/list_subscriptions/')
       .then(res => {
-        console.log('res in list_subscr', res);
-
-        
-
+        console.log('%cres subs', 'color: darkseagreen; font-weight: bold;', res.data);
         commit('setSubscriptions', res.data);
         commit('setSubscriptionStatus', 'success');
 
         return res.status;
       })
       .catch(err => {
-        console.log('err in list_subscr', err);
         commit('setSubscriptionStatus', 'error');
 
-        // TODO: right err handling in component (profile/ subscriptions/all)
-        return err.response.status;
-      })
+        if (err.response) return err.response.status;
+      });
   },
 
   addSubscription({ commit }, data) {
@@ -118,6 +161,22 @@ const actions = {
         return err.response.status;
       });
   },
+
+  fetchUserCodes({ commit }) {
+
+    commit('setUserCodeStatus', 'loading');
+
+    return axios.get('/api/v1/codes/users/list_my_codes/')
+      .then(res => {
+        commit('setUserCodes', res.data);
+        commit('setUserCodeStatus', 'success');
+        console.log('%cuser codes', 'color: orange; font-weight: bold;', res);
+      })
+      .catch(err => {
+        commit('setUserCodeStatus', 'error');
+        console.log('%cuser codes err', 'color: red; font-weight: bold;', err);      
+      })
+  },
 };
 
 const mutations = {
@@ -147,6 +206,14 @@ const mutations = {
   setDeletedSubscriptions(state, index) {
     // TODO: index undefined auffangen mit Array.findIndex
     state.subscriptions.splice(index, 1);
+  },
+
+  setUserCodes(state, userCodes) {
+    state.userCodes = userCodes;
+  },
+
+  setUserCodeStatus(state, status) {
+    state.userCodeLoadStatus = status;
   }
 
 
