@@ -11,10 +11,10 @@ import AddCode from '../views/AddCode.vue'
 import CardCarousel from '../views/CardCarousel.vue'
 import ActivateUser from '../auth/account/ActivateUser.vue'
 import Profile from '../profile/Profile.vue'
-import ProfileTest from '../profile/ProfileTest.vue'
-import UserOverview from '../profile/UserOverview.vue'
-import UserCodes from '../profile/UserCodes.vue'
-import UserSubscriptions from '../profile/UserSubscriptions.vue'
+// import ProfileTest from '../profile/ProfileTest.vue'
+import ProfileOverview from '../profile/views/ProfileOverview.vue'
+import ProfileCodes from '../profile/views/ProfileCodes.vue'
+import ProfileSubscriptions from '../profile/views/ProfileSubscriptions.vue'
 import ProfileSettings from '../profile/ProfileSettings.vue'
 import LogIn from '../auth/LogIn.vue'
 import SignUp from '../auth/SignUp.vue'
@@ -69,6 +69,16 @@ const routes = [
     },
   },
 
+  // {
+  //   path: '/profile',
+  //   name: 'Profile',
+  //   component: Profile,
+  //   meta: {
+  //     requiresAuth: true,
+  //     title: 'Your Profile',
+  //   },
+  // },
+
   {
     path: '/profile',
     name: 'Profile',
@@ -77,31 +87,21 @@ const routes = [
       requiresAuth: true,
       title: 'Your Profile',
     },
-  },
-
-  {
-    path: '/profiletest',
-    name: 'ProfileTest',
-    component: ProfileTest,
-    meta: {
-      requiresAuth: true,
-      title: 'Your Profile',
-    },
     children: [
       {
         path: '',
-        name: 'UserOverview',
-        component: UserOverview,
+        name: 'ProfileOverview',
+        component: ProfileOverview,
       },
       {
         path: 'codes',
-        name: 'UserCodes',
-        component: UserCodes,
+        name: 'ProfileCodes',
+        component: ProfileCodes,
       },
       {
         path: 'subscriptions',
-        name: 'UserSubscriptions',
-        component: UserSubscriptions,
+        name: 'ProfileSubscriptions',
+        component: ProfileSubscriptions,
       }]
   },
 
@@ -244,7 +244,7 @@ const router = createRouter({
         }
         return { top: 0 }
       }
-      console.log('%crouter to.hash', 'color: gold; font-weight: bold;', to.hash);
+      console.log('%crouter no hash', 'color: gold; font-weight: bold;');
       return { top: 0 }
     }
   },

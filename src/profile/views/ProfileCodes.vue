@@ -32,13 +32,13 @@
             </div>
             <!-- TODO: Code in module formatieren -->
             <p class="profile__resource__item__display__task__row"><span>Trainer Code:</span> {{ code.player_code.replace(/.{4}/g, '$& ') }}</p>
-            <p class="profile__resource__item__display__task__row"><span>Country:</span> {{ code.correct_country }}</p>
-            <p class="profile__resource__item__display__task__row"><span>City:</span> {{ code.correct_city }}</p>
+            <p class="profile__resource__item__display__task__row"><span>Country:</span> {{ code.country }}</p>
+            <p class="profile__resource__item__display__task__row"><span>City:</span> {{ code.city }}</p>
       
       
           </div>
           <div class="profile__resource__item__display__actions">
-            <button class="profile__resource__item__display__actions__btn" @click="">
+            <button class="profile__resource__item__display__actions__btn" @click="repostCode(code)">
               <!--  TODO: routerlink? -->
               <svg xmlns="http://www.w3.org/2000/svg" class="profile__resource__item__display__actions__btn__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="post-code-again">
                 <title id="post-code-again">Post this code again</title>
@@ -57,7 +57,7 @@
 <script>import { mapGetters } from 'vuex';
 
 export default {
-  name: 'UserCodes',
+  name: 'ProfileCodes',
 
   data() {
     return {
@@ -81,6 +81,14 @@ export default {
       return this.codeInput.replace(/.{4}/g, '$& ');
     },
   },
+
+  methods: {
+    repostCode(code) {
+      console.log('%ccode', 'color: plum; font-weight: bold;', code);
+      this.$store.commit('setCodeToRepost', code);
+      this.$router.push({ name: 'AddCode'});
+    }
+  }
 }
 </script>
 

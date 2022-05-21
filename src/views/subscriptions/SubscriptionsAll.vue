@@ -21,9 +21,9 @@
     </AsyncErrorFetchingData>
 
     <template v-if="loadStatus === 'success' && subscriptions">
-      <div class="subscription__item">
+      <!-- <div class="subscription__item">
         <h1 class="profile__item__heading">Manage Subscriptions</h1>
-      </div>
+      </div> -->
       <div v-for="(subscription, i) in subscriptions" :key="i" class="subscription__item">
         <div class="subscription__item__display" :data-subscription-id="subscription.pk">
           <div class="subscription__item__display__task">
@@ -336,7 +336,7 @@ export default {
   display: grid;
   gap: 1.5rem;
   height: 100%;
-  padding: 5%;
+  // padding: 5%;
 
   &__item {
     display: flex;
@@ -459,20 +459,20 @@ export default {
       // }
     }
 
-      &:first-of-type {
-        justify-content: space-between;
-        align-items: center;
-        background-color: transparent;
-        background: none;
-        box-shadow: none;
-        border: none;
+      // &:first-of-type {
+      //   justify-content: space-between;
+      //   align-items: center;
+      //   background-color: transparent;
+      //   background: none;
+      //   box-shadow: none;
+      //   border: none;
 
-        .profile__item__heading {
-          margin: 0 auto;
-            // padding: 0 .5rem;
-            // box-shadow: inset 0 -.75rem 0 0 $in-between;
-        }
-      }
+      //   .profile__item__heading {
+      //     margin: 0 auto;
+      //       // padding: 0 .5rem;
+      //       // box-shadow: inset 0 -.75rem 0 0 $in-between;
+      //   }
+      // }
 
     &:nth-of-type(2n) {
       // background: linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, hsla(33, 100%, 95%, 1) 40%, hsla(33, 100%, 94%, 1) 60%, hsla(33, 100%, 85%, 1) 100%);

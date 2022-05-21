@@ -4,7 +4,7 @@
       <h3 class="profile__overview__subheading">Trainer Codes you posted</h3>
       <ul v-if="userCodesForOverview" class="profile__overview__list">
           <li v-for="(code, i) in userCodesForOverview"
-          class="profile__overview__list__item">{{ code.correct_city }}, {{ code.correct_country}}: {{ code.prettyCode }}</li>
+          class="profile__overview__list__item">{{ code.city }}, {{ code.country}}: {{ code.prettyCode }}</li>
       </ul>
         <router-link v-if="userCodesForOverview" class="profile__overview__link" to="/profiletest#codes">
           <span class="profile__overview__link__text">View all Trainer Codes</span>
@@ -24,11 +24,11 @@
 
     <section>
       <h3 class="profile__overview__subheading">Subscriptions for upcoming events</h3>
-      <ul v-if="subscriptionsForOverview" class="profile__overview__list">
-          <li v-for="(sub, i) in subscriptionsForOverview"
+      <ul v-if="subscriptions" class="profile__overview__list">
+          <li v-for="(sub, i) in subscriptions"
           class="profile__overview__list__item">{{ sub.message }}</li>
       </ul>
-        <router-link v-if="subscriptionsForOverview" class="profile__overview__link" to="/profiletest#subscriptions">
+        <router-link v-if="subscriptions" class="profile__overview__link" to="/profiletest#subscriptions">
           <span class="profile__overview__link__text">View all subscriptions</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="profile__overview__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="all-subscriptions">
               <title id="all-subscriptions">View all subscriptions</title>
@@ -56,7 +56,11 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'UserOverview',
+  name: 'ProfileOverview',
+
+  created() {
+    this.$store.dispatch('fetchAllSubscriptions');
+  },
 
   computed: {
       ...mapGetters({
@@ -65,6 +69,7 @@ export default {
         userCodes: 'userCodes',
       }),
       subscriptionsForOverview() {
+        console.log('%cthis.subscriptions', 'color: plum; font-weight: bold;', this.subscriptions);
         if (this.subscriptions && this.subscriptions.length > 3) {
           // const slicedSubsArray = this.subscriptions.slice(0, 3);
           // const twitter = slicedSubsArray.filter(item => item.c)

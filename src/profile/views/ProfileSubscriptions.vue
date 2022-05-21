@@ -112,13 +112,13 @@
 </template>
 
 <script>
-import ModalDialog from '../components/ModalDialog.vue';
-// import ModalDialog from '../../components/ModalDialog.vue';
+import ModalDialog from '../../components/ModalDialog.vue';
+
 
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'UserSubscriptions',
+  name: 'ProfileSubscriptions',
 
   components: {
     ModalDialog,

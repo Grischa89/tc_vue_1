@@ -26,6 +26,7 @@ const getters = {
   },
 
   subscriptions: state => {
+    console.log('%csub GETTER', 'color: plum; font-weight: bold;');
     // TODO: Time until event starts in usertime as new prop
     // const now = new Date().getTime();
 
@@ -52,10 +53,10 @@ const getters = {
         }
       });
 
-    console.log('%creturned subs', 'color: darkseagreen; font-weight: bold;', state.subscriptions);
-    return state.subscriptions.sort((a, b) => a.start_date_in_user_timezone.localeCompare(b.start_date_in_user_timezone));
-  }
-    // return state.subscriptions.sort((a, b) => b.created_at.localeCompare(a.created_at));
+      console.log('%creturned subs', 'color: darkseagreen; font-weight: bold;', state.subscriptions);
+      return state.subscriptions.sort((a, b) => b.start_date_in_user_timezone.localeCompare(a.start_date_in_user_timezone));
+    }
+    // return state.subscriptions;
   },
 
   subscriptionLoadStatus: state => {
@@ -63,13 +64,16 @@ const getters = {
   },
 
   userCodes: state => {
+    console.log('%cuserCodes GETTER', 'color: plum; font-weight: bold;', state.userCodes);
     if (state.userCodes) {
+
+      console.log('%cstate.userCodes', 'color: plum; font-weight: bold;', state.userCodes);
 
       state.userCodes.forEach(code => {
         code.prettyCode = code.player_code.replace(/.{4}/g, '$& ');
       });
 
-      return state.userCodes.sort((a, b) => b.created_at.localeCompare(a.created_at));
+      return state.userCodes.sort((a, b) => b.time_of_scrape.localeCompare(a.time_of_scrape));
     }
     // return state.userCodes;
   },
