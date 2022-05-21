@@ -6,6 +6,8 @@ const state = {
 
   cities: null,
 
+  codeToRepost: null,
+
 };
 
 const getters = {
@@ -16,6 +18,10 @@ const getters = {
 
   cities: state => {
     return state.cities;
+  },
+
+  codeToRepost: state => {
+    return state.codeToRepost;
   }
 
 };
@@ -85,6 +91,10 @@ const mutations = {
 
   setCities(state, cities) {
     state.cities = cities;
+  },
+
+  setCodeToRepost(state, code) {
+    state.codeToRepost = code;
   }
 
 };

@@ -27,7 +27,8 @@
       <div class="form__group">
         <label class="form__group__label" for="country">Country</label>
         <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCountry}" name="country" id="country" @change="selectCountry($event)" @blur="validateCountry(data.country)" v-model="data.country">
-          <option value selected disabled >Choose A Country</option>
+          <option v-if="codeToRepost" :value="codeToRepost.country_slug" selected disabled>{{ codeToRepost.country }}</option>
+          <option v-else value selected disabled >Choose A Country</option>
           <option
             v-for="(country, i) in countries"
             :key="i"
@@ -40,8 +41,9 @@
       <div class="form__group">
         <label class="form__group__label" for="city">City</label>
         <!-- disabled until country got chosen successfully -->
-        <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCity}" name="city" id="city" @change="validateCity(data.city)" @blur="validateCity(data.city)" v-model="data.city" :disabled="!cities">
-          <option value selected disabled>Choose A City</option>
+        <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCity}" name="city" id="city" @change="validateCity(data.city)" @blur="validateCity(data.city)" v-model="data.city" :disabled="!cities && !codeToRepost">
+          <option v-if="codeToRepost" :value="codeToRepost.city_slug" selected disabled>{{ codeToRepost.city }}</option>
+          <option v-else value selected disabled>Choose A City</option>
           <option 
             v-for="(city, i) in cities"
             :key="i" 
@@ -58,7 +60,7 @@
       </div>
     </form>
 
-    
+    {{ cities }}
   </div>
 </template>
 
@@ -89,6 +91,12 @@ export default {
   },
 
   created() {
+    // console.log('%ccodeToRepost', 'color: plum; font-weight: bold;', this.codeToRepost);
+    if (this.codeToRepost) {
+      this.data.player_code = this.codeToRepost.player_code;
+      this.data.country = this.codeToRepost.country_slug;
+      this.data.city = this.codeToRepost.city_slug;
+    }
     this.$store.dispatch('getCountries')
       .catch(() => {
         this.errors.loadCountries = 'Something went wrong retrieving countries. Please reload the page or try again later.';
@@ -99,6 +107,7 @@ export default {
     ...mapGetters({
       countries: 'countries',
       cities: 'cities',
+      codeToRepost: 'codeToRepost',
     }),
 
     formatCode() {
@@ -109,9 +118,12 @@ export default {
 
   methods: {
     async submitForm() {
+      console.log('this.data', this.data);
       const validCode = this.validateCode(this.data.player_code);
       const validCountry = this.validateCountry(this.data.country);
       const validCity = this.validateCity(this.data.city);
+
+      console.log('submitForm', validCode, validCountry, validCity);
 
       if (!validCode || !validCountry || !validCity) return false;
       
@@ -120,7 +132,7 @@ export default {
         const submitSuccess = await this.$store.dispatch('addCode', this.data);
 
         // TODO: Currently Zeitverzögerung bei /
-        submitSuccess === 201 ? this.$router.push(`/`) : this.errors.submitFailure = 'Something went wrong. Please try again later.';
+        submitSuccess === 201 ? this.$router.push(`/profile`) : this.errors.submitFailure = 'Something went wrong. Please try again later.';
       }
     },
 
@@ -129,6 +141,9 @@ export default {
 
       this.validateCountry(e.target.value);
       this.$store.dispatch('getCities', e.target.value)
+        .then(res => {
+          console.log('cities!', res);
+        })
         .catch(() => {
           this.errors.loadCities = 'Something went wrong retrieving cities. Please reload the page or try again later.';
         });
