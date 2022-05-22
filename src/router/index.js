@@ -281,7 +281,7 @@ router.beforeEach((to, from, next) => {
     console.log('%cROUTER requiresGuest && isAuthenticated ', 'color: plum; font-weight: bold;', requiresGuest, isAuthenticated);
 
     // NOTE: See notice above
-    router.push({ name: 'Profile' });
+    router.push({ name: 'ProfileOverview' });
   } 
   else {
     // console.log('router.beforeEach else', isAuthenticated, requiresAuth, requiresGuest);

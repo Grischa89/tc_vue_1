@@ -71,7 +71,7 @@
 
           <template v-if="isAuthenticated">
             <li class="navbar__menu__item">
-              <router-link :to="{ name: 'Profile' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Profile</router-link>
+              <router-link :to="{ name: 'ProfileOverview' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Profile</router-link>
             </li>
 
             <li class="navbar__menu__item">
@@ -210,6 +210,12 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
+  max-width: 200ch;
+
+  @media(min-width: 200ch) {
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   &__logo {
     display: flex;

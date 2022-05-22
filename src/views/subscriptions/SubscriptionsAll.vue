@@ -15,7 +15,7 @@
 
       <template #action>
         <button class="error__page__btn error__page__btn--action">
-          <router-link :to="{ name: 'Profile' }">Back to Profile</router-link>
+          <router-link :to="{ name: 'ProfileOverview' }">Back to Profile</router-link>
         </button>
       </template>
     </AsyncErrorFetchingData>

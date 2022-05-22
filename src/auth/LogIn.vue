@@ -84,7 +84,7 @@ export default {
                         // Get user data
                         // Either push to route user intended to visit (but was not authenticated) or to profile
                         await this.$store.dispatch('getUserProfile', data.email);
-                        this.toRouteName ? this.$router.push({ name: `${this.toRouteName}` }) : this.$router.push({ name: 'Profile' });
+                        this.toRouteName ? this.$router.push({ name: `${this.toRouteName}` }) : this.$router.push({ name: 'ProfileOverview' });
                     } catch (err) {
                         // Handle error in getUserProfile (404)
                         // Perform logout() so user is treated as unauthenticated (tokens deleted + sessionStorage empty)
