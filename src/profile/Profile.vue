@@ -48,85 +48,6 @@
         <div class="profile__main">
             <router-view :key="$route.fullPath"></router-view>
         </div>
-
-        <!-- <div class="profile__nav">
-          <div class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'overview'}" @click="chooseTab('overview')">Overview</div>
-          <div class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'codes'}" @click="chooseTab('codes')">Codes</div>
-          <div class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'subscriptions'}" @click="chooseTab('subscriptions')">Subscriptions</div>
-        </div> -->
-
-        <!-- <div class="profile__item" v-show="setActiveTab('overview')" id="overview">
-            <h3 class="profile__item__subheading">Trainer Codes you posted</h3>
-            <ul v-if="userCodesForOverview" class="profile__item__list">
-                <li v-for="(code, i) in userCodesForOverview"
-                class="profile__item__list__item">{{ code.correct_city }}, {{ code.correct_country}}: {{ code.prettyCode }}</li>
-            </ul>
-             <div v-if="userCodesForOverview" class="profile__item__link">
-              <router-link to="/profiletest#codes">View all Trainer Codes
-                <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="all-codes">
-                    <title id="all-codes">View your Trainer Codes</title>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </router-link>
-            </div>
-            <div class="profile__item__link">
-              <router-link to="#">Add Trainer Code
-                <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="add-code">
-                    <title id="add-code">Add Trainer Code</title>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-              </router-link>
-            </div>
-
-            <h3 class="profile__item__subheading">Subscriptions for upcoming events</h3>
-            <ul v-if="subscriptionsForOverview" class="profile__item__list">
-                <li v-for="(sub, i) in subscriptionsForOverview"
-                class="profile__item__list__item">{{ sub.message }}</li>
-            </ul>
-            <div v-if="subscriptionsForOverview" class="profile__item__link">
-              <router-link to="/profiletest#subscriptions">View all subscriptions
-                <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="all-subscriptions">
-                    <title id="all-subscriptions">View all subscriptions</title>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </router-link>
-            </div>
-            <div class="profile__item__link">
-              <router-link to="#">Add subscription
-                <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="add-subscription">
-                    <title id="add-subscription">Add subscription</title>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-              </router-link>
-            </div>
-            <button class="profile__item__button profile__item__button--action"><router-link to="#">Add subscription
-                <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__button__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="add-subscriptions">
-                    <title id="add-subscriptions">Add subscription</title>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-              </router-link></button>
-            <button class="profile__item__button">View All Subscriptions</button>
-        </div> -->
-
-        <!-- <div class="profile__item" v-show="setActiveTab('codes')" id="codes">
-            Codes Content
-        </div> -->
-
-        <!-- <div class="profile__item" v-show="setActiveTab('subscriptions')" id="subscriptions">Subscription Content</div> -->
-        <!-- <div class="profile__item">
-            <h2 class="profile__item__heading">Recent Activity</h2>
-            <ul class="profile__item__list">
-                <li class="profile__item__list__item">Posted Trainer Code 5454 8688 7536</li>
-            </ul>
-            <div class="profile__item__link">
-                <router-link to="#">Show all activity
-                    <svg xmlns="http://www.w3.org/2000/svg" class="profile__item__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="all-activity">
-                        <title id="all-activity">Show all activity</title>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </router-link>
-            </div>
-        </div> -->
         
         <div class="profile__footer">
             <div class="profile__footer__buttons">
@@ -143,16 +64,11 @@
 </template>
 
 <script>
-// import SubscriptionsAll from '../views/subscriptions/SubscriptionsAll.vue';
 
 import { mapGetters } from 'vuex';
 
 export default {
     name: 'Profile',
-
-    components: {
-        // SubscriptionsAll,
-    },
 
     computed: {
         ...mapGetters({
@@ -162,18 +78,7 @@ export default {
             tabScrollPosition: 'tabScrollPosition',
             tab: 'tab',
         }),
-        subscriptionsForOverview() {
-            if (this.subscriptions && this.subscriptions.length > 3) {
-                return this.subscriptions.slice(0, 3);
-            }
-            return this.subscriptions;
-        },
-        userCodesForOverview() {
-            if (this.userCodes && this.userCodes.length > 3) {
-                return this.userCodes.slice(0, 3);
-            }
-            return this.userCodes;
-        },
+        
         activeTab() {
             return this.$route.name;
         }

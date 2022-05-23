@@ -71,16 +71,12 @@ export default {
       subscriptionsForOverview() {
         console.log('%cthis.subscriptions', 'color: plum; font-weight: bold;', this.subscriptions);
         if (this.subscriptions && this.subscriptions.length > 3) {
-          // const slicedSubsArray = this.subscriptions.slice(0, 3);
-          // const twitter = slicedSubsArray.filter(item => item.c)
           return this.subscriptions.slice(0, 3);
         }
         return this.subscriptions;
       },
       userCodesForOverview() {
         if (this.userCodes && this.userCodes.length > 3) {
-          // const slicedSubsArray = this.subscriptions.slice(0, 3);
-          // const twitter = slicedSubsArray.filter(item => item.c)
           return this.userCodes.slice(0, 3);
         }
         return this.userCodes;
