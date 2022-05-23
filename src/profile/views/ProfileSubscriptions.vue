@@ -1,4 +1,5 @@
 <template>
+  <router-view></router-view>
   <div class="profile__resource">
 
     <!-- TODO: LOADING SKELETON -->
@@ -15,7 +16,7 @@
 
       <template #action>
         <button class="error__page__btn error__page__btn--action">
-          <router-link :to="{ name: 'Profile' }">Back to Profile</router-link>
+          <router-link :to="{ name: 'ProfileOverview' }">Back to Profile</router-link>
         </button>
       </template>
     </AsyncErrorFetchingData>
@@ -46,7 +47,7 @@
               <!-- <span class="profile__resource__item__display__actions__btn__text">Edit</span> -->
             </button>
             <!-- deleteSubscription(subscription.pk, i) -->
-            <button class="profile__resource__item__display__actions__btn" @click="openDeleteModal(subscription, i)">
+            <button class="profile__resource__item__display__actions__btn" @click.prevent="openDeleteModal(subscription, i)">
               <svg xmlns="http://www.w3.org/2000/svg" class="profile__resource__item__display__actions__btn__prepend profile__resource__item__display__actions__btn__prepend--delete" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-labelledby="delete-subscription">
                 <title id="delete-subscription">Delete Subscription</title>
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -55,13 +56,13 @@
             </button>
           </div>
 
-          <Teleport to="body">
+          <!-- <Teleport to="body">
             <ModalDialog 
               v-if="openModal"
               :subscription="subscriptionToDelete"
               @on-confirm="deleteSubscription"
               @on-cancel="cancelDelete" />
-          </Teleport>
+          </Teleport> -->
 
         </div>
         
@@ -226,29 +227,37 @@ export default {
     },
 
     openDeleteModal(subscription, index) {
-      this.subscriptionToDelete.pk = subscription.pk;
-      this.subscriptionToDelete.action = subscription.action;
-      this.subscriptionToDelete.event = subscription.event;
-      this.subscriptionToDelete.player_code = subscription.player_code;
-      this.subscriptionToDelete.index = index;
+      this.$store.commit('setScrollPosition', window.scrollY);
+      console.log('%csavedPos', 'color: plum; font-weight: bold;', window.scrollY, this.$parent);
+      subscription.index = index;
+      document.body.style.overflow= 'hidden';
+      this.$store.commit('setSubscriptionToDelete', subscription);
+      this.$router.push({ name: 'ProfileSubscriptionsDelete'})
+      // this.subscriptionToDelete.pk = subscription.pk;
+      // this.subscriptionToDelete.action = subscription.action;
+      // this.subscriptionToDelete.event = subscription.event;
+      // this.subscriptionToDelete.player_code = subscription.player_code;
+      // this.subscriptionToDelete.index = index;
 
-      this.openModal = true;
+      // this.openModal = true;
     },
 
     cancelDelete() {
       this.openModal = false;
     },
 
-    deleteSubscription(data) {
-      console.log('iddd', data.pk, data.index);
-      // { pk: pk, index: index }
-      // console.log('data from modal', data);
-      const deleteSuccess = this.$store.dispatch('deleteSubscription', { pk: data.pk, index: data.index });
-      // console.log('deleteSuccess', deleteSuccess);
+    // deleteSubscription(data) {
+    //   console.log('iddd', data.pk, data.index);
+    //   // { pk: pk, index: index }
+    //   // console.log('data from modal', data);
+    //   document.body.style.overflow= 'auto';
+    //   const deleteSuccess = this.$store.dispatch('deleteSubscription', { pk: data.pk, index: data.index });
+    //   this.$router.back();
+    //   // console.log('deleteSuccess', deleteSuccess);
 
-      // TODO: if deleteSuccess !== 204 modal schließen, wenn error im modal message anzeigen
-      this.openModal = false;
-    },
+    //   // TODO: if deleteSuccess !== 204 modal schließen, wenn error im modal message anzeigen
+    //   this.openModal = false;
+    // },
 
     restrictKeys(e) {
       this.errors.invalidCode = '';

@@ -10,9 +10,14 @@ const state = {
 
   subscriptionLoadStatus: null,
 
+  subscriptionToDelete: '',
+
   userCodes: '',
 
   userCodeLoadStatus: null,
+
+  scrollPosition: '',
+  
 };
 
 const getters = {
@@ -63,6 +68,10 @@ const getters = {
     return state.subscriptionLoadStatus;
   },
 
+  subscriptionToDelete: state => {
+    return state.subscriptionToDelete;
+  },
+
   userCodes: state => {
     console.log('%cuserCodes GETTER', 'color: plum; font-weight: bold;', state.userCodes);
     if (state.userCodes) {
@@ -80,6 +89,10 @@ const getters = {
 
   userCodeLoadStatus: state => {
     return state.userCodeLoadStatus;
+  },
+
+  scrollPosition: state => {
+    return state.scrollPosition;
   }
 
 };
@@ -218,6 +231,14 @@ const mutations = {
 
   setUserCodeStatus(state, status) {
     state.userCodeLoadStatus = status;
+  },
+
+  setSubscriptionToDelete(state, subscription) {
+    state.subscriptionToDelete = subscription;
+  },
+
+  setScrollPosition(state, position) {
+    state.scrollPosition = position;
   }
 
 

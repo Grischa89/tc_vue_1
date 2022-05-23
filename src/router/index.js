@@ -25,6 +25,7 @@ import ResetPassword from '../auth/password/ResetPassword.vue'
 import RequestSuccess from '../auth/_shared/RequestSuccess.vue'
 import AddSubscription from '../views/AddSubscription.vue'
 import SubscriptionsAll from '../views/subscriptions/SubscriptionsAll.vue'
+import ModalDialog from '../components/ModalDialog'
 
 // Sorry, this page isn't available.
 // The link you followed may be broken, or the page may have been removed. Go back to Instagram.
@@ -102,6 +103,11 @@ const routes = [
         path: 'subscriptions',
         name: 'ProfileSubscriptions',
         component: ProfileSubscriptions,
+        children: [{
+          path: 'delete',
+          name: 'ProfileSubscriptionsDelete',
+          component: ModalDialog,
+        }]
       }]
   },
 
@@ -225,29 +231,22 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
-]
+];
+
+const scrollBehavior = (to, from, savedPosition) => {
+  if (savedPosition) {
+    return savedPosition;
+  } else if (to.name === 'ProfileSubscriptionsDelete') {
+    return { top: store.state.subscriptions.scrollPosition + 1 };
+  } else {
+    return { top: 0 };
+  }
+};
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      console.log('%crouter savedPosition', 'color: gold; font-weight: bold;', savedPosition);
-      return savedPosition
-    } else {
-      const position = {};
-      if (to.hash) {
-        console.log('%crouter to.hash', 'color: gold; font-weight: bold;', to.hash);
-        position.selector = to.hash;
-        if(document.querySelector(to.hash)) {
-          return position;
-        }
-        return { top: 0 }
-      }
-      console.log('%crouter no hash', 'color: gold; font-weight: bold;');
-      return { top: 0 }
-    }
-  },
+  scrollBehavior,
 })
 
 router.beforeEach((to, from, next) => {
