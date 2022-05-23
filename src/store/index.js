@@ -25,6 +25,8 @@ export default createStore({
 
     breadcrumb: null,
 
+    modalCode: null,
+
   },
 
   getters: {
@@ -44,6 +46,10 @@ export default createStore({
     breadcrumb: state => {
       return state.breadcrumb;
     },
+
+    modalCode: state => {
+      return state.modalCode;
+    }
 
   },
 
@@ -105,6 +111,10 @@ export default createStore({
     setBreadcrumb(state, breadcrumb) {
       state.breadcrumb = breadcrumb;
     },
+
+    setModalCode(state, code) {
+      state.modalCode = code;
+    }
 
   },
 

@@ -1,62 +1,66 @@
 <template>
-   <div
-      v-if="code"
-      class="modal-wrapper"
-      @click.self="$emit('onClose', $event.target)">
-
+  <Transition to="body">
     <div
-        class="modal"
-        @click.prevent.self>
-
+        v-if="code"
+        class="modal-wrapper"
+        @click.self="close">
       <div
-        class="modal__btn"
-          @click="$emit('onClose', $event.target)">
-        <svg xmlns="http://www.w3.org/2000/svg" class="modal__btn__close" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" aria-labelledby="close-qrcode-modal">
-        <title id="close-qrcode-modal">Close QRCode Modal</title>
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </div>
-
-      <div class="modal__header">
-        <h2 class="modal__header__heading"><router-link :to="`/${code.continent_slug}/${code.country_slug}`">{{ code.country }}</router-link></h2>
-        
-        <h3 v-if="code.city" class="modal__header__subheading"><router-link :to="`/${code.continent_slug}/${code.country_slug}/${code.city_slug}`">{{ code.city }}</router-link></h3>
-      </div>
-
-      <div class="modal__body">
-        <qrcode-vue class="modal__body__qr" :value="code.player_code" :size="size" level="H"/>
-      </div>
-
-      <div class="modal__footer" :data-code="code.player_code">
-        <div @click.self="$emit('copyCode', $event)" class="modal__footer__code">
-          {{ code.prettyCode }}
-        </div>
-        
-        <IconButton @click="$emit('copyCode', $event)">
-          <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="icon">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+          class="modal"
+          @click.prevent.self>
+        <div
+          class="modal__btn"
+            @click="close">
+          <svg xmlns="http://www.w3.org/2000/svg" class="modal__btn__close" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" aria-labelledby="close-qrcode-modal">
+          <title id="close-qrcode-modal">Close QRCode Modal</title>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
-        </IconButton>
+        </div>
+        <div class="modal__header">
+          <h2 class="modal__header__heading"><router-link :to="`/${code.continent_slug}/${code.country_slug}`">{{ code.country }}</router-link></h2>
+    
+          <h3 v-if="code.city" class="modal__header__subheading"><router-link :to="`/${code.continent_slug}/${code.country_slug}/${code.city_slug}`">{{ code.city }}</router-link></h3>
+        </div>
+        <div class="modal__body">
+          <qrcode-vue class="modal__body__qr" :value="code.player_code" :size="size" level="H"/>
+        </div>
+        <div class="modal__footer" :data-code="code.player_code">
+          <div @click.self="$emit('copyCode', $event)" class="modal__footer__code">
+            {{ code.prettyCode }}
+          </div>
+    
+          <IconButton @click="$emit('copyCode', $event)">
+            <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="icon">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+            </svg>
+          </IconButton>
+        </div>
       </div>
     </div>
-
-  </div>
+  </Transition>
 </template>
 
 <script>
 import QrcodeVue from 'qrcode.vue';
 import IconButton from './icon-button/IconButton.vue';
 
+import { mapGetters } from 'vuex';
+
 export default {
-  name: 'ModalDialog',
+  name: 'ModalQRCode',
 
-  emits: ['onClose', 'copyCode'],
+  emits: ['copyCode'],
 
-  props: {
-    code: {
-      type: Object,
-      required: true,
-    }
+  // props: {
+  //   code: {
+  //     type: Object,
+  //     required: true,
+  //   }
+  // },
+
+  computed: {
+    ...mapGetters({
+      code: 'modalCode',
+    })
   },
 
   data() {
@@ -69,6 +73,13 @@ export default {
       QrcodeVue,
       IconButton,
   },
+
+  methods: {
+    close() {
+      document.body.style.overflow = 'auto';
+      this.$router.back();
+    },
+  }
 }
 </script>
 

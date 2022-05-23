@@ -26,6 +26,7 @@ import RequestSuccess from '../auth/_shared/RequestSuccess.vue'
 import AddSubscription from '../views/AddSubscription.vue'
 import SubscriptionsAll from '../views/subscriptions/SubscriptionsAll.vue'
 import ModalDialog from '../components/ModalDialog'
+import ModalQRCode from '../components/ModalQRCode'
 
 // Sorry, this page isn't available.
 // The link you followed may be broken, or the page may have been removed. Go back to Instagram.
@@ -37,7 +38,12 @@ const routes = [
     component: Home,
     meta: {
       title: 'Home',
-    }
+    },
+    children: [{
+      path: 'qrcode/:id',
+      name: 'HomeModalQRCode',
+      component: ModalQRCode,
+    }]
   },
 
   {
