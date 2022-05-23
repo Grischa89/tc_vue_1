@@ -161,7 +161,7 @@ export default {
 
     // if (this.user) console.log('user', this.user);
     // TODO: MOVE TO PROFILE
-    this.$store.dispatch('fetchAllSubscriptions');
+    // this.$store.dispatch('fetchAllSubscriptions');
     const fetchSubscriptionOptionsSuccess = await this.$store.dispatch('fetchSubscriptionOptions');
   },
 
@@ -227,37 +227,16 @@ export default {
     },
 
     openDeleteModal(subscription, index) {
+      // Save scrollY of parent window
       this.$store.commit('setScrollPosition', window.scrollY);
-      console.log('%csavedPos', 'color: plum; font-weight: bold;', window.scrollY, this.$parent);
-      subscription.index = index;
+      // Disable scroll on modal background (body)
       document.body.style.overflow= 'hidden';
+
+      subscription.index = index;
       this.$store.commit('setSubscriptionToDelete', subscription);
-      this.$router.push({ name: 'ProfileSubscriptionsDelete'})
-      // this.subscriptionToDelete.pk = subscription.pk;
-      // this.subscriptionToDelete.action = subscription.action;
-      // this.subscriptionToDelete.event = subscription.event;
-      // this.subscriptionToDelete.player_code = subscription.player_code;
-      // this.subscriptionToDelete.index = index;
 
-      // this.openModal = true;
+      this.$router.push({ name: 'ProfileSubscriptionsDelete', params: { id: subscription.pk } });
     },
-
-    cancelDelete() {
-      this.openModal = false;
-    },
-
-    // deleteSubscription(data) {
-    //   console.log('iddd', data.pk, data.index);
-    //   // { pk: pk, index: index }
-    //   // console.log('data from modal', data);
-    //   document.body.style.overflow= 'auto';
-    //   const deleteSuccess = this.$store.dispatch('deleteSubscription', { pk: data.pk, index: data.index });
-    //   this.$router.back();
-    //   // console.log('deleteSuccess', deleteSuccess);
-
-    //   // TODO: if deleteSuccess !== 204 modal schließen, wenn error im modal message anzeigen
-    //   this.openModal = false;
-    // },
 
     restrictKeys(e) {
       this.errors.invalidCode = '';

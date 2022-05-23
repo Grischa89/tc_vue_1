@@ -104,7 +104,7 @@ const routes = [
         name: 'ProfileSubscriptions',
         component: ProfileSubscriptions,
         children: [{
-          path: 'delete',
+          path: 'delete/:id',
           name: 'ProfileSubscriptionsDelete',
           component: ModalDialog,
         }]
