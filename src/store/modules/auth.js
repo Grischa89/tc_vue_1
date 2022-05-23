@@ -198,7 +198,7 @@ const actions = {
 
   getUserProfile({ commit }, email) {
 
-    return axios.get(`/api/v1/accounts/profile/${email}/`)
+    return axios.get(`/api/v1/accounts/profile/`)
       .then(res => {
         const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
         tc_user.username = res.data.username;
