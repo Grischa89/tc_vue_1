@@ -228,7 +228,7 @@ export default {
 
     openDeleteModal(subscription, index) {
       // Save scrollY of parent window
-      this.$store.commit('setScrollPosition', window.scrollY);
+      this.$store.commit('setModalScrollPosition', window.scrollY);
       // Disable scroll on modal background (body)
       document.body.style.overflow= 'hidden';
 

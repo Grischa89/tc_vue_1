@@ -13,6 +13,7 @@ const state = {
 
   lastUpdated: '',
 
+  modalScrollPosition: '',
 };
 
 const getters = {
@@ -22,9 +23,9 @@ const getters = {
   },
 
   elapsedInfo: state => {
+    // TODO: Async componente aus LastUpdatedBanner machen?
     const now = new Date().getTime();
     const lastUpdated = new Date(state.lastUpdated).getTime();
-    console.log(now, lastUpdated);
 
     const msElapsed = now - lastUpdated;
 
@@ -35,31 +36,28 @@ const getters = {
 
     if (msElapsed > dayInMs) {
       const elapsed = Math.floor(msElapsed / (1000 * 60 * 60 * 24));
-      console.log('elapsed in days', elapsed);
 
       return elapsed <= 1 ? `${elapsed} day` : `${elapsed} days`;
-
     } else if (msElapsed > hInMs) {
       const elapsed = Math.floor(msElapsed / (1000 * 60 * 60));
-      console.log('elapsed in hours', elapsed);
 
       return elapsed <= 1 ? `${elapsed} hour` : `${elapsed} hours`;
-
     } else if (msElapsed > minInMs) {
       const elapsed = Math.floor(msElapsed / (1000 * 60));
-      console.log('elapsed in minutes');
       
       return elapsed <= 1 ? `${elapsed} minute` : `${elapsed} minutes`;
 
     } else if (msElapsed > secInMs) {
       const elapsed = Math.floor(msElapsed / 1000);
-      console.log('elapsed in seconds');
 
       return elapsed <= 1 ? `${elapsed} second` : `${elapsed} seconds`;
     } else {
-      console.log('elapsed in else');
       return '';
     }
+  },
+
+  modalScrollPosition: state => {
+    return state.modalScrollPosition;
   }
 
 };
@@ -69,7 +67,7 @@ const actions = {
 
     axios.get('/api/v1/codes/')
       .then(res => {
-        console.log('res1', res.data.data[0].time_of_scrape);
+        // console.log('res1', res.data.data[0].time_of_scrape);
         commit('setLastUpdated', res.data.data[0].time_of_scrape)
       })
       .catch(err => {
@@ -81,6 +79,10 @@ const actions = {
 const mutations = {
   setLastUpdated(state, timestamp) {
     state.lastUpdated = timestamp;
+  },
+
+  setModalScrollPosition(state, position) {
+    state.modalScrollPosition = position;
   }
 };
 

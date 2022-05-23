@@ -15,8 +15,6 @@ const state = {
   userCodes: '',
 
   userCodeLoadStatus: null,
-
-  scrollPosition: '',
   
 };
 
@@ -90,10 +88,6 @@ const getters = {
   userCodeLoadStatus: state => {
     return state.userCodeLoadStatus;
   },
-
-  scrollPosition: state => {
-    return state.scrollPosition;
-  }
 
 };
 
@@ -236,11 +230,6 @@ const mutations = {
   setSubscriptionToDelete(state, subscription) {
     state.subscriptionToDelete = subscription;
   },
-
-  setScrollPosition(state, position) {
-    state.scrollPosition = position;
-  }
-
 
   // setTimeZone(state, clientTimeZone) {
   //   // res.data.time_zone will look sth like 'Europe/Berlin'

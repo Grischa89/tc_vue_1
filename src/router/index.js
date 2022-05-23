@@ -238,7 +238,7 @@ const scrollBehavior = (to, from, savedPosition) => {
   if (savedPosition) {
     return savedPosition;
   } else if (to.name === 'ProfileSubscriptionsDelete') {
-    return { top: store.state.subscriptions.scrollPosition + 1 };
+    return { top: store.state.nav.modalScrollPosition + 1 };
   } else {
     const position = {};
     if (to.hash) {
