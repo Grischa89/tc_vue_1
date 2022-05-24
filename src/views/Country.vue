@@ -37,8 +37,8 @@
     :title="tableTitle"
     :codes="countryCodes" />
 
-    <CardCarousel
-    :codes="countryCodes" />
+    <!-- <CardCarousel
+    :codes="countryCodes" /> -->
   </div>
 </template>
 
@@ -73,6 +73,15 @@ export default {
   mounted() {
     this.$store.dispatch('fetchCountryCodes', { continent: this.$route.params.continent, country: this.$route.params.country });
   },
+
+  beforeRouteLeave (to, from) {
+    if (this.open === true) {
+      document.body.style.overflow = 'auto';
+      this.$store.commit('toggleModal', false);
+      return false;
+    }
+    return true
+  },
   
   computed: {
     ...mapGetters({
@@ -82,6 +91,7 @@ export default {
       invalidURLMessage: 'invalidURLMessage',
       breadcrumb: 'breadcrumb',
       citySuggestions: 'citySuggestions',
+      open: 'modalOpen',
     }),
   },
 }

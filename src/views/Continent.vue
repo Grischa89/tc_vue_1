@@ -42,12 +42,14 @@ name: 'Continent',
     console.log('After dispatching fetchContinentCodes in Continent');
   },
 
-  // watch: {
-  //   $route(to, from) {
-  //     this.$store.dispatch('fetchLatestContinentCodes', this.$route.params.continent);
-  //     console.log('After dispatching fetchLatestContinentCodes in Continent');
-  //   }
-  // },
+  beforeRouteLeave (to, from) {
+    if (this.open === true) {
+      document.body.style.overflow = 'auto';
+      this.$store.commit('toggleModal', false);
+      return false;
+    }
+    return true
+  },
   
   computed: {
     ...mapGetters({
@@ -55,6 +57,7 @@ name: 'Continent',
       tableTitle: 'tableTitle',
       loadStatus: 'continentLoadStatus',
       invalidURLMessage: 'invalidURLMessage',
+      open: 'modalOpen',
     })
   },
 }

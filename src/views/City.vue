@@ -81,6 +81,15 @@ export default {
     this.$store.dispatch('fetchCityCodes', { continent: this.$route.params.continent, country: this.$route.params.country, city: this.$route.params.city });
     console.log('After dispatching fetchCityCodes');
   },
+
+  beforeRouteLeave (to, from) {
+    if (this.open === true) {
+      document.body.style.overflow = 'auto';
+      this.$store.commit('toggleModal', false);
+      return false;
+    }
+    return true
+  },
   
   computed: {
     ...mapGetters({
@@ -91,6 +100,7 @@ export default {
       invalidURLMessage: 'invalidURLMessage',
       breadcrumb: 'breadcrumb',
       citySuggestions: 'citySuggestions',
+      open: 'modalOpen',
     })
   },
 

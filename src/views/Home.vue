@@ -41,15 +41,6 @@ export default {
     }
   },
 
-  beforeRouteLeave (to, from) {
-    if (this.open === true) {
-      document.body.style.overflow = 'auto';
-      this.$store.commit('toggleModal', false);
-      return false;
-    }
-    return true
-  },
-
   components: {
     Table,
     CardCarousel,
@@ -59,6 +50,15 @@ export default {
 
   created() {
     this.$store.dispatch('fetchRecentCodes');
+  },
+
+  beforeRouteLeave (to, from) {
+    if (this.open === true) {
+      document.body.style.overflow = 'auto';
+      this.$store.commit('toggleModal', false);
+      return false;
+    }
+    return true
   },
   
   computed: {
