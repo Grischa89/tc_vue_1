@@ -243,27 +243,32 @@ const scrollBehavior = (to, from, savedPosition) => {
   // console.log('%cto / from', 'color: plum; font-weight: bold;', to, from);
   if (savedPosition) {
     return savedPosition;
-  } else if (to.name === 'ProfileSubscriptionsDelete') {
-    return { top: store.state.nav.modalScrollPosition + 1 };
+  } else if (to.name === 'ProfileOverview' || to.name === 'ProfileCodes' || to.name === 'ProfileSubscriptions') {
+    // In order for site not to scroll to top if nav link was clicked
+    return false;
   } else {
-    const position = {};
-    if (to.hash) {
-      // console.log('%cWE ARE IN TO.HASH', 'color: plum; font-weight: bold;');
-      position.selector = to.hash;
-      if (to.hash === '#profile__nav') {
-        // console.log('%c& TO.HASH IS PROFILE__NAV', 'color: plum; font-weight: bold;');
-        position.offset = { y: 250 };
-      }
-      if (document.querySelector(to.hash)) {
-        // console.log('%c& EL WITH TO.HASH EXISTS', 'color: plum; font-weight: bold;');
-        return position;
-      }
-      return false;
-    }
-    // console.log('%cWE DONT HAVE A TO.HASH', 'color: plum; font-weight: bold;');
-
     return { top: 0 };
   }
+  
+  // else {
+  //   const position = {};
+  //   if (to.hash) {
+  //     // console.log('%cWE ARE IN TO.HASH', 'color: plum; font-weight: bold;');
+  //     position.selector = to.hash;
+  //     if (to.hash === '#profile__nav') {
+  //       // console.log('%c& TO.HASH IS PROFILE__NAV', 'color: plum; font-weight: bold;');
+  //       position.offset = { y: 250 };
+  //     }
+  //     if (document.querySelector(to.hash)) {
+  //       // console.log('%c& EL WITH TO.HASH EXISTS', 'color: plum; font-weight: bold;');
+  //       return position;
+  //     }
+  //     return false;
+  //   }
+  //   // console.log('%cWE DONT HAVE A TO.HASH', 'color: plum; font-weight: bold;');
+
+  //   return { top: 0 };
+  // }
 };
 
 const router = createRouter({

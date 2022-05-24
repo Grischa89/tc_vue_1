@@ -12,8 +12,6 @@ const state = {
   ],
 
   lastUpdated: '',
-
-  modalScrollPosition: '',
 };
 
 const getters = {
@@ -56,10 +54,6 @@ const getters = {
     }
   },
 
-  modalScrollPosition: state => {
-    return state.modalScrollPosition;
-  }
-
 };
 
 const actions = {
@@ -80,10 +74,6 @@ const mutations = {
   setLastUpdated(state, timestamp) {
     state.lastUpdated = timestamp;
   },
-
-  setModalScrollPosition(state, position) {
-    state.modalScrollPosition = position;
-  }
 };
 
 export default {
