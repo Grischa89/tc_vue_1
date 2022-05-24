@@ -65,6 +65,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  // NOTE: .modal-wrapper needs a higher z-index than navbar
+  z-index: 100;
 }
 
 .modal {
