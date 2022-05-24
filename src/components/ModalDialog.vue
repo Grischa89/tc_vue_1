@@ -7,10 +7,10 @@
           <p class="modal__body__text">This action will delete your subscription {{ subscription.action }} for the event {{ subscription.event }} and trainer code {{ subscription.player_code }}.</p>
         </div>
         <div class="modal__footer">
-          <button class="modal__footer__btn" @click="close">Cancel</button>
-          <!-- <button class="modal__footer__btn" @click="$emit('onCancel')">Cancel</button> -->
-          <button class="modal__footer__btn modal__footer__btn--confirm" @click="deleteSubscription({ pk: subscription.pk, index: subscription.index })">Delete</button>
-          <!-- <button class="modal__footer__btn modal__footer__btn--confirm" @click="$emit('onConfirm', { pk: subscription.pk, index: subscription.index })">Delete</button> -->
+          <!-- <button class="modal__footer__btn" @click="close">Cancel</button> -->
+          <button class="modal__footer__btn" @click="$emit('onCancel')">Cancel</button>
+          <!-- <button class="modal__footer__btn modal__footer__btn--confirm" @click="deleteSubscription({ pk: subscription.pk, index: subscription.index })">Delete</button> -->
+          <button class="modal__footer__btn modal__footer__btn--confirm" @click="$emit('onConfirm', { pk: subscription.pk, index: subscription.index })">Delete</button>
         </div>
       </div>
      
@@ -40,16 +40,16 @@ export default {
   },
   
   methods: {
-    close() {
-      document.body.style.overflow= 'auto';
-      this.$router.back();
-    },
+    // close() {
+    //   document.body.style.overflow= 'auto';
+    //   this.$router.back();
+    // },
 
-    deleteSubscription(data) {
-      document.body.style.overflow= 'auto';
-      this.$store.dispatch('deleteSubscription', { pk: data.pk, index: data.index });
-      this.$router.back();
-    },
+    // deleteSubscription(data) {
+    //   document.body.style.overflow= 'auto';
+    //   this.$store.dispatch('deleteSubscription', { pk: data.pk, index: data.index });
+    //   this.$router.back();
+    // },
   }
 }
 </script>

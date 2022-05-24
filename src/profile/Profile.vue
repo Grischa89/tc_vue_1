@@ -36,10 +36,10 @@
             </div>
         </div>
 
-         <div class="profile__nav" id="profile__nav">
-            <div  @click="scrollToActiveTab('overview')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'ProfileOverview'}" data-tab="overview"><router-link :to="{ name: 'ProfileOverview', hash: '#profile__nav' }">Overview</router-link></div>
-            <div  @click="scrollToActiveTab('codes')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'ProfileCodes'}" data-tab="codes"><router-link :to="{ name: 'ProfileCodes', hash: '#profile__nav' }">Codes</router-link></div>
-            <div  @click="scrollToActiveTab('subscriptions')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'ProfileSubscriptions'}" data-tab="subscriptions"><router-link :to="{ name: 'ProfileSubscriptions', hash: '#profile__nav' }">Subscriptions</router-link></div>
+         <div class="profile__nav">
+            <div  @click="scrollToActiveTab('overview')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'ProfileOverview'}" data-tab="overview"><router-link :to="{ name: 'ProfileOverview' }">Overview</router-link></div>
+            <div  @click="scrollToActiveTab('codes')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'ProfileCodes'}" data-tab="codes"><router-link :to="{ name: 'ProfileCodes' }">Codes</router-link></div>
+            <div  @click="scrollToActiveTab('subscriptions')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'ProfileSubscriptions'}" data-tab="subscriptions"><router-link :to="{ name: 'ProfileSubscriptions' }">Subscriptions</router-link></div>
             <!-- <div  @click="saveTab('overview2')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'UserOverview'}" data-tab="overview2"><router-link to="/profiletest">Overview</router-link></div>
             <div  @click="saveTab('codes2')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'UserCodes'}" data-tab="codes2"><router-link to="/profiletest/codes">Codes</router-link></div>
             <div  @click="saveTab('subscriptions2')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'UserSubscriptions'}" data-tab="subscriptions2"><router-link to="/profiletest/subscriptions">Subscriptions</router-link></div> -->
@@ -76,7 +76,6 @@ export default {
             subscriptions: 'subscriptions',
             userCodes: 'userCodes',
             tabScrollPosition: 'tabScrollPosition',
-            tab: 'tab',
         }),
 
         activeTab() {

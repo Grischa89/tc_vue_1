@@ -1,5 +1,5 @@
 <template>
-  <router-view></router-view>
+  <!-- <router-view></router-view> -->
   <div class="profile__resource">
 
     <!-- TODO: LOADING SKELETON -->
@@ -56,13 +56,12 @@
             </button>
           </div>
 
-          <!-- <Teleport to="body">
+          <Teleport to="body">
             <ModalDialog 
-              v-if="openModal"
-              :subscription="subscriptionToDelete"
+              v-if="open"
               @on-confirm="deleteSubscription"
               @on-cancel="cancelDelete" />
-          </Teleport> -->
+          </Teleport>
 
         </div>
         
@@ -165,6 +164,15 @@ export default {
     const fetchSubscriptionOptionsSuccess = await this.$store.dispatch('fetchSubscriptionOptions');
   },
 
+  beforeRouteLeave (to, from) {
+    if (this.open === true) {
+      document.body.style.overflow = 'auto';
+      this.$store.commit('toggleModal', false);
+      return false;
+    }
+    return true
+  },
+
   computed: {
     ...mapGetters({
       user: 'user',
@@ -172,6 +180,7 @@ export default {
       loadStatus: 'subscriptionLoadStatus',
       eventOptions: 'eventOptions',
       codeActionOptions: 'codeActionOptions',
+      open: 'modalOpen',
     }),
 
     formatCode() {
@@ -235,7 +244,19 @@ export default {
       subscription.index = index;
       this.$store.commit('setSubscriptionToDelete', subscription);
 
-      this.$router.push({ name: 'ProfileSubscriptionsDelete', params: { id: subscription.pk } });
+      this.$store.commit('toggleModal', true);
+      // this.$router.push({ name: 'ProfileSubscriptionsDelete', params: { id: subscription.pk } });
+    },
+
+    cancelDelete() {
+      document.body.style.overflow= 'auto';
+      this.$store.commit('toggleModal', false);
+    },
+
+    deleteSubscription(data) {
+      document.body.style.overflow= 'auto';
+      this.$store.dispatch('deleteSubscription', { pk: data.pk, index: data.index });
+      this.$store.commit('toggleModal', false);
     },
 
     restrictKeys(e) {
