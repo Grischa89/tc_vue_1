@@ -2,10 +2,8 @@
 <!-- From sm-breakpoint onwards tables will be displayed in two columns 
 NOTE: This should only be applied when there's more than one table,
 otherwise no classes -->
-  <!-- <div> -->
   <div v-if="loadStatus === 'loading'">
     <TableSkeleton />
-    <CardCarouselSkeleton />
   </div>
 
   <AsyncErrorFetchingData v-if="loadStatus === 'error'">
@@ -22,10 +20,6 @@ otherwise no classes -->
     <Table 
       :title="tableTitle"
       :codes="latestCodes" />
-
-    <CardCarousel
-      :codes="latestCodes" />
-
   </div>
 </template>
 
@@ -47,6 +41,15 @@ export default {
     }
   },
 
+  beforeRouteLeave (to, from) {
+    if (this.open === true) {
+      document.body.style.overflow = 'auto';
+      this.$store.commit('toggleModal', false);
+      return false;
+    }
+    return true
+  },
+
   components: {
     Table,
     CardCarousel,
@@ -56,13 +59,13 @@ export default {
 
   created() {
     this.$store.dispatch('fetchRecentCodes');
-    console.log('After dispatching fetchRecentCodes in Home');
   },
   
   computed: {
     ...mapGetters({
       latestCodes: 'codeGetter',
       loadStatus: 'recentLoadStatus',
+      open: 'modalOpen',
     })
   },
 

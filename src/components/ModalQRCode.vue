@@ -1,15 +1,14 @@
 <template>
-  <Transition to="body">
     <div
         v-if="code"
         class="modal-wrapper"
-        @click.self="close">
+        @click.self="$emit('onClose')">
       <div
           class="modal"
           @click.prevent.self>
         <div
           class="modal__btn"
-            @click="close">
+            @click="$emit('onClose')">
           <svg xmlns="http://www.w3.org/2000/svg" class="modal__btn__close" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" aria-labelledby="close-qrcode-modal">
           <title id="close-qrcode-modal">Close QRCode Modal</title>
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -36,7 +35,6 @@
         </div>
       </div>
     </div>
-  </Transition>
 </template>
 
 <script>
@@ -48,18 +46,18 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'ModalQRCode',
 
-  emits: ['copyCode'],
+  emits: ['onClose', 'copyCode'],
 
-  // props: {
-  //   code: {
-  //     type: Object,
-  //     required: true,
-  //   }
-  // },
+  props: {
+    code: {
+      type: Object,
+      required: true,
+    },
+  },
 
   computed: {
     ...mapGetters({
-      code: 'modalCode',
+      open: 'modalOpen',
     })
   },
 
@@ -73,13 +71,6 @@ export default {
       QrcodeVue,
       IconButton,
   },
-
-  methods: {
-    close() {
-      document.body.style.overflow = 'auto';
-      this.$router.back();
-    },
-  }
 }
 </script>
 

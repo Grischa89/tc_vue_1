@@ -1,5 +1,5 @@
 <template>
-  <router-view></router-view>
+  <!-- <router-view></router-view> -->
   <div class="table__wrapper">
 
     <h1 v-if="title" class="table__wrapper__title">{{ title }}</h1>
@@ -53,13 +53,13 @@
               </div>
             </td>
           </tr>
-          <!-- <Teleport to="body">
+          <Teleport to="body">
                   <ModalQRCode 
-                    v-if="openModal"
+                    v-if="open"
                       @on-close="closeModal"
                       @copy-code="copyCodeToClipboard"
                       :code="qrCode" />
-                </Teleport> -->
+                </Teleport>
         </tbody>
       </table>
     </div>
@@ -71,6 +71,8 @@
 import IconButton from './icon-button/IconButton.vue';
 import ModalQRCode from './ModalQRCode.vue';
 
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Table',
 
@@ -81,7 +83,6 @@ export default {
 
   data() {
     return {
-      openModal: false,
       qrCode: {
         city: '',
         city_slug: '',
@@ -104,13 +105,19 @@ export default {
 
     title: {
       type: String,
-      required: true,
+      required: false,
     },
 
     isCity: {
       type: Boolean,
       required: false,
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      open: 'modalOpen',
+    })
   },
 
   methods: {
@@ -122,19 +129,24 @@ export default {
     },
 
     openQRCodeModal(code) {
-      // this.qrCode.city = code.city;
-      // this.qrCode.city_slug = code.city_slug;
-      // this.qrCode.continent = code.continent;
-      // this.qrCode.continent_slug = code.continent_slug;
-      // this.qrCode.country = code.country;
-      // this.qrCode.country_slug = code.country_slug;
-      // this.qrCode.player_code = code.player_code;
-      // this.qrCode.prettyCode = code.prettyCode;
+      this.qrCode.city = code.city;
+      this.qrCode.city_slug = code.city_slug;
+      this.qrCode.continent = code.continent;
+      this.qrCode.continent_slug = code.continent_slug;
+      this.qrCode.country = code.country;
+      this.qrCode.country_slug = code.country_slug;
+      this.qrCode.player_code = code.player_code;
+      this.qrCode.prettyCode = code.prettyCode;
 
       document.body.style.overflow = 'hidden';
-      this.$store.commit('setModalCode', code);
-      this.$router.push({ name: 'HomeModalQRCode', params: { id: code.player_code } });
+      this.$store.commit('toggleModal', true);
     },
+
+    closeModal() {
+      document.body.style.overflow = 'auto';
+      // this.openModal = false;
+      this.$store.commit('toggleModal', false);
+    }
 
   },
  

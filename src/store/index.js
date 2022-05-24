@@ -17,7 +17,7 @@ export default createStore({
   
   state: {
 
-    codes: null,
+    codes: [],
 
     invalidURLMessage: null,
 
@@ -26,6 +26,8 @@ export default createStore({
     breadcrumb: null,
 
     modalCode: null,
+
+    modalOpen: false,
 
   },
 
@@ -49,7 +51,11 @@ export default createStore({
 
     modalCode: state => {
       return state.modalCode;
-    }
+    },
+
+    modalOpen: state => {
+      return state.modalOpen;
+    },
 
   },
 
@@ -114,6 +120,10 @@ export default createStore({
 
     setModalCode(state, code) {
       state.modalCode = code;
+    },
+
+    toggleModal(state, visibility) {
+      state.modalOpen = visibility;
     }
 
   },
