@@ -57,7 +57,7 @@
           </div>
 
           <Teleport to="body">
-            <ModalDialog 
+            <SubscriptionDeleteModal 
               v-if="open"
               @on-confirm="deleteSubscription"
               @on-cancel="cancelDelete" />
@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import ModalDialog from '../../components/ModalDialog.vue';
+import SubscriptionDeleteModal from '../../components/modals/SubscriptionDeleteModal.vue';
 
 
 import { mapGetters } from 'vuex';
@@ -121,7 +121,7 @@ export default {
   name: 'ProfileSubscriptions',
 
   components: {
-    ModalDialog,
+    SubscriptionDeleteModal,
   },
 
   data() {

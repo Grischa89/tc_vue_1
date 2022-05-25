@@ -20,7 +20,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'ModalDialog',
+  name: 'SubscriptionDeleteModal',
 
   emits: ['onConfirm', 'onCancel'],
 

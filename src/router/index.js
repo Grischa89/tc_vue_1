@@ -24,9 +24,6 @@ import RequestPasswordReset from '../auth/password/RequestPasswordReset.vue'
 import ResetPassword from '../auth/password/ResetPassword.vue'
 import RequestSuccess from '../auth/_shared/RequestSuccess.vue'
 import AddSubscription from '../views/AddSubscription.vue'
-import SubscriptionsAll from '../views/subscriptions/SubscriptionsAll.vue'
-import ModalDialog from '../components/ModalDialog'
-import ModalQRCode from '../components/ModalQRCode'
 
 // Sorry, this page isn't available.
 // The link you followed may be broken, or the page may have been removed. Go back to Instagram.
@@ -39,11 +36,6 @@ const routes = [
     meta: {
       title: 'Home',
     },
-    children: [{
-      path: 'qrcode/:id',
-      name: 'HomeModalQRCode',
-      component: ModalQRCode,
-    }]
   },
 
   {
@@ -75,16 +67,6 @@ const routes = [
       title: 'Log In',
     },
   },
-
-  // {
-  //   path: '/profile',
-  //   name: 'Profile',
-  //   component: Profile,
-  //   meta: {
-  //     requiresAuth: true,
-  //     title: 'Your Profile',
-  //   },
-  // },
 
   {
     path: '/profile',
@@ -133,16 +115,6 @@ const routes = [
       title: 'Resend Activation Email',
     },
   },
-
-  // {
-  //   path: '/resend-success',
-  //   name: 'ResendSuccess',
-  //   component: ResendSuccess,
-  //   meta: {
-  //     requiresGuest: true,
-  //     title: 'Resend Successfull',
-  //   },
-  // },
 
   {
     path: '/request-password-reset',
@@ -194,16 +166,6 @@ const routes = [
   },
 
   {
-    path: '/subscriptions/all',
-    name: 'SubscriptionsAll',
-    component: SubscriptionsAll,
-    meta: {
-      requiresAuth: true,
-      title: 'All Your Subscriptions',
-    },
-  },
-
-  {
     path: '/carousel',
     name: 'CardCarousel',
     component: CardCarousel
@@ -240,11 +202,14 @@ const routes = [
 const scrollBehavior = (to, from, savedPosition) => {
   // console.log('%cto / from', 'color: plum; font-weight: bold;', to, from);
   if (savedPosition) {
+    // console.log('%cIFto.name', 'color: aqua; font-weight: bold;', to.name);
     return savedPosition;
   } else if (to.name === 'ProfileOverview' || to.name === 'ProfileCodes' || to.name === 'ProfileSubscriptions') {
+    // console.log('%cELSE IF to.name', 'color: aqua; font-weight: bold;', to.name);
     // In order for site not to scroll to top if nav link was clicked
     return false;
   } else {
+    // console.log('%cELSE to.name', 'color: aqua; font-weight: bold;', to.name);
     return { top: 0 };
   }
   

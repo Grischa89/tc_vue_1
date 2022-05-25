@@ -39,12 +39,13 @@
 
 <script>
 import QrcodeVue from 'qrcode.vue';
-import IconButton from './icon-button/IconButton.vue';
+// import IconButton from './icon-button/IconButton.vue';
+import IconButton from '../icon-button/IconButton.vue';
 
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'ModalQRCode',
+  name: 'QRCodeModal',
 
   emits: ['onClose', 'copyCode'],
 

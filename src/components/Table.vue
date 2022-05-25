@@ -54,12 +54,12 @@
             </td>
           </tr>
           <Teleport to="body">
-                  <ModalQRCode 
-                    v-if="open"
-                      @on-close="closeModal"
-                      @copy-code="copyCodeToClipboard"
-                      :code="qrCode" />
-                </Teleport>
+            <QRCodeModal 
+              v-if="open"
+                @on-close="closeModal"
+                @copy-code="copyCodeToClipboard"
+                :code="qrCode" />
+          </Teleport>
         </tbody>
       </table>
     </div>
@@ -69,7 +69,7 @@
 
 <script>
 import IconButton from './icon-button/IconButton.vue';
-import ModalQRCode from './ModalQRCode.vue';
+import QRCodeModal from './modals/QRCodeModal.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -78,7 +78,7 @@ export default {
 
   components: {
     IconButton,
-    ModalQRCode,
+    QRCodeModal,
   },
 
   data() {
