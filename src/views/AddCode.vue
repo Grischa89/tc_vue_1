@@ -91,12 +91,15 @@ export default {
   },
 
   created() {
-    // console.log('%ccodeToRepost', 'color: plum; font-weight: bold;', this.codeToRepost);
     if (this.codeToRepost) {
       this.data.player_code = this.codeToRepost.player_code;
       this.data.country = this.codeToRepost.country_slug;
       this.data.city = this.codeToRepost.city_slug;
     }
+
+    // In case user picked a country, leaves route, then comes back (all without refresh)
+    if (this.cities) this.$store.commit('setCities', null);
+
     this.$store.dispatch('getCountries')
       .catch(() => {
         this.errors.loadCountries = 'Something went wrong retrieving countries. Please reload the page or try again later.';
