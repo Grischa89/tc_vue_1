@@ -169,7 +169,7 @@ export default {
 
         const submitSuccess = await this.$store.dispatch('addSubscription', this.data);
 
-        submitSuccess === 201 ? this.$router.push({ name: 'SubscriptionsAll' }) : this.errors.submitFailure = 'Something went wrong. Please try again later.';
+        submitSuccess === 201 ? this.$router.push({ name: 'ProfileOverview' }) : this.errors.submitFailure = 'Something went wrong. Please try again later.';
       }
 
     },
