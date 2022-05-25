@@ -35,12 +35,15 @@ export default {
 
   computed: {
     slicedSuggestions() {
-      // if (this.citySuggestions) {
-        // TODO: Filter array for current city_slug to not be displayed
-        // Sort citySuggestions array in descending order by city_ranking
-        const sortByCityRanking = this.citySuggestions.sort((a, b) => b.city_ranking - a.city_ranking);
+      // Don't suggest the city on whose route we currently are
+      if (this.currentRouteName === 'City') {
+        const citiesDifferentFromRoute = this.citySuggestions.filter(item => item.city_slug !== this.$route.params.city);
+        const sortByCityRanking = citiesDifferentFromRoute.sort((a, b) => b.city_ranking - a.city_ranking);
         return sortByCityRanking.slice(0, 6);
-      // }
+      }
+      // Sort citySuggestions array in descending order by city_ranking
+      const sortByCityRanking = this.citySuggestions.sort((a, b) => b.city_ranking - a.city_ranking);
+      return sortByCityRanking.slice(0, 6);
     },
 
     currentRouteName() {
