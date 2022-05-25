@@ -46,7 +46,13 @@
         </div>
 
         <div class="profile__main">
-            <router-view :key="$route.fullPath"></router-view>
+            <router-view v-slot="{ Component, route }">
+                <Transition :name="route.meta.transition" appear>
+                    <keep-alive>
+                        <component :is="Component" :key="key"></component>
+                    </keep-alive>
+                </Transition>
+            </router-view>
         </div>
         
         <div class="profile__footer">
@@ -80,12 +86,17 @@ export default {
 
         activeTab() {
             return this.$route.name;
-        }
+        },
+
+        key() {
+            return this.$route.path;
+        },
     },
 
     created() {
         this.$store.dispatch('fetchAllSubscriptions');
         this.$store.dispatch('fetchUserCodes');
+        console.log('%croute', 'color: red; font-weight: bold;', this.$route);
     },
     methods: {
         scrollToActiveTab(selected) {
@@ -337,226 +348,25 @@ export default {
         }
 
     }
+}
 
-    // &__item {
-    //     display: flex;
-    //     flex-direction: column;
-    //     align-items: flex-start;
-    //     position: relative;
-    //     padding: 1rem;
-    //     background-color: $white;
-    //     box-shadow: $card-shadow rgba($black, 0.2); 
-    //     -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
-    //     -moz-box-shadow: $card-shadow rgba($black, 0.2);
-    //     border-radius: .5rem;
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
+}
 
-    //     &:last-of-type {
-    //         justify-content: space-between;
-    //         align-items: center;
-    //         // padding-top: 3rem;
-    //         background-color: transparent;
-    //         box-shadow: none;
+.fade-leave-active {
+    transition-duration: 300ms;
+    transition-property: opacity;
+    transition-timing-function: ease;
+    // transition: all 300ms ease;
+}
 
-    //         .profile__item__heading {
-    //             padding: 0 .5rem;
-    //             box-shadow: inset 0 -.75rem 0 0 $in-between;
-    //         }
-    //     }
-
-    //     &--action {
-    //         position: relative;
-
-    //         .profile__item__buttons--action {
-    //             position: absolute;
-    //             top: 0;
-    //             right: .25rem;
-
-    //             .profile__item__buttons__btn--action {
-    //                 background-color: $accent;
-    //                 color: $white;
-    //                 border-radius: 50%;
-    //                 padding: .25rem;
-    //                 box-shadow: $card-shadow rgba($black, 0.2);
-    //             }
-    //         }
-    //     }
-
-    //     &__heading {
-    //         font-size: $mobile-heading;
-    //         text-transform: uppercase;
-    //         font-weight: bold;
-
-
-    //         // &:first-child {
-    //         //     padding: 0 .5rem;
-    //         //     box-shadow: inset 0 -.75rem 0 0 $in-between;
-    //         // }
-    //     }
-
-    //     &__subheading {
-    //         text-align: left;
-    //         font-size: $mobile-subheading;
-    //         font-weight: bold;
-    //     }
-
-    //     &__image {
-    //         position: relative;
-    //         height: 5rem;
-    //         width: 5rem;
-    //         border-radius: 50%;
-    //         background-color: $primary;
-    //         margin-bottom: 1rem;
-    //          box-shadow: $card-shadow rgba($black, 0.2); 
-    //         -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
-    //         -moz-box-shadow: $card-shadow rgba($black, 0.2);
-
-    //         &__img {
-    //             height: 5rem;
-    //             width: 5rem;
-    //             border-radius: 50%;
-    //         }
-
-    //         &__overlay {
-    //             position: absolute;
-    //             top: 0;
-    //             bottom: 0;
-    //             left: 0;
-    //             right: 0;
-    //             height: 100%;
-    //             width: 100%;
-    //             opacity: 0;
-    //             background-color: rgba($black, .2);
-    //             border-radius: 50%;
-
-    //             &:hover {
-    //                 opacity: 1;
-    //                 cursor: pointer;
-    //             }
-
-    //             &__icon {
-    //                 color: rgba($black, .6);
-    //                 width: 1.5rem;
-    //                 height: 1.5rem;
-    //                 position: absolute; // to center
-    //                 top: 50%; // to center
-    //                 left: 50%; // to center
-    //                 transform: translate(-50%, -50%); // to center
-    //                 -ms-transform: translate(-50%, -50%); // to center
-    //                 cursor: pointer;
-
-    //                 &:hover {
-    //                     color: rgba($black, .8);
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     &__button {
-    //         display: flex;
-    //         align-items: center;
-    //         text-transform: uppercase;
-    //         font-size: $mobile-body;
-    //         letter-spacing: .05rem;
-    //         font-weight: bold;
-    //         color: $help;
-    //         padding: .375rem 1.5rem;
-    //         margin-top: 1rem;
-    //         margin-bottom: .25rem;
-    //         -webkit-tap-highlight-color: $primary-darker;
-
-    //         &--action {
-    //             color: $white;
-    //     background-color: $accent;
-    //     border-radius: 25px;
-    //     // font-weight: 600;
-    //         }
-
-    //         &__append {
-    //             margin-left: .5rem;
-    //             height: $mobile-subheading;
-    //             width: $mobile-subheading;
-    //         }
-    //     }
-
-    //     &__buttons {
-    //         display: flex;
-    //         justify-content: space-between;
-    //         align-items: center;
-    //         margin-top: 1rem;
-
-    //         &__btn {
-
-    //             display: flex;
-    //             align-items: center;
-    //             margin: 0 .5rem;
-    //             // height: $mobile-subheading;
-    //             // width: $mobile-subheading;
-    //             cursor: pointer;
-    //             // border-radius: 50%;
-    //             // background-color: blue;
-
-    //             &__prepend {
-    //                 height: $mobile-subheading;
-    //                 width: $mobile-subheading;
-    //                 margin-right: .25rem;
-    //             }
-
-    //             &__icon {
-    //                 height: 1.625rem;
-    //                 width: 1.625rem;
-    //             }
-
-    //             &--edit {
-    //                 padding: .5em 1.5em;
-    //                 color: $secondary;
-    //                 font-size: $mobile-body;
-    //                 letter-spacing: .05rem;
-    //                 font-weight: bold;
-    //                 border-radius: 25px;
-    //                 border: $secondary solid 1px;
-    //             }
-    //         }
-    //     }
-
-    //     &__list {
-    //         // display: flex;
-    //         // flex-direction: column;
-    //         // align-items: flex-start;
-    //         margin-top: 1rem;
-    //         margin-bottom: 1rem;
-    //         list-style-type: '—';
-    //         list-style-position: outside;
-    //         text-align: left;
-
-    //         &__item {
-    //             margin-left: .75rem;
-    //             padding-left: .5rem;
-    //             // display: flex;
-    //             // justify-content: flex-start;
-    //             // text-align: left;
-
-    //             // &::before {
-    //             //     content: '—';
-    //             //     margin-right: .5rem;
-    //             // }
-    //         }
-    //     }
-
-    //     &__link, &__link a {
-    //         display: flex;
-    //         align-items: center;
-    //         // margin-top: .25rem;
-    //         margin-bottom: .5rem;
-    //         text-decoration: underline;
-
-    //         &__append, a .profile__item__link__append {
-    //             margin-left: .5rem;
-    //             height: $mobile-subheading;
-    //             width: $mobile-subheading;
-    //         }
-    //     }
-        
-    // }
+.fade-enter-active {
+    transition-duration: 300ms;
+    transition-property: opacity;
+    transition-timing-function: ease;
+    // transition: all 300ms ease;
+    transition-delay: .25s;
 }
 
 .user__info {

@@ -99,21 +99,19 @@ const routes = [
         path: '',
         name: 'ProfileOverview',
         component: ProfileOverview,
+        meta: { transition: 'fade' },
       },
       {
         path: 'codes',
         name: 'ProfileCodes',
         component: ProfileCodes,
+        meta: { transition: 'fade' },
       },
       {
         path: 'subscriptions',
         name: 'ProfileSubscriptions',
         component: ProfileSubscriptions,
-        children: [{
-          path: 'delete/:id',
-          name: 'ProfileSubscriptionsDelete',
-          component: ModalDialog,
-        }]
+        meta: { transition: 'fade' },
       }]
   },
 
