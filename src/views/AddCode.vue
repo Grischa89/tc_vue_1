@@ -1,5 +1,9 @@
 <template>
   <div class="form__container">
+    
+    <!-- NOTE: div instead of form prevents form submit from numpad @mobile "Go" button -->
+    <form class="form" @submit.prevent="submitForm">
+      <h2 class="form__title">Add Your Own Code</h2>
 
     <div v-if="errors.submitFailure" class="user__info">
         {{ errors.submitFailure }}
@@ -10,10 +14,6 @@
     <div v-if="errors.loadCities" class="user__info">
         {{ errors.loadCities }}
     </div>
-    
-    <!-- NOTE: div instead of form prevents form submit from numpad @mobile "Go" button -->
-    <form class="form" @submit.prevent="submitForm">
-      <h2 class="form__title">Add Your Own Code</h2>
 
       <div class="form__group">
         <label class="form__group__label" :class="{'form__group__label--error': errors.invalidCode}" for="trainercode">Trainercode</label>
@@ -59,8 +59,6 @@
         <!-- <button class="form__btn form__btn--cancel" type="button" @click="cancelForm">Cancel</button> -->
       </div>
     </form>
-
-    {{ cities }}
   </div>
 </template>
 
@@ -134,7 +132,8 @@ export default {
         if (submitSuccess === 201 || submitSuccess === 200) {
           this.$router.push({ name: 'ProfileOverview' });
         } else if (submitSuccess === 404) {
-          this.errors.submitFailure = 'Country and city do not match. Please select the country again and after that choose a city.';
+          this.errors.invalidCity = 'Country and city do not match. Please select the country again and after that choose a city.';
+          this.errors.invalidCountry = 'Country and city do not match. Please select the country again and after that choose a city.';
         } else {
           this.errors.submitFailure = 'Something went wrong. Please try again later.';
         }
