@@ -121,21 +121,23 @@ export default {
 
   methods: {
     async submitForm() {
-      console.log('this.data', this.data);
       const validCode = this.validateCode(this.data.player_code);
       const validCountry = this.validateCountry(this.data.country);
       const validCity = this.validateCity(this.data.city);
 
-      console.log('submitForm', validCode, validCountry, validCity);
-
       if (!validCode || !validCountry || !validCity) return false;
       
       if (validCode && this.data.country && this.data.city) {
-        console.log('data', this.data);
         const submitSuccess = await this.$store.dispatch('addCode', this.data);
 
         // TODO: Currently Zeitverzögerung bei /
-        submitSuccess === 201 ? this.$router.push(`/profile`) : this.errors.submitFailure = 'Something went wrong. Please try again later.';
+        if (submitSuccess === 201 || submitSuccess === 200) {
+          this.$router.push({ name: 'ProfileOverview' });
+        } else if (submitSuccess === 404) {
+          this.errors.submitFailure = 'Country and city do not match. Please select the country again and after that choose a city.';
+        } else {
+          this.errors.submitFailure = 'Something went wrong. Please try again later.';
+        }
       }
     },
 

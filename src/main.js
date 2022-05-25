@@ -119,6 +119,10 @@ axios.interceptors.response.use(function (response) {
     // originalRequest.url should not be repeated (no loop)
     originalRequest._retry = true;
 
+    if (error.config.url === '/api/v1/codes/' && error.response.status === 404) {
+      return Promise.reject(error);
+    }
+
     // Try to refresh access token
     return store.dispatch('refreshJWT')
     .then((access) => {
