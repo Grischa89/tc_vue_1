@@ -87,13 +87,19 @@ const routes = [
         path: 'codes',
         name: 'ProfileCodes',
         component: ProfileCodes,
-        meta: { transition: 'fade' },
+        meta: {
+          title: 'Your Trainer Codes',
+          transition: 'fade'
+        },
       },
       {
         path: 'subscriptions',
         name: 'ProfileSubscriptions',
         component: ProfileSubscriptions,
-        meta: { transition: 'fade' },
+        meta: {
+          title: 'Your Subscriptions',
+          transition: 'fade' 
+        },
       }]
   },
 
