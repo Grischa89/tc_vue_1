@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import IconButton from './icon-button/IconButton.vue';
+import IconButton from './buttons/IconButton.vue';
 import QRCodeModal from './modals/QRCodeModal.vue';
 
 import { mapGetters } from 'vuex';

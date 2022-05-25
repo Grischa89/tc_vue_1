@@ -10,7 +10,7 @@
 
     <div class="carousel__item__code">{{ code.player_code }}</div>
 
-    <CopyButton 
+    <IconButton 
       @click="copyCodeToClipboard($event)" />
 
     <!-- TODO: Remove for productiion: -->
@@ -22,14 +22,14 @@
 
 <script>
 import QrcodeVue from 'qrcode.vue';
-import CopyButton from '../copy-button/CopyButton.vue';
+import IconButton from '../buttons/IconButton.vue';
 
 export default {
   name: 'TestCarouselSlide',
 
   components: {
       QrcodeVue,
-      CopyButton,
+      IconButton,
   },
 
   props: {

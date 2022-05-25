@@ -24,7 +24,7 @@
 
 <script>
 import QrcodeVue from 'qrcode.vue';
-import IconButton from '../icon-button/IconButton.vue';
+import IconButton from '../buttons/IconButton.vue';
 
 export default {
   name: 'CardCarouselSlide',
