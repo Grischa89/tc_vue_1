@@ -38,6 +38,7 @@ const getters = {
       state.subscriptions.forEach(sub => {
         // const eventUserTimeMs = new Date(sub.)
         sub.prettyCode = sub.player_code.replace(/.{4}/g, '$& ');
+        sub.isActive = false;
 
         switch (sub.action) {
           case 'POST_YOUR_CODE_ON_TWITTER':

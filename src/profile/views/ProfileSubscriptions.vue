@@ -39,7 +39,7 @@
       
           </div>
           <div class="profile__resource__item__display__actions">
-            <button class="profile__resource__item__display__actions__btn" @click="showEditForm($event, subscription)">
+            <button class="profile__resource__item__display__actions__btn" @click="showEditForm(subscription)">
               <svg xmlns="http://www.w3.org/2000/svg" class="profile__resource__item__display__actions__btn__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-labelledby="edit-subscription">
                 <title id="edit-subscription">Edit Subscription</title>
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -65,47 +65,49 @@
 
         </div>
         
-        <div class="profile__resource__item__edit" :data-edit-id="subscription.pk"  ref="subscriptionItemEdit">
-          <form class="inline-form" @submit.prevent="submitForm(subscription.pk, i)">
-            <div class="inline-form__title">Edit Subscription</div>
-            <div class="inline-form__group">
-              <label class="inline-form__group__label" :class="{'inline-form__group__label--error': errors.invalidCode}" for="trainercode">Trainercode</label>
-              <input class="inline-form__group__input inline-form__group__input--code" :class="{'inline-form__group__input--error': errors.invalidCode}" type="number" step="1" id="trainercode" name="trainercode" placeholder="0000 1111 2222" v-model="data.player_code" data-input-code @keydown="restrictKeys($event)" @keyup="typeCode($event)" @paste="pasteCode($event)" @blur="validateCode(data.player_code)">
-      
-              <span v-if="formatCode" class="form__group__help">Your Trainer Code: {{ formatCode }}</span>
-              <span v-if="errors.invalidCode" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidCode}">{{ errors.invalidCode }}</span>
-            </div>
-            <div class="inline-form__group">
-              <label class="inline-form__group__label" for="eventOptions">Event</label>
-              <select class="inline-form__group__input inline-form__group__input--select" :class="{'inline-form__group__input--error': errors.invalidEvent}" name="eventOptions" id="eventOptions" data-input-event @blur="validateEvent(data.event)" v-model="data.event" :disabled="!eventOptions">
-                <option value selected disabled >Choose An Event</option>
-                <option
-                  v-for="(event, i) in eventOptions"
-                  :key="i"
-                  :value="event.id">{{ event.name }}</option>
-              </select>
-      
-              <span v-if="errors.invalidEvent" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidEvent}">{{ errors.invalidEvent }}</span>
-            </div>
-            <div class="inline-form__group">
-              <label class="inline-form__group__label" for="codeActions">Subscription Type</label>
-              <select class="inline-form__group__input inline-form__group__input--select" :class="{'inline-form__group__input--error': errors.invalidCodeAction}" name="codeActions" id="codeActions" data-input-type @blur="validateCodeAction(data.action)" v-model="data.action" :disabled="!codeActionOptions">
-                <option value selected disabled>Choose A Subscription Type</option>
-                <option
-                  v-for="(action, i) in codeActionOptions"
-                  :key="i"
-                  :value="action[0]">{{ action[1] }}
-                </option>
-              </select>
-              <span v-if="errors.invalidCodeAction" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidCodeAction}" >{{ errors.invalidCodeAction }}</span>
-            </div>
-            <div class="inline-form__btn__container">
-              <button class="inline-form__btn inline-form__btn--submit" type="submit">Save</button>
-              <button class="inline-form__btn inline-form__btn--cancel" type="button" @click="cancelEditForm(subscription.pk)">Cancel</button>
-            </div>
-      
-          </form>
-        </div>
+        <!-- :class="{ 'profile__resource__item__edit--show': subscription.isActive }" -->
+        <Transition name="edit-fade" appear>
+          <div v-show="subscription.isActive" class="profile__resource__item__edit"  :data-edit-id="subscription.pk"  ref="subscriptionItemEdit">
+            <form class="inline-form" @submit.prevent="submitForm(subscription.pk, i, subscription.isActive)">
+              <div class="inline-form__title">Edit Subscription</div>
+              <div class="inline-form__group">
+                <label class="inline-form__group__label" :class="{'inline-form__group__label--error': errors.invalidCode}" for="trainercode">Trainercode</label>
+                <input class="inline-form__group__input inline-form__group__input--code" :class="{'inline-form__group__input--error': errors.invalidCode}" type="number" step="1" id="trainercode" name="trainercode" placeholder="0000 1111 2222" v-model="data.player_code" data-input-code @keydown="restrictKeys($event)" @keyup="typeCode($event)" @paste="pasteCode($event)" @blur="validateCode(data.player_code)">
+                <span v-if="formatCode" class="form__group__help">Your Trainer Code: {{ formatCode }}</span>
+                <span v-if="errors.invalidCode" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidCode}">{{ errors.invalidCode }}</span>
+              </div>
+              <div class="inline-form__group">
+                <label class="inline-form__group__label" for="eventOptions">Event</label>
+                <select class="inline-form__group__input inline-form__group__input--select" :class="{'inline-form__group__input--error': errors.invalidEvent}" name="eventOptions" id="eventOptions" data-input-event @blur="validateEvent(data.event)" v-model="data.event" :disabled="!eventOptions">
+                  <option value selected disabled >Choose An Event</option>
+                  <option
+                    v-for="(event, i) in eventOptions"
+                    :key="i"
+                    :value="event.id">{{ event.name }}</option>
+                </select>
+                <span v-if="errors.invalidEvent" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidEvent}">{{ errors.invalidEvent }}</span>
+              </div>
+              <div class="inline-form__group">
+                <label class="inline-form__group__label" for="codeActions">Subscription Type</label>
+                <select class="inline-form__group__input inline-form__group__input--select" :class="{'inline-form__group__input--error': errors.invalidCodeAction}" name="codeActions" id="codeActions" data-input-type @blur="validateCodeAction(data.action)" v-model="data.action" :disabled="!codeActionOptions">
+                  <option value selected disabled>Choose A Subscription Type</option>
+                  <option
+                    v-for="(action, i) in codeActionOptions"
+                    :key="i"
+                    :value="action[0]">{{ action[1] }}
+                  </option>
+                </select>
+                <span v-if="errors.invalidCodeAction" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidCodeAction}" >{{ errors.invalidCodeAction }}</span>
+              </div>
+              <div class="inline-form__btn__container">
+                <button class="inline-form__btn inline-form__btn--submit" type="submit">Save</button>
+                <button class="inline-form__btn inline-form__btn--cancel" type="button" @click="cancelEditForm(subscription.isActive)">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </Transition>
+
+
       </div>
     </template>
   </div>
@@ -157,7 +159,6 @@ export default {
   },
 
   async created() {
-
     // if (this.user) console.log('user', this.user);
     // TODO: MOVE TO PROFILE
     // this.$store.dispatch('fetchAllSubscriptions');
@@ -190,17 +191,18 @@ export default {
   },
 
   methods: {
-    async submitForm(pk, index) {
-      const validCode = this.validateCode(this.data.player_code);
-      const validEvent = this.validateEvent(this.data.event);
-      const validCodeAction = this.validateCodeAction(this.data.action);
+    async submitForm(pk, index, isActive) {
+      const VALID_CODE = this.validateCode(this.data.player_code);
+      const VALID_EVENT = this.validateEvent(this.data.event);
+      const VALID_CODE_ACTION = this.validateCodeAction(this.data.action);
 
-      if (!pk || !validCode || !validEvent || !validCodeAction) return false;
+      if (!pk || !VALID_CODE || !VALID_EVENT || !VALID_CODE_ACTION) return false;
 
-      if (pk && validCode && validEvent && validCodeAction) {
+      if (pk && VALID_CODE && VALID_EVENT && VALID_CODE_ACTION) {
 
         const submitSuccess = await this.$store.dispatch('updateSubscription', { pk: pk, index: index, data: this.data });
-        document.querySelector(`[data-edit-id="${pk}"]`).style.display = 'none';
+        // document.querySelector(`[data-edit-id="${pk}"]`).style.display = 'none';
+        isActive = false;
 
 
         // TODO: Error handling if submitSuccess !== 200
@@ -208,51 +210,50 @@ export default {
       }
     },
 
-    showEditForm(e, subscription) {
-      const editArea = document.querySelector(`[data-edit-id="${subscription.pk}"]`);
-      const inputCode = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-code]`);
-      const inputEvent = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-event]`);
-      const inputType = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-type]`);
+    showEditForm(subscription) {
+      // const editArea = document.querySelector(`[data-edit-id="${subscription.pk}"]`);
+      const INPUT_CODE = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-code]`);
+      const INPUT_EVENT = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-event]`);
+      const INPUT_TYPE = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-type]`);
 
-      if (window.getComputedStyle(editArea).display === 'none') {
-        inputCode.value = subscription.player_code;
+      if (!subscription.isActive) {
+        subscription.isActive = true;
+        INPUT_CODE.value = subscription.player_code;
         this.data.player_code = subscription.player_code;
 
-        inputEvent.selectedIndex = subscription.event;
+        INPUT_EVENT.selectedIndex = subscription.event;
         this.data.event = subscription.event;
 
-        inputType.selectedIndex = subscription.action;
+        INPUT_TYPE.selectedIndex = subscription.action;
         this.data.action = subscription.action;
-
-        editArea.style.display = 'block';
       } else {
-        editArea.style.display = 'none';
-        return false;
+        subscription.isActive = false;
       }
     },
 
-    cancelEditForm(pk) {
-      document.querySelector(`[data-edit-id="${pk}"]`).style.display = 'none';
+    cancelEditForm(isActive) {
+      isActive = false;
     },
 
     openDeleteModal(subscription, index) {
       // Disable scroll on modal background (body)
-      document.body.style.overflow= 'hidden';
+      document.body.style.overflow = 'hidden';
 
       subscription.index = index;
       this.$store.commit('setSubscriptionToDelete', subscription);
 
       this.$store.commit('toggleModal', true);
-      // this.$router.push({ name: 'ProfileSubscriptionsDelete', params: { id: subscription.pk } });
     },
 
     cancelDelete() {
-      document.body.style.overflow= 'auto';
+      // Enable scroll on modal background (body)
+      document.body.style.overflow = 'auto';
+
       this.$store.commit('toggleModal', false);
     },
 
     deleteSubscription(data) {
-      document.body.style.overflow= 'auto';
+      document.body.style.overflow = 'auto';
       this.$store.dispatch('deleteSubscription', { pk: data.pk, index: data.index });
       this.$store.commit('toggleModal', false);
     },
@@ -342,6 +343,18 @@ export default {
 </script>
 
 <style lang="scss">
+.edit-fade-enter-active, .edit-fade-leave-active {
+   transition: opacity 300ms ease-in-out;
+}
+
+.edit-fade-enter-from, .edit-fade-leave-to {
+  opacity: 0;
+}
+
+.edit-fade-enter-to, .edit-fade-leave-from {
+  opacity: 1;
+}
+
 .profile__resource {
   display: grid;
   gap: 1.5rem;
@@ -458,11 +471,15 @@ export default {
     }
 
     &__edit {
-      display: none;
+      // display: none;
       width: 100%;
       margin-top: 1.5rem;
       padding-top: 1.5rem;
       border-top: 1px solid $help;
+
+      // --show {
+      //   display: block;
+      // }
     }
 
     &:nth-of-type(2n) {
