@@ -136,6 +136,13 @@ export default {
     // position: relative;
     // z-index: 0;
 
+    // @include desktop {
+    //     grid-template-areas:    'header header . . .'
+    //                             'nav nav main main'
+    //                             'footer footer . . .';
+    //     grid-template-columns: repeat(5, 1fr);
+    // }
+
     &__header {
         display: flex;
         flex-direction: column;
@@ -148,6 +155,10 @@ export default {
         -webkit-box-shadow: none; 
         -moz-box-shadow: none;
         border-radius: .5rem;
+
+        // @include desktop {
+        //     grid-area: header;
+        // }
 
         &__heading {
             font-size: $mobile-heading;
@@ -164,7 +175,7 @@ export default {
             border-radius: 50%;
             background-color: $primary;
             margin-bottom: 1rem;
-             box-shadow: $card-shadow rgba($black, 0.2); 
+            box-shadow: $card-shadow rgba($black, 0.2); 
             -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
             -moz-box-shadow: $card-shadow rgba($black, 0.2);
 
@@ -249,6 +260,19 @@ export default {
         flex-wrap: nowrap;
         overflow-x: auto;
 
+        @include tablet {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            overflow-x: hidden;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        // @include desktop {
+        //     grid-area: nav;
+        //     grid-template-rows: repeat(3, 1fr);
+        // }
+
         /* 
         Custom scrollbar, but disappearing effect needs to be achieved with JS (not implemented)
         &::-webkit-scrollbar {
@@ -276,7 +300,7 @@ export default {
       &__tab {
         display: flex;
         justify-content: center;
-        padding-top: .75rem;
+        padding-top: 1rem;
         padding-bottom: 1rem;
         padding-left: .5rem;
         padding-right: .5rem;
@@ -296,12 +320,42 @@ export default {
             border-top-color: $in-between;
             color: $black;
             font-weight: bold;
+            padding-top: .75rem;
         }
+
+        @include tablet {
+            grid-column: span 1;
+            // m-width: 25ch;
+        }
+
+        // @include desktop {
+        //     grid-column: span 3;
+        //     grid-row: span 1;
+        // }
       }
     }
 
     &__main {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        // align-items: center;
         margin-top: 1rem;
+        // max-width: 60ch;
+        // margin-left: auto;
+        // margin-right: auto;
+
+        @include tablet-landscape {
+            width: 80%;
+            max-width: 100ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        // @include desktop {
+        //     grid-area: main;
+        //     overflow-y: auto;
+        // }
     }
 
     &__footer {
@@ -316,6 +370,10 @@ export default {
         -webkit-box-shadow: none; 
         -moz-box-shadow: none;
         border-radius: .5rem;
+
+        // @include desktop {
+        //     grid-area: footer;
+        // }
 
         &__buttons {
             display: flex;
