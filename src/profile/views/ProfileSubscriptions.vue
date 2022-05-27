@@ -101,7 +101,7 @@
               </div>
               <div class="inline-form__btn__container">
                 <button class="inline-form__btn inline-form__btn--submit" type="submit">Save</button>
-                <button class="inline-form__btn inline-form__btn--cancel" type="button" @click="cancelEditForm(subscription.isActive)">Cancel</button>
+                <button class="inline-form__btn inline-form__btn--cancel" type="button" @click="cancelEditForm(subscription)">Cancel</button>
               </div>
             </form>
           </div>
@@ -231,8 +231,10 @@ export default {
       }
     },
 
-    cancelEditForm(isActive) {
-      isActive = false;
+    cancelEditForm(sub) {
+      console.log('%ccancelEditForm', 'color: plum; font-weight: bold;', sub);
+      sub.isActive = false;
+      console.log('%ccancelEditForm', 'color: plum; font-weight: bold;', sub);
     },
 
     openDeleteModal(subscription, index) {
@@ -359,6 +361,7 @@ export default {
   display: grid;
   gap: 1.5rem;
   height: 100%;
+  width: 100%;
   // padding: 5%;
 
   &__item {
