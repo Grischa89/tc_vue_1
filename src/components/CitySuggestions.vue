@@ -100,14 +100,8 @@ export default {
     gap: .5rem;
     height: 100%;
     width: 100%;
-    // margin: .5rem auto;
-    // padding: 2rem 1rem;
     grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    background: hsla(0, 0%, 100%, 1);
-    // background: linear-gradient($primary-gradient);
-    // background: -webkit-linear-gradient($primary-gradient);
-    // background: -moz-linear-gradient($primary-gradient);
+    // grid-template-rows: repeat(2, 1fr);
 
   &__item {
     display: flex;
