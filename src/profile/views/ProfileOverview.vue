@@ -143,12 +143,19 @@ export default {
     align-items: center;
     // margin-top: .25rem;
     margin-bottom: .5rem;
-    text-decoration: underline;
+
+    &:hover {
+      text-decoration: underline;
+    }
 
     &__append, a .profile__item__link__append {
       margin-left: .5rem;
       height: $mobile-subheading;
       width: $mobile-subheading;
+
+      &:hover {
+      text-decoration: underline;
+    }
     }
 
     // &__text {}
