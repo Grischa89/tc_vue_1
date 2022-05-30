@@ -399,12 +399,18 @@ export default {
     &--empty {
       border: none;
       border-radius: .5rem;
+      background-color: transparent;
+      box-shadow: none; 
+      -webkit-box-shadow: none; 
+      -moz-box-shadow: none;
     }
 
     &__text {
       padding: 1rem 0;
-      font-style: italic;
-      font-size: $mobile-subheading;
+      // font-style: italic;
+      font-size: $mobile-body;
+      letter-spacing: .025rem;
+      font-weight: 500;
     }
 
     &__display {

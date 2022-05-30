@@ -27,7 +27,7 @@
       <AddResourceButton
         :routeName="addCodesRouteName">
         <template #text>
-          Add Code
+          Add Trainer Code
         </template>
       </AddResourceButton>
       <div v-for="(code, i) in userCodes" :key="i" class="profile__resource__item">
