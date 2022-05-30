@@ -11,7 +11,7 @@ import auth from './modules/auth';
 import password from './modules/validation/password';
 import email from './modules/validation/email';
 import username from './modules/validation/username';
-import subscriptions from './modules/subscriptions';
+import resources from './modules/resources';
 
 export default createStore({
   
@@ -144,7 +144,7 @@ export default createStore({
     password,
     email,
     username,
-    subscriptions,
+    resources,
   },
 
 });
