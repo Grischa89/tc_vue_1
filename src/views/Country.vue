@@ -1,7 +1,8 @@
 <template>
   <div v-if="loadStatus === 'loading'">
+    <CitySuggestionsSkeleton />
     <TableSkeleton />
-    <CardCarouselSkeleton />
+    <!-- <CardCarouselSkeleton /> -->
   </div>
 
   <AsyncErrorFetchingData v-if="loadStatus === 'error'">
@@ -21,6 +22,7 @@
   </AsyncErrorFetchingData>
 
   <div v-if="loadStatus === 'success' && countryCodes">
+
     <Breadcrumb
       v-if="breadcrumb"
       :breadcrumb="breadcrumb" />
@@ -44,11 +46,12 @@
 
 <script>
 import Table from '../components/Table.vue';
-import CardCarousel from '../components/card-carousel/CardCarousel.vue';
+// import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
-import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
+// import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import CitySuggestions from '../components/CitySuggestions.vue';
+import CitySuggestionsSkeleton from '../components/skeletons/CitySuggestionsSkeleton.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -57,11 +60,12 @@ export default {
 
   components: {
     Table,
-    CardCarousel,
+    // CardCarousel,
     TableSkeleton,
-    CardCarouselSkeleton,
+    // CardCarouselSkeleton,
     Breadcrumb,
     CitySuggestions,
+    CitySuggestionsSkeleton
   },
 
   data() {

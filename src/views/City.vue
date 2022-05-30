@@ -5,7 +5,7 @@ otherwise no classes -->
   <!-- <div> -->
   <div v-if="loadStatus === 'loading'">
     <TableSkeleton />
-    <CardCarouselSkeleton />
+    <CitySuggestionsSkeleton />
   </div>
 
   <AsyncErrorFetchingData v-if="loadStatus === 'error'">
@@ -42,20 +42,21 @@ otherwise no classes -->
       v-if="citySuggestions"
       :citySuggestions="citySuggestions" />
 
-    <CardCarousel
+    <!-- <CardCarousel
       :codes="cityCodes"
-      :isCity="isCity" />
+      :isCity="isCity" /> -->
 
   </div>
 </template>
 
 <script>
 import Table from '../components/Table.vue';
-import CardCarousel from '../components/card-carousel/CardCarousel.vue';
+// import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
-import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
+// import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import CitySuggestions from '../components/CitySuggestions.vue';
+import CitySuggestionsSkeleton from '../components/skeletons/CitySuggestionsSkeleton.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -70,11 +71,12 @@ export default {
 
   components: {
     Table,
-    CardCarousel,
+    // CardCarousel,
     TableSkeleton,
-    CardCarouselSkeleton,
+    // CardCarouselSkeleton,
     Breadcrumb,
     CitySuggestions,
+    CitySuggestionsSkeleton,
   },
 
   created() {
