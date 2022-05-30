@@ -24,7 +24,8 @@
       <!-- <div class="subscription__item">
         <h1 class="profile__item__heading">Manage Subscriptions</h1>
       </div> -->
-      <AddResourceButton>
+      <AddResourceButton
+        :routeName="addCodesRouteName">
         <template #text>
           Add Code
         </template>
@@ -73,6 +74,7 @@ export default {
 
   data() {
     return {
+      addCodesRouteName: 'AddCode',
       // errorRetrievingSubscriptions: 'Something went wrong retrieving your subscriptions.',
     }
   },

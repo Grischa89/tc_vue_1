@@ -25,7 +25,8 @@
       <!-- <div class="subscription__item">
         <h1 class="profile__item__heading">Manage Subscriptions</h1>
       </div> -->
-      <AddResourceButton>
+      <AddResourceButton
+        :routeName="addSubscriptionsRouteName">
         <template #text>
           Add Subscription
         </template>
@@ -134,6 +135,7 @@ export default {
 
   data() {
     return {
+      addSubscriptionsRouteName: 'AddSubscription',
       editing: false,
       data: {
         player_code: '',

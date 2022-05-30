@@ -1,6 +1,6 @@
 <template>
   <div class="profile__resource__action">
-    <router-link class="profile__resource__action__link" to="#">
+    <router-link class="profile__resource__action__link" :to="{ name: `${routeName}` }">
       <span class="profile__resource__action__link__text">
         <slot name="text">Add</slot>
       </span>
@@ -14,6 +14,12 @@
 <script>
 export default {
   name: 'AddResourceButton',
+
+  props: {
+    routeName: {
+      type: String
+    }
+  }
 }
 </script>
 <style lang="scss">
