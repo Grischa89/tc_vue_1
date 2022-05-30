@@ -130,7 +130,7 @@ export default {
 
         // TODO: Currently Zeitverzögerung bei /
         if (submitSuccess === 201 || submitSuccess === 200) {
-          this.$router.push({ name: 'ProfileOverview' });
+          this.$router.push({ name: 'ProfileCodes' });
         } else if (submitSuccess === 404) {
           this.errors.invalidCity = 'Country and city do not match. Please select the country again and after that choose a city.';
           this.errors.invalidCountry = 'Country and city do not match. Please select the country again and after that choose a city.';
