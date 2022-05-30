@@ -6,14 +6,14 @@
           <li v-for="(code, i) in userCodesForOverview"
           class="profile__overview__list__item">{{ code.city }}, {{ code.country}}: {{ code.prettyCode }}</li>
       </ul>
-        <router-link v-if="userCodesForOverview" class="profile__overview__link" to="/profiletest#codes">
+        <router-link v-if="userCodesForOverview" class="profile__overview__link" :to="{ name: 'ProfileCodes' }">
           <span class="profile__overview__link__text">View all Trainer Codes</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="profile__overview__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="all-codes">
               <title id="all-codes">View your Trainer Codes</title>
               <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </router-link>
-        <router-link class="profile__overview__link" to="#">
+        <router-link class="profile__overview__link" :to="{ name: 'AddCode' }">
           <span class="profile__overview__link__text">Add Trainer Code</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="profile__overview__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="add-code">
               <title id="add-code">Add Trainer Code</title>
@@ -28,7 +28,7 @@
           <li v-for="(sub, i) in subscriptions"
           class="profile__overview__list__item">{{ sub.message }}</li>
       </ul>
-        <router-link v-if="subscriptions" class="profile__overview__link" to="/profiletest#subscriptions">
+        <router-link v-if="subscriptions" class="profile__overview__link" :to="{ name: 'ProfileSubscriptions' }">
           <span class="profile__overview__link__text">View all subscriptions</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="profile__overview__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="all-subscriptions">
               <title id="all-subscriptions">View all subscriptions</title>
