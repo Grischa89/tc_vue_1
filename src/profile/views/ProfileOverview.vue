@@ -152,10 +152,6 @@ export default {
       margin-left: .5rem;
       height: $mobile-subheading;
       width: $mobile-subheading;
-
-      &:hover {
-      text-decoration: underline;
-    }
     }
 
     // &__text {}
