@@ -1,32 +1,32 @@
 <template>
-  <div class="flex flex-col justify-around items-center">
+  <div class="table__wrapper">
 
     
-    <h1 class="text-lg font-bold uppercase tracking-wider my-2 skeleton skeleton__heading" :class="{ loading: loading }"></h1>
+    <h1 class="skeleton skeleton__heading" :class="{ loading: loading }"></h1>
 
     <!-- For small devices table has width of 11/12, from sm-breakpoint on has max-width of md (448px) -->
-    <div class="flex flex-col mx-auto my-2 py-1 bg-white rounded shadow border-b border-gray-300 w-10/12 sm:max-w-md">
+    <div class="table__wrapper__card">
       <!-- Alternative width proportions: w-10/12 sm:w-8/12 md:w-6/12 lg:max-w-md -->
       
-      <table class="table-fixed text-sm">
-        <thead class="border-b border-gray-300">
-          <tr class="thead-row">
-            <th scope="col" class="w-2/5 py-2 px-4 text-left uppercase ">
+      <table class="table">
+        <thead class="table__head">
+          <tr class="table__head__row">
+            <th scope="col" class="table__head__row__cell">
               <div class="skeleton skeleton__table__head" :class="{ loading: loading }"></div>
             </th>
-            <th scope="col" class="w-2/5 py-2 px-4 text-left uppercase">
+            <th scope="col" class="table__head__row__cell">
               <div class="skeleton skeleton__table__head" :class="{ loading: loading }"></div>
             </th>
             <!-- <th scope="col" class="w-1/5 py-2 px-4 text-left">Copy!</th> -->
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-300">
-          <tr v-for="i in 3" :key="i">
-            <td class="py-4 px-4 text-left font-bold">
+        <tbody class="table__body">
+          <tr v-for="i in 3" :key="i" class="table__body__row">
+            <td class="table__body__row__cell">
                 <div class="skeleton skeleton__table__data" :class="{ loading: loading }"></div>
                 <!-- <router-link :to="{ name: country, params: { continent: code.continent_slug, country: country_slug } }">{{ code.country }}</router-link> -->
             </td>
-            <td class="py-4 px-4 flex">
+            <td class="table__body__row__cell">
               <div class="skeleton skeleton__code" :class="{ loading: loading }"></div>
               <div class="skeleton skeleton__code" :class="{ loading: loading }"></div>
               <div class="skeleton skeleton__code" :class="{ loading: loading }"></div>
@@ -75,17 +75,15 @@ export default {
 
   &__heading {
     height: 1.5rem;
-    width: 40%;
+    width: 30%;
     border-radius: .125rem;
-
-    @media(min-width: 512px) {
-      max-width: 12.5rem;
-    }
+    max-width: 60ch;
+    margin-bottom: 1rem;
   }
 
   &__table__head {
     height: 1rem;
-    width: 90%;
+    width: 65%;
     // padding: auto 1rem;
   }
 
