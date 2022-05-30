@@ -24,6 +24,11 @@
       <!-- <div class="subscription__item">
         <h1 class="profile__item__heading">Manage Subscriptions</h1>
       </div> -->
+      <AddResourceButton>
+        <template #text>
+          Add Code
+        </template>
+      </AddResourceButton>
       <div v-for="(code, i) in userCodes" :key="i" class="profile__resource__item">
         <div class="profile__resource__item__display">
           <div class="profile__resource__item__display__task">
@@ -54,10 +59,17 @@
   </div>
 </template>
 
-<script>import { mapGetters } from 'vuex';
+<script>
+import AddResourceButton from '../../components/buttons/AddResourceButton.vue';
+
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'ProfileCodes',
+
+  components: {
+    AddResourceButton,
+  },
 
   data() {
     return {

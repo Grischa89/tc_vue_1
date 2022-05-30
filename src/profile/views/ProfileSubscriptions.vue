@@ -25,6 +25,11 @@
       <!-- <div class="subscription__item">
         <h1 class="profile__item__heading">Manage Subscriptions</h1>
       </div> -->
+      <AddResourceButton>
+        <template #text>
+          Add Subscription
+        </template>
+      </AddResourceButton>
       <div v-for="(subscription, i) in subscriptions" :key="i" class="profile__resource__item">
         <div class="profile__resource__item__display" :data-subscription-id="subscription.pk">
           <div class="profile__resource__item__display__task">
@@ -115,7 +120,7 @@
 
 <script>
 import SubscriptionDeleteModal from '../../components/modals/SubscriptionDeleteModal.vue';
-
+import AddResourceButton from '../../components/buttons/AddResourceButton.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -124,6 +129,7 @@ export default {
 
   components: {
     SubscriptionDeleteModal,
+    AddResourceButton
   },
 
   data() {
