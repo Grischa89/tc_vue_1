@@ -50,7 +50,8 @@ export default {
 .modal {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 80%;
+  max-width: 400px;
   padding: 1rem;
   background: $white;
   overflow-x: auto;
