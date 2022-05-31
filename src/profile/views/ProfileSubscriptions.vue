@@ -497,7 +497,7 @@ export default {
           
         }
 
-        @media(min-width: 768px) {
+        @include tablet {
           flex-direction: row;
 
           &__btn {
