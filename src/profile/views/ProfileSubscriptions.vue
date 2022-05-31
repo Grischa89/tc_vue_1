@@ -84,6 +84,11 @@
             <div v-show="subscription.isActive" class="profile__resource__item__edit"  :data-edit-id="subscription.pk"  ref="subscriptionItemEdit">
               <form class="inline-form" @submit.prevent="submitForm(subscription.pk, i, subscription.isActive)">
                 <div class="inline-form__title">Edit Subscription</div>
+
+                <div v-if="errors.submitFailure" class="user__info">
+                  {{ errors.submitFailure }}
+                </div>
+                
                 <div class="inline-form__group">
                   <label class="inline-form__group__label" :class="{'inline-form__group__label--error': errors.invalidCode}" for="trainercode">Trainercode</label>
                   <input class="inline-form__group__input inline-form__group__input--code" :class="{'inline-form__group__input--error': errors.invalidCode}" type="number" step="1" id="trainercode" name="trainercode" placeholder="0000 1111 2222" v-model="data.player_code" data-input-code @keydown="restrictKeys($event)" @keyup="typeCode($event)" @paste="pasteCode($event)" @blur="validateCode(data.player_code)">
@@ -218,12 +223,8 @@ export default {
       if (pk && VALID_CODE && VALID_EVENT && VALID_CODE_ACTION) {
 
         const submitSuccess = await this.$store.dispatch('updateSubscription', { pk: pk, index: index, data: this.data });
-        // document.querySelector(`[data-edit-id="${pk}"]`).style.display = 'none';
-        isActive = false;
-
-
-        // TODO: Error handling if submitSuccess !== 200
-        console.log('submitSuccess', submitSuccess);
+        submitSuccess === 200 ? isActive = false : this.errors.submitFailure = 'We could not update your subscription. Please try again later.'
+        
       }
     },
 
