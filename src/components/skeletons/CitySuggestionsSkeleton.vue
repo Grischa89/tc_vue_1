@@ -3,10 +3,15 @@
    <h2 v-if="currentRouteName === 'City'" class="skeleton skeleton__heading" :class="{ loading: loading }"></h2>
     <div class="suggestions__grid">
       <div
-        v-for="i in 3"
+        v-for="i in 6"
         :key="i"
         class="skeleton skeleton__nav-pill" :class="{ loading: loading }">
       </div>
+      <!-- <div
+        v-for="j in 3"
+        :key="j"
+        class="skeleton skeleton__nav-pill skeleton__nav-pill--fade" :class="{ loading: loading }">
+      </div> -->
     </div>
   </div>
   
@@ -35,6 +40,10 @@ export default {
 .loading {
   animation: skeleton-loading .9s linear infinite alternate;
 }
+
+// .loading-fade {
+//   animation: skeleton-loading-fade .9s linear infinite alternate;
+// }
 
 .skeleton {
   opacity: .7;
@@ -74,6 +83,14 @@ export default {
     height: 3rem;
     border-radius: 1.5rem;
     margin-bottom: 2rem;
+
+    // &:last-of-type {
+    //   margin-bottom: 2rem;
+    // }
+
+    // &--fade {
+    //   opacity: .5;
+    // }
   }
 
   // &__text {
@@ -98,4 +115,16 @@ export default {
     background-color: hsl(200, 20%, 95%);
   }
 }
+
+// @keyframes skeleton-loading-fade {
+//   0% {
+//     background-color: hsl(200, 20%, 95%);
+//     opacity: .5;
+//   }
+
+//   100% {
+//     background-color: hsl(200, 20%, 100%);
+//     opacity: .5;
+//   }
+// }
 </style>
