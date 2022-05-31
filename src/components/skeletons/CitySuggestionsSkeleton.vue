@@ -36,7 +36,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .loading {
   animation: skeleton-loading .9s linear infinite alternate;
 }
