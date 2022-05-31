@@ -2,7 +2,9 @@
   <div class="profile__resource">
 
     <!-- TODO: LOADING SKELETON -->
-    <!-- <div v-if="loadStatus === 'loading'">LOADING! .....</div> -->
+    <template v-if="loadStatus === 'loading'">
+      <ProfileResourceItemSkeleton />
+    </template>
 
     <!-- <AsyncErrorFetchingData v-if="loadStatus === 'error'">
       <template #title>
@@ -69,6 +71,7 @@
 
 <script>
 import AddResourceButton from '../../components/buttons/AddResourceButton.vue';
+import ProfileResourceItemSkeleton from '../../components/skeletons/ProfileResourceItemSkeleton.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -77,6 +80,7 @@ export default {
 
   components: {
     AddResourceButton,
+    ProfileResourceItemSkeleton,
   },
 
   data() {
