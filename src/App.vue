@@ -7,6 +7,8 @@
   
   <div class="main-wrapper">
     <router-view :key="$route.fullPath" />
+
+    <BackToTopButton />
   </div>
 
   <Footer />
@@ -43,6 +45,7 @@
 <script>
 import LastUpdatedInfoBanner from './components/LastUpdatedInfoBanner.vue';
 import Navbar from './components/navbar/Navbar.vue';
+import BackToTopButton from './components/navbar/BackToTopButton.vue';
 import Footer from './components/Footer.vue';
 
 import { mapGetters } from 'vuex';
@@ -55,6 +58,7 @@ export default {
     LastUpdatedInfoBanner,
     Navbar,
     Footer,
+    BackToTopButton,
   },
 
   data() {
