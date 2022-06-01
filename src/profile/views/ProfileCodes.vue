@@ -49,8 +49,8 @@
               </div>
               <!-- TODO: Code in module formatieren -->
               <p class="profile__resource__item__display__task__row"><span>Trainer Code:</span> {{ code.player_code.replace(/.{4}/g, '$& ') }}</p>
-              <p class="profile__resource__item__display__task__row"><span>Country:</span> {{ code.country }}</p>
-              <p class="profile__resource__item__display__task__row"><span>City:</span> {{ code.city }}</p>
+              <p class="profile__resource__item__display__task__row"><span>Country:</span> <router-link :to="{ path: `/${code.continent_slug}/${code.country_slug}`}" class="profile__resource__item__display__task__row__link">{{ code.country }}</router-link></p>
+              <p class="profile__resource__item__display__task__row"><span>City:</span> <router-link :to="{ path: `/${code.continent_slug}/${code.country_slug}/${code.city_slug}` }" class="profile__resource__item__display__task__row__link">{{ code.city }}</router-link></p>
             </div>
             <div class="profile__resource__item__display__actions">
               <button class="profile__resource__item__display__actions__btn" @click="repostCode(code)">
