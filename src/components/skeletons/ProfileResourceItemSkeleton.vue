@@ -1,5 +1,5 @@
 <template>
-  <div v-for="i in 3" :key="i" class="profile__resource__item">
+  <div v-for="i in 1" :key="i" class="profile__resource__item">
     <div class="profile__resource__item__display">
       <div class="profile__resource__item__display__task">
         <div class="skeleton profile__resource__item__display__task__header" :class="{ loading: loading }"></div>

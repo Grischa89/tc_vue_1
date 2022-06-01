@@ -414,14 +414,14 @@ export default {
 
 .fade-leave-active {
     transition-duration: 300ms;
-    transition-property: opacity;
+    transition-property: all;
     transition-timing-function: ease;
     // transition: all 300ms ease;
 }
 
 .fade-enter-active {
     transition-duration: 300ms;
-    transition-property: opacity;
+    transition-property: all;
     transition-timing-function: ease;
     // transition: all 300ms ease;
     transition-delay: .25s;

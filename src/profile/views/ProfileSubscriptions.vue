@@ -224,7 +224,7 @@ export default {
 
         const submitSuccess = await this.$store.dispatch('updateSubscription', { pk: pk, index: index, data: this.data });
         submitSuccess === 200 ? isActive = false : this.errors.submitFailure = 'We could not update your subscription. Please try again later.'
-        
+
       }
     },
 
@@ -463,6 +463,10 @@ export default {
           span {
             text-transform: uppercase;
             font-weight: 600;
+          }
+
+          &__link:hover, .router-link-active {
+            text-decoration: underline;
           }
         }
         
