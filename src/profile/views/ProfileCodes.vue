@@ -118,7 +118,7 @@ export default {
 </script>
 
 <style lang="scss">
-.subscription {
+.profile__resource {
   display: grid;
   gap: 1.5rem;
   height: 100%;
