@@ -3,7 +3,7 @@
   EDIT: From lg-breakpoint on container will have height of 12 in order to optically not expand when the dropdown gets expanded-->
   <!-- transition ease-in-out duration-300 -->
   <div class="navbar-wrapper"
-    :class="{'navbar-wrapper--scrolled': !atTop }">
+    :class="{'navbar-wrapper--scrolled': scrollYPosition > atTop }">
     <!-- NOTE: Binding multiple classes to single variable with ternary operator would work as well:
     :class="!atTop ? ['bg-white', 'border-b', 'border-gray-300', 'shadow-sm'] : []"> -->
 
@@ -107,14 +107,8 @@ export default {
   data() {
     return {
       showMenu: false,
-      atTop: true,
+      atTop: 0,
     }
-  },
-
-  beforeMount() { 
-    // Add onscroll listener to window
-    // onsroll execute detectScroll method
-    window.onscroll = this.detectScroll;
   },
 
   methods: {
@@ -170,6 +164,7 @@ export default {
   computed: {
     ...mapGetters({
       continentNames: 'continentNames',
+      scrollYPosition: 'scrollYPosition',
     })
   },
 

@@ -49,7 +49,6 @@ import BackToTopButton from './components/navbar/BackToTopButton.vue';
 import Footer from './components/Footer.vue';
 
 import { mapGetters } from 'vuex';
-import axios from 'axios';
 
 export default {
   name: 'App',
@@ -115,6 +114,10 @@ export default {
       console.log('%cWe have a user object in localStorage', 'color: aqua; font-weight: bold;', tc_user);
       this.$store.commit('setUser', tc_user);
     }
+
+    window.addEventListener('scroll', () => {
+      this.$store.commit('setScrollYPosition', window.scrollY);
+    })
   },
 
   created() {

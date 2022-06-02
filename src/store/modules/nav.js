@@ -12,6 +12,9 @@ const state = {
   ],
 
   lastUpdated: '',
+
+  scrollYPosition: 0,
+
 };
 
 const getters = {
@@ -54,6 +57,10 @@ const getters = {
     }
   },
 
+  scrollYPosition: state => {
+    return state.scrollYPosition;
+  }
+
 };
 
 const actions = {
@@ -74,6 +81,14 @@ const mutations = {
   setLastUpdated(state, timestamp) {
     state.lastUpdated = timestamp;
   },
+
+  showBackToTopButton(state, visibility) {
+    state.backToTopButton = visibility;
+  },
+
+  setScrollYPosition(state, position) {
+    state.scrollYPosition = position;
+  }
 };
 
 export default {

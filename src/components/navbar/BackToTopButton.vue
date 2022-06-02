@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="back-to-top-button" :class="{ 'back-to-top-button--show': showBackToTopButton }">
+  <button type="button" class="back-to-top-button" :class="{ 'back-to-top-button--show': scrollYPosition >= backToTopButtonLimit }">
     <svg xmlns="http://www.w3.org/2000/svg" class="back-to-top-button__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
     </svg>
@@ -7,24 +7,22 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'BackToTopButton',
 
   data() {
     return {
-      showBackToTopButton: false,
+      backToTopButtonLimit: 300,
     }
   },
 
-  beforeMount() {
-    window.onscroll = this.setBackToTopButton;
+  computed: {
+    ...mapGetters({
+      scrollYPosition: 'scrollYPosition',
+    })
   },
-
-  methods: {
-    setBackToTopButton() {
-      window.scrollY > 300 ? this.showBackToTopButton = true : this.showBackToTopButton = false;
-    }
-  }
 
 }
 </script>
