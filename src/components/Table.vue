@@ -23,14 +23,17 @@
               <span class="table__body__row__cell__link table__body__row__cell__link--non-link">{{ code.city }}</span>
             </td>
             <td v-else class="table__body__row__cell">
-              <router-link class="tooltip table__body__row__cell__link" :to="`/${code.continent_slug}/${code.country_slug}`">{{ code.country }}</router-link>
+              <router-link class="table__body__row__cell__link" :to="`/${code.continent_slug}/${code.country_slug}`">{{ code.country }}</router-link>
             </td>
 
             <td class="table__body__row__cell"
               :data-code="code.player_code"
               >
               <div class="table__body__row__cell__container">
-                <div v-if="code.prettyCode" class="table__body__row__cell__container__item tap tooltip" data-tooltip="Click to copy!" @click="copyCodeToClipboard($event)">{{ code.prettyCode }}</div>
+                <div v-if="code.prettyCode" class="table__body__row__cell__container__item tooltip" @mouseover="showTooltip($event, code.player_code)" @mouseleave="hideTooltip($event, code.player_code)" @click="copyCodeToClipboard($event)">
+                  {{ code.prettyCode }}
+                  <span class="tooltip__text">Click to copy!</span>
+                </div>
 
                 <div v-else class="table__body__row__cell__container__item" @click="copyCodeToClipboard($event)" >{{ code.player_code }}</div>
 
@@ -83,6 +86,7 @@ export default {
 
   data() {
     return {
+      upHere: false,
       qrCode: {
         city: '',
         city_slug: '',
@@ -113,6 +117,10 @@ export default {
       required: false,
     }
   },
+
+  // mounted() {
+
+  // }
 
   computed: {
     ...mapGetters({
@@ -146,6 +154,21 @@ export default {
       document.body.style.overflow = 'auto';
       // this.openModal = false;
       this.$store.commit('toggleModal', false);
+    },
+
+    showTooltip(e, player_code) {
+      const tooltipParent = document.querySelector(`[data-code="${player_code}"]`);
+
+      const tooltip = tooltipParent.querySelector('.tooltip__text');
+      const { width } = tooltip.getBoundingClientRect();
+      tooltip.style.marginLeft = `-${width / 2}px`;
+      tooltip.style.visibility = 'visible';
+    },
+
+    hideTooltip(e, player_code) {
+      const tooltipParent = document.querySelector(`[data-code="${player_code}"]`);
+      const tooltip = tooltipParent.querySelector('.tooltip__text');
+      tooltip.style.visibility = 'hidden';
     }
 
   },
@@ -291,8 +314,35 @@ export default {
 
 .tooltip {
   position: relative;
-  text-decoration: none;
-  // display: inline;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__text {
+    visibility: hidden;
+    background-color: rgba($black, .5);
+    color: $white;
+    text-align: center;
+    font-size: $mobile-help;
+    padding: .25rem .5rem;
+    border-radius:.375rem;
+    // transition-delay: 300ms;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+
+    &::after {
+      content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba($black, .5) transparent transparent transparent;
+    }
+  }
 }
 
 // .tooltip:hover:after{
@@ -319,51 +369,51 @@ export default {
 //   position: absolute;
 // }
 
-.tooltip::after {
-  content: 'Awesome tooltip!';
-  position: absolute;
-  bottom: 130%;
-  left: 20%;
-  background: $secondary;
-  padding: 5px 15px;
-  color: #FFF;
-  -webkit-border-radius: 10px;
-  -moz-border-radius : 10px;
-  border-radius : 10px;
-  white-space: nowrap;
-  opacity: 0;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition : all 0.4s ease;
-  transition : all 0.4s ease;
-}
+// .tooltip::after {
+//   content: 'Awesome tooltip!';
+//   position: absolute;
+//   bottom: 130%;
+//   left: 20%;
+//   background: $secondary;
+//   padding: 5px 15px;
+//   color: #FFF;
+//   -webkit-border-radius: 10px;
+//   -moz-border-radius : 10px;
+//   border-radius : 10px;
+//   white-space: nowrap;
+//   opacity: 0;
+//   -webkit-transition: all 0.4s ease;
+//   -moz-transition : all 0.4s ease;
+//   transition : all 0.4s ease;
+// }
 
-.tooltip::before {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-top: 20px solid $secondary;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  // -webkit-transition: all 0.4s ease;
-  // -moz-transition : all 0.4s ease;
-  // transition : all 0.4s ease;
-  opacity: 0;
-  left: 30%;
-  bottom: 90%;
-}
+// .tooltip::before {
+//   content: "";
+//   position: absolute;
+//   width: 0;
+//   height: 0;
+//   border-top: 20px solid $secondary;
+//   border-left: 20px solid transparent;
+//   border-right: 20px solid transparent;
+//   // -webkit-transition: all 0.4s ease;
+//   // -moz-transition : all 0.4s ease;
+//   // transition : all 0.4s ease;
+//   opacity: 0;
+//   left: 30%;
+//   bottom: 90%;
+// }
 
-.tooltip:hover::after {
-  bottom: 100%;
-}
+// .tooltip:hover::after {
+//   bottom: 100%;
+// }
 
-.tooltip:hover::before {
-  bottom: 70%;
-}
+// .tooltip:hover::before {
+//   bottom: 70%;
+// }
 
-.tooltip:hover::after, .table__body__row__cell_link:hover::before {
-  opacity: 0;
-}
+// .tooltip:hover::after, .table__body__row__cell_link:hover::before {
+//   opacity: 0;
+// }
 
   /* tr:nth-of-type(odd) {
     //background: rgb(209, 213, 219);
