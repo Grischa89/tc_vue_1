@@ -14,8 +14,6 @@ export default {
   .tooltip {
   position: relative;
   display: inline-block;
-  // align-items: center;
-  // justify-content: center;
 
   &__text {
     visibility: hidden;
@@ -26,7 +24,7 @@ export default {
     font-size: $mobile-help;
     padding: .25rem .5rem;
     border-radius:.375rem;
-    // transition-delay: 300ms;
+    transition-delay: 300ms;
     position: absolute;
     z-index: 1;
     bottom: 110%;
@@ -36,7 +34,7 @@ export default {
     &::after {
       content: ' ';
       position: absolute;
-      top: 100%; /* At the bottom of the tooltip */
+      top: 100%;
       left: 50%;
       margin-left: -5px;
       border-width: 5px;
