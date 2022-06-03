@@ -29,30 +29,42 @@
             <td class="table__body__row__cell"
               :data-code="code.player_code"
               >
-              <div class="table__body__row__cell__container">
-                <div v-if="code.prettyCode" class="table__body__row__cell__container__item tooltip" @mouseover="showTooltip($event, code.player_code)" @mouseleave="hideTooltip($event, code.player_code)" @click="copyCodeToClipboard($event)">
-                  {{ code.prettyCode }}
-                  <span class="tooltip__text">Click to copy!</span>
-                </div>
+              <div class="table__body__row__cell__container tooltip tap" @mouseover="showTooltip($event, code.player_code)" @mouseleave="hideTooltip($event, code.player_code)" @click="copyCodeToClipboard($event)">
+                  <div v-if="code.prettyCode" class="table__body__row__cell__container__item">
+                    {{ code.prettyCode }}
+                  </div>
+                  <div v-else class="table__body__row__cell__container__item">
+                    {{ code.player_code }}
+                  </div>
 
-                <div v-else class="table__body__row__cell__container__item" @click="copyCodeToClipboard($event)" >{{ code.player_code }}</div>
+                  <Tooltip>
+                    Click to copy!
+                  </Tooltip>
+              </div>
 
+              <div class="table__body__row__cell__container tooltip" @mouseover="showTooltip($event, code.player_code)" @mouseleave="hideTooltip($event, code.player_code)">
                 <IconButton @click="copyCodeToClipboard($event)">
                   <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor"  id="icon">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                   </svg>
                 </IconButton>
+
+                <Tooltip>
+                  Click to copy!
+                </Tooltip>
               </div>
 
-              <div  class="table__body__row__cell__container">
-                
-
+              <div  class="table__body__row__cell__container tooltip" @mouseover="showTooltip($event, code.player_code)" @mouseleave="hideTooltip($event, code.player_code)">
                 <IconButton @click="openQRCodeModal(code)">
                   <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h1v1H5zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm2 2v-1h1v1H5zM13 3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1V4a1 1 0 00-1-1h-3zm1 2v1h1V5h-1z" clip-rule="evenodd" />
                     <path d="M11 4a1 1 0 10-2 0v1a1 1 0 002 0V4zM10 7a1 1 0 011 1v1h2a1 1 0 110 2h-3a1 1 0 01-1-1V8a1 1 0 011-1zM16 9a1 1 0 100 2 1 1 0 000-2zM9 13a1 1 0 011-1h1a1 1 0 110 2v2a1 1 0 11-2 0v-3zM7 11a1 1 0 100-2H4a1 1 0 100 2h3zM17 13a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM16 17a1 1 0 100-2h-3a1 1 0 100 2h3z" />
                   </svg>
                 </IconButton>
+
+                <Tooltip>
+                  Open QR-Code
+                </Tooltip>
               </div>
             </td>
           </tr>
@@ -73,6 +85,7 @@
 <script>
 import IconButton from './buttons/IconButton.vue';
 import QRCodeModal from './modals/QRCodeModal.vue';
+import Tooltip from './tooltips/Tooltip.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -82,6 +95,7 @@ export default {
   components: {
     IconButton,
     QRCodeModal,
+    Tooltip,
   },
 
   data() {
@@ -156,17 +170,16 @@ export default {
       this.$store.commit('toggleModal', false);
     },
 
-    showTooltip(e, player_code) {
-      const tooltipParent = document.querySelector(`[data-code="${player_code}"]`);
-
+    showTooltip(e) {
+      const tooltipParent = e.currentTarget;
       const tooltip = tooltipParent.querySelector('.tooltip__text');
       const { width } = tooltip.getBoundingClientRect();
       tooltip.style.marginLeft = `-${width / 2}px`;
       tooltip.style.visibility = 'visible';
     },
 
-    hideTooltip(e, player_code) {
-      const tooltipParent = document.querySelector(`[data-code="${player_code}"]`);
+    hideTooltip(e) {
+      const tooltipParent = e.currentTarget;
       const tooltip = tooltipParent.querySelector('.tooltip__text');
       tooltip.style.visibility = 'hidden';
     }
@@ -254,10 +267,12 @@ export default {
         padding-bottom: 1rem;
         padding-left: .75rem;
         padding-right: 0;
+        cursor: pointer;
 
         &:nth-of-type(2n) {
           display: flex;
-          justify-content: space-between;
+          justify-content: space-evenly;
+          align-items: center;
           padding-top: 1rem;
           padding-bottom: 1rem;
           padding-left: 0rem;
@@ -286,6 +301,8 @@ export default {
           text-align: center;
 
           &__item {
+            padding-left: .375rem;
+            padding-right: .375rem;
             margin-top: auto;
             margin-bottom: auto;
             // margin-right: 1rem;
@@ -311,109 +328,6 @@ export default {
 .tap {
   -webkit-tap-highlight-color: $primary;
 }
-
-.tooltip {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &__text {
-    visibility: hidden;
-    background-color: rgba($black, .5);
-    color: $white;
-    text-align: center;
-    font-size: $mobile-help;
-    padding: .25rem .5rem;
-    border-radius:.375rem;
-    // transition-delay: 300ms;
-    position: absolute;
-    z-index: 1;
-    bottom: 100%;
-    left: 50%;
-
-    &::after {
-      content: " ";
-  position: absolute;
-  top: 100%; /* At the bottom of the tooltip */
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: rgba($black, .5) transparent transparent transparent;
-    }
-  }
-}
-
-// .tooltip:hover:after{
-//   display: -webkit-flex;
-//   display: flex;
-//   -webkit-justify-content: center;
-//   justify-content: center;
-//   background: #444;
-//   border-radius: 8px;
-//   color: #fff;
-//   content: 'Hello!';
-//   margin: -82px auto 0;
-//   font-size: 16px;
-//   padding: 13px;
-//   width: 220px;
-// }
-// .tooltip:hover:before{
-//   border: solid;
-//   border-color: #444 transparent;
-//   border-width: 12px 6px 0 6px;
-//   content: "";
-//   left: 45%;
-//   bottom: 30px;
-//   position: absolute;
-// }
-
-// .tooltip::after {
-//   content: 'Awesome tooltip!';
-//   position: absolute;
-//   bottom: 130%;
-//   left: 20%;
-//   background: $secondary;
-//   padding: 5px 15px;
-//   color: #FFF;
-//   -webkit-border-radius: 10px;
-//   -moz-border-radius : 10px;
-//   border-radius : 10px;
-//   white-space: nowrap;
-//   opacity: 0;
-//   -webkit-transition: all 0.4s ease;
-//   -moz-transition : all 0.4s ease;
-//   transition : all 0.4s ease;
-// }
-
-// .tooltip::before {
-//   content: "";
-//   position: absolute;
-//   width: 0;
-//   height: 0;
-//   border-top: 20px solid $secondary;
-//   border-left: 20px solid transparent;
-//   border-right: 20px solid transparent;
-//   // -webkit-transition: all 0.4s ease;
-//   // -moz-transition : all 0.4s ease;
-//   // transition : all 0.4s ease;
-//   opacity: 0;
-//   left: 30%;
-//   bottom: 90%;
-// }
-
-// .tooltip:hover::after {
-//   bottom: 100%;
-// }
-
-// .tooltip:hover::before {
-//   bottom: 70%;
-// }
-
-// .tooltip:hover::after, .table__body__row__cell_link:hover::before {
-//   opacity: 0;
-// }
 
   /* tr:nth-of-type(odd) {
     //background: rgb(209, 213, 219);
