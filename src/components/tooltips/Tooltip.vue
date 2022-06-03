@@ -29,7 +29,7 @@ export default {
     z-index: 1;
     bottom: 110%;
     left: 50%;
-    min-width: 100px;
+    min-width: 10ch;
 
     &::after {
       content: ' ';

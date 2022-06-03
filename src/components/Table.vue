@@ -29,7 +29,7 @@
             <td class="table__body__row__cell"
               :data-code="code.player_code"
               >
-              <div class="table__body__row__cell__container tooltip tap" @mouseover="showTooltip($event, code.player_code)" @mouseleave="hideTooltip($event, code.player_code)" @click="copyCodeToClipboard($event)">
+              <div class="table__body__row__cell__container tooltip tap" @mouseover="showTooltip($event, 'Click to copy!')" @mouseleave="hideTooltip($event, code.player_code)" @click="copyCodeToClipboard($event)">
                   <div v-if="code.prettyCode" class="table__body__row__cell__container__item">
                     {{ code.prettyCode }}
                   </div>
@@ -38,23 +38,21 @@
                   </div>
 
                   <Tooltip>
-                    Click to copy!
                   </Tooltip>
               </div>
 
-              <div class="table__body__row__cell__container tooltip" @mouseover="showTooltip($event, code.player_code)" @mouseleave="hideTooltip($event, code.player_code)">
-                <IconButton @click="copyCodeToClipboard($event)">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor"  id="icon">
+              <div class="table__body__row__cell__container tooltip" @mouseover="showTooltip($event, 'Click to copy!')" @mouseleave="hideTooltip($event, code.player_code)" @click="copyCodeToClipboard($event)">
+                <IconButton >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="icon">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                   </svg>
                 </IconButton>
 
                 <Tooltip>
-                  Click to copy!
                 </Tooltip>
               </div>
 
-              <div  class="table__body__row__cell__container tooltip" @mouseover="showTooltip($event, code.player_code)" @mouseleave="hideTooltip($event, code.player_code)">
+              <div  class="table__body__row__cell__container tooltip" @mouseover="showTooltip($event, 'Open QR-Code')" @mouseleave="hideTooltip($event, code.player_code)">
                 <IconButton @click="openQRCodeModal(code)">
                   <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h1v1H5zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm2 2v-1h1v1H5zM13 3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1V4a1 1 0 00-1-1h-3zm1 2v1h1V5h-1z" clip-rule="evenodd" />
@@ -63,7 +61,6 @@
                 </IconButton>
 
                 <Tooltip>
-                  Open QR-Code
                 </Tooltip>
               </div>
             </td>
@@ -132,10 +129,6 @@ export default {
     }
   },
 
-  // mounted() {
-
-  // }
-
   computed: {
     ...mapGetters({
       open: 'modalOpen',
@@ -146,8 +139,9 @@ export default {
     
     copyCodeToClipboard(e) {
       const parent = e.target.closest('[data-code]');
-      console.log('parent', parent, parent.dataset.code);
       this.$store.dispatch('copyCodeToClipboard', parent.dataset.code);
+
+      this.showTooltip(e, 'Copied!');
     },
 
     openQRCodeModal(code) {
@@ -170,10 +164,11 @@ export default {
       this.$store.commit('toggleModal', false);
     },
 
-    showTooltip(e) {
+    showTooltip(e, tooltipText) {
       const tooltipParent = e.currentTarget;
       const tooltip = tooltipParent.querySelector('.tooltip__text');
       const { width } = tooltip.getBoundingClientRect();
+      tooltip.textContent = tooltipText;
       tooltip.style.marginLeft = `-${width / 2}px`;
       tooltip.style.visibility = 'visible';
     },
