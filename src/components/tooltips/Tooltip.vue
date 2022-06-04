@@ -24,7 +24,7 @@ export default {
     font-size: $mobile-help;
     padding: .25rem .5rem;
     border-radius:.375rem;
-    transition-delay: 300ms;
+    transition-delay: 500ms;
     position: absolute;
     z-index: 1;
     bottom: 110%;
