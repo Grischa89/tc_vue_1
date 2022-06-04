@@ -82,7 +82,6 @@ export default {
     grid-column: span 2;
     height: 3rem;
     border-radius: 1.5rem;
-    margin-bottom: 2rem;
 
     // &:last-of-type {
     //   margin-bottom: 2rem;
