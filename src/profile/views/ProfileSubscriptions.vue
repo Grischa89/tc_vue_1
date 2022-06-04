@@ -78,10 +78,8 @@
                 @on-cancel="cancelDelete" />
             </Teleport>
           </div>
-        
-          <!-- :class="{ 'profile__resource__item__edit--show': subscription.isActive }" -->
-          <Transition name="edit-fade" appear>
-            <div v-show="subscription.isActive" class="profile__resource__item__edit"  :data-edit-id="subscription.pk"  ref="subscriptionItemEdit">
+
+            <div class="profile__resource__item__edit" :data-edit-id="subscription.pk" ref="subscriptionItemEdit">
               <form class="inline-form" @submit.prevent="submitForm(subscription.pk, i, subscription.isActive)">
                 <div class="inline-form__title">Edit Subscription</div>
 
@@ -120,11 +118,10 @@
                 </div>
                 <div class="inline-form__btn__container">
                   <button class="inline-form__btn inline-form__btn--submit" type="submit">Save</button>
-                  <button class="inline-form__btn inline-form__btn--cancel" type="button" @click="cancelEditForm(subscription)">Cancel</button>
+                  <button class="inline-form__btn inline-form__btn--cancel" type="button" @click="cancelEditForm(subscription.pk)">Cancel</button>
                 </div>
               </form>
             </div>
-          </Transition>
         </div>
       </template>
     </template>
@@ -214,45 +211,55 @@ export default {
 
   methods: {
     async submitForm(pk, index, isActive) {
-      const VALID_CODE = this.validateCode(this.data.player_code);
-      const VALID_EVENT = this.validateEvent(this.data.event);
-      const VALID_CODE_ACTION = this.validateCodeAction(this.data.action);
+      const validCode = this.validateCode(this.data.player_code);
+      const validEvent = this.validateEvent(this.data.event);
+      const validCodeAction = this.validateCodeAction(this.data.action);
 
-      if (!pk || !VALID_CODE || !VALID_EVENT || !VALID_CODE_ACTION) return false;
+      if (!pk || !validCode || !validEvent || !validCodeAction) return false;
 
-      if (pk && VALID_CODE && VALID_EVENT && VALID_CODE_ACTION) {
+      if (pk && validCode && validEvent && validCodeAction) {
 
         const submitSuccess = await this.$store.dispatch('updateSubscription', { pk: pk, index: index, data: this.data });
-        submitSuccess === 200 ? isActive = false : this.errors.submitFailure = 'We could not update your subscription. Please try again later.'
 
+        if (submitSuccess === 200) {
+          const editArea = document.querySelector(`[data-edit-id="${pk}"]`);
+          // editArea.scrollTo({
+          //   top: 0,
+          //   left: 0,
+          //   behavior: 'smooth'
+          // });
+          editArea.style.display = 'none';
+        } else {
+          this.errors.submitFailure = 'We could not update your subscription. Please try again later.';
+        }
       }
     },
 
     showEditForm(subscription) {
-      // const editArea = document.querySelector(`[data-edit-id="${subscription.pk}"]`);
-      const INPUT_CODE = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-code]`);
-      const INPUT_EVENT = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-event]`);
-      const INPUT_TYPE = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-type]`);
+      console.log('%csubscription', 'color: plum; font-weight: bold;', subscription);
+      const editArea = document.querySelector(`[data-edit-id="${subscription.pk}"]`);
+      const inputCode = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-code]`);
+      const inputEvent = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-event]`);
+      const inputType = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-type]`);
 
-      if (!subscription.isActive) {
-        subscription.isActive = true;
-        INPUT_CODE.value = subscription.player_code;
+      if (window.getComputedStyle(editArea).display === 'none') {
+        inputCode.value = subscription.player_code;
         this.data.player_code = subscription.player_code;
 
-        INPUT_EVENT.selectedIndex = subscription.event;
+        inputEvent.selectedIndex = subscription.event;
         this.data.event = subscription.event;
 
-        INPUT_TYPE.selectedIndex = subscription.action;
+        inputType.selectedIndex = subscription.action;
         this.data.action = subscription.action;
+
+        editArea.style.display = 'block';
       } else {
-        subscription.isActive = false;
+        editArea.style.display = 'none';
       }
     },
 
-    cancelEditForm(sub) {
-      console.log('%ccancelEditForm', 'color: plum; font-weight: bold;', sub);
-      sub.isActive = false;
-      console.log('%ccancelEditForm', 'color: plum; font-weight: bold;', sub);
+    cancelEditForm(pk) {
+      document.querySelector(`[data-edit-id="${pk}"]`).style.display = 'none';
     },
 
     openDeleteModal(subscription, index) {
@@ -363,18 +370,6 @@ export default {
 </script>
 
 <style lang="scss">
-.edit-fade-enter-active, .edit-fade-leave-active {
-   transition: opacity 300ms ease-in-out;
-}
-
-.edit-fade-enter-from, .edit-fade-leave-to {
-  opacity: 0;
-}
-
-.edit-fade-enter-to, .edit-fade-leave-from {
-  opacity: 1;
-}
-
 .profile__resource {
   display: grid;
   gap: 1.5rem;
@@ -498,6 +493,17 @@ export default {
             }
           }
 
+          // TODO ~maybe
+          // @include tablet {
+          //   display: flex;
+          //   align-items: center;
+
+          //   &::after {
+          //     content: 'Repost';
+          //     margin-left: .5rem;
+          //   }
+          // }
+
           // &__text {}
           
         }
@@ -513,15 +519,12 @@ export default {
     }
 
     &__edit {
-      // display: none;
+      display: none;
       width: 100%;
       margin-top: 1.5rem;
       padding-top: 1.5rem;
       border-top: 1px solid $help;
-
-      // --show {
-      //   display: block;
-      // }
+      // transition: all 1000ms ease-in-out;
     }
 
     &:nth-of-type(2n) {
