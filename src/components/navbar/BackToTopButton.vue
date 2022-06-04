@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="back-to-top-button" :class="{ 'back-to-top-button--show': scrollYPosition >= backToTopButtonLimit }">
+  <button @click="scrollToTop" type="button" class="back-to-top-button" :class="{ 'back-to-top-button--show': scrollYPosition >= backToTopButtonLimit }">
     <svg xmlns="http://www.w3.org/2000/svg" class="back-to-top-button__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
     </svg>
@@ -23,6 +23,16 @@ export default {
       scrollYPosition: 'scrollYPosition',
     })
   },
+
+  methods: {
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
+  }
 
 }
 </script>
