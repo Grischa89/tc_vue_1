@@ -296,15 +296,13 @@ export default {
     margin: 1rem auto;
 
     &__label {
+      display: flex;
+      align-items: center;
       font-size: $mobile-body;
       text-transform: uppercase;
       letter-spacing: .05rem;
       font-weight: bold;
       margin-bottom: .25rem;
-
-      // &--error {
-      //   color: rgb(200, 0, 0);
-      // }
     }
 
     &__input {
@@ -373,8 +371,14 @@ export default {
     &__help {
       color: $help;
       font-size: $mobile-help;
+      text-align: left;
       margin-top: .25rem;
       // color: rgb(200, 0, 0);
+
+      &--normal {
+        color: $black;
+        margin-bottom: 1rem;
+      }
 
       &--error {
         color: $error;

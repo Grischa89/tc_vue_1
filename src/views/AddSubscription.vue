@@ -38,7 +38,17 @@
       </div>
 
       <div class="form__group">
-        <label class="form__group__label" for="codeActions">Subscription Type</label>
+        <label class="form__group__label" for="codeActions">
+          Subscription Type
+          <IconButton @click.stop="openInfo = !openInfo">
+            <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend--small" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </IconButton>
+        </label>
+        <span v-if="openInfo" class="form__group__help form__group__help--normal">
+          {{ subscriptionTypeInfo }}
+        </span>
         <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCodeAction}" name="codeActions" id="codeActions" @blur="validateCodeAction(data.action)" v-model="data.action" :disabled="!codeActionOptions">
           <option value selected disabled>Choose A Subscription Type</option>
           <option 
@@ -77,6 +87,8 @@
 </template>
 
 <script>
+import IconButton from '../components/buttons/IconButton.vue';
+
 import { mapGetters } from 'vuex';
 
 export default {
@@ -103,7 +115,13 @@ export default {
       },
       codeInput: '',
       maxLen: 12,
+      openInfo: false,
+      subscriptionTypeInfo: 'The action that should be performed with the given Trainer Code on the chosen Event.',
     }
+  },
+
+  components: {
+    IconButton
   },
 
   async created() {
@@ -283,7 +301,3 @@ export default {
 
 }
 </script>
-
-<style lang="scss">
-
-</style>
