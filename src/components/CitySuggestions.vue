@@ -1,6 +1,8 @@
 <template>
   <div class="suggestions">
-    <h2 v-if="currentRouteName === 'City'" class="suggestions__title">Explore More Cities&nbsp;&mdash;</h2>
+    <div class="suggestions__header">
+      <h2 v-if="currentRouteName === 'City'" class="suggestions__header__title">Explore More Cities&nbsp;&mdash;</h2>
+    </div>
     <div class="suggestions__grid">
       <div
         v-for="(city, i) in slicedSuggestions"
@@ -9,8 +11,8 @@
           <router-link class="suggestions__grid__item__link" :to="`/${city.continent_slug}/${city.country_slug}/${city.city_slug}`">{{ city.city }}</router-link>
       </div>
     </div>
-    <div v-if="currentRouteName === 'City'" class="suggestions__link">
-      <router-link :to="`/${countrySuggestion.continentSlug}/${countrySuggestion.countrySlug}`">
+    <div v-if="currentRouteName === 'City'" class="suggestions__footer">
+      <router-link class="suggestions__footer__link" :to="`/${countrySuggestion.continentSlug}/${countrySuggestion.countrySlug}`">
         Show Codes from  {{ countrySuggestion.name }}
       </router-link>
     </div>
@@ -64,33 +66,64 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 90%;
+  width: 100%;
   margin: 1rem auto;
 
-  &__title {
-    margin: 1.25rem 0;
+  &__header {
+    display: flex;
+    justify-content: flex-start;
+    margin: 1.25rem auto;
     padding: 0 .25rem;
-    font-size: $mobile-subheading;
-    letter-spacing: .0625rem;
-    box-shadow: $line-behind-light;
-    -webkit-box-shadow: $line-behind-light; 
-    -moz-box-shadow: $line-behind-light;
+    width: 100%;
+
+    @include tablet-landscape {
+      width: 80%;
+    }
+
+    @include tablet-landscape {
+      width: 60%;
+    }
+
+    &__title {
+      font-size: $mobile-subheading;
+      letter-spacing: .0625rem;
+      box-shadow: $line-behind-light;
+      -webkit-box-shadow: $line-behind-light; 
+      -moz-box-shadow: $line-behind-light;
+    }
+
   }
 
-  &__link {
+  &__footer {
     display: flex;
-    align-items: center;
-    margin-top: 1.25rem;
-    font-size: $mobile-body;
-    font-weight: bold;
-    text-decoration: underline;
+    justify-content: flex-start;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 
-    &::after {
-      content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="show-country-codes"><title id="show-country-codes">Show Codes from Country</title><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>');
-      display: block;
-      height: 1rem;
-      width: 1rem;
-      margin-left: .25rem;
+    @include tablet-landscape {
+      width: 80%;
+    }
+
+    @include tablet-landscape {
+      width: 60%;
+    }
+
+    &__link {
+      display: flex;
+      align-items: center;
+      margin-top: 1.25rem;
+      font-size: $mobile-body;
+      font-weight: bold;
+      text-decoration: underline;
+
+      &::after {
+        content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="show-country-codes"><title id="show-country-codes">Show Codes from Country</title><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>');
+        display: block;
+        height: 1rem;
+        width: 1rem;
+        margin-left: .25rem;
+      }
     }
   }
 
@@ -104,6 +137,7 @@ export default {
     // grid-template-rows: repeat(2, 1fr);
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 1rem;
 
     @include tablet-landscape {
       width: 80%;
