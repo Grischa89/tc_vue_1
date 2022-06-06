@@ -45,6 +45,12 @@ export default {
   padding: 0 1rem;
   margin-bottom: 1rem;
 
+  @include tablet-landscape {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+  }
+
   &__link {
     font-size: $mobile-body;
     font-weight: 600;

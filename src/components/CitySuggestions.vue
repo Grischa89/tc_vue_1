@@ -102,6 +102,16 @@ export default {
     width: 100%;
     grid-template-columns: repeat(6, 1fr);
     // grid-template-rows: repeat(2, 1fr);
+    margin-left: auto;
+    margin-right: auto;
+
+    @include tablet-landscape {
+      width: 80%;
+    }
+
+    @include tablet-landscape {
+      width: 60%;
+    }
 
   &__item {
     display: flex;
