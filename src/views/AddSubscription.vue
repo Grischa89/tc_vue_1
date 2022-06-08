@@ -116,7 +116,7 @@ export default {
       codeInput: '',
       maxLen: 12,
       openInfo: false,
-      subscriptionTypeInfo: 'The action that should be performed with the given Trainer Code on the chosen Event.',
+      subscriptionTypeInfo: 'The action that should be performed with the Trainer Code at time of the chosen Event.',
     }
   },
 
