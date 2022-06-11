@@ -27,7 +27,7 @@
       <div class="form__group">
         <label class="form__group__label" for="country">Country</label>
         <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCountry}" name="country" id="country" @change="selectCountry($event)" @blur="validateCountry(data.country)" v-model="data.country">
-          <option v-if="codeToRepost" :value="codeToRepost.country_slug" selected disabled>{{ codeToRepost.country }}</option>
+          <option v-if="codeToRepost" :value="codeToRepost.country" selected disabled>{{ codeToRepost.country }}</option>
           <option v-else value selected disabled >Choose A Country</option>
           <option
             v-for="(country, i) in countries"
@@ -42,7 +42,7 @@
         <label class="form__group__label" for="city">City</label>
         <!-- disabled until country got chosen successfully -->
         <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCity}" name="city" id="city" @change="validateCity(data.city)" @blur="validateCity(data.city)" v-model="data.city" :disabled="!cities && !codeToRepost">
-          <option v-if="codeToRepost" :value="codeToRepost.city_slug" selected disabled>{{ codeToRepost.city }}</option>
+          <option v-if="codeToRepost" :value="codeToRepost.city" selected disabled>{{ codeToRepost.city }}</option>
           <option v-else value selected disabled>Choose A City</option>
           <option 
             v-for="(city, i) in cities"
@@ -91,8 +91,8 @@ export default {
   created() {
     if (this.codeToRepost) {
       this.data.player_code = this.codeToRepost.player_code;
-      this.data.country = this.codeToRepost.country_slug;
-      this.data.city = this.codeToRepost.city_slug;
+      this.data.country = this.codeToRepost.country;
+      this.data.city = this.codeToRepost.city;
     }
 
     // In case user picked a country, leaves route, then comes back (all without refresh)
