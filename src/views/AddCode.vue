@@ -32,7 +32,7 @@
           <option
             v-for="(country, i) in countries"
             :key="i"
-            :value="country.slug">{{ country.name }}</option>
+            :value="country.id">{{ country.name }}</option>
         </select>
         
         <span v-if="errors.invalidCountry" class="form__group__help" :class="{'form__group__help--error': errors.invalidCountry}">{{ errors.invalidCountry }}</span>
@@ -47,7 +47,7 @@
           <option 
             v-for="(city, i) in cities"
             :key="i" 
-            :value="city.slug">{{ city.name }}
+            :value="city.id">{{ city.name }}
           </option>
         </select>
 
@@ -358,7 +358,7 @@ export default {
       }
 
       &--select {
-        background-color: #fff;
+        background-color: $white;
 
         &:disabled {
           background-color: $disabled;
