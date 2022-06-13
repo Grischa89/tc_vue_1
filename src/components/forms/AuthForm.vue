@@ -60,10 +60,13 @@
                 <span v-if="passwordErrors.invalidRePassword" class="form__group__help" :class="{'form__group__help--error': passwordErrors.invalidRePassword}">{{ passwordErrors.invalidRePassword }}</span>     
             </div>
 
-            <div v-if="formGroups.passwordBasic" class="form__group">
+            <div v-if="formGroups.passwordBasic" class="form__group form__group--pw">
                 <label class="form__group__label" :class="{'form__group__label--error': passwordErrors.invalidPassword}" for="password">Password</label>
-                <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': passwordErrors.invalidPassword}" type="password" id="password" name="password" placeholder="" autocomplete="on" v-model="data.password" @blur="$store.dispatch('validateLoginPassword', data.password)">
-            
+                <div class="form__group__container">
+                    <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': passwordErrors.invalidPassword}" :type="type" id="password" name="password" placeholder="" autocomplete="on" v-model="data.password" @blur="$store.dispatch('validateLoginPassword', data.password)">
+                    <button @click="toggleVisibility" type="button" id="visibility-button" class="form__group__pw-visibility">{{ text }}</button>
+                </div>         
+
                 <span v-if="passwordErrors.invalidPassword" class="form__group__help" :class="{'form__group__help--error': passwordErrors.invalidPassword}">{{ passwordErrors.invalidPassword }}</span>     
             </div>
 
@@ -104,7 +107,7 @@ export default {
     FormSubmitErrorForward,
   },
 
-  emits: ['onSubmit'],
+  emits: ['onSubmit', 'toggleVisibility'],
 
   props: {
     view: String,
@@ -113,23 +116,29 @@ export default {
     actionBtn: String,
     errors: Object,
     forwardSuggestion: Object,
+    // visibilityText: String,
+    // inputType: String,
   },
 
   mounted() {
-      this.$store.commit('setUsernameInvalidMessage', '');
-      this.$store.commit('setEmailInvalidMessage', '');
-      this.$store.commit('setPasswordInvalidMessage', '');
-      this.$store.commit('setRePasswordInvalidMessage', '');
+    this.$store.commit('setUsernameInvalidMessage', '');
+    this.$store.commit('setEmailInvalidMessage', '');
+    this.$store.commit('setPasswordInvalidMessage', '');
+    this.$store.commit('setRePasswordInvalidMessage', '');
+    // this.text = this.visibilityText;
+    // this.type = this.inputType;
   },
 
   data() {
     return {
-      data: {
-          username: '',
-          email: '',
-          password: '',
-          re_password: '',
-      },
+        text: 'Show',
+        type: 'password',
+        data: {
+            username: '',
+            email: '',
+            password: '',
+            re_password: '',
+        },
     }
   },
 
@@ -142,6 +151,13 @@ export default {
           passwordErrors: 'passwordErrors',
           usernameErrors: 'usernameErrors',
       }),
+    },
+
+    methods: {
+        toggleVisibility() {
+            this.text = this.text === 'Show' ? 'Hide' : 'Show';
+            this.type = this.type === 'password' ? 'text' : 'password';
+        }
     },
 
 }
