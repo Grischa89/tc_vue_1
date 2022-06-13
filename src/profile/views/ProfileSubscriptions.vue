@@ -41,88 +41,108 @@
       </template>
 
       <template v-else-if="subscriptions.length > 0">
-        <div v-for="(subscription, i) in subscriptions" :key="i" class="profile__resource__item">
-          <div class="profile__resource__item__display" :data-subscription-id="subscription.pk">
-            <div class="profile__resource__item__display__task">
-              <div class="profile__resource__item__display__task__header">
-                <h2># {{ i + 1 }}</h2>
+        <template v-if="upcomingSubscriptions.length > 0">
+          <div class="profile__resource__header">
+            <h1>Upcoming Subscriptions</h1>
+          </div>
+          <div v-for="(subscription, i) in upcomingSubscriptions" :key="i" class="profile__resource__item">
+            <div class="profile__resource__item__display" :data-subscription-id="subscription.pk">
+              <div class="profile__resource__item__display__task">
+                <div class="profile__resource__item__display__task__header">
+                  <h2># {{ i + 1 }}</h2>
+                </div>
+                <!-- TODO: Code in module formatieren -->
+                <p class="profile__resource__item__display__task__row"><span>Trainer Code:</span> {{ subscription.player_code.replace(/.{4}/g, '$& ') }}</p>
+                <p class="profile__resource__item__display__task__row"><span>Event:</span> {{ subscription.event_name }}</p>
+                <p class="profile__resource__item__display__task__row"><span>Type:</span> {{ subscription.action_name }}</p>
+          
+          
               </div>
+              <div class="profile__resource__item__display__actions">
+                <button class="profile__resource__item__display__actions__btn" @click="showEditForm(subscription)">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="profile__resource__item__display__actions__btn__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-labelledby="edit-subscription">
+                    <title id="edit-subscription">Edit Subscription</title>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  <!-- <span class="profile__resource__item__display__actions__btn__text">Edit</span> -->
+                </button>
+                <!-- deleteSubscription(subscription.pk, i) -->
+                <button class="profile__resource__item__display__actions__btn" @click.prevent="openDeleteModal(subscription, i)">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="profile__resource__item__display__actions__btn__prepend profile__resource__item__display__actions__btn__prepend--delete" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-labelledby="delete-subscription">
+                    <title id="delete-subscription">Delete Subscription</title>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  <!-- <span class="profile__resource__item__display__actions__btn__text">Delete</span> -->
+                </button>
+              </div>
+              <Teleport to="body">
+                <SubscriptionDeleteModal
+                  v-if="open"
+                  @on-confirm="deleteSubscription"
+                  @on-cancel="cancelDelete" />
+              </Teleport>
+            </div>
+              <div class="profile__resource__item__edit" :data-edit-id="subscription.pk" ref="subscriptionItemEdit">
+                <form class="inline-form" @submit.prevent="submitForm(subscription.pk, i, subscription.isActive)">
+                  <div class="inline-form__title">Edit Subscription</div>
+                  <div v-if="errors.submitFailure" class="user__info">
+                    {{ errors.submitFailure }}
+                  </div>
+          
+                  <div class="inline-form__group">
+                    <label class="inline-form__group__label" :class="{'inline-form__group__label--error': errors.invalidCode}" for="trainercode">Trainercode</label>
+                    <input class="inline-form__group__input inline-form__group__input--code" :class="{'inline-form__group__input--error': errors.invalidCode}" type="number" step="1" id="trainercode" name="trainercode" placeholder="0000 1111 2222" v-model="data.player_code" data-input-code @keydown="restrictKeys($event)" @keyup="typeCode($event)" @paste="pasteCode($event)" @blur="validateCode(data.player_code)">
+                    <span v-if="formatCode" class="form__group__help">Your Trainer Code: {{ formatCode }}</span>
+                    <span v-if="errors.invalidCode" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidCode}">{{ errors.invalidCode }}</span>
+                  </div>
+                  <div class="inline-form__group">
+                    <label class="inline-form__group__label" for="eventOptions">Event</label>
+                    <select class="inline-form__group__input inline-form__group__input--select" :class="{'inline-form__group__input--error': errors.invalidEvent}" name="eventOptions" id="eventOptions" data-input-event @blur="validateEvent(data.event)" v-model="data.event" :disabled="!eventOptions">
+                      <option value selected disabled >Choose An Event</option>
+                      <option
+                        v-for="(event, i) in eventOptions"
+                        :key="i"
+                        :value="event.id">{{ event.name }}</option>
+                    </select>
+                    <span v-if="errors.invalidEvent" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidEvent}">{{ errors.invalidEvent }}</span>
+                  </div>
+                  <div class="inline-form__group">
+                    <label class="inline-form__group__label" for="codeActions">Subscription Type</label>
+                    <select class="inline-form__group__input inline-form__group__input--select" :class="{'inline-form__group__input--error': errors.invalidCodeAction}" name="codeActions" id="codeActions" data-input-type @blur="validateCodeAction(data.action)" v-model="data.action" :disabled="!codeActionOptions">
+                      <option value selected disabled>Choose A Subscription Type</option>
+                      <option
+                        v-for="(action, i) in codeActionOptions"
+                        :key="i"
+                        :value="action[0]">{{ action[1] }}
+                      </option>
+                    </select>
+                    <span v-if="errors.invalidCodeAction" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidCodeAction}" >{{ errors.invalidCodeAction }}</span>
+                  </div>
+                  <div class="inline-form__btn__container">
+                    <button class="inline-form__btn inline-form__btn--submit" type="submit">Save</button>
+                    <button class="inline-form__btn inline-form__btn--cancel" type="button" @click="cancelEditForm(subscription.pk)">Cancel</button>
+                  </div>
+                </form>
+              </div>
+          </div>
+        </template>
+
+        <template v-if="doneSubscriptions.length > 0">
+          <div class="profile__resource__header">
+            <h1>Past Subscriptions</h1>
+          </div>
+          <div v-for="(subscription, i) in doneSubscriptions" :key="i" class="profile__resource__item profile__resource__item--inactive">
+            <div class="profile__resource__item__display__task">
+              <!-- <div class="profile__resource__item__display__task__header">
+                <h2># {{ i + 1 }}</h2>
+              </div> -->
               <!-- TODO: Code in module formatieren -->
-              <p class="profile__resource__item__display__task__row"><span>Trainer Code:</span> {{ subscription.player_code.replace(/.{4}/g, '$& ') }} -- {{ i }}</p>
+              <p class="profile__resource__item__display__task__row"><span>Trainer Code:</span> {{ subscription.player_code.replace(/.{4}/g, '$& ') }}</p>
               <p class="profile__resource__item__display__task__row"><span>Event:</span> {{ subscription.event_name }}</p>
               <p class="profile__resource__item__display__task__row"><span>Type:</span> {{ subscription.action_name }}</p>
-        
-        
             </div>
-            <div class="profile__resource__item__display__actions">
-              <button class="profile__resource__item__display__actions__btn" @click="showEditForm(subscription)">
-                <svg xmlns="http://www.w3.org/2000/svg" class="profile__resource__item__display__actions__btn__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-labelledby="edit-subscription">
-                  <title id="edit-subscription">Edit Subscription</title>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                <!-- <span class="profile__resource__item__display__actions__btn__text">Edit</span> -->
-              </button>
-              <!-- deleteSubscription(subscription.pk, i) -->
-              <button class="profile__resource__item__display__actions__btn" @click.prevent="openDeleteModal(subscription, i)">
-                <svg xmlns="http://www.w3.org/2000/svg" class="profile__resource__item__display__actions__btn__prepend profile__resource__item__display__actions__btn__prepend--delete" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-labelledby="delete-subscription">
-                  <title id="delete-subscription">Delete Subscription</title>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-                <!-- <span class="profile__resource__item__display__actions__btn__text">Delete</span> -->
-              </button>
-            </div>
-            <Teleport to="body">
-              <SubscriptionDeleteModal
-                v-if="open"
-                @on-confirm="deleteSubscription"
-                @on-cancel="cancelDelete" />
-            </Teleport>
           </div>
-
-            <div class="profile__resource__item__edit" :data-edit-id="subscription.pk" ref="subscriptionItemEdit">
-              <form class="inline-form" @submit.prevent="submitForm(subscription.pk, i, subscription.isActive)">
-                <div class="inline-form__title">Edit Subscription</div>
-
-                <div v-if="errors.submitFailure" class="user__info">
-                  {{ errors.submitFailure }}
-                </div>
-                
-                <div class="inline-form__group">
-                  <label class="inline-form__group__label" :class="{'inline-form__group__label--error': errors.invalidCode}" for="trainercode">Trainercode</label>
-                  <input class="inline-form__group__input inline-form__group__input--code" :class="{'inline-form__group__input--error': errors.invalidCode}" type="number" step="1" id="trainercode" name="trainercode" placeholder="0000 1111 2222" v-model="data.player_code" data-input-code @keydown="restrictKeys($event)" @keyup="typeCode($event)" @paste="pasteCode($event)" @blur="validateCode(data.player_code)">
-                  <span v-if="formatCode" class="form__group__help">Your Trainer Code: {{ formatCode }}</span>
-                  <span v-if="errors.invalidCode" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidCode}">{{ errors.invalidCode }}</span>
-                </div>
-                <div class="inline-form__group">
-                  <label class="inline-form__group__label" for="eventOptions">Event</label>
-                  <select class="inline-form__group__input inline-form__group__input--select" :class="{'inline-form__group__input--error': errors.invalidEvent}" name="eventOptions" id="eventOptions" data-input-event @blur="validateEvent(data.event)" v-model="data.event" :disabled="!eventOptions">
-                    <option value selected disabled >Choose An Event</option>
-                    <option
-                      v-for="(event, i) in eventOptions"
-                      :key="i"
-                      :value="event.id">{{ event.name }}</option>
-                  </select>
-                  <span v-if="errors.invalidEvent" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidEvent}">{{ errors.invalidEvent }}</span>
-                </div>
-                <div class="inline-form__group">
-                  <label class="inline-form__group__label" for="codeActions">Subscription Type</label>
-                  <select class="inline-form__group__input inline-form__group__input--select" :class="{'inline-form__group__input--error': errors.invalidCodeAction}" name="codeActions" id="codeActions" data-input-type @blur="validateCodeAction(data.action)" v-model="data.action" :disabled="!codeActionOptions">
-                    <option value selected disabled>Choose A Subscription Type</option>
-                    <option
-                      v-for="(action, i) in codeActionOptions"
-                      :key="i"
-                      :value="action[0]">{{ action[1] }}
-                    </option>
-                  </select>
-                  <span v-if="errors.invalidCodeAction" class="inline-form__group__help" :class="{'inline-form__group__help--error': errors.invalidCodeAction}" >{{ errors.invalidCodeAction }}</span>
-                </div>
-                <div class="inline-form__btn__container">
-                  <button class="inline-form__btn inline-form__btn--submit" type="submit">Save</button>
-                  <button class="inline-form__btn inline-form__btn--cancel" type="button" @click="cancelEditForm(subscription.pk)">Cancel</button>
-                </div>
-              </form>
-            </div>
-        </div>
+        </template>
       </template>
     </template>
   </div>
@@ -207,6 +227,16 @@ export default {
       // Replace every 4 chars with the 4 chars plus a space
       return this.codeInput.replace(/.{4}/g, '$& ');
     },
+
+    upcomingSubscriptions() {
+      // return this.subscriptions.filter(subscription => subscription.action === 'GET_CODES_TO_YOUR_EMAIL');
+      return this.subscriptions.filter(subscription => subscription.status === 'created');
+    },
+
+    doneSubscriptions() {
+      // return this.subscriptions.filter(subscription => subscription.action === 'POST_YOUR_CODE_ON_TWITTER');
+      return this.subscriptions.filter(subscription => subscription.status === 'done');
+    }
   },
 
   methods: {
@@ -377,6 +407,17 @@ export default {
   width: 100%;
   // padding: 5%;
 
+  &__header {
+    h1 {
+      color: $black;
+      font-size: $mobile-subheading;
+      text-align: left;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: .05rem;
+    }
+  }
+
   &__item {
     display: flex;
     flex-direction: column;
@@ -403,6 +444,14 @@ export default {
       box-shadow: none; 
       -webkit-box-shadow: none; 
       -moz-box-shadow: none;
+    }
+
+    &--inactive {
+      align-items: flex-start;
+      background-color: rgba($help, .1);
+      color: rgba($black, .5);
+      border-left-color: rgba($help, .2);
+      cursor: default;
     }
 
     &__text {
