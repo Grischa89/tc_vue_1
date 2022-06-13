@@ -57,15 +57,7 @@ export default {
     },
 
     methods: {
-        hidePassword() {
-            const inputPassword = document.querySelector('#password');
-            const visibilityButton = document.querySelector('#visibility-button');
-            inputPassword.type = 'password';
-            visibilityButton.textContent = 'Show';
-        },
-
         async submitForm(data) {
-            this.hidePassword();
             this.errors.unauthorized = '';
 
             const loginData = {
