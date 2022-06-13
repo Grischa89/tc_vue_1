@@ -368,6 +368,25 @@ export default {
 
     }
 
+    &__container {
+      display: flex;
+      // justify-content: space-between;
+      width: 100%;
+      position: relative;
+
+      .form__group__pw-visibility {
+        position: absolute;
+        top: 25%;
+        right: .5rem;
+        font-size: $mobile-help;
+        color: rgba($black, .6);
+
+        &:hover {
+          color: $black;
+        }
+      }
+    }
+
     &__help {
       color: $help;
       font-size: $mobile-help;
