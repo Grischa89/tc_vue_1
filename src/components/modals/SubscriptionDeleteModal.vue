@@ -4,15 +4,17 @@
       <div class="modal">
         <div class="modal__header"><h2 class="modal__header__title">Confirm deleting subscription</h2></div>
         <div class="modal__body">
-          <p class="modal__body__text">This action will delete your subscription {{ subscription.action }} for the event {{ subscription.event }} and trainer code {{ subscription.player_code }}.</p>
+          <p class="modal__body__text">This action will delete your subscription
+              <span class="modal__body__text__highlight">{{ subscription.action_name }}"</span> for the event 
+              <span class="modal__body__text__highlight">"{{ subscription.event_name }}"</span> and Trainer Code 
+              <span class="modal__body__text__highlight">{{ subscription.player_code }}</span>.</p>
         </div>
         <div class="modal__footer">
           <button class="modal__footer__btn" @click="$emit('onCancel')">Cancel</button>
           <button class="modal__footer__btn modal__footer__btn--confirm" @click="$emit('onConfirm', { pk: subscription.pk, index: subscription.index })">Delete</button>
         </div>
       </div>
-     
-       </div>
+    </div>
    </Teleport>
 </template>
 
@@ -65,6 +67,13 @@ export default {
 
   &__body {
     margin: .5rem 0;
+
+    &__text {
+
+      &__highlight {
+        box-shadow: $line-behind-light;
+      }
+    }
   }
 
   &__footer {
