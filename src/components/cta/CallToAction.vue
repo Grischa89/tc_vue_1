@@ -25,7 +25,6 @@ export default {
         justify-content: space-between;
         background-color: $white;
         border-radius: .75rem;
-        min-height: 20ch;
         max-width: 60ch;
         margin-left: 5%;
         margin-right: 5%;
@@ -36,11 +35,20 @@ export default {
 
         background: hsla(33, 100%, 96%, 1);
         background: radial-gradient(circle, hsla(33, 100%, 96%, 1) 22%, hsla(345, 33%, 93%, 1) 72%, hsla(323, 28%, 91%, 1) 100%);
-        
+
         // background: radial-gradient(circle, hsla(33, 100%, 96%, 1) 0%, hsla(345, 33%, 93%, 1) 41%, hsla(300, 24%, 89%, 1) 100%);
         // background: radial-gradient(circle, hsla(345, 33%, 93%, 1) 41%, hsla(33, 100%, 96%, 1) 100%, hsla(300, 24%, 89%, 1) 100%);
         // background: linear-gradient(90deg, hsla(33, 100%, 96%, 1) 0%, hsla(345, 33%, 93%, 1) 41%, hsla(300, 24%, 89%, 1) 100%);
         // background: linear-gradient(90deg, hsla(33, 100%, 96%, 1) 0%, hsla(345, 33%, 93%, 1) 33%, hsla(300, 24%, 89%, 1) 65%, hsla(271, 44%, 83%, 1) 100%);
+
+        @include tablet {
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            padding-left: 3rem;
+            padding-right: 3rem;
+        }
 
         &__header {
 
