@@ -17,6 +17,19 @@ otherwise no classes -->
   </AsyncErrorFetchingData>
 
   <div v-if="loadStatus === 'success' && latestCodes">
+    <CallToActionInline v-if="!userExists">
+      <template #body>
+        <p>
+          Ready to add your own Trainer Code?
+        </p>
+      </template>
+      <template #footer>
+        <button type="button" class="cta-inline__footer__button">
+          Sign up!
+        </button>
+      </template>
+    </CallToActionInline>
+
     <Table 
       :title="tableTitle"
       :codes="latestCodes" />
@@ -28,6 +41,7 @@ import Table from '../components/Table.vue';
 import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
 import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
+import CallToActionInline from '../components/cta/CallToActionInline.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -46,6 +60,7 @@ export default {
     CardCarousel,
     TableSkeleton,
     CardCarouselSkeleton,
+    CallToActionInline,
   },
 
   created() {
@@ -66,6 +81,7 @@ export default {
       latestCodes: 'codeGetter',
       loadStatus: 'recentLoadStatus',
       open: 'modalOpen',
+      userExists: 'userExists',
     })
   },
 
