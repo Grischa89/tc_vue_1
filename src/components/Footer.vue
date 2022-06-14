@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer class="footer" :class="{ 'footer--with-cta': !userExists }">
     <div class="footer__container">
       <div class="footer__container__item">
         <router-link to="#" class="footer__container__item__link">About Us</router-link>
@@ -49,6 +49,10 @@
 export default {
   name: 'Footer',
 
+  props: {
+    userExists: Boolean,
+  },
+
   data() {
     return {
       currentYear: '',
@@ -67,8 +71,12 @@ export default {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   background-color: $black;
-  padding-top: .5rem .5rem;
+  padding-top: .5rem;
   margin-top: .75rem;
+
+  &--with-cta {
+    padding-top: 5rem;
+  }
 
   @media(min-width: 550px) { // TODO width wenn copyright steht
     .footer {

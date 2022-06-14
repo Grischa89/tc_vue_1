@@ -11,7 +11,34 @@
     <BackToTopButton />
   </div>
 
-  <Footer />
+  <CallToAction v-if="!userExists">
+    <template #header>
+      <h2>Find subscriptions<br>that meet your needs</h2>
+    </template>
+
+    <template #body>
+      <ol class="cta__body__list">
+        <li class="cta__body__list__item">Receive the latest Trainer Codes per mail</li>
+        <li class="cta__body__list__item">Share your Trainer Code on social media for a certain event</li>
+      </ol>
+    </template>
+
+    <template #footer>
+      <button type="button" class="cta__footer__button">
+        Sign up!
+      </button>
+
+      <router-link to="#" class="cta__footer__link">
+        <span class="cta__footer__link__text">About Subscriptions</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="cta__footer__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="about-subscriptions">
+              <title id="about-subscriptions">About Subscriptions</title>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+      </router-link>
+    </template>
+  </CallToAction>
+
+  <Footer :userExists="userExists" />
 
   <vue-cookie-comply
     class="cookie-comply--sticky"
@@ -47,6 +74,7 @@ import LastUpdatedInfoBanner from './components/LastUpdatedInfoBanner.vue';
 import Navbar from './components/navbar/Navbar.vue';
 import BackToTopButton from './components/navbar/BackToTopButton.vue';
 import Footer from './components/Footer.vue';
+import CallToAction from './components/cta/CallToAction.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -58,6 +86,7 @@ export default {
     Navbar,
     Footer,
     BackToTopButton,
+    CallToAction,
   },
 
   data() {
@@ -129,7 +158,15 @@ export default {
     ...mapGetters({
       isAuthenticated: 'isAuthenticated',
       elapsedInfo: 'elapsedInfo',
-    })
+      user: 'user',
+    }),
+
+    userExists() {
+      if (this.user?.username) {
+        return true;
+      }
+      return false;
+    }
   },
 
   methods: {

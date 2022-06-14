@@ -423,7 +423,7 @@ export default {
     font-size: $mobile-body;
     letter-spacing: .05rem;
     font-weight: bold;
-    border-radius: 25px;
+    border-radius: $radius-action-button;
     -webkit-tap-highlight-color: transparent;
 
     &:active {
