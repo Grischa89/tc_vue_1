@@ -24,6 +24,13 @@ const getters = {
     return state.isAuthenticated;
   },
 
+  userExists: state => {
+    if (state.user?.username) {
+      return true;
+    }
+    return false;
+  },
+
   requestEmail: state => {
     return state.requestEmail;
   },

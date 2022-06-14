@@ -158,15 +158,8 @@ export default {
     ...mapGetters({
       isAuthenticated: 'isAuthenticated',
       elapsedInfo: 'elapsedInfo',
-      user: 'user',
+      userExists: 'userExists',
     }),
-
-    userExists() {
-      if (this.user?.username) {
-        return true;
-      }
-      return false;
-    }
   },
 
   methods: {
