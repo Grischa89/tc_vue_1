@@ -28,6 +28,7 @@ export default {
         max-width: 60ch;
         margin-left: 5%;
         margin-right: 5%;
+        margin-top: 3rem;
         padding: 5%;
         box-shadow: $card-shadow rgba($black, 0.2);
         margin-bottom: -5rem;

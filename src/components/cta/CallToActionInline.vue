@@ -20,11 +20,12 @@ export default {
         justify-content: space-between;
         width: 100%;
         background-color: $white;
-        border-radius: .5rem;
+        border-radius: .75rem;
         min-height: 4ch;
         max-width: 100ch;
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: 3rem;
         padding-top: 1rem;
         padding-bottom: 1rem;
         padding-left: 2rem;
