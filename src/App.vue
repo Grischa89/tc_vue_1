@@ -318,6 +318,7 @@ html, body {
   // fixed position for consent banner
   position: fixed !important;
   margin: .5rem;
+  z-index: 2;
 }
 
 .cookie-comply__modal {
