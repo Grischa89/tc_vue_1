@@ -75,7 +75,7 @@ export default {
   margin-top: .75rem;
 
   &--with-cta {
-    padding-top: 5rem;
+    padding-top: 7rem;
   }
 
   @media(min-width: 550px) { // TODO width wenn copyright steht
@@ -128,10 +128,11 @@ export default {
 
     &:last-of-type {
       grid-column: span 2;
-      line-height: 110%;
 
       .footer__container__item {
-        // font-family: Monaco, monospace;
+        font-family: Monaco, monospace;
+        font-size: .75rem;
+        line-height: 110%;
         color: rgba($white, .5);
         margin: 0;
       }

@@ -25,7 +25,8 @@ export default {
         justify-content: space-between;
         background-color: $white;
         border-radius: .75rem;
-        max-width: 60ch;
+        width: 90%;
+        max-width: 80ch;
         margin-left: 5%;
         margin-right: 5%;
         margin-top: 3rem;

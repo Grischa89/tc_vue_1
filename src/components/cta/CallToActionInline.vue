@@ -22,7 +22,7 @@ export default {
         background-color: $white;
         border-radius: .75rem;
         min-height: 4ch;
-        max-width: 100ch;
+        max-width: 80ch;
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 3rem;
