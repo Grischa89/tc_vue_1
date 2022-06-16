@@ -178,22 +178,48 @@ const routes = [
   },
 
   {
-    path: '/:continent',
-    name: 'Continent',
-    component: Continent
+    path: '/codes',
+    component: Home,
+    children: [
+      {
+        path: ':continent',
+        name: 'Continent',
+        component: Continent,
+        children: [
+          {
+            path: ':country',
+            name: 'Country',
+            component: Country,
+            children: [
+              {
+                path: ':city',
+                name: 'City',
+                component: City
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
 
-  {
-    path: '/:continent/:country',
-    name: 'Country',
-    component: Country
-  },
+  // {
+  //   path: '/c/:continent',
+  //   name: 'Continent',
+  //   component: Continent
+  // },
 
-  {
-    path: '/:continent/:country/:city',
-    name: 'City',
-    component: City
-  },
+  // {
+  //   path: '/c/:continent/:country',
+  //   name: 'Country',
+  //   component: Country
+  // },
+
+  // {
+  //   path: '/c/:continent/:country/:city',
+  //   name: 'City',
+  //   component: City
+  // },
 
   {
     path: '/about',
