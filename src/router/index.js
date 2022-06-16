@@ -203,24 +203,6 @@ const routes = [
     ]
   },
 
-  // {
-  //   path: '/c/:continent',
-  //   name: 'Continent',
-  //   component: Continent
-  // },
-
-  // {
-  //   path: '/c/:continent/:country',
-  //   name: 'Country',
-  //   component: Country
-  // },
-
-  // {
-  //   path: '/c/:continent/:country/:city',
-  //   name: 'City',
-  //   component: City
-  // },
-
   {
     path: '/about',
     name: 'About',
