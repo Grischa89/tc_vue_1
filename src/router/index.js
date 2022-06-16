@@ -177,30 +177,53 @@ const routes = [
     component: CardCarousel
   },
 
+  // {
+  //   path: '/codes',
+  //   component: Home,
+  //   children: [
+  //     {
+  //       path: ':continent',
+  //       name: 'Continent',
+  //       component: Continent,
+  //       children: [
+  //         {
+  //           path: ':country',
+  //           name: 'Country',
+  //           component: Country,
+  //           children: [
+  //             {
+  //               path: ':city',
+  //               name: 'City',
+  //               component: City
+  //             }
+  //           ]
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
+
   {
     path: '/codes',
     component: Home,
-    children: [
-      {
-        path: ':continent',
-        name: 'Continent',
-        component: Continent,
-        children: [
-          {
-            path: ':country',
-            name: 'Country',
-            component: Country,
-            children: [
-              {
-                path: ':city',
-                name: 'City',
-                component: City
-              }
-            ]
-          }
-        ]
-      }
-    ]
+  },
+
+  {
+    path: '/codes/:continent',
+    name: 'Continent',
+    component: Continent
+  },
+
+  {
+    path: '/codes/:continent/:country',
+    name: 'Country',
+    component: Country
+  },
+
+  {
+    path: '/codes/:continent/:country/:city',
+    name: 'City',
+    component: City
   },
 
   {
