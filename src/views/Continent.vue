@@ -13,7 +13,7 @@
       </template>
       <template #footer>
         <button type="button" class="cta-inline__footer__button">
-          Sign up!
+          <router-link :to="{ name: 'SignUp' }">Sign up!</router-link>
         </button>
       </template>
     </CallToActionInline>

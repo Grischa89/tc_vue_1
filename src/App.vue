@@ -25,7 +25,7 @@
 
     <template #footer>
       <button type="button" class="cta__footer__button">
-        Sign up!
+        <router-link :to="{ name: 'SignUp' }">Sign up!</router-link>
       </button>
 
       <router-link to="#" class="cta__footer__link">
