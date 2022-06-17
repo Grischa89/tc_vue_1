@@ -24,6 +24,7 @@ import RequestPasswordReset from '../auth/password/RequestPasswordReset.vue'
 import ResetPassword from '../auth/password/ResetPassword.vue'
 import RequestSuccess from '../auth/_shared/RequestSuccess.vue'
 import AddSubscription from '../views/AddSubscription.vue'
+import PageNotFound from '../views/PageNotFound.vue'
 
 // Sorry, this page isn't available.
 // The link you followed may be broken, or the page may have been removed. Go back to Instagram.
@@ -233,6 +234,12 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+
+  {
+    path: '/:notFound(.*)*',
+    name: 'PageNotFound',
+    component: PageNotFound,
   }
 ];
 
