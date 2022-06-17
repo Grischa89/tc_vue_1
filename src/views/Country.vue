@@ -27,12 +27,25 @@
       v-if="breadcrumb"
       :breadcrumb="breadcrumb" />
 
+    <CallToActionInline v-if="!userExists">
+      <template #body>
+        <p>
+          Ready to add your own Trainer Code?
+        </p>
+      </template>
+      <template #footer>
+        <button type="button" class="cta-inline__footer__button">
+          Sign up!
+        </button>
+      </template>
+    </CallToActionInline>
+
     <AsyncInvalidSlug
       v-if="invalidURLMessage"
       :message="invalidURLMessage" />
 
     <CitySuggestions
-      v-if="citySuggestions"
+      v-if="citySuggestions && citySuggestions.length > 0"
       :citySuggestions="citySuggestions" />
 
     <Table
@@ -52,6 +65,7 @@ import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import CitySuggestions from '../components/CitySuggestions.vue';
 import CitySuggestionsSkeleton from '../components/skeletons/CitySuggestionsSkeleton.vue';
+import CallToActionInline from '../components/cta/CallToActionInline.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -65,7 +79,8 @@ export default {
     // CardCarouselSkeleton,
     Breadcrumb,
     CitySuggestions,
-    CitySuggestionsSkeleton
+    CitySuggestionsSkeleton,
+    CallToActionInline,
   },
 
   data() {
@@ -75,6 +90,7 @@ export default {
   },
 
   mounted() {
+    console.log('%cthis.$route.params.continent', 'color: darkseagreen; font-weight: bold;', this.$route.params.continent);
     this.$store.dispatch('fetchCountryCodes', { continent: this.$route.params.continent, country: this.$route.params.country });
   },
 
@@ -96,6 +112,7 @@ export default {
       breadcrumb: 'breadcrumb',
       citySuggestions: 'citySuggestions',
       open: 'modalOpen',
+      userExists: 'userExists',
     }),
   },
 }

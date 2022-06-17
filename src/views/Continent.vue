@@ -5,6 +5,19 @@
   </div>
 
   <div v-if="loadStatus === 'success' && continentCodes">
+    <CallToActionInline v-if="!userExists">
+      <template #body>
+        <p>
+          Ready to add your own Trainer Code?
+        </p>
+      </template>
+      <template #footer>
+        <button type="button" class="cta-inline__footer__button">
+          Sign up!
+        </button>
+      </template>
+    </CallToActionInline>
+
     <AsyncInvalidSlug
       v-if="invalidURLMessage"
       :message="invalidURLMessage" />
@@ -23,6 +36,7 @@ import Table from '../components/Table.vue';
 import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
 import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
+import CallToActionInline from '../components/cta/CallToActionInline.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -35,6 +49,7 @@ name: 'Continent',
     CardCarousel,
     TableSkeleton,
     CardCarouselSkeleton,
+    CallToActionInline,
   },
 
   mounted() {
@@ -58,6 +73,7 @@ name: 'Continent',
       loadStatus: 'continentLoadStatus',
       invalidURLMessage: 'invalidURLMessage',
       open: 'modalOpen',
+      userExists: 'userExists',
     })
   },
 }

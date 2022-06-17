@@ -29,6 +29,19 @@ otherwise no classes -->
       	v-if="breadcrumb"
         :breadcrumb="breadcrumb" />
 
+    <CallToActionInline v-if="!userExists">
+      <template #body>
+        <p>
+          Ready to add your own Trainer Code?
+        </p>
+      </template>
+      <template #footer>
+        <button type="button" class="cta-inline__footer__button">
+          Sign up!
+        </button>
+      </template>
+    </CallToActionInline>
+
     <AsyncInvalidSlug
       v-if="invalidURLMessage"
       :message="invalidURLMessage" />
@@ -39,7 +52,7 @@ otherwise no classes -->
       :isCity="isCity" />
 
     <CitySuggestions
-      v-if="citySuggestions"
+      v-if="citySuggestions && citySuggestions.length > 0"
       :citySuggestions="citySuggestions" />
 
     <!-- <CardCarousel
@@ -57,6 +70,7 @@ import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import CitySuggestions from '../components/CitySuggestions.vue';
 import CitySuggestionsSkeleton from '../components/skeletons/CitySuggestionsSkeleton.vue';
+import CallToActionInline from '../components/cta/CallToActionInline.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -77,6 +91,7 @@ export default {
     Breadcrumb,
     CitySuggestions,
     CitySuggestionsSkeleton,
+    CallToActionInline,
   },
 
   created() {
@@ -103,6 +118,7 @@ export default {
       breadcrumb: 'breadcrumb',
       citySuggestions: 'citySuggestions',
       open: 'modalOpen',
+      userExists: 'userExists',
     })
   },
 
