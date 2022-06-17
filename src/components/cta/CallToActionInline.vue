@@ -32,7 +32,6 @@ export default {
         padding-right: 2rem;
         box-shadow: $card-shadow rgba($black, 0.2);
 
-
         background: hsla(33, 100%, 96%, 1);
         background: linear-gradient(90deg, hsla(16, 56%, 95%, 1) 0%, hsla(345, 33%, 93%, 1) 72%, hsla(323, 28%, 91%, 1) 100%);
         // background: linear-gradient(90deg, hsla(33, 100%, 96%, 1) 0%, hsla(16, 56%, 95%, 1) 16%, hsla(345, 33%, 93%, 1) 78%, hsla(323, 28%, 91%, 1) 100%);

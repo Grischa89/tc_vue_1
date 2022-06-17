@@ -42,7 +42,8 @@ export default {
 
 <style lang="scss">
 .invalid-slug__container {
-  width: 90%;
+  width: 100%;
+  max-width: 80ch;
   margin-left: auto;
   margin-right: auto;
 }
