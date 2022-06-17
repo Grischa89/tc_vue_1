@@ -23,7 +23,7 @@
               <span class="table__body__row__cell__link table__body__row__cell__link--non-link">{{ code.city }}</span>
             </td>
             <td v-else class="table__body__row__cell">
-              <router-link class="table__body__row__cell__link" :to="`/${code.continent_slug}/${code.country_slug}`">{{ code.country }}</router-link>
+              <router-link class="table__body__row__cell__link" :to="{ name: 'Country', params: { continent: code.continent_slug, country: code.country_slug } }">{{ code.country }}</router-link>
             </td>
 
             <td class="table__body__row__cell"

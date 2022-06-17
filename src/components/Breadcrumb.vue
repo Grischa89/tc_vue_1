@@ -1,12 +1,12 @@
 <template>
   <div class="breadcrumb">
-    <router-link class="breadcrumb__link" :to="`/${breadcrumb.continentSlug}`">
+    <router-link class="breadcrumb__link" :to="{ name: 'Continent', params: { continent: breadcrumb.continentSlug } }">
       {{ breadcrumb.continentName }}
     </router-link>
     &nbsp;&#47;&nbsp;
 
     <template v-if="breadcrumb && breadcrumb.countryName">
-      <router-link class="breadcrumb__link" :to="`/${breadcrumb.continentSlug}/${breadcrumb.countrySlug}`">
+      <router-link class="breadcrumb__link" :to="{ name: 'Country', params: { continent: breadcrumb.continentSlug, country: breadcrumb.countrySlug } }">
         {{ breadcrumb.countryName }}
       </router-link>
       &nbsp;&#47;&nbsp;

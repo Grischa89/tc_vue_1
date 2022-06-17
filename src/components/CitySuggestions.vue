@@ -8,7 +8,7 @@
         v-for="(city, i) in slicedSuggestions"
         :key="i"
         class="suggestions__grid__item">
-          <router-link class="suggestions__grid__item__link" :to="`/${city.continent_slug}/${city.country_slug}/${city.city_slug}`">{{ city.city }}</router-link>
+          <router-link class="suggestions__grid__item__link" :to="{ name: 'City', params: { continent: city.continent_slug, country: city.country_slug, city: city.city_slug } }">{{ city.city }}</router-link>
       </div>
     </div>
     <div v-if="currentRouteName === 'City'" class="suggestions__footer">

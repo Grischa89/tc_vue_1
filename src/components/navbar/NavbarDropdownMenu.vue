@@ -10,7 +10,7 @@
 
   <!-- Click on dropdown link closes dropdown and navbar when expanded -->
   <ul v-if="dropdownItems" class="dropdown__menu" @click="$emit('closeDropdownMenu')">
-    <li v-for="(item, i) in dropdownItems" :key="i" class="dropdown__menu__item"><router-link :to="`/${item.slug}`" class="dropdown__menu__item__link">{{ item.name }}</router-link></li>
+    <li v-for="(item, i) in dropdownItems" :key="i" class="dropdown__menu__item"><router-link :to="`${item.slug}`" class="dropdown__menu__item__link">{{ item.name }}</router-link></li>
   </ul>
 </template>
 

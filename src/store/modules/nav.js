@@ -3,12 +3,12 @@ import axios from 'axios';
 const state = {
 
   continentNames: [
-    { name: 'Africa', slug: 'africa' },
-    { name: 'Asia', slug: 'asia'},
-    { name: 'Europe', slug: 'europe'},
-    { name: 'North America', slug: 'north-america'},
-    { name: 'Oceania', slug: 'oceania'},
-    { name: 'South America', slug: 'south-america'},
+    { name: 'Africa', slug: '/codes/africa' },
+    { name: 'Asia', slug: '/codes/asia'},
+    { name: 'Europe', slug: '/codes/europe'},
+    { name: 'North America', slug: '/codes/north-america'},
+    { name: 'Oceania', slug: '/codes/oceania'},
+    { name: 'South America', slug: '/codes/south-america'},
   ],
 
   lastUpdated: '',
