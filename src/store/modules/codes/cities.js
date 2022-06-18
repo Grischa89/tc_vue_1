@@ -6,6 +6,8 @@ const state = {
 
   isCity: false,
 
+  citySuggestions: null,
+
 };
 
 const getters = {
@@ -18,6 +20,15 @@ const getters = {
     return state.isCity;
   },
 
+  citySuggestions: state => {
+    if (state.citySuggestions) {
+      const citiesNotNull = state.citySuggestions.filter(item => item.city != null);
+
+      const citiesUnique = citiesNotNull.filter((item, i) => citiesNotNull.findIndex(a => (a['city'] === item['city'])) === i);
+
+      return citiesUnique;
+    }
+  },
 };
 
 const actions = {
@@ -53,7 +64,6 @@ const actions = {
             if ((res.data.new_cache_key.match(/\//g) || []).length > 2) {
               commit('setTableTitle', res.data.data[0].country);
               commit('setBreadcrumb', { continentName: res.data.data[0].continent, continentSlug: res.data.data[0].continent_slug });
-              commit('setSuggestionCodes', res.data.data);
               window.document.title = `${res.data.data[0].country} — Recent Codes From ${res.data.data[0].country} — trainercodes.net`;
             } else {
               // (is continent: /europe/span/madr)
@@ -87,20 +97,17 @@ const actions = {
       })
   },
 
-  // fetchQuestion({ commit }, questionId) {
+  fetchCountryForCitySuggestions({ commit }, data) {
 
-  //   axios.get('/api/questions/' + questionId)
-  //     .then(res => {
-  //       commit('setQuestion', res.data);
-  //       commit('setAnswers', res.data.data.attributes.answers.data);
-  //       console.log('setAnswerCount', res.data.data.attributes.answers.answer_count);
-  //       commit('setAnswerCount', res.data.data.attributes.answers.answer_count);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log('Unable to fetch question.');
-  //     })
-  // },
+    axios.get(`/api/v1/codes/${data.continent}/${data.country}/`)
+      	.then(res => {
+          commit('setCitySuggestions', res.data.data)
+        })
+        .catch(err => {
+          // TODO
+          console.log('%cerr in fetchCountryForCitySuggestions', 'color: red; font-weight: bold;', err);
+        });
+  },
 
 };
 
@@ -114,9 +121,9 @@ const mutations = {
     state.isCity = isCity;
   },
 
-  // setLatestCountryCodes(state, countryCodes) {
-  //   state.countryCodes = countryCodes;
-  // },
+  setCitySuggestions(state, cities) {
+    state.citySuggestions = cities;
+  },
 
 };
 

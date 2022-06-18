@@ -4,8 +4,6 @@ const state = {
 
   countryLoadStatus: null,
 
-  suggestionCodes: null,
-
 };
 
 const getters = {
@@ -13,17 +11,6 @@ const getters = {
   countryLoadStatus: state => {
     return state.countryLoadStatus;
   },
-
-  citySuggestions: state => {
-    // return rootState.codes.filter(item => item.city !== null);
-
-    // filter wil start with the first item in the array, then findIndex will iterate over that item
-    // Once findIndex is at the end of its array, filter will increase the array index and findIndex will iterate over that item again
-    // So it might be that a['city'] === item['city'] is true, but the index which findIndex will return will not match the filter method's criteria of === i
-    // That way object with duplicate entries will have a different index (a['city'].index) from i
-    // So only the first occurrence of item['city'] === a['city'] will meet the filter method's criteria since the index that is returned from findIndex === i
-    if (state.suggestionCodes) return state.suggestionCodes.filter((item, i) => state.suggestionCodes.findIndex(a => (a['city'] === item['city']) && (a['city'] !== null)) === i);
-  }
 
 };
 
@@ -64,7 +51,6 @@ const actions = {
           window.document.title = `${res.data.data[0].country} — Recent Codes From ${res.data.data[0].country} — trainercodes.net`;
           commit('setTableTitle', res.data.data[0].country);
           commit('setBreadcrumb', { continentName: res.data.data[0].continent, continentSlug: res.data.data[0].continent_slug });
-          commit('setSuggestionCodes', res.data.data);
         }
 
         return commit('addDataPositions', res.data.data);
@@ -88,10 +74,6 @@ const mutations = {
 
   setCountryStatus(state, status) {
     state.countryLoadStatus = status;
-  },
-
-  setSuggestionCodes(state, codes) {
-    state.suggestionCodes = codes;
   },
 
 };

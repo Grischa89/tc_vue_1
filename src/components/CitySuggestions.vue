@@ -5,47 +5,48 @@
     </div>
     <div class="suggestions__grid">
       <div
-        v-for="(city, i) in slicedSuggestions"
+        v-for="(city, i) in suggestions"
         :key="i"
         class="suggestions__grid__item">
           <router-link class="suggestions__grid__item__link" :to="{ name: 'City', params: { continent: city.continent_slug, country: city.country_slug, city: city.city_slug } }">{{ city.city }}</router-link>
       </div>
     </div>
-    <div v-if="currentRouteName === 'City'" class="suggestions__footer">
+    <div v-if="currentRouteName === 'City' && countrySuggestion" class="suggestions__footer">
       <router-link class="suggestions__footer__link" :to="`/${countrySuggestion.continentSlug}/${countrySuggestion.countrySlug}`">
         Show Codes from  {{ countrySuggestion.name }}
       </router-link>
     </div>
-    <!-- <div class="suggestions__item">City</div>
-    <div class="suggestions__item">City</div>
-    <div class="suggestions__item">City</div>
-    <div class="suggestions__item">City</div>
-    <div class="suggestions__item">City</div> -->
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'CitySuggestions',
 
-  props: {
-    citySuggestions: {
-      type: Array,
-      required: true,
-    }
+  created() {
+    this.$store.dispatch('fetchCountryForCitySuggestions', { continent: this.$route.params.continent, country: this.$route.params.country } );
   },
 
   computed: {
-    slicedSuggestions() {
-      // Don't suggest the city on whose route we currently are
-      if (this.currentRouteName === 'City') {
-        const citiesDifferentFromRoute = this.citySuggestions.filter(item => item.city_slug !== this.$route.params.city);
-        const sortByCityRanking = citiesDifferentFromRoute.sort((a, b) => b.city_ranking - a.city_ranking);
+    ...mapGetters({
+      citySuggestions: 'citySuggestions'
+    }),
+
+    suggestions() {
+      if (this.citySuggestions) {
+        // Don't suggest the city on whose route we currently are
+        if (this.currentRouteName === 'City') {
+          const citiesDifferentFromRoute = this.citySuggestions.filter(item => item.city_slug !== this.$route.params.city);
+          const sortByCityRanking = citiesDifferentFromRoute.sort((a, b) => b.city_ranking - a.city_ranking);
+          return sortByCityRanking.slice(0, 6);
+        }
+
+        // Sort citySuggestions array in descending order by city_ranking
+        const sortByCityRanking = this.citySuggestions.sort((a, b) => b.city_ranking - a.city_ranking);
         return sortByCityRanking.slice(0, 6);
       }
-      // Sort citySuggestions array in descending order by city_ranking
-      const sortByCityRanking = this.citySuggestions.sort((a, b) => b.city_ranking - a.city_ranking);
-      return sortByCityRanking.slice(0, 6);
     },
 
     currentRouteName() {
@@ -53,7 +54,7 @@ export default {
     },
 
     countrySuggestion() {
-      return { name: this.citySuggestions[0].country, countrySlug: this.citySuggestions[0].country_slug, continentSlug: this.citySuggestions[0].continent_slug }
+      if (this.citySuggestions) return { name: this.citySuggestions[0].country, countrySlug: this.citySuggestions[0].country_slug, continentSlug: this.citySuggestions[0].continent_slug }
     }
   }
 

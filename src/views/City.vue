@@ -51,22 +51,14 @@ otherwise no classes -->
       :codes="cityCodes"
       :isCity="isCity" />
 
-    <CitySuggestions
-      v-if="citySuggestions && citySuggestions.length > 0"
-      :citySuggestions="citySuggestions" />
-
-    <!-- <CardCarousel
-      :codes="cityCodes"
-      :isCity="isCity" /> -->
+    <CitySuggestions />
 
   </div>
 </template>
 
 <script>
 import Table from '../components/Table.vue';
-// import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
-// import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import CitySuggestions from '../components/CitySuggestions.vue';
 import CitySuggestionsSkeleton from '../components/skeletons/CitySuggestionsSkeleton.vue';
@@ -85,9 +77,7 @@ export default {
 
   components: {
     Table,
-    // CardCarousel,
     TableSkeleton,
-    // CardCarouselSkeleton,
     Breadcrumb,
     CitySuggestions,
     CitySuggestionsSkeleton,
