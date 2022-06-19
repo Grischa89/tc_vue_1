@@ -12,7 +12,7 @@
       </div>
     </div>
     <div v-if="currentRouteName === 'City' && countrySuggestion" class="suggestions__footer">
-      <router-link class="suggestions__footer__link" :to="`/${countrySuggestion.continentSlug}/${countrySuggestion.countrySlug}`">
+      <router-link class="suggestions__footer__link" :to="{ name: 'Country', params: { continent: countrySuggestion.continentSlug, country: countrySuggestion.countrySlug } }">
         Show Codes from  {{ countrySuggestion.name }}
       </router-link>
     </div>
