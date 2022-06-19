@@ -25,7 +25,7 @@ export default {
         max-width: 80ch;
         margin-left: auto;
         margin-right: auto;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
         padding-top: 1rem;
         padding-bottom: 1rem;
         padding-left: 2rem;

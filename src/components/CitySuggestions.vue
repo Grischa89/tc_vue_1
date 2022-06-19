@@ -1,7 +1,7 @@
 <template>
   <div class="suggestions">
-    <div class="suggestions__header">
-      <h2 v-if="currentRouteName === 'City'" class="suggestions__header__title">Explore More Cities&nbsp;&mdash;</h2>
+    <div v-if="currentRouteName === 'City'" class="suggestions__header">
+      <h2 class="suggestions__header__title">Explore More Cities&nbsp;&mdash;</h2>
     </div>
     <div class="suggestions__grid">
       <div
@@ -138,7 +138,7 @@ export default {
     // grid-template-rows: repeat(2, 1fr);
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 1rem;
+    // margin-bottom: 1rem;
 
     @include tablet-landscape {
       width: 80%;
