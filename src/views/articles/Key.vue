@@ -21,7 +21,7 @@ export default {
 
     data() {
         return {
-            articleColumns: ['heading', 'summary', 'paragraph', 'subheading', 'listarray', 'table'],
+            articleColumns: ['heading', 'summary', 'paragraph', 'subheading', 'listarray'],
         }
     },
 
