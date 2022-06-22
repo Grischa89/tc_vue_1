@@ -25,6 +25,7 @@ import ResetPassword from '../auth/password/ResetPassword.vue'
 import RequestSuccess from '../auth/_shared/RequestSuccess.vue'
 import AddSubscription from '../views/AddSubscription.vue'
 import PageNotFound from '../views/PageNotFound.vue'
+import CreateArticle from '../views/articles/CreateArticle.vue'
 
 // Sorry, this page isn't available.
 // The link you followed may be broken, or the page may have been removed. Go back to Instagram.
@@ -37,6 +38,12 @@ const routes = [
     meta: {
       title: 'Home',
     },
+  },
+
+  {
+    path: '/articles/create',
+    name: 'CreateArticle',
+    component: CreateArticle,
   },
 
   {
