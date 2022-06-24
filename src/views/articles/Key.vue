@@ -1,5 +1,5 @@
 <template>
-    <select @input="handleSelect" name="key" id="key">
+    <select @input="$emit('update:modelValue', $event.target.value)" name="key" id="key">
         <option value selected disabled >Choose A Column</option>
         <option
             v-for="(column, i) in articleColumns"
@@ -14,10 +14,14 @@ import axios from 'axios';
 export default {
     name: 'Key',
 
-    props: {
-        headingExists: Number,
-        summaryExists: Boolean,
-    },
+    // props: {
+    //     headingExists: Number,
+    //     summaryExists: Boolean,
+    // },
+
+    props: ['modelValue'],
+
+    emits: ['update:modelValue'],
 
     data() {
         return {

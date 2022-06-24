@@ -1,5 +1,5 @@
 <template>
-    <input type="text" @input="handleInput" />
+    <input type="text" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"  />
 </template>
 
 <script>
@@ -7,11 +7,9 @@
 export default {
     name: 'Value',
 
-    methods: {
-        handleInput(e) {
-            this.$emit('input', e.target.value);
-        }
-    }
+    props: ['modelValue'],
+
+    emits: ['update:modelValue'],
 }
 </script>
 

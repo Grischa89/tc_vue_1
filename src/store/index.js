@@ -12,6 +12,7 @@ import password from './modules/validation/password';
 import email from './modules/validation/email';
 import username from './modules/validation/username';
 import resources from './modules/resources';
+import articles from './modules/articles';
 
 export default createStore({
   
@@ -145,6 +146,7 @@ export default createStore({
     email,
     username,
     resources,
+    articles,
   },
 
 });
