@@ -3,24 +3,11 @@
         <h1>Create new article</h1>
         <button type="button" @click="addRow">Add</button>
 
-        <!-- <draggable class="list-group" v-model="article" group="people" @start="drag=true" @end="drag=false" @change="log1">
-            <div v-for="(element) in article" :key="element.id" class="card sortable">
-
-            <Key
-                v-model="element.key"
-                :headingExists="headingExists"
-                :summaryExists="summaryExists" />
-
-            <Value v-model="element.value" />
-            
-            </div>
-        </draggable> -->
-
         <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false">
             <template #item="{element}">
                 <div>
                     <!-- <Key v-model="element.key" /> -->
-                    <select name="key" id="key" v-model="element.key" @change="checkUniqueOptions">
+                    <select name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
                         <option value selected disabled >Choose A Column</option>
                         <option
                             v-for="(column, i) in articleColumns"
@@ -34,14 +21,7 @@
                     <button type="button" @click="deleteRow(element.id)">Delete</button>
                 </div>
             </template>
-        </draggable>
-        <!-- {{ rowCount }} -->
-        <!-- {{ headingExists }} -->
-        <br>
-        <!-- <PreviewArticle :article="displayDummyArticle"/> -->
-        <br>
-
-        
+        </draggable>        
     </div>
 </template>
 
@@ -64,13 +44,19 @@ export default {
     },
 
     created() {
-        this.$store.dispatch('getArticleColumns');
-        this.$store.dispatch('getArticles');
+        this.article.forEach(element => {
+            if (this.uniqueOptions.includes(element.key)) {
+                const i = this.findUniqueIndex(element.key);
+                this.articleColumns[i].disabled = true;
+            } 
+        });
     },
 
     data() {
         return {
             options: this.articleColumns,
+            uniqueOptions: ['heading', 'summary'],
+            previousSelected: null,
             // articleColumns: ['heading', 'summary', 'paragraph', 'subheading', 'listarray'],
             dummyOrder: ['heading', 'summary', 'paragraph', 'subheading', 'paragraph', 'listarray', 'paragraph', 'subheading', 'paragraph'],
             dummyArticle: [
@@ -159,56 +145,64 @@ export default {
         rowCount() {
             return this.article?.length;
         },
-
-        computedArticleColumns() {
-            if (this.articleColumns?.length) {
-                // const options = this.articleColumns;
-                const options = this.articleColumns.map(element => {
-                    // console.log('%celement', 'color: darkseagreen; font-weight: bold;', element);
-                    if (element.name === 'heading' && this.headingExists) {
-                        element.disabled = true;
-                    }
-                    element.name === 'heading' && this.headingExists ? element.disabled = true : element.disabled = false;
-                    return element;
-                });
-
-                // console.log('%coptions', 'color: darkseagreen; font-weight: bold;', options);
-
-                return options;
-            // this.article.forEach(item => {
-            //     if (item.key === 'heading') {
-            //         this.articleColumns.
-            //     }
-            // })
-            // const options = this.articleColumns;
-            // if (this.headingExists) {
-            //     this.options.filter(item => );
-            }
-            return this.articleColumns;
-        }
     },
 
     methods: {
-        checkUniqueOptions(e) {
-            const heading = this.headingExists();
-            console.log('%ce', 'color: darkseagreen; font-weight: bold;', e.target.value, e.target.selectedOptions);
-            console.log('%cheading', 'color: darkseagreen; font-weight: bold;', heading);
+        setPreviousSelected(e) {
+            this.previousSelected = e.target.value;
+        },
 
-            if (heading) {
-                this.options = this.articleColumns.map(element => {
-                    console.log('%celement', 'color: darkseagreen; font-weight: bold;', element);
-                    element.name === 'heading' && e.target.value ? element.disabled = true : element.disabled = false;
-                    return element;
+        
+
+        findUniqueIndex(uniqueOption) {
+            console.log('%cuniqueOption', 'color: darkseagreen; font-weight: bold;', uniqueOption);
+            const index = this.articleColumns.findIndex(object => {
+                    return object.name === uniqueOption;
                 });
+            return index
+        },
+
+        disableUniqueOption(e) {
+            const currentSelected = e.target.value;
+
+            // Prevent that any disabled prop can be changed
+            // This is actually not possible because the if previousSelected is 'heading' or 'summary' it cannot be the currentSelected (this.disableUniqueOption will not be executed)
+            if (this.previousSelected === currentSelected) return
+
+            // If previousSelected is any of the uniqueOptions, this means that it will get changed
+            // (since it cannot be re-selected because it's disabled)
+            // So the uniqueOptions disabled value can be set to true
+            if (this.uniqueOptions.includes(this.previousSelected)) {
+                const index = this.findUniqueIndex(this.previousSelected);
+                this.articleColumns[index].disabled = false;
             }
 
-            
+            if (this.uniqueOptions.includes(currentSelected)) {
+                const index = this.findUniqueIndex(currentSelected);
+                this.articleColumns[index].disabled = true;
+            }
         },
 
-        headingExists() {
-            const heading = this.article.filter(item => item.key === 'heading');
-            return heading.length > 0 ? true : false;
-        },
+        // checkUniqueOptions() {
+        //     const heading = this.headingExists();
+        //     const summary = this.summaryExists();
+
+        //     const headingIndex = this.findUniqueIndex('heading');
+        //     heading ? this.articleColumns[headingIndex].disabled = true : this.articleColumns[headingIndex].disabled = false;
+
+        //     const summaryIndex = this.findUniqueIndex('summary');
+        //     summary ? this.articleColumns[summaryIndex].disabled = true : this.articleColumns[summaryIndex].disabled = false;       
+        // },
+
+        // headingExists() {
+        //     const heading = this.article.filter(item => item.key === 'heading');
+        //     return heading.length > 0 ? true : false;
+        // },
+
+        // summaryExists() {
+        //     const heading = this.article.filter(item => item.key === 'summary');
+        //     return heading.length > 0 ? true : false;
+        // },
 
         displayValue(val) {
             console.log('%cval', 'color: plumg; font-weight: bold;', val);

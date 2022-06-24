@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const state = {
-    articleColumns: null,
+    // articleColumns: null,
+    articleColumns: ['heading', 'summary', 'paragraph', 'subheading', 'listarray'],
 };
 
 const getters = {
