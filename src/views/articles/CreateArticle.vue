@@ -1,27 +1,40 @@
 <template>
     <div class="article-form">
         <h1>Create new article</h1>
-        <button type="button" @click="addRow">Add</button>
 
-        <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false">
-            <template #item="{element}">
-                <div>
-                    <!-- <Key v-model="element.key" /> -->
-                    <select name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
-                        <option value selected disabled >Choose A Column</option>
-                        <option
-                            v-for="(column, i) in articleColumns"
-                            :key="i"
-                            :value="column.name"
-                            :disabled="column.disabled">{{ column.name }}</option>
-                    </select>
+        <!-- <div>
+            <select name="template" id="template" @change="setTemplate">
+                <option value selected disabled>Choose a template</option>
+                <option value="templateBasic">Basic Article</option>
+                <option value="templateTable">Article with Table</option>
+            </select>
 
-                    <Value v-model="element.value" />
-                    
-                    <button type="button" @click="deleteRow(element.id)">Delete</button>
-                </div>
-            </template>
-        </draggable>        
+            <button type="button" @click="setTemplate('', 'templateEmpty')">Start without template</button>
+        </div> -->
+
+        <div>
+            <button type="button" @click="addRow">Add Row</button><br>
+            <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false">
+                <template #item="{element}">
+                    <div>
+                        <!-- <Key v-model="element.key" /> -->
+                        <select name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
+                            <option value selected disabled >Choose A Column</option>
+                            <option
+                                v-for="(column, i) in articleColumns"
+                                :key="i"
+                                :value="column.name"
+                                :disabled="column.disabled">{{ column.name }}</option>
+                        </select>
+                        <Value v-model="element.value" />
+            
+                        <button type="button" @click="deleteRow(element.id)">Delete</button>
+                    </div>
+                </template>
+            </draggable>
+            
+            <button type="button" @click="submitForm">Create Article</button>
+        </div>        
     </div>
 </template>
 
@@ -54,7 +67,6 @@ export default {
 
     data() {
         return {
-            options: this.articleColumns,
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
             // articleColumns: ['heading', 'summary', 'paragraph', 'subheading', 'listarray'],
@@ -67,8 +79,11 @@ export default {
                 { listarray: [['Awesome listarray item 1', 'Awesome listarray item 2']] }, 
             ],
             article: [
-                { key: 'heading', value: '', id: Date.now(), l: 'l1' },
-                { key: 'summary', value: '', id: Date.now() - 11, l: 'l1' },
+                { key: 'heading', value: '', id: Date.now() },
+                { key: 'summary', value: '', id: Date.now() - 5 },
+                { key: 'paragraph', value: '', id: Date.now() - 10 },
+                // { key: 'heading', value: '', id: Date.now(), l: 'l1' },
+                // { key: 'summary', value: '', id: Date.now() - 11, l: 'l1' },
                 // { key: "summary", value: "", id: 2,l:"l1" },
                 // { key: "subheading", value: "", id: 3,l:"l1" },
                 // { key: "paragraph", value: "", id: 4,l:"l1" },
@@ -82,6 +97,20 @@ export default {
                 // { key: "image", value: "", id:10,l:"l1" },
 
             ],
+            templateEmpty: [
+                { key: '', value: '', id: Date.now() },
+            ],
+            templateBasic: [
+                { key: 'heading', value: '', id: Date.now() },
+                { key: 'summary', value: '', id: Date.now() - 5 },
+                { key: 'paragraph', value: '', id: Date.now() - 10 },
+            ],
+            templateBasic: [
+                { key: 'heading', value: '', id: Date.now() },
+                { key: 'summary', value: '', id: Date.now() - 11 },
+                { key: 'paragraph', value: '', id: Date.now() - 10 },
+                { key: 'table', value: '', id: Date.now() - 15 },
+            ]
         }
     },
 
@@ -148,11 +177,16 @@ export default {
     },
 
     methods: {
-        setPreviousSelected(e) {
-            this.previousSelected = e.target.value;
+        setTemplate(e, empty) {
+            console.log('%cempty', 'color: darkseagreen; font-weight: bold;', empty);
+            const template = e.target.value || empty;
+            this.article = `${this.template}`;
+            console.log('%cthis.article', 'color: darkseagreen; font-weight: bold;', this.article);
         },
 
-        
+        setPreviousSelected(e) {
+            this.previousSelected = e.target.value;
+        },     
 
         findUniqueIndex(uniqueOption) {
             console.log('%cuniqueOption', 'color: darkseagreen; font-weight: bold;', uniqueOption);
