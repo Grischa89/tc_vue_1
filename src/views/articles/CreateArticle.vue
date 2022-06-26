@@ -2,15 +2,15 @@
     <div class="article-form">
         <h1>Create new article</h1>
 
-        <!-- <div>
+        <div>
             <select name="template" id="template" @change="setTemplate">
                 <option value selected disabled>Choose a template</option>
                 <option value="templateBasic">Basic Article</option>
                 <option value="templateTable">Article with Table</option>
             </select>
 
-            <button type="button" @click="setTemplate('', 'templateEmpty')">Start without template</button>
-        </div> -->
+            <button type="button" @click="setTemplate($event, 'templateEmpty')">Start without template</button>
+        </div>
 
         <div>
             <button type="button" @click="addRow">Add Row</button><br>
@@ -69,7 +69,6 @@ export default {
         return {
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
-            // articleColumns: ['heading', 'summary', 'paragraph', 'subheading', 'listarray'],
             dummyOrder: ['heading', 'summary', 'paragraph', 'subheading', 'paragraph', 'listarray', 'paragraph', 'subheading', 'paragraph'],
             dummyArticle: [
                 { heading: 'Awesome heading' }, 
@@ -78,39 +77,23 @@ export default {
                 { subheading: ['Awesome subheading 1', 'Awesome subheading 2'] }, 
                 { listarray: [['Awesome listarray item 1', 'Awesome listarray item 2']] }, 
             ],
-            article: [
-                { key: 'heading', value: '', id: Date.now() },
-                { key: 'summary', value: '', id: Date.now() - 5 },
-                { key: 'paragraph', value: '', id: Date.now() - 10 },
-                // { key: 'heading', value: '', id: Date.now(), l: 'l1' },
-                // { key: 'summary', value: '', id: Date.now() - 11, l: 'l1' },
-                // { key: "summary", value: "", id: 2,l:"l1" },
-                // { key: "subheading", value: "", id: 3,l:"l1" },
-                // { key: "paragraph", value: "", id: 4,l:"l1" },
-
-                // { key: "table", value: [], id: 5,l:"l1" },
-                // { key: "ad_url", value: "", id: 6,l:"l1" },
-                // { key: "url", value: "", id: 7,l:"l1" },
-                // { key: "listarray", value: "", id: 8,l:"l1" },
-                // // vermutung dass wir es nicht brauchen
-                // { key: "order", value: "", id:9,l:"l1" },
-                // { key: "image", value: "", id:10,l:"l1" },
-
-            ],
-            templateEmpty: [
-                { key: '', value: '', id: Date.now() },
-            ],
-            templateBasic: [
-                { key: 'heading', value: '', id: Date.now() },
-                { key: 'summary', value: '', id: Date.now() - 5 },
-                { key: 'paragraph', value: '', id: Date.now() - 10 },
-            ],
-            templateBasic: [
-                { key: 'heading', value: '', id: Date.now() },
-                { key: 'summary', value: '', id: Date.now() - 11 },
-                { key: 'paragraph', value: '', id: Date.now() - 10 },
-                { key: 'table', value: '', id: Date.now() - 15 },
-            ]
+            article: [],
+            templates: {
+                templateEmpty: [
+                    { key: '', value: '', id: Date.now() },
+                ],
+                templateBasic: [
+                    { key: 'heading', value: '', id: Date.now() },
+                    { key: 'summary', value: '', id: Date.now() - 5 },
+                    { key: 'paragraph', value: '', id: Date.now() - 10 },
+                ],
+                templateTable: [
+                    { key: 'heading', value: '', id: Date.now() },
+                    { key: 'summary', value: '', id: Date.now() - 11 },
+                    { key: 'paragraph', value: '', id: Date.now() - 10 },
+                    { key: 'table', value: '', id: Date.now() - 15 },
+                ]
+            },
         }
     },
 
@@ -178,10 +161,8 @@ export default {
 
     methods: {
         setTemplate(e, empty) {
-            console.log('%cempty', 'color: darkseagreen; font-weight: bold;', empty);
             const template = e.target.value || empty;
-            this.article = `${this.template}`;
-            console.log('%cthis.article', 'color: darkseagreen; font-weight: bold;', this.article);
+            this.article = this.templates[`${template}`];
         },
 
         setPreviousSelected(e) {
@@ -217,31 +198,6 @@ export default {
             }
         },
 
-        // checkUniqueOptions() {
-        //     const heading = this.headingExists();
-        //     const summary = this.summaryExists();
-
-        //     const headingIndex = this.findUniqueIndex('heading');
-        //     heading ? this.articleColumns[headingIndex].disabled = true : this.articleColumns[headingIndex].disabled = false;
-
-        //     const summaryIndex = this.findUniqueIndex('summary');
-        //     summary ? this.articleColumns[summaryIndex].disabled = true : this.articleColumns[summaryIndex].disabled = false;       
-        // },
-
-        // headingExists() {
-        //     const heading = this.article.filter(item => item.key === 'heading');
-        //     return heading.length > 0 ? true : false;
-        // },
-
-        // summaryExists() {
-        //     const heading = this.article.filter(item => item.key === 'summary');
-        //     return heading.length > 0 ? true : false;
-        // },
-
-        displayValue(val) {
-            console.log('%cval', 'color: plumg; font-weight: bold;', val);
-        },
-
         submitForm() {
             console.log('%carticle', 'color: plum; font-weight: bold;', this.article);
             // data = {
@@ -254,13 +210,6 @@ export default {
             //     .catch(err => {
             //         console.log('err', err);
             //     })
-        },
-
-        changeOrder() {
-            console.log("1:", this.article)
-            //   console.log("2:", this.list2)
-            window.console.log(evt);
-            // this.submitForm();
         },
 
         addRow() {
