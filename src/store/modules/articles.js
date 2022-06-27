@@ -58,8 +58,8 @@ const actions = {
 
     postArticle({ commit }, article) {
         console.log('%carticle in postArticle', 'color: darkseagreen; font-weight: bold;', article);
-        
-        axios.post('/api/v1/articles/add', article)
+
+        axios.post('/api/v1/articles/add/', article)
             .then(res => {
                 console.log('%cres from postArticle', 'color: darkseagreen; font-weight: bold;', res);
             })

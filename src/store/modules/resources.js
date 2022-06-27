@@ -96,7 +96,7 @@ const actions = {
 
   fetchSubscriptionOptions({ commit }) {
     
-    return axios.get('/api/v1/subscription/event_options/')
+    return axios.get('/api/v1/subscriptions/event_options/')
     .then(res => {
       console.log('fetchSubscriptionOptions', res);
 
@@ -114,7 +114,7 @@ const actions = {
 
     commit('setSubscriptionStatus', 'loading');
 
-    return axios.get('/api/v1/subscription/list_subscriptions/')
+    return axios.get('/api/v1/subscriptions/list_subscriptions/')
       .then(res => {
         console.log('%cres subs', 'color: darkseagreen; font-weight: bold;', res.data);
         commit('setSubscriptions', res.data);
@@ -145,7 +145,7 @@ const actions = {
 
   updateSubscription({ commit }, data) {
 
-    return axios.patch(`/api/v1/subscription/${data.pk}/`, data.data)
+    return axios.patch(`/api/v1/subscriptions/${data.pk}/`, data.data)
       .then(res => {
         console.log('res in editSubscription', res);
         commit('setUpdatedSubscriptions', { index: data.index, item: res.data });
@@ -162,7 +162,7 @@ const actions = {
     // console.log('deleteSubscription dispatched! ', 'pk: ', data.pk, 'index: ', data.index);
 
     // TODO: Turn on before deployment
-    return axios.delete(`/api/v1/subscription/${data.pk}/`)
+    return axios.delete(`/api/v1/subscriptions/${data.pk}/`)
       .then(res => {
         console.log('res in deleteSubscription', res);
         commit('setDeletedSubscriptions', data.index);
