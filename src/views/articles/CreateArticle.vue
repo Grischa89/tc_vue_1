@@ -210,6 +210,7 @@ export default {
             //     .catch(err => {
             //         console.log('err', err);
             //     })
+            this.$store.dispatch('postArticle', this.article);
         },
 
         addRow() {

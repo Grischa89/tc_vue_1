@@ -19,7 +19,7 @@ const getters = {
 
 const actions = {
     getArticleColumns({ commit }) {
-        axios.get('http://127.0.0.1:8000/bookmarks/get_article_columns/')
+        axios.get('/articles/get_article_columns/')
         .then(res => {
             console.log('res', res.data.columns);
             // console.log('reheadingExistss',this.headingExists);
@@ -55,6 +55,18 @@ const actions = {
             console.log('err', err);
         });
     },
+
+    postArticle({ commit }, article) {
+        console.log('%carticle in postArticle', 'color: darkseagreen; font-weight: bold;', article);
+        
+        axios.post('/api/v1/articles/add', article)
+            .then(res => {
+                console.log('%cres from postArticle', 'color: darkseagreen; font-weight: bold;', res);
+            })
+            .catch(err => {
+                console.log('%cerr from postArticle', 'color: red; font-weight: bold;', err);
+            });
+    }
 };
 
 const mutations = {
