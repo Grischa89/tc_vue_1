@@ -19,7 +19,7 @@ const getters = {
 
 const actions = {
     getArticleColumns({ commit }) {
-        axios.get('/articles/get_article_columns/')
+        axios.get('/api/v1/articles/get_article_columns/')
         .then(res => {
             console.log('res', res.data.columns);
             // console.log('reheadingExistss',this.headingExists);
