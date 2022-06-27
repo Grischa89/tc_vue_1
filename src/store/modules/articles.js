@@ -38,7 +38,7 @@ const actions = {
     },
 
     getArticles({ commit }) {
-        axios.get('http://127.0.0.1:8000/bookmarks/articles/')
+        axios.get('/api/v1/articles/')
         .then(res => {
             console.log('res', res.data);
             // console.log('reheadingExistss',this.headingExists);
