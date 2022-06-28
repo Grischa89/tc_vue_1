@@ -3,7 +3,10 @@
     v-if="elapsedInfo"
     :elapsedInfo="elapsedInfo" />
   <Navbar
-    :isAuthenticated="isAuthenticated" />
+    :isAuthenticated="isAuthenticated"
+    :darkMode="darkMode" />
+
+    {{ darkMode }}
   
   <div class="main-wrapper">
     <router-view :key="$route.fullPath" />
@@ -91,6 +94,7 @@ export default {
 
   data() {
     return {
+      darkMode: false,
       consentNeeded: false,
       headerTitle: 'Cookie consent',
       headerDescription: 'We use cookies to ensure you get the best experience on our website. You can opt-out or customize the cookie settings under \"Preferences\".',
@@ -118,7 +122,7 @@ export default {
 
   async beforeCreate() {
     const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
-    
+
     if (tc_user.refresh) {
       // "known / not logged out user"
 
@@ -152,6 +156,7 @@ export default {
   created() {
     this.initCookieConsent();
     this.$store.dispatch('fetchLastUpdated');
+    this.setMode();
   },
 
   computed: {
@@ -254,6 +259,21 @@ export default {
 
     _hjid() {
       console.log('_hjid script executed');
+    },
+
+    setMode() {
+      const tc_colorMode = JSON.parse(localStorage.getItem('tc_colorMode')) || '';
+
+      console.log('%cThis is true if tc_colorMode not set in localStorage: ', 'color: orange; font-weight: bold;', tc_colorMode == false);
+      console.log('%cOS dark mode set to: ', 'color: orange; font-weight: bold;', window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+      // TODO This is how it should be (Check os mode preference, but let localStorage setting still take precedence)
+      // if (tc_colorMode === 'dark' || (window.matchMedia('(prefers-color-scheme: dark)').matches && !tc_colorMode)) {
+      // TODO This is just for testing
+      if (tc_colorMode === 'dark') {
+        document.documentElement.setAttribute('color-mode', 'dark');
+        this.darkMode = true;
+      }
     }
 
   },
@@ -263,6 +283,47 @@ export default {
 
 
 <style lang="scss">
+:root[color-mode="light"] {
+  --surface1: #fef9f3;
+  --surface2: #fefbf7;
+  --surface3: #ffffff;
+  --element: #252323;
+  --primary: #fef6ec; // $primary
+  --primary1: #fcdcb6; // $primary-darker
+  --primary2: #f9c07b; // $in-between
+  --primary3: #f6a746; // $secondary-lighter
+  --primary3: #f48b0b; // $secondary
+
+  // --element1: #252323;
+  // --element2: #252323;
+  // --element3: #252323;
+  // --elementInverse: #eee;
+  --first: #fce2c2;
+  --second: #f7ae54;
+  --third: #5f32dc;
+}
+
+:root[color-mode="dark"] {
+  --surface1: #252323;
+  --surface2: #383535;
+  --surface3: #3D3A3A;
+  --surface4: #454141;
+  --surface5: #4D4949;
+  --element: hsla(0, 0%, 100%, 0.87);
+  --primary: #fef6ec; // $primary
+  --primary1: #fcdcb6; // $primary-darker
+  --primary2: #f9c07b; // $in-between
+  --primary3: #f6a746; // $secondary-lighter
+  --primary3: #f48b0b; // $secondary
+  // --element1: hsla(0, 0%, 100%, 0.87);
+  // --element2: hsla(0, 0%, 100%, 0.87);
+  // --element3: hsla(0, 0%, 100%, 0.87);
+  // --elementInverse: #111;
+  --first: #fce2c2;
+  --second: #f7ae54;
+  --third: #8f70e7;
+}
+
 * {
   ::selection, &::-webkit-selection {
     background-color: $selection;
@@ -281,7 +342,8 @@ html, body {
   // font-family: Monaco, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: $black;
+  color: var(--element);
+  background-color: var(--surface1);
 }
 
 #app {
@@ -291,7 +353,7 @@ html, body {
   // position: relative;
   // min-height: 100vh;
   text-align: center;
-  background-color: rgba($primary, .3);
+  // background-color: rgba($primary, .3);
 
   // background-image: linear-gradient(to right bottom, #fefefa, #fdfcf3, #fcf9ec, #fcf6e5, #fdf3de, #fcedd0, #fce6c3, #fddfb6, #fcd39f, #fcc689, #fbb974, #fbab60);
 }

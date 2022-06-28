@@ -78,6 +78,22 @@
               <button class="navbar__menu__item__link" @click="logout" data-toggle-menu>Logout</button>
             </li>
           </template>
+          <!-- moon -->
+          <li class="navbar__menu__item" v-if="!isDarkMode">
+            <button class="navbar__menu__item__link" @click="toggleMode" data-mode="dark">
+              <svg xmlns="http://www.w3.org/2000/svg" class="navbar__menu__item__link__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            </button>
+          </li>
+          <!-- sun -->
+          <li class="navbar__menu__item" v-if="isDarkMode">
+            <button class="navbar__menu__item__link" @click="toggleMode" data-mode="light">
+              <svg xmlns="http://www.w3.org/2000/svg" class="navbar__menu__item__link__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </button>
+          </li>
         </ul>
 
       </div>
@@ -102,13 +118,34 @@ export default {
       type: Boolean,
       // required: true,
     },
+    darkMode: {
+      type: Boolean,
+    }
+  },
+
+  created() {
+    console.log('%cthis.isDarkMode', 'color: darkseagreen; font-weight: bold;', this.isDarkMode);
+    console.log('%cthis.darkMode', 'color: darkseagreen; font-weight: bold;', this.darkMode);
+    this.isDarkMode = this.darkMode;
   },
 
   data() {
     return {
       showMenu: false,
       atTop: 0,
+      // TODO: If mode is set in localStorage, take val from there
+      isDarkMode: false,
     }
+  },
+
+  computed: {
+    // isDarkMode() {
+    //   const tc_colorMode = JSON.parse(localStorage.getItem('tc_colorMode')) || '';
+    //   if (tc_colorMode === 'dark' || (window.matchMedia('(prefers-color-scheme: dark)').matches && !tc_colorMode)) {
+    //     return true;
+    //   }
+    //   return false;
+    // }
   },
 
   methods: {
@@ -158,6 +195,16 @@ export default {
             console.log('err in Navbar logout()', err);
         });
     },
+
+    toggleMode(e) {
+      const mode = e.currentTarget.dataset.mode;
+      console.log('%cmode', 'color: darkseagreen; font-weight: bold;', mode);
+      document.documentElement.setAttribute('color-mode', `${mode}`);
+      mode === 'dark' ? this.isDarkMode = true : this.isDarkMode = false;
+
+      const modeJSON = JSON.stringify(mode);
+      localStorage.setItem('tc_colorMode', modeJSON);
+    }
     
   },
 
@@ -175,8 +222,6 @@ export default {
 .navbar-wrapper {
   display: flex;
   flex-wrap: wrap;
-  // justify-content: space-between;
-  // align-items: center;
   position: sticky;
   top: 0;
   z-index: 50;
@@ -184,10 +229,10 @@ export default {
   margin-bottom: .75rem;
   background-color: transparent;
   transition: all 300ms ease-in-out;
+  color: var(--element);
 
   &--scrolled {
-    background-color: #fff;
-    border-bottom: 1px solid rgba(209, 213, 219, 1);
+    background-color: var(--surface3);
     -webkit-box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); 
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   }
@@ -205,7 +250,6 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  max-width: 200ch;
 
   @media(min-width: 200ch) {
     margin-left: auto;
@@ -260,7 +304,6 @@ export default {
   // outline-offset: 2px;
   font-size: 1.125rem; // 18px
   line-height: 1.75rem; // 28px
-  color: rgba(31, 41, 55, 1);
   cursor: pointer;
 
   // &:focus {
@@ -311,7 +354,6 @@ export default {
     display: flex;
     align-items: flex-start;
     padding: .5rem 0; // 8px
-    color: rgba(31, 41, 55, 1);
     text-transform: uppercase;
     font-weight: bold;
     letter-spacing: 0.05em;
@@ -322,11 +364,15 @@ export default {
     box-shadow: none;
     -webkit-tap-highlight-color: transparent;
 
+    &__icon {
+      height: $mobile-subheading;
+      width: $mobile-subheading;
+    }
   }
 
   @media (min-width: 1024px) {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     margin-left: auto;
     margin-right: 0;
 
