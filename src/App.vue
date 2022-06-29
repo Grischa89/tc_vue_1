@@ -11,7 +11,7 @@
   <div class="main-wrapper">
     <router-view :key="$route.fullPath" />
 
-    <BackToTopButton />
+    <!-- <BackToTopButton /> -->
   </div>
 
   <CallToAction v-if="!userExists">
@@ -75,7 +75,7 @@
 <script>
 import LastUpdatedInfoBanner from './components/LastUpdatedInfoBanner.vue';
 import Navbar from './components/navbar/Navbar.vue';
-import BackToTopButton from './components/navbar/BackToTopButton.vue';
+// import BackToTopButton from './components/navbar/BackToTopButton.vue';
 import Footer from './components/Footer.vue';
 import CallToAction from './components/cta/CallToAction.vue';
 
@@ -88,7 +88,7 @@ export default {
     LastUpdatedInfoBanner,
     Navbar,
     Footer,
-    BackToTopButton,
+    // BackToTopButton,
     CallToAction,
   },
 
@@ -157,6 +157,17 @@ export default {
     this.initCookieConsent();
     this.$store.dispatch('fetchLastUpdated');
     this.setMode();
+
+    let docWidth = document.documentElement.offsetWidth;
+
+    [].forEach.call(
+      document.querySelectorAll('*'),
+      function(el) {
+        if (el.offsetWidth > docWidth) {
+          console.log('%cel', 'color: crimson; font-weight: bold;', el);
+        }
+      }
+    );
   },
 
   computed: {
@@ -287,17 +298,26 @@ export default {
   --surface1: #fef9f3;
   --surface2: #fefbf7;
   --surface3: #ffffff;
-  --element: #252323;
+  
+  --hover-surface: hsla(33, 91%, 73%, .04); // Derived froom $in-between, Light Orange: #fcdcb6ff;
+  // --hover-surface1: hsla(0, 3%, 14%, .04); // Derived from $black, Raisin Black: #252323ff;
+  --hover-button: hsla(33, 91%, 73%, .4);
+  --focus-button: hsla(33, 91%, 73%, .6);
+
   --primary: #fef6ec; // $primary
   --primary1: #fcdcb6; // $primary-darker
   --primary2: #f9c07b; // $in-between
   --primary3: #f6a746; // $secondary-lighter
   --primary3: #f48b0b; // $secondary
 
-  // --element1: #252323;
-  // --element2: #252323;
-  // --element3: #252323;
-  // --elementInverse: #eee;
+  --divider: hsla(0, 3%, 14%, .1);
+
+  --text: #252323;
+  --textInverse: hsla(0, 0%, 100%, .87);
+
+  --tooltip: hsla(0, 3%, 14%, .8);
+  --banner: #fcdcb6; // $primary-darker
+
   --first: #fce2c2;
   --second: #f7ae54;
   --third: #5f32dc;
@@ -309,16 +329,26 @@ export default {
   --surface3: #3D3A3A;
   --surface4: #454141;
   --surface5: #4D4949;
-  --element: hsla(0, 0%, 100%, 0.87);
+  
+  --hover-surface: hsla(33, 91%, 73%, .04); // Derived froom $in-between, Light Orange: #fcdcb6ff;
+  // --hover-surface1: hsla(0, 0%, 100%, .04); // Derived from --text
+
+  --hover-button: hsla(33, 91%, 73%, .4);
+  --focus-button: hsla(33, 91%, 73%, .6);
+  
   --primary: #fef6ec; // $primary
-  --primary1: #fcdcb6; // $primary-darker
+  --primary1: #fac98c; // $primary-darker
   --primary2: #f9c07b; // $in-between
   --primary3: #f6a746; // $secondary-lighter
   --primary3: #f48b0b; // $secondary
-  // --element1: hsla(0, 0%, 100%, 0.87);
-  // --element2: hsla(0, 0%, 100%, 0.87);
-  // --element3: hsla(0, 0%, 100%, 0.87);
-  // --elementInverse: #111;
+  --divider: hsla(0, 3%, 14%, .96);
+
+  --text: hsla(0, 0%, 100%, .87);
+  --textInverse: #252323;
+
+  --tooltip: hsla(33, 90%, 96%, .8);
+  --banner: transparent;
+
   --first: #fce2c2;
   --second: #f7ae54;
   --third: #8f70e7;
@@ -342,7 +372,7 @@ html, body {
   // font-family: Monaco, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--element);
+  color: var(--text);
   background-color: var(--surface1);
 }
 

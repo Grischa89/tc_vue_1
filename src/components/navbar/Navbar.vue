@@ -204,6 +204,8 @@ export default {
 
       const modeJSON = JSON.stringify(mode);
       localStorage.setItem('tc_colorMode', modeJSON);
+
+      this.toggleNavbar();
     }
     
   },
@@ -227,9 +229,9 @@ export default {
   z-index: 50;
   padding: .5rem 1rem;
   margin-bottom: .75rem;
-  background-color: transparent;
+  background-color: var(--surface3);
   transition: all 300ms ease-in-out;
-  color: var(--element);
+  color: var(--text);
 
   &--scrolled {
     background-color: var(--surface3);

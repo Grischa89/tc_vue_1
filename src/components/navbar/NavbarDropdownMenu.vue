@@ -39,17 +39,25 @@ export default {
 .dropdown__menu {
   display: none;
   padding-bottom: .5rem; // 8px
-  background-color: rgb(255 255 255 / 0.7);
   // font-size: 0.875rem/* 14px */;
   // line-height: 1.25rem/* 20px */;
   border-radius: 0.25rem/* 4px */;
   z-index: 60;
 
-  &__item__link{
-    // py-1 text-md inline-flex items-center justify-content
-    display: inline-flex;
-    padding: .25rem 0; // 4px
+  &__item {
+
+    &:hover {
+      background-color: var(--hover-surface);
+    }
+
+    &__link{
+      // py-1 text-md inline-flex items-center justify-content
+      display: inline-flex;
+      padding: .25rem 0; // 4px
+    }
   }
+
+  // &__item
 
   @media (min-width: 1024px) {
     margin-top: .5rem; // 8px

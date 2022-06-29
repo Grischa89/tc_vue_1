@@ -24,6 +24,14 @@ export default {
   padding: .375rem;
   -webkit-tap-highlight-color: $primary;
 
+  &:hover {
+    background-color: var(--hover-button);
+  }
+
+  &:focus {
+    background-color: var(--focus-button);
+  }  
+
   &__prepend {
     height: 1.25rem;
     width: 1.25em;

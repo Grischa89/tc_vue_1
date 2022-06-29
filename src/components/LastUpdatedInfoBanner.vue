@@ -23,9 +23,8 @@ export default {
 
 <style lang="scss">
 .last-updated__banner {
-  background-color: var(--primary1);
-  color: $black;
-  // background-color: $primary-darker;
+  background-color: var(--banner);
+  color: var(--text);
 
   &__help {
     font-size: $mobile-help;

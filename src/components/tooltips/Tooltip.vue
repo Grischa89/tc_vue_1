@@ -17,8 +17,8 @@ export default {
 
   &__text {
     visibility: hidden;
-    background-color: rgba($black, .5);
-    color: $white;
+    background-color: var(--tooltip);
+    color: var(--textInverse);
     text-align: center;
     white-space: nowrap;
     font-size: $mobile-help;
@@ -39,7 +39,7 @@ export default {
       margin-left: -5px;
       border-width: 5px;
       border-style: solid;
-      border-color: rgba($black, .5) transparent transparent transparent;
+      border-color: var(--tooltip) transparent transparent transparent;
     }
   }
 }

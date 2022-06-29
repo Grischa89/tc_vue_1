@@ -188,14 +188,13 @@ export default {
 
 <style lang="scss">
 .table__wrapper {
-  // flex flex-col justify-around items-center
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  overflow-x: hidden;
 
   &__title {
-    // text-lg font-bold uppercase tracking-wider my-2
     font-size: $mobile-heading;
     font-weight: bold;
     text-transform: uppercase;
@@ -204,37 +203,31 @@ export default {
   }
 
   &__card {
-    // flex flex-col mx-auto my-2 py-1 bg-white rounded shadow border-b border-gray-300 w-10/12 sm:max-w-md
     display: flex;
     flex-direction: column;
     margin: .5rem auto;
-    // padding: .25rem 0;
     border-radius: .75rem;
+    border: .0625rem solid var(--divider);
     width: 100%;
-    // width: 83.333333%;
-    box-shadow: $card-shadow rgba($black, 0.2); 
-    -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
-    -moz-box-shadow: $card-shadow rgba($black, 0.2);
-    // TODO: @media für alles > mobile
-    // max-width: 450px;
     max-width: 60ch;
-    background-color: $white;
+    background-color: var(--surface2);
+
+    @include tablet {
+      box-shadow: 1px 1px 5px rgba($black, 0.2);
+    }
   }
 }
 
 .table {
-  // table-fixed text-sm
   table-layout: fixed;
   font-size: $mobile-body;
 
   &__head {
-    border-bottom: 1px solid rgba(0, 0, 0, .3);
+    border-bottom: .0625rem solid var(--divider);
 
     &__row {
-      // background-color: $primary-darker;
 
       &__cell {
-        // w-2/5 py-2 px-4 text-left uppercase
         padding:1rem;
         text-align: left;
         text-transform: uppercase;
@@ -247,10 +240,10 @@ export default {
 
     &__row {
 
-      border-bottom: 1px solid rgba(0, 0, 0, .1);
+      border-bottom: .0625rem solid var(--divider);
 
       &:hover {
-        background-color: $primary;
+        background-color: var(--hover-surface);
       }
 
       &:last-of-type {
@@ -317,22 +310,20 @@ export default {
   }
 }
 
-.line-behind--thead {
-  box-shadow: $line-behind;
-  padding: 0 .25rem;
-}
+// TODO: Dark Mode
+// .line-behind--thead {
+//   box-shadow: inset 0 -.625rem 0 0 var(--primary2);
+//   padding: 0 .25rem;
+// }
 
 .tap {
   -webkit-tap-highlight-color: $primary;
 }
 
-  /* tr:nth-of-type(odd) {
-    //background: rgb(209, 213, 219);
-    //background: rgb(255, 227, 192);
-    // background: #fed7aa;
-  } */
-  thead .thead-row {
-    background: white;
-  }
+  // /* tr:nth-of-type(odd) {
+  //   //background: rgb(209, 213, 219);
+  //   //background: rgb(255, 227, 192);
+  //   // background: #fed7aa;
+  // } */
   
 </style>
