@@ -71,7 +71,7 @@ export default {
     &__text {
 
       &__highlight {
-        box-shadow: $line-behind-light;
+        box-shadow: inset 0 -.625rem 0 0 var(--textBackdropLight);
       }
     }
   }

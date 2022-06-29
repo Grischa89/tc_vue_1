@@ -248,7 +248,7 @@ export default {
 
       .profile__resource__item__display__task__header {
         h2 {
-          box-shadow: $line-behind-light;
+          box-shadow: inset 0 -.625rem 0 0 var(--textBackdropLight);
         }
       }
     }

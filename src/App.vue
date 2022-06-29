@@ -314,6 +314,8 @@ export default {
 
   --text: #252323;
   --textInverse: hsla(0, 0%, 100%, .87);
+  --textBackdrop: #f9c07b; // $in-between
+  --textBackdropLight: #fcdcb6; // $primary-darker
 
   --tooltip: hsla(0, 3%, 14%, .8);
   --banner: #fcdcb6; // $primary-darker
@@ -345,6 +347,8 @@ export default {
 
   --text: hsla(0, 0%, 100%, .87);
   --textInverse: #252323;
+  --textBackdrop: transparent;
+  --textBackdropLight: transparent;
 
   --tooltip: hsla(33, 90%, 96%, .8);
   --banner: transparent;

@@ -310,11 +310,10 @@ export default {
   }
 }
 
-// TODO: Dark Mode
-// .line-behind--thead {
-//   box-shadow: inset 0 -.625rem 0 0 var(--primary2);
-//   padding: 0 .25rem;
-// }
+.line-behind--thead {
+  box-shadow: inset 0 -.625rem 0 0 var(--textBackdrop);
+  padding: 0 .25rem;
+}
 
 .tap {
   -webkit-tap-highlight-color: $primary;

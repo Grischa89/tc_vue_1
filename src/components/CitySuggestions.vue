@@ -88,9 +88,7 @@ export default {
     &__title {
       font-size: $mobile-subheading;
       letter-spacing: .0625rem;
-      box-shadow: $line-behind-light;
-      -webkit-box-shadow: $line-behind-light; 
-      -moz-box-shadow: $line-behind-light;
+      box-shadow: inset 0 -.625rem 0 0 var(--textBackdropLight);
     }
 
   }
