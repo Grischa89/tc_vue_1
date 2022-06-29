@@ -23,8 +23,6 @@ export default {
         border-radius: .75rem;
         min-height: 4ch;
         max-width: 80ch;
-        margin-left: auto;
-        margin-right: auto;
         margin-bottom: 2rem;
         padding-top: 1rem;
         padding-bottom: 1rem;

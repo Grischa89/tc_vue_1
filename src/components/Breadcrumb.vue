@@ -42,7 +42,6 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 1rem;
   margin-bottom: 1rem;
 
   @include tablet-landscape {
