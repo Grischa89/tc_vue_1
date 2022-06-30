@@ -26,12 +26,28 @@
                                 :value="column.name"
                                 :disabled="column.disabled">{{ column.name }}</option>
                         </select>
-                        <Value v-model="element.value" />
+
+                        <ValueSelect 
+                            v-if="element.key.includes('article_')"
+                            v-model="element.value" />
+
+                        <ValueInput
+                            v-else
+                            v-model="element.value"
+                            :keyType="keyType" />
+
+                        <!-- if element.key prev next // else -->
             
                         <button type="button" @click="deleteRow(element.id)">Delete</button>
                     </div>
                 </template>
             </draggable>
+
+            <br>
+
+            {{ article }}
+
+            <br>
             
             <button type="button" @click="submitForm">Create Article</button>
         </div>        
@@ -43,7 +59,8 @@ import { mapGetters } from 'vuex';
 
 import draggable from 'vuedraggable'
 import Key from '../articles/Key.vue';
-import Value from '../articles/Value.vue';
+import ValueInput from '../articles/ValueInput.vue';
+import ValueSelect from '../articles/ValueSelect.vue';
 import PreviewArticle from '../articles/PreviewArticle.vue';
 
 export default {
@@ -52,7 +69,8 @@ export default {
     components: {
         draggable,
         Key,
-        Value,
+        ValueInput,
+        ValueSelect,
         PreviewArticle,
     },
 
@@ -63,12 +81,15 @@ export default {
                 this.articleColumns[i].disabled = true;
             } 
         });
+        this.$store.dispatch('getArticleColumns');
+        this.$store.dispatch('getArticleRecommendations');
     },
 
     data() {
         return {
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
+            keyType: '',
             dummyOrder: ['heading', 'summary', 'paragraph', 'subheading', 'paragraph', 'listarray', 'paragraph', 'subheading', 'paragraph'],
             dummyArticle: [
                 { heading: 'Awesome heading' }, 
@@ -179,6 +200,7 @@ export default {
 
         disableUniqueOption(e) {
             const currentSelected = e.target.value;
+            this.keyType = currentSelected;
 
             // Prevent that any disabled prop can be changed
             // This is actually not possible because the if previousSelected is 'heading' or 'summary' it cannot be the currentSelected (this.disableUniqueOption will not be executed)

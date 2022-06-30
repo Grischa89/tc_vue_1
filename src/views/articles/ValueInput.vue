@@ -3,13 +3,20 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
-    name: 'Value',
+    name: 'ValueInput',
 
     props: ['modelValue'],
 
     emits: ['update:modelValue'],
+
+    computed: {
+        ...mapGetters({
+            articleRecommendations: 'articleRecommendations'
+        }),
+    }
 }
 </script>
 

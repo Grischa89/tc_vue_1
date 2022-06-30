@@ -1,19 +1,22 @@
 import axios from 'axios';
 
 const state = {
-    // articleColumns: null,
-    articleColumns: ['heading', 'summary', 'paragraph', 'subheading', 'listarray', 'table'],
+    articleColumns: [],
+    // articleColumns: ['heading', 'summary', 'paragraph', 'subheading', 'listarray', 'table'],
+    articleRecommendations: null,
 };
 
 const getters = {
     articleColumns: state => {
-        // const withDisabledProp = state.articleColumns.map()
         const mappedArticleColumns = state.articleColumns.map(element => {
             return { name: element, disabled: false };
         });
-
-        console.log('%cmappedArticleColumns', 'color: darkseagreen; font-weight: bold;', mappedArticleColumns);
+        
         return mappedArticleColumns;
+    },
+
+    articleRecommendations: state => {
+        return state.articleRecommendations;
     }
 };
 
@@ -21,16 +24,17 @@ const actions = {
     getArticleColumns({ commit }) {
         axios.get('/api/v1/articles/get_article_columns/')
         .then(res => {
-            console.log('res', res.data.columns);
-            // console.log('reheadingExistss',this.headingExists);
-
-            // if (this.headingExists > 1) {
-            //     this.articleColumns = res.data.columns.filter(item => item !== 'heading');
-            //     console.log('%cthis.articleColumns', 'color: darkseagreen; font-weight: bold;', this.articleColumns);
-            //     return
-            // }
-
             commit('setArticleColumns', res.data.columns);
+        })
+        .catch(err => {
+            console.log('err', err);
+        });
+    },
+
+    getArticleRecommendations({ commit }) {
+        axios.get('/api/v1/articles/get_article_recommendations/')
+        .then(res => {
+            commit('setArticleRecommendations', res.data.recommendations);
         })
         .catch(err => {
             console.log('err', err);
@@ -40,16 +44,7 @@ const actions = {
     getArticles({ commit }) {
         axios.get('/api/v1/articles/')
         .then(res => {
-            console.log('res', res.data);
-            // console.log('reheadingExistss',this.headingExists);
-
-            // if (this.headingExists > 1) {
-            //     this.articleColumns = res.data.columns.filter(item => item !== 'heading');
-            //     console.log('%cthis.articleColumns', 'color: darkseagreen; font-weight: bold;', this.articleColumns);
-            //     return
-            // }
-
-            // commit('setArticleColumns', res.data.columns);
+            console.log('%cgetArticles', 'color: red; font-weight: bold;', res.data);
         })
         .catch(err => {
             console.log('err', err);
@@ -72,6 +67,10 @@ const actions = {
 const mutations = {
     setArticleColumns(state, columns) {
         state.articleColumns = columns;
+    },
+
+    setArticleRecommendations(state, recommendations) {
+        state.articleRecommendations = recommendations;
     }
 };
 
