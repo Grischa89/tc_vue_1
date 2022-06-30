@@ -321,6 +321,10 @@ export default {
   --tooltip: hsla(0, 3%, 14%, .8);
   --banner: #fcdcb6; // $primary-darker
 
+  --ctaGradient: radial-gradient(circle, hsla(33, 100%, 96%, 1) 22%, hsla(345, 33%, 93%, 1) 72%, hsla(323, 28%, 91%, 1) 100%);
+  // radial-gradient(circle, #160f29 22%, #1a1523 72%, #3c3939 100%);
+  // radial-gradient(circle, hsla(33, 100%, 96%, 1) 22%, hsla(345, 33%, 93%, 1) 72%, hsla(323, 28%, 91%, 1) 100%);
+  
   --ctaInlineGradient: linear-gradient(90deg, #f9efeb 0%, #f3e7ea 72%, #eee2ea 100%);
   // linear-gradient(90deg, hsla(16, 56%, 95%, 1) 0%, hsla(345, 33%, 93%, 1) 72%, hsla(323, 28%, 91%, 1) 100%);
 
@@ -347,8 +351,8 @@ export default {
   --primary2: #f9c07b; // $in-between
   --primary3: #f6a746; // $secondary-lighter
   --primary4: #f48b0b; // $secondary
-  --accent: #7867a7;
-  // --accent: #745eb0;
+  // --accent: #5f32dc;
+  --accent: #745eb0;
 
   --divider: hsla(0, 3%, 14%, .96);
 
@@ -360,7 +364,17 @@ export default {
   --tooltip: hsla(33, 90%, 96%, .8);
   --banner: transparent;
 
-  --ctaInlineGradient: linear-gradient(90deg, #1d1b1b 0%, #1a1523 72%, #160f29 100%);
+  --ctaGradient: radial-gradient(circle, #3c332f 22%, #392f2f 72%, #372f34 100%);
+  
+  //radial-gradient(circle, #160f29 22%, #1a1523 72%, #3c3939 100%);
+  // radial-gradient(circle, hsla(256, 46%, 11%, 1) 22%, hsla(261, 25%, 11%, 1) 72%, hsla(0, 3%, 23%, 1) 100%);
+  // radial-gradient(circle, hsla(33, 100%, 7%, 1) 0%, hsla(344, 32%, 14%, 1) 72%, hsla(319, 27%, 14%, 1) 100%);
+
+  --ctaInlineGradient: linear-gradient(90deg, #3c332f 0%, #392f2f 72%, #372f34 100%);
+  // #454141;
+  // --ctaInlineGradient: #c68739;
+;
+  // linear-gradient(90deg, #1d1b1b 0%, #1a1523 72%, #160f29 100%);
   //linear-gradient(90deg, #140a06 0%, #0c051f 72%, #181325 100%);
   //linear-gradient(90deg, #140a06 0%, #180c0f 0%, #3a2232 100%);
   // linear-gradient(90deg, hsla(17, 54%, 5%, 1) 0%, hsla(345, 33%, 7%, 1) 0%, hsla(320, 26%, 18%, 1) 100%);

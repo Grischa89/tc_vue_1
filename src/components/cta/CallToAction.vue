@@ -36,7 +36,7 @@ export default {
         z-index: 1;
 
         background: hsla(33, 100%, 96%, 1);
-        background: radial-gradient(circle, hsla(33, 100%, 96%, 1) 22%, hsla(345, 33%, 93%, 1) 72%, hsla(323, 28%, 91%, 1) 100%);
+        background: var(--ctaGradient);
 
         // background: radial-gradient(circle, hsla(33, 100%, 96%, 1) 0%, hsla(345, 33%, 93%, 1) 41%, hsla(300, 24%, 89%, 1) 100%);
         // background: radial-gradient(circle, hsla(345, 33%, 93%, 1) 41%, hsla(33, 100%, 96%, 1) 100%, hsla(300, 24%, 89%, 1) 100%);
@@ -97,7 +97,7 @@ export default {
                 font-weight: bold;
                 border-radius: $radius-action-button;
                 color: $white;
-                background-color: $accent;
+                background-color: var(--accent);
                 -webkit-tap-highlight-color: transparent;
             }
 
@@ -105,10 +105,8 @@ export default {
                 display: flex;
                 align-items: center;
                 margin-top:.5rem;
-                color: rgba($black, .7);
 
                 &:hover {
-                    color: $black;
                     text-decoration: underline;
                 }
 

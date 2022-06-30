@@ -65,7 +65,8 @@ export default {
                 letter-spacing: .05rem;
                 font-weight: bold;
                 border-radius: $radius-action-button;
-                color: var(--textInverse);
+                color: $white;
+                // color: var(--textInverse);
                 background-color: var(--accent);
                 -webkit-tap-highlight-color: transparent;
                 white-space: nowrap;
