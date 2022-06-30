@@ -70,7 +70,7 @@ export default {
 .footer {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  background-color: $black;
+  background-color: var(--footer);
   padding-top: 2rem;
   padding-bottom: 2rem;
 

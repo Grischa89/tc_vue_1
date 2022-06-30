@@ -320,6 +320,7 @@ export default {
 
   --tooltip: hsla(0, 3%, 14%, .8);
   --banner: #fcdcb6; // $primary-darker
+  --footer: #252323;
 
   --ctaGradient: radial-gradient(circle, hsla(33, 100%, 96%, 1) 22%, hsla(345, 33%, 93%, 1) 72%, hsla(323, 28%, 91%, 1) 100%);
   // radial-gradient(circle, #160f29 22%, #1a1523 72%, #3c3939 100%);
@@ -363,6 +364,7 @@ export default {
 
   --tooltip: hsla(33, 90%, 96%, .8);
   --banner: transparent;
+  --footer: #3D3A3A;
 
   --ctaGradient: radial-gradient(circle, #3c332f 22%, #392f2f 72%, #372f34 100%);
   
