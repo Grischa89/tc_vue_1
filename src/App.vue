@@ -336,6 +336,7 @@ export default {
 }
 
 :root[color-mode="dark"] {
+  color-scheme: dark;
   --surface1: #100F0F;
   // --surface1: #252323;
   --surface2: #1d1d1d;
