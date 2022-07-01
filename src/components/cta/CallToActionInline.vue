@@ -22,13 +22,15 @@ export default {
         width: 100%;
         border-radius: .75rem;
         min-height: 4ch;
-        max-width: 80ch;
+        max-width: 90ch;
         margin-bottom: 2rem;
         padding-top: 1rem;
         padding-bottom: 1rem;
         padding-left: 1rem;
         padding-right: 1rem;
-        border: .0625rem solid var(--divider);
+        margin-left: auto;
+        margin-right: auto;
+        border: .0625rem solid var(--border-cta);
         box-shadow: 1px 1px 5px rgba($black, 0.2);
         // box-shadow: $card-shadow rgba($black, 0.2);
 

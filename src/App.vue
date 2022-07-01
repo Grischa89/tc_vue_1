@@ -312,6 +312,7 @@ export default {
   --accent: #5f32dc;
 
   --divider: hsla(0, 3%, 14%, .1);
+  --border: #e1e1e1;
 
   --text: #252323;
   --textInverse: hsla(0, 0%, 100%, .87);
@@ -335,11 +336,14 @@ export default {
 }
 
 :root[color-mode="dark"] {
-  --surface1: #252323;
-  --surface2: #383535;
-  --surface3: #3D3A3A;
-  --surface4: #454141;
-  --surface5: #4D4949;
+  --surface1: #100F0F;
+  // --surface1: #252323;
+  --surface2: #1d1d1d;
+  // --surface2: #383535;
+  --surface3: #212121;
+  // --surface3: #3D3A3A;
+  --surface4: #252323;
+  // --surface5: #4D2523234949;
   
   --hover-surface: hsla(33, 91%, 73%, .04); // Derived froom $in-between, Light Orange: #fcdcb6ff;
   // --hover-surface1: hsla(0, 0%, 100%, .04); // Derived from --text
@@ -347,15 +351,18 @@ export default {
   --hover-button: hsla(33, 91%, 73%, .4);
   --focus-button: hsla(33, 91%, 73%, .6);
   
-  --primary: #fef6ec; // $primary
+  --primary: #3c332f; // Same as lightest color in gradient
   --primary1: #fac98c; // $primary-darker
-  --primary2: #f9c07b; // $in-between
+  --primary2: #d4a97e; // $in-between
+  // --primary2: #f9c07b; // $in-between
   --primary3: #f6a746; // $secondary-lighter
   --primary4: #f48b0b; // $secondary
   // --accent: #5f32dc;
   --accent: #745eb0;
 
-  --divider: hsla(0, 3%, 14%, .96);
+  --divider: #494949; // hsla(0, 3%, 14%, .96);
+  --border: #494949;
+  --border-cta: #3c332f;
 
   --text: hsla(0, 0%, 100%, .87);
   --textInverse: #252323;
@@ -364,7 +371,7 @@ export default {
 
   --tooltip: hsla(33, 90%, 96%, .8);
   --banner: transparent;
-  --footer: #3D3A3A;
+  --footer: #252323;
 
   --ctaGradient: radial-gradient(circle, #3c332f 22%, #392f2f 72%, #372f34 100%);
   

@@ -32,6 +32,7 @@ export default {
         margin-top: 3rem;
         padding: 5%;
         box-shadow: $card-shadow rgba($black, 0.2);
+        border: .0625rem solid var(--border-cta);
         margin-bottom: -5rem;
         z-index: 1;
 

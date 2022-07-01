@@ -232,6 +232,7 @@ export default {
   background-color: var(--surface3);
   transition: all 300ms ease-in-out;
   color: var(--text);
+  border-bottom: 1px solid var(--border);//#393939; //hsl(0, 0%, 18.82%);
 
   &--scrolled {
     background-color: var(--surface3);

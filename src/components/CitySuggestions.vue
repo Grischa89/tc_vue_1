@@ -13,7 +13,8 @@
     </div>
     <div v-if="currentRouteName === 'City' && countrySuggestion" class="suggestions__footer">
       <router-link class="suggestions__footer__link" :to="{ name: 'Country', params: { continent: countrySuggestion.continentSlug, country: countrySuggestion.countrySlug } }">
-        Show Codes from  {{ countrySuggestion.name }}
+        <span class="suggestions__footer__link__text">Show all Codes from  {{ countrySuggestion.name }}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="suggestions__footer__link__append" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="show-country-codes"><title id="show-country-codes">Show Codes from Country</title><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
       </router-link>
     </div>
   </div>
@@ -114,10 +115,11 @@ export default {
       margin-top: 1.25rem;
       font-size: $mobile-body;
       font-weight: bold;
-      text-decoration: underline;
 
-      &::after {
-        content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="show-country-codes"><title id="show-country-codes">Show Codes from Country</title><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>');
+      // &__text {
+      // }
+
+      &__append {
         display: block;
         height: 1rem;
         width: 1rem;
@@ -164,13 +166,13 @@ export default {
     // background: -webkit-linear-gradient(90deg, hsla(33, 91%, 62%, 1) 10%, hsla(33, 91%, 50%, 1) 80%);
     // background: -moz-linear-gradient(90deg, hsla(33, 91%, 62%, 1) 10%, hsla(33, 91%, 50%, 1) 80%);
 
-    background-color: $primary;
+    background-color: var(--primary);
     // box-shadow: 0 0 0 1px $in-between;
-    border: solid $in-between 1px; 
+    border: .0625rem solid var(--primary2); 
     box-shadow: 2px 2px 5px rgba($black, 0.1); 
     -webkit-box-shadow: 2px 2px 5px rgba($black, 0.1); 
     -moz-box-shadow: 2px 2px 5px rgba($black, 0.1); 
-    color: $black;
+    color: var(--text);
     font-weight: 600;
     font-size: $mobile-body;
     // text-transform: uppercase;

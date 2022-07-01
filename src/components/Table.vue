@@ -207,7 +207,7 @@ export default {
     flex-direction: column;
     margin: .5rem auto;
     border-radius: .75rem;
-    border: .0625rem solid var(--divider);
+    border: .0625rem solid var(--border);
     width: 100%;
     max-width: 60ch;
     background-color: var(--surface2);
@@ -223,7 +223,7 @@ export default {
   font-size: $mobile-body;
 
   &__head {
-    border-bottom: .0625rem solid var(--divider);
+    border-bottom: .03125rem solid var(--divider);
 
     &__row {
 
