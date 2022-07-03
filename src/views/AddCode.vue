@@ -357,7 +357,7 @@ export default {
       }
 
       &--select {
-        background-color: $white;
+        // background-color: $white;
 
         &:disabled {
           background-color: $disabled;
