@@ -270,13 +270,12 @@ export default {
 }
 
 .form {
-  background-color: #fff;
+  background-color: var(--surface2);
   padding: .75rem 0;
   border-radius: 0.75rem;
   // box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
-  box-shadow: $card-shadow rgba($black, 0.2); 
-	-webkit-box-shadow: $card-shadow rgba($black, 0.2); 
-	-moz-box-shadow: $card-shadow rgba($black, 0.2);
+  box-shadow: $card-shadow rgba($black, 0.2);
+  border: .0625rem solid var(--border);
 
   &__title {
     margin: 1.5rem auto;
@@ -309,7 +308,8 @@ export default {
       display: block;
       font-size: $mobile-input;
       text-indent: .5rem;
-      border: 1.5px solid $help;
+      // border: 1.5px solid $help;
+      border: .0625rem solid var(--border-input);
       // box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.2);
       border-radius: 0.25em;
       height: 3rem;
@@ -317,21 +317,20 @@ export default {
       width: 100%;
 
       &::placeholder {
-        color: $help;
+        color: var(--help);
       }
 
       &:-ms-input-placeholder {
-        color: $help;
+        color: var(--help);
       }
 
       &::-ms-input-placeholder {
-        color: $help;
+        color: var(--help);
       }
 
       &:focus {
         outline: none;
-        box-shadow: 0 0 0 2px $help-shadow;
-        // box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.324);
+        box-shadow: 0 0 0 2px var(--help-shadow);
       }
   
       &--code {
@@ -349,12 +348,12 @@ export default {
 
       &--error {
         outline: none;
-        border: 1.5px solid $error;
+        border: 1.5px solid var(--error);
         // box-shadow: 0px 2px 8px 0px rgba($error, 0.2);
       }
 
       &--error:focus {
-        box-shadow: 0 0 0 2px $error-shadow;
+        box-shadow: 0 0 0 2px var(--error-shadow);
       }
 
       &--select {
@@ -379,32 +378,34 @@ export default {
         top: 25%;
         right: .5rem;
         font-size: $mobile-help;
-        color: rgba($black, .6);
+        // color: rgba($black, .6);
+        color: var(--textHelp);
 
         &:hover {
-          color: $black;
+          color: var(--text);
         }
       }
     }
 
     &__help {
-      color: $help;
+      color: var(--textHelp);
+      // color: $help;
       font-size: $mobile-help;
       text-align: left;
       margin-top: .25rem;
       // color: rgb(200, 0, 0);
 
       &--normal {
-        color: $black;
+        color: var(--text);
         margin-bottom: 1rem;
       }
 
       &--error {
-        color: $error;
+        color: var(--error);
       }
       
       &--success {
-        color: $success;
+        color: var(--success);
       }
     }
   }
@@ -434,12 +435,12 @@ export default {
     &--submit {
       border-radius: 25px;
       color: $white;
-      background-color: $secondary;
+      background-color: var(--secondary);
       -webkit-tap-highlight-color: $primary-darker;
     }
 
     &--cancel {
-      color: $black;
+      color: var(--text);
     }
   }
 }

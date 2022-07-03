@@ -309,12 +309,27 @@ export default {
   --primary2: #f9c07b; // $in-between
   --primary3: #f6a746; // $secondary-lighter
   --primary4: #f48b0b; // $secondary
+  --secondary: hsla(33, 91%, 50%, 1);
   --accent: #5f32dc;
+
+  --help: hsla(0, 3%, 14%, .66);
+  --help-shadow: hsla(0, 3%, 14%, .33);
+
+  --error: #b00020;
+  --error-shadow: hsla(349, 100%, 35%, .4);
+
+  --success: #177d34;
+  --success-shadow: hsla(137, 69%, 29%, .4);
+
+  --info: #2d6ec8;
+  --info-shadow: hsla(215, 63%, 48%, .4);
 
   --divider: hsla(0, 3%, 14%, .1);
   --border: #e1e1e1;
+  --border-input: #d5d5d5;
 
   --text: #252323;
+  --textHelp: hsla(0, 3%, 14%, .66);
   --textInverse: hsla(0, 0%, 100%, .87);
   --textBackdrop: #f9c07b; // $in-between
   --textBackdropLight: #fcdcb6; // $primary-darker
@@ -360,12 +375,29 @@ export default {
   --primary4: #f48b0b; // $secondary
   // --accent: #5f32dc;
   --accent: #745eb0;
+  --secondary: #d37f17;
+  // --secondary: #e8a34f;
+  // --secondary: #d5a162;
+
+  --help: hsla(0, 0%, 100%, .66);
+  --help-shadow: hsla(0, 0%, 100%, .5);
+
+  --error: #e1566f;
+  --error-shadow: hsla(349, 70%, 61%, .4);
+
+  --success: #5dc87b;
+  --success-shadow: hsla(137, 49%, 57%, .4);
+
+  --info: #8caad2;
+  --info-shadow: hsla(214, 44%, 69%, .4);
 
   --divider: #494949; // hsla(0, 3%, 14%, .96);
   --border: #494949;
+  --border-input: #757575;
   --border-cta: #3c332f;
 
   --text: hsla(0, 0%, 100%, .87);
+  --textHelp: hsla(0, 0%, 100%, .66);
   --textInverse: #252323;
   --textBackdrop: transparent;
   --textBackdropLight: transparent;
