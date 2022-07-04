@@ -4,8 +4,8 @@
       <div class="modal">
         <div class="modal__header"><h2 class="modal__header__title">Confirm deleting subscription</h2></div>
         <div class="modal__body">
-          <p class="modal__body__text">This action will delete your subscription
-              <span class="modal__body__text__highlight">{{ subscription.action_name }}"</span> for the event 
+          <p class="modal__body__text">This action will delete your subscription <br><br>
+              <span class="modal__body__text__highlight">"{{ subscription.action_name }}"</span> for the event 
               <span class="modal__body__text__highlight">"{{ subscription.event_name }}"</span> and Trainer Code 
               <span class="modal__body__text__highlight">{{ subscription.player_code }}</span>.</p>
         </div>
@@ -41,7 +41,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba($black, 0.1);
+  background-color: rgba($black, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,9 +55,9 @@ export default {
   width: 80%;
   max-width: 400px;
   padding: 1rem;
-  background: $white;
-  overflow-x: auto;
+  background: var(--surfaceModal);
   border-radius: .5rem;
+  border: .0625rem solid var(--border);
   
   &__header {
     margin-bottom: .5rem;
@@ -87,13 +87,13 @@ export default {
       font-size: $mobile-body;
       letter-spacing: .05rem;
       font-weight: bold;
-      color: $help;
+      color: var(--help);
       padding: .375rem 1.5rem;
       -webkit-tap-highlight-color: $primary-darker;
 
       &--confirm {
         color: $white;
-        background-color: $error;
+        background-color: var(--error);
         border-radius: 25px;
         font-weight: 600;
       }

@@ -362,7 +362,7 @@ export default {
   // --surface3: #3D3A3A;
   --surface4: #252323;
   // --surface5: #4D2523234949;
-  --surfaceQR: #5b5b5b;
+  --surfaceModal: #3f3f3f;
   
   --hover-surface: hsla(33, 91%, 73%, .04); // Derived froom $in-between, Light Orange: #fcdcb6ff;
   // --hover-surface1: hsla(0, 0%, 100%, .04); // Derived from --text

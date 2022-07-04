@@ -96,7 +96,7 @@ export default {
   width: 80%;
   max-width: 350px;
   padding: 1rem;
-  background: var(--surfaceQR);
+  background: var(--surfaceModal);
   border-radius: .5rem;
   border: .0625rem solid var(--border);
   position: absolute;
