@@ -226,12 +226,21 @@ export default {
     border-bottom: .03125rem solid var(--divider);
 
     &__row {
+      background-color: var(--surface4);
 
       &__cell {
         padding:1rem;
         text-align: left;
         text-transform: uppercase;
         width: 50%;
+
+        &:first-of-type {
+          border-top-left-radius: .75rem;
+        }
+
+        &:last-of-type {
+          border-top-right-radius: .75rem;
+        }
       }
     }
   }
