@@ -294,6 +294,8 @@ export default {
             overflow-x: hidden;
             margin-left: auto;
             margin-right: auto;
+            border-bottom: none;
+            background-color: transparent;
         }
 
         // @include desktop {
