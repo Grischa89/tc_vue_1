@@ -275,22 +275,21 @@ export default {
     }
 
     &__nav {
-        // Make tabs overflow horizontally with flex
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
         flex-wrap: nowrap;
         overflow-x: auto;
         background-color: var(--surface3);
         z-index: 51;
         width: 100%;
         position: sticky;
-        // top: 46px;
         border-bottom: .0625rem solid var(--border);
         // box-shadow: inset -15px 0 9px -7px rgba(97, 97, 97, 0.5);
 
-
         @include tablet {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            // display: grid;
+            // grid-template-columns: repeat(3, 1fr);
+            // NOTE: If more items are added, needs to be hidden at bigger breakpoint
             overflow-x: hidden;
             margin-left: auto;
             margin-right: auto;
@@ -328,6 +327,7 @@ export default {
         overflow:auto; */
 
       &__tab {
+        grid-column: span 1;
         display: flex;
         justify-content: center;
         padding-top: 1rem;
