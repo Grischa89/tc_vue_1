@@ -96,8 +96,9 @@ export default {
   width: 80%;
   max-width: 350px;
   padding: 1rem;
-  background: $white;
+  background: var(--surfaceQR);
   border-radius: .5rem;
+  border: .0625rem solid var(--border);
   position: absolute;
   
   &__header {
@@ -127,7 +128,10 @@ export default {
   }
 
   &__body {
+    border-radius: .5rem;
     margin: .5rem 0;
+    padding: 1rem;
+    background-color: #fff;
 
     &__qr {
       margin: 0 auto;
@@ -177,7 +181,7 @@ export default {
     height: $mobile-heading;
     width: $mobile-heading;
     cursor: pointer;
-    color: rgba($black, 0.7);
+    color: var(--help);
     -webkit-tap-highlight-color: $primary-darker;
 
     &:hover {

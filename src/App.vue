@@ -298,6 +298,8 @@ export default {
   --surface1: #fef9f3;
   --surface2: #fefbf7;
   --surface3: #ffffff;
+  --surface4: #ffffff;
+  --surfaceQR: #ffffff;
   
   --hover-surface: hsla(33, 91%, 73%, .04); // Derived froom $in-between, Light Orange: #fcdcb6ff;
   // --hover-surface1: hsla(0, 3%, 14%, .04); // Derived from $black, Raisin Black: #252323ff;
@@ -360,6 +362,7 @@ export default {
   // --surface3: #3D3A3A;
   --surface4: #252323;
   // --surface5: #4D2523234949;
+  --surfaceQR: #5b5b5b;
   
   --hover-surface: hsla(33, 91%, 73%, .04); // Derived froom $in-between, Light Orange: #fcdcb6ff;
   // --hover-surface1: hsla(0, 0%, 100%, .04); // Derived from --text
