@@ -35,7 +35,7 @@ export default {
     font-size: $mobile-body;
     border-radius: 25px;
     color: $white;
-    background-color: $accent;
+    background-color: var(--accent);
 
     &__text {
       letter-spacing: .075rem;

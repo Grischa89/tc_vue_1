@@ -91,7 +91,8 @@ export default {
   align-items: flex-start;
   position: relative;
   padding: 1rem;
-  background-color: $white;
+  background-color: var(--surface2);
+  border: .0625rem solid var(--border);
   box-shadow: $card-shadow rgba($black, 0.2); 
   -webkit-box-shadow: $card-shadow rgba($black, 0.2); 
   -moz-box-shadow: $card-shadow rgba($black, 0.2);

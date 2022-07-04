@@ -425,9 +425,10 @@ export default {
     align-items: center;
     // position: relative;
     padding: .75rem;
-    background-color: $white;
+    background-color: var(--surface2);
     // background: linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, hsla(33, 90%, 96%, 1) 19%, hsla(33, 92%, 85%, 1) 60%, hsla(33, 91%, 73%, 1) 100%);
     // border-left: 6px solid $in-between;
+    border: .0625rem solid var(--border);
     border-left-width: .25rem;
     border-left-style: solid;
     border-left-color: $in-between;
@@ -484,7 +485,7 @@ export default {
         
           h2 {
             padding: 0 .25rem;
-            box-shadow: inset 0 -.625rem 0 0 $in-between;
+            box-shadow: inset 0 -.625rem 0 0 var(--textBackdrop);
           }
 
           // h2:nth-of-type(2n) {

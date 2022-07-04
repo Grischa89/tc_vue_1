@@ -165,7 +165,7 @@ export default {
             text-transform: uppercase;
             font-weight: bold;
             padding: 0 .5rem;
-            box-shadow: inset 0 -.75rem 0 0 $in-between;
+            box-shadow: inset 0 -.75rem 0 0 var(--textBackdrop);
         }
 
         &__image {
@@ -306,8 +306,8 @@ export default {
         padding-right: .5rem;
         border-top-style: solid;
         border-top-width: .0625rem;
-        border-top-color: $help;
-        color: $help;
+        border-top-color: var(--help);
+        color: var(--help);
         text-transform: uppercase;
         font-size: $mobile-subheading;
         letter-spacing: .05rem;
@@ -318,7 +318,7 @@ export default {
             border-top-style: solid;
             border-top-width: .25rem;
             border-top-color: $in-between;
-            color: $black;
+            color: var(--text);
             font-weight: bold;
             padding-top: .75rem;
         }
