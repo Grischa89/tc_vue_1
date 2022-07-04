@@ -97,6 +97,26 @@ export default {
         this.$store.dispatch('fetchAllSubscriptions');
         this.$store.dispatch('fetchUserCodes');
         console.log('%croute', 'color: red; font-weight: bold;', this.$route);
+       
+
+        // const profileNav = document.querySelector('.profile__nav');
+        // console.log('%cprofileNav', 'color: darkseagreen; font-weight: bold;', profileNav);
+        // // console.dir(mainNav);
+        
+
+        // console.log('%cmainNavHeight', 'color: darkseagreen; font-weight: bold;', mainNavHeight);
+
+
+    },
+
+    mounted() {
+        const mainNav = document.querySelector('.navbar-wrapper');
+        // console.log('%cmainNav', 'color: darkseagreen; font-weight: bold;', mainNav);
+        const mainNavHeight = mainNav.clientHeight;
+        const profileNav = document.querySelector('.profile__nav');
+        // console.log('%cprofileNav', 'color: darkseagreen; font-weight: bold;', profileNav);
+
+        profileNav.style.top = `${mainNavHeight}px`;
     },
     methods: {
         scrollToActiveTab(selected) {
@@ -259,6 +279,14 @@ export default {
         display: flex;
         flex-wrap: nowrap;
         overflow-x: auto;
+        background-color: var(--surface3);
+        z-index: 51;
+        width: 100%;
+        position: sticky;
+        // top: 46px;
+        border-bottom: .0625rem solid var(--border);
+        // box-shadow: inset -15px 0 9px -7px rgba(97, 97, 97, 0.5);
+
 
         @include tablet {
             display: grid;
