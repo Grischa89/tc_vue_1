@@ -131,7 +131,7 @@ const actions = {
 
   addSubscription({ commit }, data) {
     
-    return axios.post('/api/v1/subscription/add/', data)
+    return axios.post('/api/v1/subscriptions/add/', data)
     .then(res => {
       console.log('addSubscription', res);
 

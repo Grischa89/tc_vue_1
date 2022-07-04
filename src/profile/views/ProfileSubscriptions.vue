@@ -409,7 +409,7 @@ export default {
 
   &__header {
     h1 {
-      color: $black;
+      color: var(--text);
       font-size: $mobile-subheading;
       text-align: left;
       text-transform: uppercase;
@@ -536,10 +536,10 @@ export default {
           &__prepend {
             width: 1.5rem;
             height: 1.5rem ;
-            color: $help;
+            color: var(--help);
 
             &--delete {
-              color: $error;
+              color: var(--error);
             }
           }
 
@@ -594,7 +594,7 @@ export default {
 
 .inline-form {
   // width: 90%;
-  background-color: $white;
+  background-color: var(--surface2);
   // padding: .75rem 0;
 
   &__title {
@@ -623,26 +623,26 @@ export default {
       display: block;
       font-size: $mobile-input;
       text-indent: .5rem;
-      border: 1px solid $help;
+      border: .0625rem solid var(--border-input);
       border-radius: 0.25em;
       height: 2.5rem;
       width: 100%;
 
       &::placeholder {
-        color: $help;
+        color: var(--help);
       }
 
       &:-ms-input-placeholder {
-        color: $help;
+        color: var(--help);
       }
 
       &::-ms-input-placeholder {
-        color: $help;
+        color: var(--help);
       }
 
       &:focus {
         outline: none;
-        box-shadow: 0 0 0 2px $help-shadow;
+        box-shadow: 0 0 0 2px var(--help-shadow);
         // box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.324);
       }
 
@@ -661,16 +661,16 @@ export default {
 
       &--error {
         outline: none;
-        border: 1.5px solid $error;
+        border: 1.5px solid var(--error);
         // box-shadow: 0px 2px 8px 0px rgba($error, 0.2);
       }
 
       &--error:focus {
-        box-shadow: 0 0 0 2px $error-shadow;
+        box-shadow: 0 0 0 2px var(--error-shadow);
       }
 
       &--select {
-        background-color: #fff;
+        // background-color: #fff;
 
         &:disabled {
           background-color: $disabled;
@@ -679,17 +679,17 @@ export default {
     }
 
     &__help {
-      color: $help;
+      color: var(--help);
       font-size: $mobile-help;
       margin-top: .25rem;
       // color: rgb(200, 0, 0);
 
       &--error {
-        color: $error;
+        color: var(--error);
       }
       
       &--success {
-        color: $success;
+        color: var(--success);
       }
     }
   }
@@ -719,12 +719,12 @@ export default {
 
     &--submit {
       border-radius: 25px;
-      color: $white;
-      background-color: $black;
+      color: var(--textInverse);
+      background-color: var(--text);
     }
 
     &--cancel {
-      color: $help;
+      color: var(--help);
     }
   }
 }
