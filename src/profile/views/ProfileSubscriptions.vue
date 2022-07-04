@@ -405,7 +405,6 @@ export default {
   gap: 1.5rem;
   height: 100%;
   width: 100%;
-  // padding: 5%;
 
   &__header {
     h1 {

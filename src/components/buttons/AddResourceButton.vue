@@ -26,6 +26,7 @@ export default {
 .profile__resource__action {
   display: flex;
   justify-content: flex-end;
+  margin: 1rem 0;
 
   &__link {
     display: flex;

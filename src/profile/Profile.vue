@@ -370,7 +370,7 @@ export default {
         flex-direction: column;
         justify-content: space-around;
         // align-items: center;
-        margin-top: 1rem;
+        // margin-top: 1rem;
         // max-width: 60ch;
         // margin-left: auto;
         // margin-right: auto;
@@ -410,6 +410,7 @@ export default {
             justify-content: space-between;
             align-items: center;
             margin-top: 1rem;
+            margin-bottom: 1rem;
 
             &__btn {
 
