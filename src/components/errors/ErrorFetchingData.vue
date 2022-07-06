@@ -85,13 +85,6 @@ export default {
     letter-spacing: .05rem;
     font-weight: bold;
     border-radius: 25px;
-    -webkit-tap-highlight-color: transparent;
-
-    &:active {
-      // outline: none;
-      // box-shadow: 0 0 0 2px $help-shadow;
-      -webkit-tap-highlight-color: transparent;
-    }
 
     &--action {
       color: var(--textInverse);
