@@ -464,7 +464,7 @@ export default {
   font-weight: normal;
   width: 100%; // 90%
   min-height: 1rem;
-  margin: 1rem auto 1.5rem auto;
+  margin: 0 auto 5% auto;
 
   
 

@@ -228,7 +228,7 @@ export default {
   top: 0;
   z-index: 50;
   padding: .5rem 1rem;
-  margin-bottom: .75rem;
+  // margin-bottom: .75rem;
   background-color: var(--surface3);
   transition: all 300ms ease-in-out;
   color: var(--text);
