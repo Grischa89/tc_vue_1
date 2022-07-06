@@ -476,26 +476,27 @@ export default {
     height: $mobile-heading;
     width: $mobile-heading;
     cursor: pointer;
+    color: var(--help);
 
     &--info {
-      color: $info
+      color: var(--info);
     }
 
     &--error {
-      color: $error
+      color: var(--error);
     }
 
     &--success {
-      color: $success
+      color: var(--success);
     }
   }
 
   &__container {
     width: 100%;
     text-align: left;
-    background-color: rgba($help, .1);
-    box-shadow: 0 0 0 2px $help-shadow;
-    color: rgba($black, .7);
+    background-color: var(--help-bg-fade);
+    box-shadow: 0 0 0 2px var(--help-shadow);
+    color: var(--help);
     border-radius: .25rem;
     padding: .5rem;
 
@@ -511,21 +512,21 @@ export default {
     }
 
     &--info {
-      background-color: rgba($info, .15);
-      box-shadow: 0 0 0 2px $info-shadow;
-      color: $info
+      background-color: var(--info-bg-fade);
+      box-shadow: 0 0 0 2px var(--info-shadow);
+      color: var(--info);
     }
 
     &--error {
-      background-color: rgba($error, .15);
-      box-shadow: 0 0 0 2px $error-shadow;
-      color: $error
+      background-color: var(--error-bg-fade);
+      box-shadow: 0 0 0 2px var(--error-shadow);
+      color: var(--error);
     }
 
     &--success {
-      background-color: rgba($success, .15);
-      box-shadow: 0 0 0 2px $success-shadow;
-      color: $success
+      background-color: var(--success-bg-fade);
+      box-shadow: 0 0 0 2px var(--success-shadow);
+      color: var(--success);
     }
   }
 

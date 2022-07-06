@@ -5,8 +5,6 @@
   <Navbar
     :isAuthenticated="isAuthenticated"
     :darkMode="darkMode" />
-
-    {{ darkMode }}
   
   <div class="main-wrapper">
     <router-view :key="$route.fullPath" />
@@ -316,15 +314,19 @@ export default {
 
   --help: hsla(0, 3%, 14%, .66);
   --help-shadow: hsla(0, 3%, 14%, .33);
+  --help-bg-fade: hsla(0, 3%, 14%, .15);
 
   --error: #b00020;
   --error-shadow: hsla(349, 100%, 35%, .4);
+  --error-bg-fade: hsla(349, 100%, 35%, .15);
 
   --success: #177d34;
   --success-shadow: hsla(137, 69%, 29%, .4);
+  --success-bg-fade: hsla(137, 69%, 29%, .15);
 
   --info: #2d6ec8;
   --info-shadow: hsla(215, 63%, 48%, .4);
+  --info-bg-fade: hsla(215, 63%, 48%, .15);
 
   --divider: hsla(0, 3%, 14%, .1);
   --border: #e1e1e1;
@@ -384,15 +386,19 @@ export default {
 
   --help: hsla(0, 0%, 100%, .66);
   --help-shadow: hsla(0, 0%, 100%, .5);
+  --help-bg-fade: hsla(0, 0%, 100%, .15);
 
   --error: #e1566f;
   --error-shadow: hsla(349, 70%, 61%, .4);
+  --error-bg-fade: hsla(349, 70%, 61%, .15);
 
   --success: #5dc87b;
   --success-shadow: hsla(137, 49%, 57%, .4);
+  --success-bg-fade: hsla(137, 49%, 57%, .15);
 
   --info: #8caad2;
   --info-shadow: hsla(214, 44%, 69%, .4);
+  --info-bg-fade: hsla(214, 44%, 69%, .15);
 
   --divider: #494949; // hsla(0, 3%, 14%, .96);
   --border: #494949;
