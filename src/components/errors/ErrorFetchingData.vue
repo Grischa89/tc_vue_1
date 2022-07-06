@@ -44,7 +44,7 @@ export default {
 
 <style lang="scss">
 .error__page {
-  background-color: #fff;
+  // background-color: var(--surface4);
   border-radius: 0.75em;
   width: 90%;
   padding: 2rem;
@@ -94,12 +94,12 @@ export default {
     }
 
     &--action {
-      color: $white;
-      background-color: $black;
+      color: var(--textInverse);
+      background-color: var(--text);
     }
 
     &--reload {
-      color: $black;
+      color: var(--text);
       background: none;
 
       &:hover {

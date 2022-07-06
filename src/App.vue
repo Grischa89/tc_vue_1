@@ -334,7 +334,7 @@ export default {
 
   --text: #252323;
   --textHelp: hsla(0, 3%, 14%, .66);
-  --textInverse: hsla(0, 0%, 100%, .87);
+  --textInverse: hsla(0, 0%, 100%, 1);
   --textBackdrop: #f9c07b; // $in-between
   --textBackdropLight: #fcdcb6; // $primary-darker
 
