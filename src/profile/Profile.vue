@@ -495,7 +495,7 @@ export default {
     width: 100%;
     text-align: left;
     background-color: var(--help-bg-fade);
-    box-shadow: 0 0 0 2px var(--help-shadow);
+    box-shadow: 0 0 0 .125rem var(--help-shadow);
     color: var(--help);
     border-radius: .25rem;
     padding: .5rem;
@@ -513,19 +513,19 @@ export default {
 
     &--info {
       background-color: var(--info-bg-fade);
-      box-shadow: 0 0 0 2px var(--info-shadow);
+      box-shadow: 0 0 0 .125rem var(--info-shadow);
       color: var(--info);
     }
 
     &--error {
       background-color: var(--error-bg-fade);
-      box-shadow: 0 0 0 2px var(--error-shadow);
+      box-shadow: 0 0 0 .125rem var(--error-shadow);
       color: var(--error);
     }
 
     &--success {
       background-color: var(--success-bg-fade);
-      box-shadow: 0 0 0 2px var(--success-shadow);
+      box-shadow: 0 0 0 .125rem var(--success-shadow);
       color: var(--success);
     }
   }
