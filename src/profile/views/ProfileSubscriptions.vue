@@ -437,6 +437,18 @@ export default {
     border-top-right-radius: .5rem;
     border-bottom-right-radius: .5rem;
 
+    &:nth-of-type(2n) {
+      // background: linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, hsla(33, 100%, 95%, 1) 40%, hsla(33, 100%, 94%, 1) 60%, hsla(33, 100%, 85%, 1) 100%);
+      // border-left: 6px solid $primary-darker;
+      border-left-color: $primary-darker;
+
+      .profile__resource__item__display__task__header {
+        h2 {
+          box-shadow: inset 0 -.625rem 0 0 var(--textBackdropLight);
+        }
+      }
+    }
+
     &--empty {
       border: none;
       border-radius: .5rem;
@@ -452,6 +464,10 @@ export default {
       color: rgba($black, .5);
       border-left-color: rgba($help, .2);
       cursor: default;
+
+      &:nth-of-type(2n) {
+        border-left-color: rgba($help, .2);
+      }
     }
 
     &__text {
@@ -574,18 +590,6 @@ export default {
       padding-top: 1.5rem;
       border-top: 1px solid $help;
       // transition: all 1000ms ease-in-out;
-    }
-
-    &:nth-of-type(2n) {
-      // background: linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, hsla(33, 100%, 95%, 1) 40%, hsla(33, 100%, 94%, 1) 60%, hsla(33, 100%, 85%, 1) 100%);
-      // border-left: 6px solid $primary-darker;
-      border-left-color: $primary-darker;
-
-      .profile__resource__item__display__task__header {
-        h2 {
-          box-shadow: inset 0 -.625rem 0 0 var(--textBackdropLight);
-        }
-      }
     }
     
   }
