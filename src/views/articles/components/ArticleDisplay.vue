@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="article" v-for="(item, i) in article" :key="i">
+        {{ article }}
+        <!-- <div class="article" v-for="(item, i) in article" :key="i">
             <div class="article__heading" v-if="item.key === 'heading'">
                 <h1>{{ item.value }}</h1>
             </div>
@@ -18,13 +19,13 @@
                     <li>{{ listItem }}</li>
                 </ul>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
 export default {
-    name: 'PreviewArticle',
+    name: 'ArticleDisplay',
 
     props: {
         article: Array,

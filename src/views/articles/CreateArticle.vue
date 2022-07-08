@@ -61,7 +61,7 @@ import draggable from 'vuedraggable'
 import Key from '../articles/Key.vue';
 import ValueInput from '../articles/ValueInput.vue';
 import ValueSelect from '../articles/ValueSelect.vue';
-import PreviewArticle from '../articles/PreviewArticle.vue';
+import ArticleDisplay from '../articles/components/ArticleDisplay.vue';
 
 export default {
     name: 'CreateArticle',
@@ -71,7 +71,7 @@ export default {
         Key,
         ValueInput,
         ValueSelect,
-        PreviewArticle,
+        ArticleDisplay,
     },
 
     created() {

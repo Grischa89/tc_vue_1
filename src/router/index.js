@@ -26,6 +26,9 @@ import RequestSuccess from '../auth/_shared/RequestSuccess.vue'
 import AddSubscription from '../views/AddSubscription.vue'
 import PageNotFound from '../views/PageNotFound.vue'
 import CreateArticle from '../views/articles/CreateArticle.vue'
+import About from '../views/articles/_static/About.vue'
+import ListArticles from '../views/articles/ListArticles.vue'
+import ShowArticle from '../views/articles/ShowArticle.vue'
 
 // Sorry, this page isn't available.
 // The link you followed may be broken, or the page may have been removed. Go back to Instagram.
@@ -38,12 +41,6 @@ const routes = [
     meta: {
       title: 'Home',
     },
-  },
-
-  {
-    path: '/articles/create',
-    name: 'CreateArticle',
-    component: CreateArticle,
   },
 
   {
@@ -210,6 +207,24 @@ const routes = [
   //     }
   //   ]
   // },
+
+  {
+    path: '/articles',
+    name: 'ListArticles',
+    component: ListArticles,
+  },
+
+  {
+    path: '/articles/create',
+    name: 'CreateArticle',
+    component: CreateArticle,
+  },
+
+  {
+    path: '/articles/:slug',
+    name: 'ShowArticle',
+    component: ShowArticle,
+  },
 
   {
     path: '/codes',
