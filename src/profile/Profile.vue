@@ -36,7 +36,7 @@
             </div>
         </div>
 
-         <div class="profile__nav">
+         <div class="profile__nav" :class="{'profile__nav--scrolled': scrollYPosition > atTop }">
             <div  @click="scrollToActiveTab('overview')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'ProfileOverview'}" data-tab="overview"><router-link :to="{ name: 'ProfileOverview' }">Overview</router-link></div>
             <div  @click="scrollToActiveTab('codes')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'ProfileCodes'}" data-tab="codes"><router-link :to="{ name: 'ProfileCodes' }">Codes</router-link></div>
             <div  @click="scrollToActiveTab('subscriptions')" class="profile__nav__tab" :class="{'profile__nav__tab--active': activeTab === 'ProfileSubscriptions'}" data-tab="subscriptions"><router-link :to="{ name: 'ProfileSubscriptions' }">Subscriptions</router-link></div>
@@ -76,12 +76,18 @@ import { mapGetters } from 'vuex';
 export default {
     name: 'Profile',
 
+    data() {
+        return {
+            atTop: 100
+        }
+    },
+
     computed: {
         ...mapGetters({
             user: 'user',
             subscriptions: 'subscriptions',
             userCodes: 'userCodes',
-            tabScrollPosition: 'tabScrollPosition',
+            scrollYPosition: 'scrollYPosition',
         }),
 
         activeTab() {
@@ -97,16 +103,6 @@ export default {
         this.$store.dispatch('fetchAllSubscriptions');
         this.$store.dispatch('fetchUserCodes');
         console.log('%croute', 'color: red; font-weight: bold;', this.$route);
-       
-
-        // const profileNav = document.querySelector('.profile__nav');
-        // console.log('%cprofileNav', 'color: darkseagreen; font-weight: bold;', profileNav);
-        // // console.dir(mainNav);
-        
-
-        // console.log('%cmainNavHeight', 'color: darkseagreen; font-weight: bold;', mainNavHeight);
-
-
     },
 
     mounted() {
@@ -118,6 +114,7 @@ export default {
 
         profileNav.style.top = `${mainNavHeight}px`;
     },
+
     methods: {
         scrollToActiveTab(selected) {
             // NOTE: Use console.dir(tab) to easily check for .offsetWidth / .offsetLeft / .offsetParent 
@@ -284,6 +281,7 @@ export default {
         width: 100%;
         position: sticky;
         border-bottom: .0625rem solid var(--border);
+        transition: all 150ms ease-in-out;
         // box-shadow: inset -15px 0 9px -7px rgba(97, 97, 97, 0.5);
 
         @include tablet {
@@ -295,6 +293,10 @@ export default {
             margin-right: auto;
             border-bottom: none;
             background-color: transparent;
+
+            &--scrolled {
+                background-color: var(--surface3);
+            }
         }
 
         // @include desktop {
