@@ -1,34 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import store from 'store/modules/auth.js'
 import store from '../store'
-// import auth from '../store/modules/auth'
 
-import Home from '../views/Home.vue'
-import Continent from '../views/Continent.vue'
-import Country from '../views/Country.vue'
-import City from '../views/City.vue'
-import AddCode from '../views/AddCode.vue'
-import CardCarousel from '../views/CardCarousel.vue'
-import ActivateUser from '../auth/account/ActivateUser.vue'
-import Profile from '../profile/Profile.vue'
-// import ProfileTest from '../profile/ProfileTest.vue'
-import ProfileOverview from '../profile/views/ProfileOverview.vue'
-import ProfileCodes from '../profile/views/ProfileCodes.vue'
-import ProfileSubscriptions from '../profile/views/ProfileSubscriptions.vue'
-import ProfileSettings from '../profile/ProfileSettings.vue'
-import LogIn from '../auth/LogIn.vue'
-import SignUp from '../auth/SignUp.vue'
-import ResendActivationEmail from '../auth/account/ResendActivationEmail.vue'
-// import ResendSuccess from '../auth/ResendSuccess.vue'
-import RequestPasswordReset from '../auth/password/RequestPasswordReset.vue'
-import ResetPassword from '../auth/password/ResetPassword.vue'
-import RequestSuccess from '../auth/_shared/RequestSuccess.vue'
-import AddSubscription from '../views/AddSubscription.vue'
-import PageNotFound from '../views/PageNotFound.vue'
-import CreateArticle from '../views/articles/CreateArticle.vue'
-import About from '../views/articles/_static/About.vue'
-import ListArticles from '../views/articles/ListArticles.vue'
-import ShowArticle from '../views/articles/ShowArticle.vue'
+const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue');
+const Continent = () => import(/* webpackChunkName: "continent" */ '../views/Continent.vue');
+const Country = () => import(/* webpackChunkName: "country" */ '../views/Country.vue');
+const City = () => import(/* webpackChunkName: "city" */ '../views/City.vue');
+
+
+const Profile = () => import(/* webpackChunkName: "profile" */ '../profile/Profile.vue');
+const ProfileOverview = () => import(/* webpackChunkName: "profileOverview" */ '../profile/views/ProfileOverview.vue');
+const ProfileCodes = () => import(/* webpackChunkName: "profileCodes" */ '../profile/views/ProfileCodes.vue');
+const ProfileSubscriptions = () => import(/* webpackChunkName: "profileSubscriptions" */ '../profile/views/ProfileSubscriptions.vue');
+const ProfileSettings = () => import(/* webpackChunkName: "profileSettings" */ '../profile/ProfileSettings.vue');
+
+
+const LogIn = () => import(/* webpackChunkName: "login" */ '../auth/LogIn.vue');
+const SignUp = () => import(/* webpackChunkName: "signup" */ '../auth/SignUp.vue');
+const ResendActivationEmail = () => import(/* webpackChunkName: "resendActivationMail" */ '../auth/account/ResendActivationEmail.vue');
+const RequestPasswordReset = () => import(/* webpackChunkName: "requestPasswordReset" */ '../auth/password/RequestPasswordReset.vue');
+const ResetPassword = () => import(/* webpackChunkName: "resetPassword" */ '../auth/password/ResetPassword.vue');
+const RequestSuccess = () => import(/* webpackChunkName: "requestSuccess" */ '../auth/_shared/RequestSuccess.vue');
+const ActivateUser = () => import(/* webpackChunkName: "activateUser" */ '../auth/account/ActivateUser.vue');
+
+const AddCode = () => import(/* webpackChunkName: "addCode" */ '../views/AddCode.vue');
+const AddSubscription = () => import(/* webpackChunkName: "addSubscription" */ '../views/AddSubscription.vue');
+
+const CreateArticle = () => import(/* webpackChunkName: "createArticle" */ '../views/articles/CreateArticle.vue');
+const ListArticles = () => import(/* webpackChunkName: "listArticles" */ '../views/articles/ListArticles.vue');
+const ShowArticle = () => import(/* webpackChunkName: "showArticle" */ '../views/articles/ShowArticle.vue');
+
+const About = () => import(/* webpackChunkName: "about" */ '../views/articles/_static/About.vue');
+const PrivacyPolicy = () => import(/* webpackChunkName: "privacy" */ '../views/articles/_static/PrivacyPolicy.vue');
+const PageNotFound = () => import(/* webpackChunkName: "pageNotFound" */ '../views/PageNotFound.vue');
 
 // Sorry, this page isn't available.
 // The link you followed may be broken, or the page may have been removed. Go back to Instagram.
@@ -176,12 +179,6 @@ const routes = [
     },
   },
 
-  {
-    path: '/carousel',
-    name: 'CardCarousel',
-    component: CardCarousel
-  },
-
   // {
   //   path: '/codes',
   //   component: Home,
@@ -255,13 +252,13 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/articles/_static/About.vue')
+    component: About
   },
 
   {
     path: '/privacy',
     name: 'PrivacyPolicy',
-    component: () => import('../views/articles/_static/PrivacyPolicy.vue')
+    component: PrivacyPolicy
   },
 
   {
