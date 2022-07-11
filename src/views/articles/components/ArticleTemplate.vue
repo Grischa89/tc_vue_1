@@ -13,7 +13,13 @@ export default {
 
         font-family: Arial, Helvetica, sans-serif;
         font-size: $mobile-body;
-        text-align: justify;
+        text-align: left;
+
+        @include tablet {
+            width: 60ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
         &__heading {
             font-family: Monaco, monospace;
@@ -26,12 +32,13 @@ export default {
         &__summary {
             color: var(--help);
             text-align: justify;
-            padding-left: 1rem;
-            padding-right: 1rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
             margin-bottom: 1rem;
         }
 
         &__meta {
+            font-size: $mobile-help;
             color: var(--help);
 
             span {
