@@ -100,9 +100,8 @@ export default {
     },
 
     created() {
-        this.$store.dispatch('fetchAllSubscriptions');
-        this.$store.dispatch('fetchUserCodes');
-        console.log('%croute', 'color: red; font-weight: bold;', this.$route);
+        if (!this.userCodes) this.$store.dispatch('fetchUserCodes');
+        if (!this.subscriptions) this.$store.dispatch('fetchAllSubscriptions');
     },
 
     mounted() {
