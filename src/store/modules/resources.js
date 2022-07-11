@@ -29,7 +29,6 @@ const getters = {
   },
 
   subscriptions: state => {
-    console.log('%csub GETTER', 'color: plum; font-weight: bold;');
     // TODO: Time until event starts in usertime as new prop
     // const now = new Date().getTime();
 
@@ -37,7 +36,7 @@ const getters = {
     if (state.subscriptions) {
       state.subscriptions.forEach(sub => {
         // const eventUserTimeMs = new Date(sub.)
-        sub.prettyCode = sub.player_code.replace(/.{4}/g, '$& ');
+        sub.prettyCode = sub.player_code.replace(/.{4}/g, '$& ').trim();
         sub.isActive = false;
 
         switch (sub.action) {
@@ -51,13 +50,12 @@ const getters = {
             sub.message = `Get codes send to your email`;
             break;
           default:
-            console.log('%cdefault', 'color: red; font-weight: bold;', sub.action);
+            console.log('%cUnknown action!', 'color: red; font-weight: bold;', sub.action);
             sub.message = `We have a new action!`;
             break;
         }
       });
 
-      console.log('%creturned subs', 'color: darkseagreen; font-weight: bold;', state.subscriptions);
       return state.subscriptions.sort((a, b) => b.start_date_in_user_timezone.localeCompare(a.start_date_in_user_timezone));
     }
     // return state.subscriptions;
@@ -72,18 +70,14 @@ const getters = {
   },
 
   userCodes: state => {
-    console.log('%cuserCodes GETTER', 'color: plum; font-weight: bold;', state.userCodes);
     if (state.userCodes) {
 
-      console.log('%cstate.userCodes', 'color: plum; font-weight: bold;', state.userCodes);
-
       state.userCodes.forEach(code => {
-        code.prettyCode = code.player_code.replace(/.{4}/g, '$& ');
+        code.prettyCode = code.player_code.replace(/.{4}/g, '$& ').trim();
       });
 
       return state.userCodes.sort((a, b) => b.time_of_scrape.localeCompare(a.time_of_scrape));
     }
-    // return state.userCodes;
   },
 
   userCodeLoadStatus: state => {
@@ -225,6 +219,7 @@ const mutations = {
   },
 
   setUserCodeStatus(state, status) {
+    console.log('%cstatus', 'color: cornflowerblue; font-weight: bold;', status);
     state.userCodeLoadStatus = status;
   },
 
