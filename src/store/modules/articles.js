@@ -100,9 +100,10 @@ const actions = {
     postArticle({ commit }, article) {
         console.log('%carticle in postArticle', 'color: darkseagreen; font-weight: bold;', article);
 
-        axios.post('/api/v1/articles/add/', article)
+        return axios.post('/api/v1/articles/add/', article)
             .then(res => {
                 console.log('%cres from postArticle', 'color: darkseagreen; font-weight: bold;', res);
+                return res.status;
             })
             .catch(err => {
                 console.log('%cerr from postArticle', 'color: red; font-weight: bold;', err);

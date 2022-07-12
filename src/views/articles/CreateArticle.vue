@@ -233,7 +233,7 @@ export default {
             }
         },
 
-        submitForm() {
+        async submitForm() {
             console.log('%carticle', 'color: plum; font-weight: bold;', this.article);
             // data = {
 
@@ -245,7 +245,9 @@ export default {
             //     .catch(err => {
             //         console.log('err', err);
             //     })
-            this.$store.dispatch('postArticle', this.article);
+            const createSuccess = await this.$store.dispatch('postArticle', this.article);
+            console.log('%ccreateSuccess', 'color: darkseagreen; font-weight: bold;', createSuccess);
+            if (createSuccess === 201) this.$router.push({ name: 'ListArticles' });
         },
 
         addRow() {
