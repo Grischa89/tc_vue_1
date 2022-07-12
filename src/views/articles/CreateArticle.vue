@@ -250,7 +250,7 @@ export default {
 
         addRow() {
             // this.rowCount += 1;
-            const newRow = { key: '', value: '', id: Date.now(), l: 'l1' };
+            const newRow = { key: '', value: '', id: Date.now() };
             this.article.push(newRow);
             
             console.log('%cthis.article', 'color: darkseagreen; font-weight: bold;', this.article);
