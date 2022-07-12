@@ -77,14 +77,7 @@ export default {
     margin: 1.25rem auto;
     padding: 0 .25rem;
     width: 100%;
-
-    @include tablet-landscape {
-      width: 80%;
-    }
-
-    @include tablet-landscape {
-      width: 60%;
-    }
+    max-width: 70ch;
 
     &__title {
       font-size: $mobile-subheading;
@@ -100,14 +93,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     width: 100%;
-
-    @include tablet-landscape {
-      width: 80%;
-    }
-
-    @include tablet-landscape {
-      width: 60%;
-    }
+    max-width: 70ch;
 
     &__link {
       display: flex;
@@ -134,19 +120,20 @@ export default {
     gap: .5rem;
     height: 100%;
     width: 100%;
+    max-width: 70ch;
     grid-template-columns: repeat(6, 1fr);
     // grid-template-rows: repeat(2, 1fr);
     margin-left: auto;
     margin-right: auto;
     // margin-bottom: 1rem;
 
-    @include tablet-landscape {
-      width: 80%;
-    }
+    // @include tablet-landscape {
+    //   width: 80%;
+    // }
 
-    @include tablet-landscape {
-      width: 60%;
-    }
+    // @include tablet-landscape {
+    //   width: 60%;
+    // }
 
   &__item {
     display: flex;

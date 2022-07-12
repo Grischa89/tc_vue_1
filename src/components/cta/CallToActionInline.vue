@@ -22,7 +22,7 @@ export default {
         width: 100%;
         border-radius: .75rem;
         min-height: 4ch;
-        max-width: 90ch;
+        max-width: 70ch;
         margin-bottom: 2rem;
         padding-top: 1rem;
         padding-bottom: 1rem;

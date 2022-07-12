@@ -43,12 +43,14 @@ export default {
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 1rem;
-
-  @include tablet-landscape {
-    margin-left: auto;
+  max-width: 70ch;
+  margin-left: auto;
     margin-right: auto;
-    width: 80%;
-  }
+
+  // @include tablet-landscape {
+  //   margin-left: auto;
+  //   margin-right: auto;
+  // }
 
   &__link {
     font-size: $mobile-body;
