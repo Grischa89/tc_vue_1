@@ -1,24 +1,28 @@
 <template>
-    <div class="article-form">
-        <h1>Create new article</h1>
-
-        <div>
-            <select name="template" id="template" @change="setTemplate">
-                <option value selected disabled>Choose a template</option>
-                <option value="templateBasic">Basic Article</option>
-                <option value="templateTable">Article with Table</option>
-            </select>
-
-            <button type="button" @click="setTemplate($event, 'templateEmpty')">Start without template</button>
+    <div class="create-article">
+        <div class="create-article__header">
+            <h1 class="create-article__header__title">Create a new article</h1>
+            <div class="create-article__header__select-start">
+                <select class="create-article__header__select-start__select" name="template" id="template" @change="setTemplate">
+                    <option value selected disabled>Choose a template</option>
+                    <option value="templateBasic">Basic Article</option>
+                    <option value="templateTable">Article with Table</option>
+                    <option value="templateEmpty">Start Empty</option>
+                </select>
+                <!-- <span class="create-article__header__select-start__text">or</span>
+                <button class="create-article__header__select-start__empty" type="button" @click="setTemplate($event, 'templateEmpty')">Start empty</button> -->
+            </div>
         </div>
 
-        <div>
-            <button type="button" @click="addRow">Add Row</button><br>
+        <div class="create-article__main">
+            <button v-if="showButtons" class="create-article__main__button" type="button" @click="addRow">Add Row</button>
+
             <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false">
                 <template #item="{element}">
-                    <div>
+                    <div class="create-article__main__form">
                         <!-- <Key v-model="element.key" /> -->
-                        <select name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
+                        <label class="create-article__main__form__label" for="key">Section:</label>
+                        <select class="create-article__main__form__key" name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
                             <option value selected disabled >Choose A Column</option>
                             <option
                                 v-for="(column, i) in articleColumns"
@@ -27,29 +31,34 @@
                                 :disabled="column.disabled">{{ column.name }}</option>
                         </select>
 
+                        <label v-if="element.key.includes('article_')" class="create-article__main__form__label" for="valueSelect">Content:</label>
+                        <label v-else class="create-article__main__form__label" for="valueInput">Content:</label>
                         <ValueSelect 
                             v-if="element.key.includes('article_')"
                             v-model="element.value" />
+
+                        <!-- TODO: if key === 'table' -->
 
                         <ValueInput
                             v-else
                             v-model="element.value"
                             :keyType="keyType" />
-
-                        <!-- if element.key prev next // else -->
             
-                        <button type="button" @click="deleteRow(element.id)">Delete</button>
+                        <button class="create-article__main__form__button" type="button" @click="deleteRow(element.id)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
                     </div>
                 </template>
             </draggable>
 
-            <br>
+            <div class="create-article__footer">
+                <button v-if="showButtons" class="create-article__footer__button" type="button" @click="submitForm">Create Article</button>
+            </div>
 
             {{ article }}
 
-            <br>
-            
-            <button type="button" @click="submitForm">Create Article</button>
         </div>        
     </div>
 </template>
@@ -178,11 +187,15 @@ export default {
         rowCount() {
             return this.article?.length;
         },
+
+        showButtons() {
+            return this.article.length > 0 ? true : false;
+        },
     },
 
     methods: {
-        setTemplate(e, empty) {
-            const template = e.target.value || empty;
+        setTemplate(e) {
+            const template = e.target.value;
             this.article = this.templates[`${template}`];
         },
 
@@ -260,7 +273,180 @@ export default {
 </script>
 
 <style lang="scss">
-    .article-form {
-        background-color: aquamarine;
+    .create-article {
+        display: flex;
+        flex-direction: column;
+        max-width: 60rem;
+        margin-left: auto;
+        margin-right: auto;
+
+        // background-color: rgba(#fff, .1);
+        
+
+        // @include tablet {
+        //     width: 90%;
+        // // padding: 2rem;
+        // max-width: 70%; //24.3076923rem;
+        // margin: 0 auto 0 auto;
+        // }
+
+        &__header {
+            margin-top: 1.5rem;
+
+            &__title {
+                margin-left: auto;
+                margin-right: auto;
+                font-size: $mobile-heading;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: .05rem;
+            }
+
+            &__select-start {
+                display: flex;
+                flex-direction: column;
+                margin: 1.5rem auto;
+
+                &__select {
+                    align-self: center;
+                    display: block;
+                    text-indent: .5rem;
+                    margin-bottom: 1rem;
+                    border: .0625rem solid var(--border-input);
+                    border-radius: 0.25em;
+                    text-transform: capitalize;
+                    height: 2rem;
+                    width: 100%;
+                    max-width: 20ch;
+                }
+
+                &__empty {
+                    align-self: center;
+                    display: block;
+                    padding: .125rem 1rem;
+                    border-radius: 0.25em;
+                    background-color: var(--text);
+                    color: var(--textInverse);
+                    text-transform: capitalize;
+                    height: 2rem;
+                }
+
+                &__text {
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+
+        &__main {
+            display: flex;
+            flex-direction: column;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+
+            &__button {
+                align-self: flex-end;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                margin-bottom: 1rem;
+                height: 2rem;
+                width: 15ch;
+                border-radius: 0.25em;
+                background-color: var(--text);
+                color: var(--textInverse);
+                text-transform: capitalize;
+            }
+
+            &__form {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: .5rem;
+                border-bottom: .0625rem solid var(--border);
+
+                &:first-of-type {
+                    border-top: .0625rem solid var(--border);
+                    padding-top: .25rem;
+                }
+
+                @include tablet-landscape {
+                    flex-direction: row;
+                    align-items: flex-start;
+
+                    :not(:last-child) {
+                        margin-right: .5rem;
+                    }
+
+
+                }
+
+                &__label {
+                  align-self: flex-start;
+                  margin-top: .25rem;
+                }
+
+                &__key {
+                    align-self: flex-start;
+                    text-indent: .25rem;
+                    height: 2rem;
+                    // margin-right: .5rem;
+                    margin-top: .5rem;
+                    margin-bottom: .5rem;
+                    border: .0625rem solid var(--border-input);
+                    border-radius: 0.25em;
+                    width: 20ch;
+                    // max-width: 
+                }
+
+                &__value {
+                    align-self: flex-start;
+                    text-indent: .5rem;
+                    padding-top: .25rem;
+                    height: 2rem;
+                    width: 100%;
+                    margin-top: .5rem;
+                    margin-bottom: .5rem;
+                    border: .0625rem solid var(--border-input);
+                    border-radius: 0.25em;
+                    min-height: 2.5rem;
+                }
+
+                &__button {
+                    align-self: flex-start;
+                    height: 2rem;
+                    padding-left: .5rem;
+                    padding-right: .5rem;
+                    margin-bottom: .5rem;
+                    border-radius: 0.25em;
+
+                    svg {
+                        height: 1.25rem;
+                        width: 1.25rem;
+                        color: var(--error);
+                    }
+                }
+            }
+        }
+
+        &__footer {
+            margin-bottom: 1.5rem;
+
+            &__button {
+                padding-top: .5rem;
+                padding-bottom: .5rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+                border-radius: 0.25em;
+                background-color: var(--secondary);
+                color: $white;
+                font-weight: 600;
+                letter-spacing: .1ch;
+                text-transform: uppercase;
+            }
+        }
+
+
     }
 </style>
