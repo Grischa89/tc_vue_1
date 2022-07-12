@@ -17,7 +17,7 @@
         <div class="create-article__main">
             <button v-if="showButtons" class="create-article__main__button" type="button" @click="addRow">Add Row</button>
 
-            <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300">
+            <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300" :delayOnTouchOnly="true">
                 <template #item="{element}">
                     <div class="create-article__main__form">
                         <!-- <Key v-model="element.key" /> -->
