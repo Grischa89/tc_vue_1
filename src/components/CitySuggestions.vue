@@ -61,6 +61,11 @@ export default {
     this.$store.dispatch('fetchCountryForCitySuggestions', { continent: this.$route.params.continent, country: this.$route.params.country } );
   },
 
+  mounted() {
+    const suggestionsNav = document.querySelector('.suggestions__main__nav');
+    this.scrollEnd = suggestionsNav.clientWidth === suggestionsNav.scrollWidth ? true : false;
+  },
+
   computed: {
     ...mapGetters({
       citySuggestions: 'citySuggestions'
@@ -80,6 +85,7 @@ export default {
         // return sortByCityRanking.slice(0, 6);
         return sortByCityRanking;
       }
+      return []
     },
 
     currentRouteName() {
