@@ -61,7 +61,7 @@ export default {
     this.$store.dispatch('fetchCountryForCitySuggestions', { continent: this.$route.params.continent, country: this.$route.params.country } );
   },
 
-  mounted() {
+  updated() {
     const suggestionsNav = document.querySelector('.suggestions__main__nav');
     this.scrollEnd = suggestionsNav.clientWidth === suggestionsNav.scrollWidth ? true : false;
   },
