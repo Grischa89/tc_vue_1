@@ -26,7 +26,7 @@ export default {
         background-color: $white;
         border-radius: .75rem;
         width: 90%;
-        max-width: 80ch;
+        max-width: 70ch;
         margin-left: 5%;
         margin-right: 5%;
         margin-top: 3rem;
