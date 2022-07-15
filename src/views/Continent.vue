@@ -1,7 +1,6 @@
 <template>
   <div v-if="loadStatus === 'loading'">
     <TableSkeleton />
-    <CardCarouselSkeleton />
   </div>
 
   <div v-if="loadStatus === 'success' && continentCodes">
@@ -25,17 +24,12 @@
     <Table
       :codes="continentCodes"
       :title="tableTitle" />
-    
-    <CardCarousel
-    :codes="continentCodes" />
   </div>
 </template>
 
 <script>
 import Table from '../components/Table.vue';
-import CardCarousel from '../components/card-carousel/CardCarousel.vue';
 import TableSkeleton from '../components/skeletons/TableSkeleton.vue';
-import CardCarouselSkeleton from '../components/skeletons/CardCarouselSkeleton.vue';
 import CallToActionInline from '../components/cta/CallToActionInline.vue';
 
 import { mapGetters } from 'vuex';
@@ -46,9 +40,7 @@ name: 'Continent',
 
   components: {
     Table,
-    CardCarousel,
     TableSkeleton,
-    CardCarouselSkeleton,
     CallToActionInline,
   },
 
