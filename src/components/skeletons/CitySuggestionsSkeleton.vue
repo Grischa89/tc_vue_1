@@ -1,17 +1,14 @@
 <template>
   <div class="suggestions">
    <h2 v-if="currentRouteName === 'City'" class="skeleton skeleton__heading" :class="{ loading: loading }"></h2>
-    <div class="suggestions__grid">
-      <div
-        v-for="i in 6"
+    <div class="suggestions__main">
+      <div class="skeleton__nav">
+        <div
+        v-for="i in 3"
         :key="i"
-        class="skeleton skeleton__nav-pill" :class="{ loading: loading }">
+        class="skeleton skeleton__nav__pill" :class="{ loading: loading }">
       </div>
-      <!-- <div
-        v-for="j in 3"
-        :key="j"
-        class="skeleton skeleton__nav-pill skeleton__nav-pill--fade" :class="{ loading: loading }">
-      </div> -->
+      </div>
     </div>
   </div>
   
@@ -40,10 +37,6 @@ export default {
 .loading {
   animation: skeleton-loading .9s linear infinite alternate;
 }
-
-// .loading-fade {
-//   animation: skeleton-loading-fade .9s linear infinite alternate;
-// }
 
 .skeleton {
   opacity: .7;
@@ -78,31 +71,18 @@ export default {
     margin: 0 .25rem;
   }
 
-  &__nav-pill {
-    grid-column: span 2;
-    height: 3rem;
-    border-radius: 1.5rem;
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: .5rem;
 
-    // &:last-of-type {
-    //   margin-bottom: 2rem;
-    // }
-
-    // &--fade {
-    //   opacity: .5;
-    // }
+    &__pill {
+      height: 2.5rem;
+      width: 32%;
+      border-radius: 1.5rem;
+    }
   }
-
-  // &__text {
-  //   width: 100%;
-  //   height: .5rem;
-  //   margin-bottom: .25rem;
-  //   border-radius: .125rem;
-
-  //   &:last-child {
-  //     margin-bottom: 0;
-  //     width: 80%;
-  //   }
-  // }
 }
 
 @keyframes skeleton-loading {
