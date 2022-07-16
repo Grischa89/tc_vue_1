@@ -12,21 +12,25 @@
             class="suggestions__main__nav__pill">
               <router-link class="suggestions__main__nav__pill__link" :to="{ name: 'City', params: { continent: city.continent_slug, country: city.country_slug, city: city.city_slug } }">{{ city.city }}</router-link>
           </div>
-          <div class="suggestions__main__nav__indicator">
+          <!-- <div class="suggestions__main__nav__indicator">
             <svg xmlns="http://www.w3.org/2000/svg" class="suggestions__main__nav__indicator__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
-          </div>
+          </div> -->
         </div>
-        <div :class="{ 'suggestions__main__indicator suggestions__main__indicator--right': !scrollEnd }">
-          <svg v-if="!scrollEnd" @click="scrollNav" xmlns="http://www.w3.org/2000/svg" class="suggestions__main__indicator__icon suggestions__main__indicator__icon--right" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" data-direction="next">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
+        <div :class="{ 'suggestions__main__indicator suggestions__main__indicator--next': !scrollEnd }">
+          <button v-if="!scrollEnd" @click="scrollNav" class="suggestions__main__indicator__button suggestions__main__indicator__button--next" data-direction="next">
+            <svg xmlns="http://www.w3.org/2000/svg" class="suggestions__main__indicator__button__icon suggestions__main__indicator__button__icon--next" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
-        <div :class="{ 'suggestions__main__indicator suggestions__main__indicator--left': !scrollStart }">
-          <svg v-if="!scrollStart" @click="scrollNav" xmlns="http://www.w3.org/2000/svg" class="suggestions__main__indicator__icon suggestions__main__indicator__icon--left" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" data-direction="prev">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
+        <div :class="{ 'suggestions__main__indicator suggestions__main__indicator--prev': !scrollStart }">
+          <button v-if="!scrollStart" @click="scrollNav" class="suggestions__main__indicator__button suggestions__main__indicator__button--prev" data-direction="prev">
+            <svg xmlns="http://www.w3.org/2000/svg" class="suggestions__main__indicator__button__icon suggestions__main__indicator__button__icon--prev" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
         </div>
     </div>
     <div v-if="currentRouteName === 'City' && countrySuggestion" class="suggestions__footer">
@@ -46,6 +50,7 @@ export default {
 
   data() {
     return {
+      executed: false,
       scrollStart: true,
       scrollEnd: false,
       scrollStep: 50,
@@ -62,8 +67,11 @@ export default {
   },
 
   updated() {
-    const suggestionsNav = document.querySelector('.suggestions__main__nav');
-    this.scrollEnd = suggestionsNav.clientWidth === suggestionsNav.scrollWidth ? true : false;
+    if (!this.executed) {
+      const suggestionsNav = document.querySelector('.suggestions__main__nav');
+      this.scrollEnd = suggestionsNav.clientWidth === suggestionsNav.scrollWidth ? true : false;
+      this.executed = true;
+    }
   },
 
   computed: {
@@ -202,30 +210,41 @@ export default {
         // background-image: linear-gradient(to right, rgba(255,255,255,0), var(--surface1) 95%);
         width: 15%;
 
-        &--right {
+        &--next {
           right: 0;
           background-image: linear-gradient(to right, rgba(255,255,255,0), var(--surface1) 75%);
         }
 
-        &--left {
+        &--prev {
           left: 0;
           background-image: linear-gradient(to left, rgba(255,255,255,0), var(--surface1) 75%);
         }
 
-        &__icon {
+        &__button {
           position: absolute;
-          height: 1rem;
-          width: 1rem;
-          align-self: center;
-          // z-index: 2;
-          cursor: pointer;
+          border-radius: 50%;
+          padding: .375rem;
 
-          &--right {
+          &:hover {
+            background-color: var(--hover-button);
+          }
+
+          &:focus {
+            background-color: var(--focus-button);
+          }  
+
+          &--next {
             right: 0;
           }
 
-          &--left {
+          &--prev {
             left: 0;
+          }
+
+          &__icon {
+            height: 1.25rem;
+            width: 1.25rem;
+            cursor: pointer;
           }
         }
       }
