@@ -52,13 +52,13 @@
                 </template>
             </draggable>
 
-            <div class="create-article__footer">
-                <button v-if="showButtons" class="create-article__footer__button" type="button" @click="submitForm">Create Article</button>
-            </div>
+            <button v-if="showButtons" class="create-article__main__button" type="button" @click="addRow">Add Row</button>
+        </div>  
 
-            {{ article }}
-
-        </div>        
+        <div class="create-article__footer">
+            <button v-if="showButtons" class="create-article__footer__button" type="button" @click="submitForm">Create Article</button>
+        </div>
+        {{ article }}
     </div>
 </template>
 
