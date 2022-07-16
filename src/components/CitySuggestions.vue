@@ -50,7 +50,7 @@ export default {
 
   data() {
     return {
-      executed: false,
+      scrollbarNeededCheck: false,
       scrollStart: true,
       scrollEnd: false,
       scrollStep: 50,
@@ -67,10 +67,10 @@ export default {
   },
 
   updated() {
-    if (!this.executed) {
+    if (!this.scrollbarNeededCheck) {
       const suggestionsNav = document.querySelector('.suggestions__main__nav');
       this.scrollEnd = suggestionsNav.clientWidth === suggestionsNav.scrollWidth ? true : false;
-      this.executed = true;
+      this.scrollbarNeededCheck = true;
     }
   },
 
