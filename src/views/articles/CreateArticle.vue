@@ -25,7 +25,7 @@
                         <select class="create-article__main__form__key" name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
                             <option value selected disabled >Choose A Column</option>
                             <option
-                                v-for="(column, i) in articleColumns"
+                                v-for="(column, i) in articleSections"
                                 :key="i"
                                 :value="column.name"
                                 :disabled="column.disabled">{{ column.name }}</option>
@@ -41,8 +41,7 @@
 
                         <ValueInput
                             v-else
-                            v-model="element.value"
-                            :keyType="keyType" />
+                            v-model="element.value" />
             
                         <button class="create-article__main__form__button" type="button" @click="deleteRow(element.id)">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -84,13 +83,7 @@ export default {
     },
 
     created() {
-        this.article.forEach(element => {
-            if (this.uniqueOptions.includes(element.key)) {
-                const i = this.findUniqueIndex(element.key);
-                this.articleColumns[i].disabled = true;
-            } 
-        });
-        this.$store.dispatch('getArticleColumns');
+        this.$store.dispatch('getArticleSections');
         this.$store.dispatch('getArticleRecommendations');
     },
 
@@ -98,7 +91,6 @@ export default {
         return {
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
-            keyType: '',
             dummyOrder: ['heading', 'summary', 'paragraph', 'subheading', 'paragraph', 'listarray', 'paragraph', 'subheading', 'paragraph'],
             dummyArticle: [
                 { heading: 'Awesome heading' }, 
@@ -181,7 +173,7 @@ export default {
         },
 
         ...mapGetters({
-            articleColumns: 'articleColumns',
+            articleSections: 'articleSections',
         }),
 
         rowCount() {
@@ -197,15 +189,24 @@ export default {
         setTemplate(e) {
             const template = e.target.value;
             this.article = this.templates[`${template}`];
+            this.setDisabledPropsForTemplateArticle();
+        },
+
+        setDisabledPropsForTemplateArticle() {
+            this.article.forEach(element => {
+                if (this.uniqueOptions.includes(element.key)) {
+                    const i = this.findIndexOfUniqueOption(element.key);
+                    this.articleSections[i].disabled = true;
+                }
+            });
         },
 
         setPreviousSelected(e) {
             this.previousSelected = e.target.value;
         },     
 
-        findUniqueIndex(uniqueOption) {
-            console.log('%cuniqueOption', 'color: darkseagreen; font-weight: bold;', uniqueOption);
-            const index = this.articleColumns.findIndex(object => {
+        findIndexOfUniqueOption(uniqueOption) {
+            const index = this.articleSections.findIndex(object => {
                     return object.name === uniqueOption;
                 });
             return index
@@ -213,7 +214,6 @@ export default {
 
         disableUniqueOption(e) {
             const currentSelected = e.target.value;
-            this.keyType = currentSelected;
 
             // Prevent that any disabled prop can be changed
             // This is actually not possible because the if previousSelected is 'heading' or 'summary' it cannot be the currentSelected (this.disableUniqueOption will not be executed)
@@ -223,13 +223,13 @@ export default {
             // (since it cannot be re-selected because it's disabled)
             // So the uniqueOptions disabled value can be set to true
             if (this.uniqueOptions.includes(this.previousSelected)) {
-                const index = this.findUniqueIndex(this.previousSelected);
-                this.articleColumns[index].disabled = false;
+                const index = this.findIndexOfUniqueOption(this.previousSelected);
+                this.articleSections[index].disabled = false;
             }
 
             if (this.uniqueOptions.includes(currentSelected)) {
-                const index = this.findUniqueIndex(currentSelected);
-                this.articleColumns[index].disabled = true;
+                const index = this.findIndexOfUniqueOption(currentSelected);
+                this.articleSections[index].disabled = true;
             }
         },
 

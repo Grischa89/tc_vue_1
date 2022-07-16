@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const state = {
-    articleColumns: [],
-    // articleColumns: ['heading', 'summary', 'paragraph', 'subheading', 'listarray', 'table'],
+    articleSections: [],
+    // articleSections: ['heading', 'summary', 'paragraph', 'subheading', 'listarray', 'table'],
     articleRecommendations: null,
 
     articles: null,
@@ -11,12 +11,12 @@ const state = {
 };
 
 const getters = {
-    articleColumns: state => {
-        const mappedArticleColumns = state.articleColumns.map(element => {
+    articleSections: state => {
+        const mappedArticleSections = state.articleSections.map(element => {
             return { name: element, disabled: false };
         });
         
-        return mappedArticleColumns;
+        return mappedArticleSections;
     },
 
     articleRecommendations: state => {
@@ -53,10 +53,10 @@ const getters = {
 };
 
 const actions = {
-    getArticleColumns({ commit }) {
+    getArticleSections({ commit }) {
         axios.get('/api/v1/articles/get_article_columns/')
         .then(res => {
-            commit('setArticleColumns', res.data.columns);
+            commit('setArticleSections', res.data.columns);
         })
         .catch(err => {
             console.log('err', err);
@@ -112,8 +112,8 @@ const actions = {
 };
 
 const mutations = {
-    setArticleColumns(state, columns) {
-        state.articleColumns = columns;
+    setArticleSections(state, columns) {
+        state.articleSections = columns;
     },
 
     setArticleRecommendations(state, recommendations) {
