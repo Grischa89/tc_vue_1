@@ -53,8 +53,8 @@
               <p class="profile__resource__item__display__task__row"><span>City:</span> <router-link :to="{ name: 'City', params: { continent: code.continent_slug, country: code.country_slug, city: code.city_slug } }" class="profile__resource__item__display__task__row__link">{{ code.city }}</router-link></p>
             </div>
             <div class="profile__resource__item__display__actions">
-              <button class="profile__resource__item__display__actions__btn" >
-                <!--  TODO: routerlink? @click="repostCode(code)"-->
+              <button class="profile__resource__item__display__actions__btn" @click="repostCode(code)">
+                <!--  TODO: routerlink? -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="profile__resource__item__display__actions__btn__prepend" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-labelledby="post-code-again">
                   <title id="post-code-again">Post this code again</title>
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
