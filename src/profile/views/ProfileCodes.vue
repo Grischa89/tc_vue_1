@@ -165,7 +165,7 @@ export default {
         
           h2 {
             padding: 0 .25rem;
-            box-shadow: inset 0 -.625rem 0 0 $in-between;
+            box-shadow: inset 0 -.625rem 0 0 var(--textBackdropLight);
           }
 
           // h2:nth-of-type(2n) {
