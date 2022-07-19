@@ -424,6 +424,10 @@ export default {
                 // border-radius: 50%;
                 // background-color: blue;
 
+                &:hover {
+                    text-decoration: underline;
+                }
+
                 &__prepend {
                     height: $mobile-subheading;
                     width: $mobile-subheading;
