@@ -45,6 +45,10 @@ export default {
                 font-family: Monaco, monospace;
                 font-size: 1.25rem;
                 font-weight: 600;
+
+                &:hover {
+                    text-decoration: underline;
+                }
             }
 
             &__meta {

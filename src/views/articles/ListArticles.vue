@@ -35,6 +35,7 @@ export default {
 <style lang="scss">
     .articles {
         width: 95%;
+        max-width: 70ch;
         margin-left: auto;
         margin-right: auto;
     }
