@@ -92,6 +92,15 @@ const getters = {
 
             return articleOrdered;
         }
+    },
+
+    displayArticleMeta: state => {
+        const articleMeta = {
+            created: state.article?.created,
+            updated: state.article?.updated
+        }
+
+        return articleMeta;
     }
 };
 
