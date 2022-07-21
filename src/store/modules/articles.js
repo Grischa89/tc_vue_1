@@ -28,7 +28,7 @@ const getters = {
     },
 
     displayArticle: state => {
-        if (state.article) {
+        if (state.article?.order) {
             const article = state.article;
             const order = state.article.order;
             delete article.slug;
