@@ -31,6 +31,14 @@
                                 :disabled="column.disabled">{{ column.name }}</option>
                         </select>
 
+                        <template v-if="element.key === 'table'">
+                            <label class="create-article__main__form__label" for="tableShape">Shape: (n*n=content.length)</label>
+                            <input v-model="element.shape" class="create-article__main__form__value" type="text" name="tableShape" id="tableShape" />
+
+                            <label class="create-article__main__form__label" for="tableHead">Head:</label>
+                            <input v-model="element.table_head" class="create-article__main__form__value" type="text" name="tableHead" id="tableHead">
+                        </template>
+
                         <label v-if="element.key.includes('article_')" class="create-article__main__form__label" for="valueSelect">Content:</label>
                         <label v-else class="create-article__main__form__label" for="valueInput">Content:</label>
                         <ValueSelect 
