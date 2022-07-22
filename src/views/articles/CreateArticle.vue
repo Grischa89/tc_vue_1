@@ -185,6 +185,10 @@ export default {
 
         setDisabledPropsForTemplateArticle() {
             this.article.forEach(element => {
+                if (!element.key) {
+                    this.articleSections.forEach(element => element.disabled = false)
+                }
+
                 if (this.uniqueOptions.includes(element.key)) {
                     const i = this.findIndexOfUniqueOption(element.key);
                     this.articleSections[i].disabled = true;
