@@ -20,7 +20,6 @@
             <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300" :delayOnTouchOnly="true">
                 <template #item="{element}">
                     <div class="create-article__main__form">
-                        <!-- <Key v-model="element.key" /> -->
                         <label class="create-article__main__form__label" for="key">Section:</label>
                         <select class="create-article__main__form__key" name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
                             <option value selected disabled >Choose A Column</option>
@@ -44,8 +43,6 @@
                         <ValueSelect 
                             v-if="element.key.includes('article_')"
                             v-model="element.value" />
-
-                        <!-- TODO: if key === 'table' -->
 
                         <ValueInput
                             v-else
@@ -104,14 +101,6 @@ export default {
         return {
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
-            dummyOrder: ['heading', 'summary', 'paragraph', 'subheading', 'paragraph', 'listarray', 'paragraph', 'subheading', 'paragraph'],
-            dummyArticle: [
-                { heading: 'Awesome heading' }, 
-                { summary: 'Awesome summary' }, 
-                { paragraph: ['Awesome paragraph 1', 'Awesome paragraph 2', 'Awesome paragraph 3', 'Awesome paragraph 4'] }, 
-                { subheading: ['Awesome subheading 1', 'Awesome subheading 2'] }, 
-                { listarray: [['Awesome listarray item 1', 'Awesome listarray item 2']] }, 
-            ],
             article: [],
             templates: {
                 templateEmpty: [
@@ -170,58 +159,6 @@ export default {
 
                 return articleMapped;
             }
-        },
-
-        displayDummyArticle() {
-            let order = this.dummyOrder;
-            let dbArticle = this.dummyArticle;
-
-            // Extract keys from objects in dbArticle array
-            // To find out indices of keys in dbArticle
-            let keys = dbArticle.map(element => {
-                // Object.keys() returns an array: ['heading']
-                return Object.keys(element);
-            });
-
-            // Flatten sub-arrays of keys array (so I don't have to use keys[i][0] later on)
-            // keys looks like this [['heading'], ['summary']]...
-            let keysFlat = keys.flat();
-
-            // According to the order of elements of order array create new loopable array
-            const articleMapped = order.map((element, index, array) => {
-                // element of order e.g. 'heading'
-                let articleRow = {
-                    key: '',
-                    value: ''
-                }
-
-                // Find index i of element in dbArticle with help of keysFlat array
-                // = Finde passendes Element in dbArticle array zum aktuellen order element
-                let i = keysFlat.findIndex((item, i, array) => {
-                    return array[i] === element;
-                });
-                
-                // Make sure i exists
-                if (i !== -1) {
-                    // Look up dbArticle array at place i and check if value of `${element}` is an Array
-                    if (Array.isArray(dbArticle[i][`${element}`])) {
-                        // If value is of type Array assign only its first element as value of the new array
-                        // articleRow = { key: element, value: dbArticle[i][`${element}`][0]};
-                        articleRow.key = element;
-                        articleRow.value = dbArticle[i][`${element}`][0];
-                        // Remove first element of dbArticle[i][`${element}`] after assigning it
-                        dbArticle[i][`${element}`].shift();
-                        return articleRow;
-                    }
-                    // If dbArticle array at place i not of type Array just assign its value as value of the new array
-                    articleRow.key = element;
-                    articleRow.value = dbArticle[i][`${element}`];
-                }
-
-                return articleRow;
-            });
-
-            return articleMapped;
         },
 
         ...mapGetters({
