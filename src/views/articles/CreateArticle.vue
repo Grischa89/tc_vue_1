@@ -36,7 +36,7 @@
                             <input v-model="element.shape" class="create-article__main__form__value" type="text" name="tableShape" id="tableShape" />
 
                             <label class="create-article__main__form__label" for="tableHead">Head:</label>
-                            <input v-model="element.table_head" class="create-article__main__form__value" type="text" name="tableHead" id="tableHead">
+                            <input v-model="element.table_head" class="create-article__main__form__value" type="text" name="tableHead" id="tableHead" />
                         </template>
 
                         <label v-if="element.key.includes('article_')" class="create-article__main__form__label" for="valueSelect">Content:</label>
@@ -66,7 +66,10 @@
         <div class="create-article__footer">
             <button v-if="showButtons" class="create-article__footer__button" type="button" @click="submitForm">Create Article</button>
         </div>
-        {{ article }}
+
+        <ArticleTemplate v-if="displayArticle">
+            <ArticleDisplay :article="displayArticle" />
+        </ArticleTemplate>
     </div>
 </template>
 
@@ -77,6 +80,7 @@ import draggable from 'vuedraggable'
 import Key from '../articles/Key.vue';
 import ValueInput from '../articles/ValueInput.vue';
 import ValueSelect from '../articles/ValueSelect.vue';
+import ArticleTemplate from './components/ArticleTemplate.vue';
 import ArticleDisplay from '../articles/components/ArticleDisplay.vue';
 
 export default {
@@ -87,6 +91,7 @@ export default {
         Key,
         ValueInput,
         ValueSelect,
+        ArticleTemplate,
         ArticleDisplay,
     },
 
@@ -128,6 +133,45 @@ export default {
     },
 
     computed: {
+        displayArticle() {
+            if (this.article) {
+                const article = this.article;
+
+                // Derive loopable array from article
+                const articleMapped = article.map(element => {
+                    const articleRow = {
+                        section: '',
+                        content: {}
+                    };
+
+                    articleRow.section = element.key;
+
+                    // Handle special case of table on its own
+                    if (element.key === 'table' && element.value) {
+                        const numberOfColumns = parseInt(element.shape.split(',')[1]);
+                        const columns = element.table_head.split(',');
+                        const tableContentSplit = element.value.split(',');
+
+                        const rows = [];
+                        for (let i = 0; i < tableContentSplit.length; i += numberOfColumns) {
+                            const row = tableContentSplit.slice(i, i + numberOfColumns);
+                            rows.push(row);
+                        }
+                        articleRow.content['columns'] = columns;
+                        articleRow.content['rows'] = rows;
+                        return articleRow;
+                    }
+
+                    // Handle special case of listarray right when assigning content
+                    articleRow.content = element.key === 'listarray' ? element.value.split(';') : element.value;
+                    
+                    return articleRow;
+                });
+
+                return articleMapped;
+            }
+        },
+
         displayDummyArticle() {
             let order = this.dummyOrder;
             let dbArticle = this.dummyArticle;
@@ -277,7 +321,7 @@ export default {
 
             console.log('%cindex', 'color: darkseagreen; font-weight: bold;', index);
             this.article.splice(index, 1);
-        }
+        },
     }
 }
 </script>
