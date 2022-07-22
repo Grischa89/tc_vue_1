@@ -176,8 +176,10 @@ export default {
 
     methods: {
         setTemplate(e) {
-            const template = e.target.value;
-            this.article = this.templates[`${template}`];
+            const templateName = e.target.value;
+            // Create deep copy
+            const template = JSON.parse(JSON.stringify(this.templates[`${templateName}`]));
+            this.article = template;
             this.setDisabledPropsForTemplateArticle();
         },
 
