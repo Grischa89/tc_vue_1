@@ -128,12 +128,12 @@ export default {
 
                 // Derive loopable array from article
                 const articleMapped = article.map(element => {
-                    const articleRow = {
-                        section: '',
+                    const section = {
+                        name: '',
                         content: {}
                     };
 
-                    articleRow.section = element.key;
+                    section.name = element.key;
 
                     // Handle special case of table on its own
                     if (element.key === 'table' && element.value) {
@@ -146,15 +146,15 @@ export default {
                             const row = tableContentSplit.slice(i, i + numberOfColumns);
                             rows.push(row);
                         }
-                        articleRow.content['columns'] = columns;
-                        articleRow.content['rows'] = rows;
-                        return articleRow;
+                        section.content['columns'] = columns;
+                        section.content['rows'] = rows;
+                        return section;
                     }
 
                     // Handle special case of listarray right when assigning content
-                    articleRow.content = element.key === 'listarray' ? element.value.split(';') : element.value;
+                    section.content = element.key === 'listarray' ? element.value.split(';') : element.value;
                     
-                    return articleRow;
+                    return section;
                 });
 
                 return articleMapped;

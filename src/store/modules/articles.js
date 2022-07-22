@@ -44,17 +44,17 @@ const getters = {
             // According to the order of elements of order array create new loopable array
             const articleOrdered = order.map(element => {
                 // Object to be returned from map
-                const articleRow = {
-                    section: '',
+                const section = {
+                    name: '',
                     content: {}
                 };
 
                 // Section value is of type array (subheading, sub_subheading, paragraph, listarray)
                 if (Array.isArray(article[`${element}`])) {
-                    articleRow.section = element;
-                    articleRow.content = element === 'listarray' ? article[`${element}`][0].split(';') : article[`${element}`][0];
+                    section.name = element;
+                    section.content = element === 'listarray' ? article[`${element}`][0].split(';') : article[`${element}`][0];
                     article[`${element}`].shift();
-                    return articleRow;
+                    return section;
                 }
 
                 // Section value is of type object (table)
@@ -76,18 +76,18 @@ const getters = {
                             rows.push(row);
                         }
 
-                        articleRow.section = element;
-                        articleRow.content['columns'] = columns;
-                        articleRow.content['rows'] = rows;
-                        return articleRow;
+                        section.name = element;
+                        section.content['columns'] = columns;
+                        section.content['rows'] = rows;
+                        return section;
                     }
                 }
 
                 // Section that only occurs once (heading, summary)
-                articleRow.section = element;
-                articleRow.content = article[`${element}`];
+                section.name = element;
+                section.content = article[`${element}`];
 
-                return articleRow;
+                return section;
             });
 
             return articleOrdered;
