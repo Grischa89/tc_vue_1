@@ -35,6 +35,7 @@
                                 <input v-model="element.table_head" class="create-article__main__form__value" type="text" name="tableHead" id="tableHead" />
                             </template>
                             <label v-if="element.key.includes('article_')" class="create-article__main__form__label" for="valueSelect">Content:</label>
+                            <label v-else-if="element.key === 'listarray'" class="create-article__main__form__label" for="valueInput">Content: (semicolon (;) separated values)</label>
                             <label v-else class="create-article__main__form__label" for="valueInput">Content:</label>
                             <ValueSelect
                                 v-if="element.key.includes('article_')"
@@ -54,6 +55,9 @@
                 <button v-if="showButtons" class="create-article__main__button" type="button" @click="addRow">Add Row</button>
             </div>
             <div class="create-article__footer">
+                <div v-if="errors.length" class="create-article__footer__errors">
+                    <p v-for="(error, i) in errors" :key="i">{{ error.message }}</p>
+                </div>
                 <button v-if="showButtons" class="create-article__footer__button" type="button" @click="submitForm">Create Article</button>
             </div>
         </div>
@@ -118,6 +122,7 @@ export default {
                     { key: 'table', value: '', id: Date.now() - 15 },
                 ]
             },
+            errors: [],
         }
     },
 
@@ -229,20 +234,11 @@ export default {
         },
 
         async submitForm() {
-            console.log('%carticle', 'color: plum; font-weight: bold;', this.article);
-            // data = {
-
-            // }
-            // axios.post('http://127.0.0.1:8000/bookmarks/add/', this.article)
-            //     .then(res => {
-            //         console.log('res', res);
-            //     })
-            //     .catch(err => {
-            //         console.log('err', err);
-            //     })
-            const createSuccess = await this.$store.dispatch('postArticle', this.article);
-            console.log('%ccreateSuccess', 'color: darkseagreen; font-weight: bold;', createSuccess);
-            if (createSuccess === 201) this.$router.push({ name: 'ListArticles' });
+            const numberOfErrors = await this.validateArticle(this.article);
+            if (numberOfErrors === 0) {
+                const createSuccess = await this.$store.dispatch('postArticle', this.article);
+                if (createSuccess === 201) this.$router.push({ name: 'ListArticles' });
+            }
         },
 
         addRow() {
@@ -265,6 +261,60 @@ export default {
             console.log('%cindex', 'color: darkseagreen; font-weight: bold;', index);
             this.article.splice(index, 1);
         },
+
+        validateArticle(article) {
+            this.errors = [];
+            let headingExists = false;
+            let summaryExists = false;
+
+            article.forEach(element => {
+                if (!element.key) this.errors.push({ message: `Please choose a section or delete the row.` });
+
+                if (!element.value) {
+                    console.log('%cNO VALUE', 'color: red; font-weight: bold;', element);
+                    this.errors.push({ message: `Please enter content for the section ${element.key} or delete the row.` });
+                }
+
+                if (element.key === 'heading') {
+                    if (element.value.toLowerCase().trim() === 'create') {
+                        this.errors.push({ message: `"${element.value}" is an invalid word to be used alone in a heading. Please choose another title.` });
+                    }
+                    headingExists = true;
+                }
+
+                if (element.key === 'summary') summaryExists = true;
+
+                if (element.key === 'table') {
+                    if (!element.shape) this.errors.push({ message: 'Please enter a shape for the table.' });
+                    const shapeArray = element.shape.split(',');
+                    // Check shape for containing only two integer vals
+                    if (shapeArray.length > 2) this.errors.push({ message: 'The table shape cannot contain more than two comma separated integers.' });
+
+                    if (!element.table_head) this.errors.push({ message: 'Please enter column names (table heads).' });
+
+                    const numberOfColumnsTableHead = parseInt(element.table_head.split(',').length);
+                    const shapeRows = parseInt(shapeArray[0]);
+                    const shapeColumns = parseInt(shapeArray[1]);
+
+                    // Check if columns match in head & shape
+                    if (numberOfColumnsTableHead !== shapeColumns) this.errors.push({ message: `Number of columns under Head (${numberOfColumnsTableHead}) and under Shape (${shapeColumns}) must match.` });
+
+                    const numberOfTableContentCells = parseInt(element.value.split(',').length);
+                    // Check if rows * columns & # of comma separated vals in content match
+                    if (numberOfTableContentCells !== (shapeRows * shapeColumns)) this.errors.push({ message: `Number of cells (${numberOfTableContentCells}) and multiplied shape (${shapeRows} * ${shapeColumns} = ${(shapeRows * shapeColumns)}) do not match.` });
+                }
+            });
+
+            if (!headingExists) {
+                this.errors.push({ message: 'Heading is a required section.' });
+            }
+
+            if (!summaryExists) {
+                 this.errors.push({ message: 'Summary is a required section.' })
+            }
+
+            return this.errors.length;
+        }
     }
 }
 </script>
@@ -431,15 +481,26 @@ export default {
             }
 
             &__footer {
+                display: flex;
+                flex-direction: column;
                 margin-bottom: 1.5rem;
+
+                &__errors {
+                    margin-left: auto;
+                    margin-right: auto;
+                    color: var(--error);
+                    text-align: left;
+                }
 
                 &__button {
                     padding-top: .5rem;
                     padding-bottom: .5rem;
                     padding-left: 1rem;
                     padding-right: 1rem;
-                    margin-top: 1rem;
+                    margin-top: 2rem;
                     margin-bottom: 1rem;
+                    margin-left: auto;
+                    margin-right: auto;
                     border-radius: 0.25em;
                     background-color: var(--secondary);
                     color: $white;
