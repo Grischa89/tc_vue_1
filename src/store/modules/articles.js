@@ -7,7 +7,7 @@ const state = {
 
     articles: null,
 
-    article: null,
+    article: {},
 };
 
 const getters = {
@@ -29,8 +29,9 @@ const getters = {
 
     displayArticle: state => {
         if (state.article?.order) {
-            const article = state.article;
-            const order = state.article.order;
+            // Use deep copy of state.article
+            const article = JSON.parse(JSON.stringify(state.article));
+            const order = article.order;
             delete article.slug;
             delete article.order;
 
