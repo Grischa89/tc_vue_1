@@ -1,92 +1,95 @@
 <template>
+  <FormTemplate>
     <div class="form__container">
     
-    <!-- NOTE: div instead of form prevents form submit from numpad @mobile "Go" button -->
-    <form class="form" @submit.prevent="submitForm">
-      <h2 class="form__title">Add Subscription</h2>
+      <!-- NOTE: div instead of form prevents form submit from numpad @mobile "Go" button -->
+      <form class="form" @submit.prevent="submitForm">
+        <h2 class="form__title">Add Subscription</h2>
 
-      <div v-if="errors.loadSubscriptionOptions" class="form__info form__info--error">
-        {{ errors.loadSubscriptionOptions }}
-      </div>
-      <div v-if="errors.loadCountries" class="form__info form__info--error">
-        {{ errors.loadCountries }}
-      </div>
-      <div v-if="errors.submitFailure" class="form__info form__info--error">
-        {{ errors.submitFailure }}
-      </div>
-
-      <div class="form__group">
-        <label class="form__group__label" :class="{'form__group__label--error': errors.invalidCode}" for="trainercode">Trainercode</label>
-        <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidCode}" type="number" step="1" id="trainercode" name="trainercode" placeholder="0000 1111 2222" v-model="data.player_code" @keydown="restrictKeys($event)" @keyup="typeCode($event)" @paste="pasteCode($event)" @blur="validateCode(data.player_code)">
-
-        
-        <span v-if="formatCode" class="form__group__help">Your Trainer Code: {{ formatCode }}</span>
-        <span v-if="errors.invalidCode" class="form__group__help" :class="{'form__group__help--error': errors.invalidCode}">{{ errors.invalidCode }}</span>
-      </div>
-
-      <div class="form__group">
-        <label class="form__group__label" for="eventOptions">Event</label>
-        <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidEvent}" name="eventOptions" id="eventOptions" @blur="validateEvent(data.event)" v-model="data.event" :disabled="!eventOptions">
-          <option value selected disabled >Choose An Event</option>
-          <option
-            v-for="(event, i) in eventOptions"
-            :key="i"
-            :value="event.id">{{ event.name }}</option>
-        </select>
-        
-        <span v-if="errors.invalidEvent" class="form__group__help" :class="{'form__group__help--error': errors.invalidEvent}">{{ errors.invalidEvent }}</span>
-      </div>
-
-      <div class="form__group">
-        <label class="form__group__label" for="codeActions">
-          Subscription Type
-          <IconButton @click.stop="openInfo = !openInfo">
-            <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend--small" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </IconButton>
-        </label>
-        <span v-if="openInfo" class="form__group__help form__group__help--normal">
-          {{ subscriptionTypeInfo }}
-        </span>
-        <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCodeAction}" name="codeActions" id="codeActions" @blur="validateCodeAction(data.action)" v-model="data.action" :disabled="!codeActionOptions">
-          <option value selected disabled>Choose A Subscription Type</option>
-          <option 
-            v-for="(action, i) in codeActionOptions"
-            :key="i" 
-            :value="action[0]">{{ action[1] }}
-          </option>
-        </select>
-
-        <span v-if="errors.invalidCodeAction" class="form__group__help" :class="{'form__group__help--error': errors.invalidCodeAction}" >{{ errors.invalidCodeAction }}</span>
-      </div>
-
-      <div v-if="countries && !data.user_timezone" class="form__group">
-        <div v-if="errors.loadTimezone" class="form__group__help form__group__help--error">
-          {{ errors.loadTimezone }}
+        <div v-if="errors.loadSubscriptionOptions" class="form__info form__info--error">
+          {{ errors.loadSubscriptionOptions }}
         </div>
-        <label class="form__group__label" for="country">Country</label>
-        <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCountry}" name="country" id="country" @blur="validateCountry(data.country)" v-model="data.country">
-          <option value selected disabled >Choose A Country</option>
-          <option
-            v-for="(country, i) in countries"
-            :key="i"
-            :value="country.slug">{{ country.name }}</option>
-        </select>
-        
-        <span v-if="errors.invalidCountry" class="form__group__help" :class="{'form__group__help--error': errors.invalidCountry}">{{ errors.invalidCountry }}</span>
-      </div>
+        <div v-if="errors.loadCountries" class="form__info form__info--error">
+          {{ errors.loadCountries }}
+        </div>
+        <div v-if="errors.submitFailure" class="form__info form__info--error">
+          {{ errors.submitFailure }}
+        </div>
 
-      <div class="form__btn__container">
-        <button class="form__btn form__btn--submit" type="submit">Submit</button>
-        <!-- <button class="form__btn form__btn--cancel" type="button" @click="cancelForm">Cancel</button> -->
-      </div>
-    </form>
-    
-  </div>
+        <div class="form__group">
+          <label class="form__group__label" :class="{'form__group__label--error': errors.invalidCode}" for="trainercode">Trainercode</label>
+          <input class="form__group__input form__group__input--code" :class="{'form__group__input--error': errors.invalidCode}" type="number" step="1" id="trainercode" name="trainercode" placeholder="0000 1111 2222" v-model="data.player_code" @keydown="restrictKeys($event)" @keyup="typeCode($event)" @paste="pasteCode($event)" @blur="validateCode(data.player_code)">
+
+          
+          <span v-if="formatCode" class="form__group__help">Your Trainer Code: {{ formatCode }}</span>
+          <span v-if="errors.invalidCode" class="form__group__help" :class="{'form__group__help--error': errors.invalidCode}">{{ errors.invalidCode }}</span>
+        </div>
+
+        <div class="form__group">
+          <label class="form__group__label" for="eventOptions">Event</label>
+          <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidEvent}" name="eventOptions" id="eventOptions" @blur="validateEvent(data.event)" v-model="data.event" :disabled="!eventOptions">
+            <option value selected disabled >Choose An Event</option>
+            <option
+              v-for="(event, i) in eventOptions"
+              :key="i"
+              :value="event.id">{{ event.name }}</option>
+          </select>
+          
+          <span v-if="errors.invalidEvent" class="form__group__help" :class="{'form__group__help--error': errors.invalidEvent}">{{ errors.invalidEvent }}</span>
+        </div>
+
+        <div class="form__group">
+          <label class="form__group__label" for="codeActions">
+            Subscription Type
+            <IconButton @click.stop="openInfo = !openInfo">
+              <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend--small" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </IconButton>
+          </label>
+          <span v-if="openInfo" class="form__group__help form__group__help--normal">
+            {{ subscriptionTypeInfo }}
+          </span>
+          <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCodeAction}" name="codeActions" id="codeActions" @blur="validateCodeAction(data.action)" v-model="data.action" :disabled="!codeActionOptions">
+            <option value selected disabled>Choose A Subscription Type</option>
+            <option 
+              v-for="(action, i) in codeActionOptions"
+              :key="i" 
+              :value="action[0]">{{ action[1] }}
+            </option>
+          </select>
+
+          <span v-if="errors.invalidCodeAction" class="form__group__help" :class="{'form__group__help--error': errors.invalidCodeAction}" >{{ errors.invalidCodeAction }}</span>
+        </div>
+
+        <div v-if="countries && !data.user_timezone" class="form__group">
+          <div v-if="errors.loadTimezone" class="form__group__help form__group__help--error">
+            {{ errors.loadTimezone }}
+          </div>
+          <label class="form__group__label" for="country">Country</label>
+          <select class="form__group__input form__group__input--select" :class="{'form__group__input--error': errors.invalidCountry}" name="country" id="country" @blur="validateCountry(data.country)" v-model="data.country">
+            <option value selected disabled >Choose A Country</option>
+            <option
+              v-for="(country, i) in countries"
+              :key="i"
+              :value="country.slug">{{ country.name }}</option>
+          </select>
+          
+          <span v-if="errors.invalidCountry" class="form__group__help" :class="{'form__group__help--error': errors.invalidCountry}">{{ errors.invalidCountry }}</span>
+        </div>
+
+        <div class="form__btn__container">
+          <button class="form__btn form__btn--submit" type="submit">Submit</button>
+          <!-- <button class="form__btn form__btn--cancel" type="button" @click="cancelForm">Cancel</button> -->
+        </div>
+      </form>
+      
+    </div>
+  </FormTemplate>
 </template>
 
 <script>
+import FormTemplate from '../components/templates/FormTemplate.vue';
 import IconButton from '../components/buttons/IconButton.vue';
 
 import { mapGetters } from 'vuex';
@@ -121,6 +124,7 @@ export default {
   },
 
   components: {
+    FormTemplate,
     IconButton
   },
 
