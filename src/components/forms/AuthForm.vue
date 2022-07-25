@@ -188,14 +188,14 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    color: black;
+    color: var(--text);
     font-size: $mobile-help;
     margin-top: .5rem;
 
     &--error {
         display: flex;
         align-items: center;
-        color: $error;
+        color: var(--error);
     }
 
     &--error:before {
@@ -209,7 +209,7 @@ export default {
     &--success {
         display: flex;
         align-items: center;
-        color: $success;
+        color: var(--success);
     }
 
     &--success:before {
