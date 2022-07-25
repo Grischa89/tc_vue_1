@@ -245,20 +245,12 @@ export default {
             // this.rowCount += 1;
             const newRow = { key: '', value: '', id: Date.now() };
             this.article.push(newRow);
-            
-            console.log('%cthis.article', 'color: darkseagreen; font-weight: bold;', this.article);
         },
 
         deleteRow(id) {
-
-            console.log('%cBEFORE', 'color: darkseagreen; font-weight: bold;', typeof this.article, this.article.length, id);
-            // this.article = this.article.filter(item => { item.id !== id});
-            console.log('%cAFTER', 'color: darkseagreen; font-weight: bold;', this.article);
             const index = this.article.findIndex(object => {
                 return object.id === id;
             });
-
-            console.log('%cindex', 'color: darkseagreen; font-weight: bold;', index);
             this.article.splice(index, 1);
         },
 
@@ -270,10 +262,7 @@ export default {
             article.forEach(element => {
                 if (!element.key) this.errors.push({ message: `Please choose a section or delete the row.` });
 
-                if (!element.value) {
-                    console.log('%cNO VALUE', 'color: red; font-weight: bold;', element);
-                    this.errors.push({ message: `Please enter content for the section ${element.key} or delete the row.` });
-                }
+                if (!element.value) this.errors.push({ message: `Please enter content for the section ${element.key} or delete the row.` });
 
                 if (element.key === 'heading') headingExists = true;
 
@@ -326,16 +315,6 @@ export default {
             max-width: 60rem;
             margin-left: auto;
             margin-right: auto;
-
-            // background-color: rgba(#fff, .1);
-            
-
-            // @include tablet {
-            //     width: 90%;
-            // // padding: 2rem;
-            // max-width: 70%; //24.3076923rem;
-            // margin: 0 auto 0 auto;
-            // }
 
             &__header {
                 margin-top: 1.5rem;
@@ -415,17 +394,6 @@ export default {
                         border-top: .0625rem solid var(--border);
                         padding-top: .25rem;
                     }
-
-                    // @include tablet-landscape {
-                    //     flex-direction: row;
-                    //     align-items: flex-start;
-
-                    //     :not(:last-child) {
-                    //         margin-right: .5rem;
-                    //     }
-
-
-                    // }
 
                     &__label {
                     align-self: flex-start;
