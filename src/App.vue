@@ -304,6 +304,9 @@ export default {
   --hover-button: hsla(33, 91%, 73%, .4);
   --focus-button: hsla(33, 91%, 73%, .6);
 
+  --hover-button-inverse: hsla(0, 3%, 14%, .8);
+  --focus-button-inverse: hsla(0, 3%, 14%, .66);
+
   --primary: #fef6ec; // $primary
   --primary1: #fcdcb6; // $primary-darker
   --primary2: #f9c07b; // $in-between
@@ -371,6 +374,9 @@ export default {
 
   --hover-button: hsla(33, 91%, 73%, .4);
   --focus-button: hsla(33, 91%, 73%, .6);
+
+  --hover-button-inverse: hsla(0, 0%, 100%, .75);
+  --focus-button-inverse: hsla(0, 0%, 100%, .66);
   
   --primary: #3c332f; // Same as lightest color in gradient
   --primary1: #fac98c; // $primary-darker
