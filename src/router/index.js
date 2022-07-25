@@ -28,6 +28,8 @@ const AddSubscription = () => import(/* webpackChunkName: "addSubscription" */ '
 const CreateArticle = () => import(/* webpackChunkName: "createArticle" */ '../views/articles/CreateArticle.vue');
 const ListArticles = () => import(/* webpackChunkName: "listArticles" */ '../views/articles/ListArticles.vue');
 const ShowArticle = () => import(/* webpackChunkName: "showArticle" */ '../views/articles/ShowArticle.vue');
+const ListArticlesUpdate = () => import(/* webpackChunkName: "listArticlesUpdate" */ '../views/articles/ListArticlesUpdate.vue');
+const UpdateArticle = () => import(/* webpackChunkName: "updateArticle" */ '../views/articles/UpdateArticle.vue');
 
 const About = () => import(/* webpackChunkName: "about" */ '../views/articles/_static/About.vue');
 const PrivacyPolicy = () => import(/* webpackChunkName: "privacy" */ '../views/articles/_static/PrivacyPolicy.vue');
@@ -221,6 +223,18 @@ const routes = [
     path: '/articles/:slug',
     name: 'ShowArticle',
     component: ShowArticle,
+  },
+
+  {
+    path: '/articles/update',
+    name: 'ListArticlesUpdate',
+    component: ListArticlesUpdate,
+  },
+
+  {
+    path: '/articles/update/:slug',
+    name: 'UpdateArticle',
+    component: UpdateArticle,
   },
 
   {

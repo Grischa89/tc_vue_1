@@ -8,6 +8,9 @@
                 <span class="article-preview__meta__date">Jul 14, 2022</span>
                 <span class="article-preview__meta__reading-time">4 min read</span>
             </div>
+            <div v-if="isUpdateRoute" class="article-preview__text__update">
+                <button @click="openUpdateArticle(article.slug)" class="article-preview__text__update__button" type="button">Update</button>
+            </div>
         </div>
         <div class="article-preview__image">
             <div class="article-preview__image__img">
@@ -21,10 +24,17 @@
     </div>
 </template>
 <script>
+
 export default {
     name: 'ArticleListPreview',
 
-    props: ['article'],
+    props: ['article', 'isUpdateRoute'],
+
+    methods: {
+        openUpdateArticle(slug) {
+            this.$router.push({ name: 'UpdateArticle', params: { slug: `${slug}` } });
+        }
+    },
 
 }
 </script>
@@ -57,6 +67,32 @@ export default {
 
                 span {
                     margin-right: .5rem;
+                }
+            }
+
+            &__update {
+                margin-top: 1rem;
+
+                &__button {
+                    padding-top: .25rem;
+                    padding-bottom: .25rem;
+                    padding-left: .75rem;
+                    padding-right: .75rem;
+                    border-radius: 0.25em;
+                    background-color: var(--text);
+                    color: var(--textInverse);
+                    font-size: $mobile-help;
+                    font-weight: 600;
+                    letter-spacing: .1ch;
+                    text-transform: uppercase;
+
+                    &:hover {
+                        background-color: var(--hover-button-inverse);
+                    }
+
+                    &:focus {
+                        background-color: var(--focus-button-inverse);
+                    }
                 }
             }
         }

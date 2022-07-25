@@ -24,6 +24,12 @@ export default {
         this.$store.dispatch('getArticles');
     },
 
+    data() {
+        return {
+            isUpdateRoute: false,
+        }
+    },
+
     computed: {
         ...mapGetters({
             articles: 'articles',
