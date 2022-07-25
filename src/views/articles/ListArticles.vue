@@ -1,7 +1,7 @@
 <template>
     <div v-if="articles" class="articles">
         List article
-        <ArticlePreview 
+        <ArticleListPreview 
             v-for="(article, i) in articles"
             :key="i"
             :article="article" />
@@ -11,13 +11,13 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import ArticlePreview from './components/ArticlePreview.vue'
+import ArticleListPreview from './components/ArticleListPreview.vue'
 
 export default {
     name: 'ListArticles',
 
     components: {
-        ArticlePreview,
+        ArticleListPreview,
     },
 
     created() {

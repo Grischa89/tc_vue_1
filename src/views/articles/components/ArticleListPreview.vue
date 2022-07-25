@@ -22,7 +22,7 @@
 </template>
 <script>
 export default {
-    name: 'ArticlePreview',
+    name: 'ArticleListPreview',
 
     props: ['article'],
 
