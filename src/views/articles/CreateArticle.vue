@@ -275,12 +275,7 @@ export default {
                     this.errors.push({ message: `Please enter content for the section ${element.key} or delete the row.` });
                 }
 
-                if (element.key === 'heading') {
-                    if (element.value.toLowerCase().trim() === 'create') {
-                        this.errors.push({ message: `"${element.value}" is an invalid word to be used alone in a heading. Please choose another title.` });
-                    }
-                    headingExists = true;
-                }
+                if (element.key === 'heading') headingExists = true;
 
                 if (element.key === 'summary') summaryExists = true;
 
