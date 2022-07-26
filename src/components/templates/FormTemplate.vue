@@ -63,10 +63,14 @@ export default {
     padding: 0 1.125rem;
 
     &--error {
-        color: var(--error);
-        font-weight: bold;
+      color: var(--error);
+      font-weight: bold;
     }
-}
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
   &__group {
 

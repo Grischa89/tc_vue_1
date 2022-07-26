@@ -70,15 +70,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss">
-.form__info {
-    &--error {
-        color: $error;
-    }
-    
-    &__link {
-        font-weight: bold;
-    }
-}
-</style>
