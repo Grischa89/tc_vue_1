@@ -66,13 +66,15 @@ export default {
                 const createSuccess = await this.$store.dispatch('createUser', data);
                 let loginSuccess;
 
-                if (createSuccess === 201) {
+                if (createSuccess.status === 201) {
                     const jwtCreateData = {
                         email: data.email,
                         password: data.password
                     };
 
                     loginSuccess = await this.$store.dispatch('login', jwtCreateData);
+                } else if (createSuccess.status === 400 && createSuccess.message === 'This password is too common.') {
+                  this.errors.badRequest = 'This password is too common.\nPlease choose a different one.';
                 } else {
                     // Catch api/v1/accounts/auth/users
                     // Handle 400 Bad Request TODO: Oder err.response.data.detail anzeigen?

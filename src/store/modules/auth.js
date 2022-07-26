@@ -52,12 +52,12 @@ const actions = {
       .then(res => {
         console.log("res in createUser", res);
 
-        return res.status;
+        return { status: res.status };
       })
       .catch(err => {
-        console.log('err in createUSER', err);
+        if (err.response) console.log('%cerr.response', 'color: darkseagreen; font-weight: bold;', err.response);
 
-        if (err.response) return err.response.status;
+        if (err.response) return { status: err.response.status, message: err.response.data.password[0] };
         return Promise.reject(err);
     });
   },
