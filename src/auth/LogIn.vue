@@ -108,29 +108,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-.form__info {
-    margin: .5rem 1rem;
-
-    &--error {
-        color: $error;
-    }
-
-    &__link {
-        font-weight: bold;
-    }
-}
-
-.form__link {
-    display: flex;
-    justify-content: flex-end;
-    font-size: $mobile-help;
-    padding: 0 1.125rem;
-
-    &--error {
-        color: $error;
-        font-weight: bold;
-    }
-}
-</style>

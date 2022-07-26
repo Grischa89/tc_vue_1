@@ -40,6 +40,34 @@ export default {
     width: 80%;
   }
 
+  &__info {
+    margin: .5rem 1rem;
+
+    &--error {
+        color: var(--error);
+    }
+
+    &__link {
+        font-weight: bold;
+
+        &:hover {
+          text-decoration: underline;
+        }
+    }
+  }
+
+  &__link {
+    display: flex;
+    justify-content: flex-end;
+    font-size: $mobile-help;
+    padding: 0 1.125rem;
+
+    &--error {
+        color: var(--error);
+        font-weight: bold;
+    }
+}
+
   &__group {
 
     display: flex;
