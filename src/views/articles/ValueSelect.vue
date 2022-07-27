@@ -8,7 +8,7 @@
         <option
             v-for="(article, i) in articleRecommendations"
             :key="i"
-            :value="article.pk">{{ article.heading }}</option>
+            :value="article.slug">{{ article.heading }}</option>
             
     </select>
 </template>
