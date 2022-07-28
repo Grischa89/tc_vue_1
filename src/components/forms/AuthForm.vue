@@ -167,11 +167,11 @@ export default {
 
 <style lang="scss">
 .req-enter-active {
-    transition: all 400ms cubic-bezier(1,.06,.27,1.04);
+    transition: all 300ms ease-in-out;
 }
 
 .req-leave-active {
-    transition: all 500ms cubic-bezier(1,.06,.62,.97);
+    transition: all 400ms ease-out;
 }
 
 .req-enter-from {
