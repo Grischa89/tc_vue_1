@@ -123,16 +123,16 @@ const actions = {
         });
     },
 
-    getArticleRaw({ commit }, slug) {
+    getArticleJSON({ commit }, slug) {
         console.log('%cslug', 'color: darkseagreen; font-weight: bold;', slug);
 
         axios.get(`/api/v1/articles/${slug}`)
             .then(res => {
-                console.log('%cres getArticleRaw', 'color: darkseagreen; font-weight: bold;', res.data);
+                console.log('%cres getArticleJSON', 'color: darkseagreen; font-weight: bold;', res.data);
                 commit('setArticleRaw', res.data);
             })
             .catch(err => {
-                console.log('%cerr getArticleRaw', 'color: red; font-weight: bold;', err);
+                console.log('%cerr getArticleJSON', 'color: red; font-weight: bold;', err);
             });
     },
 
