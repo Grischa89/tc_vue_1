@@ -134,11 +134,11 @@ export default {
                 // Derive loopable array from article
                 const articleMapped = article.map(element => {
                     const section = {
-                        name: '',
-                        content: {}
+                        key: '',
+                        value: {}
                     };
 
-                    section.name = element.key;
+                    section.key = element.key;
 
                     // Handle special case of table on its own
                     if (element.key === 'table' && element.value) {
@@ -151,13 +151,13 @@ export default {
                             const row = tableContentSplit.slice(i, i + numberOfColumns);
                             rows.push(row);
                         }
-                        section.content['columns'] = columns;
-                        section.content['rows'] = rows;
+                        section.table_head = columns;
+                        section.rows = rows;
                         return section;
                     }
 
                     // Handle special case of listarray right when assigning content
-                    section.content = element.key === 'listarray' ? element.value.split(';') : element.value;
+                    section.value = element.key === 'listarray' ? element.value.split(';') : element.value;
                     
                     return section;
                 });
