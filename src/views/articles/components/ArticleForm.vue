@@ -444,8 +444,10 @@ export default {
 
                     &__value {
                         align-self: flex-start;
-                        text-indent: .5rem;
                         padding-top: .25rem;
+                        padding-bottom: .25rem;
+                        padding-left: .5rem;
+                        padding-right: .5rem;
                         height: 2rem;
                         width: 100%;
                         margin-top: .5rem;
