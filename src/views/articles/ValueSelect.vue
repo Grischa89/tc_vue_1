@@ -1,6 +1,6 @@
 <template>
     <select
-        class="create-article__main__form__value"
+        class="form-article__main__form__value"
         @change="$emit('update:modelValue', $event.target.value)"
         name="valueSelect">
 
@@ -27,6 +27,3 @@ export default {
 
 }
 </script>
-<style lang="">
-    
-</style>

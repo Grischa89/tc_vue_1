@@ -1,29 +1,29 @@
 <template>
-    <div class="create">
-        <div class="create-article">
-            <div v-if="currentRouteName === 'UpdateArticle'" class="create-article__header">
-                <h1 class="create-article__header__title">Update article</h1>
+    <div class="edit">
+        <div class="form-article">
+            <div v-if="currentRouteName === 'UpdateArticle'" class="form-article__header">
+                <h1 class="form-article__header__title">Update article</h1>
             </div>
-            <div v-else class="create-article__header">
-                <h1 class="create-article__header__title">Create a new article</h1>
-                <div class="create-article__header__select-start">
-                    <select class="create-article__header__select-start__select" name="template" id="template" @change="setTemplate">
+            <div v-else class="form-article__header">
+                <h1 class="form-article__header__title">Create a new article</h1>
+                <div class="form-article__header__select-start">
+                    <select class="form-article__header__select-start__select" name="template" id="template" @change="setTemplate">
                         <option value selected disabled>Choose a template</option>
                         <option value="templateBasic">Basic Article</option>
                         <option value="templateTable">Article with Table</option>
                         <option value="templateEmpty">Start Empty</option>
                     </select>
-                    <!-- <span class="create-article__header__select-start__text">or</span>
-                    <button class="create-article__header__select-start__empty" type="button" @click="setTemplate($event, 'templateEmpty')">Start empty</button> -->
+                    <!-- <span class="form-article__header__select-start__text">or</span>
+                    <button class="form-article__header__select-start__empty" type="button" @click="setTemplate($event, 'templateEmpty')">Start empty</button> -->
                 </div>
             </div>
-            <div class="create-article__main">
-                <!-- <button v-if="showButtons" class="create-article__main__button" type="button" @click="addRow">Add Row</button> -->
+            <div class="form-article__main">
+                <!-- <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button> -->
                 <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300" :delayOnTouchOnly="true">
                     <template #item="{element}">
-                        <div class="create-article__main__form">
-                            <label class="create-article__main__form__label" for="key">Section:</label>
-                            <select class="create-article__main__form__key" name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
+                        <div class="form-article__main__form">
+                            <label class="form-article__main__form__label" for="key">Section:</label>
+                            <select class="form-article__main__form__key" name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
                                 <option value selected disabled >Choose A Column</option>
                                 <option
                                     v-for="(column, i) in articleSections"
@@ -32,14 +32,14 @@
                                     :disabled="column.disabled">{{ column.name }}</option>
                             </select>
                             <template v-if="element.key === 'table'">
-                                <label class="create-article__main__form__label" for="tableShape">Shape: (n*n=content.length)</label>
-                                <input v-model="element.shape" class="create-article__main__form__value" type="text" name="tableShape" id="tableShape" />
-                                <label class="create-article__main__form__label" for="tableHead">Head:</label>
-                                <input v-model="element.table_head" class="create-article__main__form__value" type="text" name="tableHead" id="tableHead" />
+                                <label class="form-article__main__form__label" for="tableShape">Shape: (n*n=content.length)</label>
+                                <input v-model="element.shape" class="form-article__main__form__value" type="text" name="tableShape" id="tableShape" />
+                                <label class="form-article__main__form__label" for="tableHead">Head:</label>
+                                <input v-model="element.table_head" class="form-article__main__form__value" type="text" name="tableHead" id="tableHead" />
                             </template>
-                            <label v-if="element.key.includes('article_')" class="create-article__main__form__label" for="valueSelect">Content:</label>
-                            <label v-else-if="element.key === 'listarray'" class="create-article__main__form__label" for="valueInput">Content: (semicolon (;) separated values)</label>
-                            <label v-else class="create-article__main__form__label" for="valueInput">Content:</label>
+                            <label v-if="element.key.includes('article_')" class="form-article__main__form__label" for="valueSelect">Content:</label>
+                            <label v-else-if="element.key === 'listarray'" class="form-article__main__form__label" for="valueInput">Content: (semicolon (;) separated values)</label>
+                            <label v-else class="form-article__main__form__label" for="valueInput">Content:</label>
                             <ValueSelect
                                 v-if="element.key.includes('article_')"
                                 v-model="element.value" />
@@ -47,7 +47,7 @@
                                 v-else
                                 v-model="element.value" />
         
-                            <button class="create-article__main__form__button" type="button" @click="deleteRow(element.id)">
+                            <button class="form-article__main__form__button" type="button" @click="deleteRow(element.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
@@ -55,15 +55,15 @@
                         </div>
                     </template>
                 </draggable>
-                <button v-if="showButtons" class="create-article__main__button" type="button" @click="addRow">Add Row</button>
+                <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button>
             </div>
-            <div class="create-article__footer">
-                <div v-if="errors.length" class="create-article__footer__errors">
+            <div class="form-article__footer">
+                <div v-if="errors.length" class="form-article__footer__errors">
                     <p v-for="(error, i) in errors" :key="i">{{ error.message }}</p>
                 </div>
                 <template v-if="showButtons">
-                    <button v-if="currentRouteName === 'UpdateArticle'" class="create-article__footer__button" type="button" @click="submitUpdateForm">Update Article</button>
-                    <button v-else class="create-article__footer__button" type="button" @click="submitForm">Create Article</button>
+                    <button v-if="currentRouteName === 'UpdateArticle'" class="form-article__footer__button" type="button" @click="submitUpdateForm">Update Article</button>
+                    <button v-else class="form-article__footer__button" type="button" @click="submitForm">Create Article</button>
                 </template>
             </div>
         </div>
@@ -334,11 +334,11 @@ export default {
 }
 </script>
 <style lang="scss">
-   .create {
+   .edit {
         display: flex;
         flex-direction: column;
 
-        .create-article {
+        .form-article {
             display: flex;
             flex-direction: column;
             width: 100%;
@@ -539,7 +539,7 @@ export default {
             justify-content: space-between;
             align-items: flex-start;
 
-            .create-article, .preview-article {
+            .form-article, .preview-article {
                 margin-left: 1rem;
                 margin-right: 1rem;
             }
