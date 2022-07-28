@@ -7,6 +7,8 @@ const state = {
 
     articles: null,
 
+    articleRaw: {},
+
     article: {},
 };
 
@@ -27,81 +29,65 @@ const getters = {
         return state.articles;
     },
 
-    displayArticle: state => {
-        if (state.article?.order) {
-            // Use deep copy of state.article
-            const article = JSON.parse(JSON.stringify(state.article));
-            const order = article.order;
-            delete article.slug;
-            delete article.order;
+    articleContent: state => {
+        if (state.article?.meta_data) {
+            const order = state.article.meta_data.order;
+            const article = JSON.parse(JSON.stringify(state.article?.draggable_data));
 
-            // Sort out sections that have null value
-            for (const section in article) {
-                if ((section === 'table' && article[section].shape_1 === null) || article[section] === null) delete article[section];
-            }
-            // Necessary to keep track of possible tables (1-3)
-            let tableCounter = 0;
+            const articleForDisplay = [];
+            const articleForForm = order.map(element => {
 
-            // According to the order of elements of order array create new loopable array
-            const articleOrdered = order.map(element => {
-                // Object to be returned from map
-                const section = {
-                    name: '',
-                    content: {}
-                };
+                // Get index of object in article array where key's value is 'element'
+                const i = article.findIndex((item, index, array) => {
+                    return item.key === `${element}`
+                });
 
-                // Section value is of type array (subheading, sub_subheading, paragraph, listarray)
-                if (Array.isArray(article[`${element}`])) {
-                    section.name = element;
-                    section.content = element === 'listarray' ? article[`${element}`][0].split(';') : article[`${element}`][0];
-                    article[`${element}`].shift();
+                // Handle listarrays since they need to be split for articleForDisplay
+                if (element === 'listarray') {
+                    const section = article[i];
+                    // Preserve article[i] for articleForForm (if not 'value' will be mutated as for articleForDisplay)
+                    const listarray = JSON.parse(JSON.stringify(article[i]));
+                    listarray.value = listarray.value.split(';');
+                    articleForDisplay.push(listarray);
+
+                    article.splice(i, 1);
                     return section;
                 }
 
-                // Section value is of type object (table)
-                if (!Array.isArray(article[`${element}`]) && typeof article[`${element}`] === 'object') {
-                    tableCounter++;
+                // Handle tables since they need to be split for articleForDisplay
+                if (element === 'table') {
+                    const section = article[i];
+                    // Preserve article[i] for articleForForm (if not 'value' will be mutated as for articleForDisplay)
+                    const table = JSON.parse(JSON.stringify(article[i]));
+                    table.table_head = table.table_head.split(',');
+                    const numberOfColumns = table.table_head.length;
+                    table.value = table.value.split(',');
+                    table.rows = [];
 
-                    // Make sure table exists
-                    if (article[`${element}`][`shape_${tableCounter}`].length > 0) {
-                        const numberOfColumns = parseInt
-                        (article[`${element}`][`shape_${tableCounter}`].split(',')[1]);
-
-                        const columns = article[`${element}`][`table_head_${tableCounter}`];
-                        // Array that will contain rows (as arrays)
-                        const rows = [];
-
-                        // Increment in steps of # of columns
-                        for (let i = 0; i < article[`${element}`][`table_text_${tableCounter}`].length; i+= numberOfColumns) {
-                            const row = article[`${element}`][`table_text_${tableCounter}`].slice(i, i + numberOfColumns);
-                            rows.push(row);
-                        }
-
-                        section.name = element;
-                        section.content['columns'] = columns;
-                        section.content['rows'] = rows;
-                        return section;
+                    // Create array of arrays with length of numberOfColumns
+                    for (let i = 0; i < table.value.length; i+= numberOfColumns) {
+                        const row = table.value.slice(i, i + numberOfColumns);
+                        table.rows.push(row);
                     }
+                    articleForDisplay.push(table);
+
+                    article.splice(i, 1);
+                    return section;
                 }
 
-                // Section that only occurs once (heading, summary)
-                section.name = element;
-                section.content = article[`${element}`];
+                const section = article[i];
+                articleForDisplay.push(article[i]);
+                article.splice(i, 1);
 
                 return section;
             });
 
-            return articleOrdered;
+            return { articleForForm: articleForForm, articleForDisplay: articleForDisplay };
         }
     },
 
-    displayArticleMeta: state => {
-        const articleMeta = {
-            created: state.article?.created,
-            updated: state.article?.updated
-        }
-
-        return articleMeta;
+    articleMeta: state => {
+        return state.article?.meta_data;
     }
 };
 
@@ -137,17 +123,28 @@ const actions = {
         });
     },
 
-    getArticle({ commit }, slug) {
+    getArticleRaw({ commit }, slug) {
         console.log('%cslug', 'color: darkseagreen; font-weight: bold;', slug);
 
         axios.get(`/api/v1/articles/${slug}`)
             .then(res => {
-                const art = res.data;
-                console.log('%cres', 'color: darkseagreen; font-weight: bold;', res.data);
-                commit('setArticle', art);
+                console.log('%cres getArticleRaw', 'color: darkseagreen; font-weight: bold;', res.data);
+                commit('setArticleRaw', res.data);
             })
             .catch(err => {
-                console.log('%cerr', 'color: red; font-weight: bold;', err);
+                console.log('%cerr getArticleRaw', 'color: red; font-weight: bold;', err);
+            });
+    },
+
+    getArticle({ commit }, slug) {
+
+        axios.get(`/api/v1/articles/draggable/${slug}`)
+            .then(res => {
+                console.log('%cres getArticle', 'color: darkseagreen; font-weight: bold;', res);
+                commit('setArticle', res.data);
+            })
+            .catch(err => {
+                console.log('%cerr getArticle', 'color: red; font-weight: bold;', err);
             });
     },
 
@@ -161,6 +158,19 @@ const actions = {
             })
             .catch(err => {
                 console.log('%cerr from postArticle', 'color: red; font-weight: bold;', err);
+            });
+    },
+
+    updateArticle({ commit }, data) {
+        console.log('%cupdateArticle', 'color: orange; font-weight: bold;', data);
+
+        return axios.put(`/api/v1/articles/${data.slug}/`, data.article)
+            .then(res => {
+                console.log('%cres in updateArticle', 'color: orange; font-weight: bold;', res);
+                return res.status;
+            })
+            .catch(err => {
+                console.log('%cerr in updateArticle', 'color: darkseagreen; font-weight: bold;', err);
             });
     }
 };
@@ -178,6 +188,9 @@ const mutations = {
         state.articles = articles;
     },
 
+    setArticleRaw(state, article) {
+        state.articleRaw = article;
+    },
     setArticle(state, article) {
         state.article = article;
     }

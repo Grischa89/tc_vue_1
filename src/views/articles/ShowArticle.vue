@@ -1,8 +1,7 @@
 <template>
     <ArticleTemplate v-if="article">
         <ArticleDisplay
-        :article="article"
-        :meta="meta" />
+        :article="article.articleForDisplay" />
     </ArticleTemplate>
 </template>
 <script>
@@ -25,8 +24,8 @@ export default {
 
     computed: {
         ...mapGetters({
-            article: 'displayArticle',
-            meta: 'displayArticleMeta',
+            article: 'articleContent',
+            meta: 'articleMeta',
         })
     }
 }
