@@ -67,6 +67,7 @@
                 </template>
             </div>
         </div>
+        {{ article }}
         <div class="preview-article">
             <div class="preview-article__header">
                 <h2 class="preview-article__header__title">Article Preview</h2>
@@ -121,18 +122,18 @@ export default {
             article: this.articleToUpdate || [],
             templates: {
                 templateEmpty: [
-                    { key: '', value: '', id: Date.now() },
+                    { key: '', value: '', id: Math.floor(Date.now() * Math.random()) },
                 ],
                 templateBasic: [
-                    { key: 'heading', value: '', id: Date.now() },
-                    { key: 'summary', value: '', id: Date.now() - 5 },
-                    { key: 'paragraph', value: '', id: Date.now() - 10 },
+                    { key: 'heading', value: '', id: Math.floor(Date.now() * Math.random()) },
+                    { key: 'summary', value: '', id: Math.floor(Date.now() * Math.random()) },
+                    { key: 'paragraph', value: '', id: Math.floor(Date.now() * Math.random()) },
                 ],
                 templateTable: [
-                    { key: 'heading', value: '', id: Date.now() },
-                    { key: 'summary', value: '', id: Date.now() - 11 },
-                    { key: 'paragraph', value: '', id: Date.now() - 10 },
-                    { key: 'table', value: '', id: Date.now() - 15 },
+                    { key: 'heading', value: '', id: Math.floor(Date.now() * Math.random()) },
+                    { key: 'summary', value: '', id: Math.floor(Date.now() * Math.random()) },
+                    { key: 'paragraph', value: '', id: Math.floor(Date.now() * Math.random()) },
+                    { key: 'table', value: '', id: Math.floor(Date.now() * Math.random()) },
                 ]
             },
             errors: [],
@@ -266,15 +267,14 @@ export default {
                     article: this.article,
                 }
                 console.log('%cdata', 'color: darkseagreen; font-weight: bold;', data);
-                const createSuccess = await this.$store.dispatch('updateArticle', data);
+                // const createSuccess = await this.$store.dispatch('updateArticle', data);
                 // toString().charAt(0) === '2'
                 // if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ShowArticle', params: { slug: `${data.slug}` } });
             }
         },
 
         addRow() {
-            // this.rowCount += 1;
-            const newRow = { key: '', value: '', id: Date.now() };
+            const newRow = { key: '', value: '', id: Math.floor(Date.now() * Math.random()) };
             this.article.push(newRow);
         },
 
