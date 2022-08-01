@@ -263,12 +263,12 @@ export default {
             if (numberOfErrors === 0) {
                 const data = {
                     slug: this.$route.params.slug,
-                    article: this.article,
+                    article: { article: this.article },
                 }
                 console.log('%cdata', 'color: darkseagreen; font-weight: bold;', data);
-                // const createSuccess = await this.$store.dispatch('updateArticle', data);
+                const createSuccess = await this.$store.dispatch('updateArticle', data);
                 // toString().charAt(0) === '2'
-                // if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ShowArticle', params: { slug: `${data.slug}` } });
+                if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ShowArticle', params: { slug: `${data.slug}` } });
             }
         },
 

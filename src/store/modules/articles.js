@@ -33,6 +33,7 @@ const getters = {
         if (state.article?.meta_data) {
             const order = state.article.meta_data.order;
             const article = JSON.parse(JSON.stringify(state.article?.draggable_data));
+            console.log('%cSOMETHING', 'color: orange; font-weight: bold;');
 
             const articleForDisplay = [];
             const articleForForm = order.map(element => {
@@ -126,7 +127,7 @@ const actions = {
     getArticleJSON({ commit }, slug) {
         console.log('%cslug', 'color: darkseagreen; font-weight: bold;', slug);
 
-        axios.get(`/api/v1/articles/${slug}`)
+        axios.get(`/api/v1/articles/${slug}/`)
             .then(res => {
                 console.log('%cres getArticleJSON', 'color: darkseagreen; font-weight: bold;', res.data);
                 commit('setArticleRaw', res.data);
@@ -138,7 +139,7 @@ const actions = {
 
     getArticle({ commit }, slug) {
 
-        axios.get(`/api/v1/articles/draggable/${slug}`)
+        axios.get(`/api/v1/articles/draggable/${slug}/`)
             .then(res => {
                 console.log('%cres getArticle', 'color: darkseagreen; font-weight: bold;', res);
                 commit('setArticle', res.data);
