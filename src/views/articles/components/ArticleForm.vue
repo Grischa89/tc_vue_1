@@ -153,7 +153,7 @@ export default {
                     section.key = element.key;
 
                     // Handle special case of table on its own
-                    if (element.key === 'table' && element.value) {
+                    if (element.key === 'table' && element.value && element.shape && element.table_head) {
                         const numberOfColumns = parseInt(element.shape.split(',')[1]);
                         const columns = element.table_head.split(',');
                         const tableContentSplit = element.value.split(',');
