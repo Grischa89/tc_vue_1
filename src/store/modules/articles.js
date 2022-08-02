@@ -152,7 +152,7 @@ const actions = {
     postArticle({ commit }, article) {
         console.log('%carticle in postArticle', 'color: darkseagreen; font-weight: bold;', article);
 
-        return axios.post('/api/v1/articles/add/', article)
+        return axios.post('/api/v1/articles/add1/', article)
             .then(res => {
                 console.log('%cres from postArticle', 'color: darkseagreen; font-weight: bold;', res);
                 return res.status;
@@ -165,7 +165,7 @@ const actions = {
     updateArticle({ commit }, data) {
         console.log('%cupdateArticle', 'color: orange; font-weight: bold;', data);
 
-        return axios.put(`/api/v1/articles/${data.slug}/`, data.article)
+        return axios.put(`/api/v1/articles/draggable/${data.slug}/`, data.article)
             .then(res => {
                 console.log('%cres in updateArticle', 'color: orange; font-weight: bold;', res);
                 return res.status;

@@ -254,7 +254,7 @@ export default {
             const numberOfErrors = await this.validateArticle(this.article);
             if (numberOfErrors === 0) {
                 const createSuccess = await this.$store.dispatch('postArticle', this.article);
-                if (createSuccess === 201) this.$router.push({ name: 'ListArticles' });
+                if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
             }
         },
 
@@ -263,12 +263,12 @@ export default {
             if (numberOfErrors === 0) {
                 const data = {
                     slug: this.$route.params.slug,
-                    article: { article: this.article },
+                    article: this.article,
                 }
                 console.log('%cdata', 'color: darkseagreen; font-weight: bold;', data);
                 const createSuccess = await this.$store.dispatch('updateArticle', data);
                 // toString().charAt(0) === '2'
-                if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ShowArticle', params: { slug: `${data.slug}` } });
+                if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
             }
         },
 
