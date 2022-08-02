@@ -1,7 +1,11 @@
 <template>
     <ArticleForm 
         v-if="article"
-        :articleToUpdate="article.articleForForm" />
+        :articleToUpdate="article.articleForForm">
+        <template #submitButton="{ articleToValidate }">
+            <button class="form-article__footer__button" type="button" @click="submitUpdateForm(articleToValidate)">Update Article</button>
+        </template>
+    </ArticleForm>
 </template>
 <script>
 import { mapGetters } from 'vuex';
@@ -28,6 +32,20 @@ export default {
         ...mapGetters({
             article: 'articleContent'
         })
-    }
+    },
+
+    methods: {
+        async submitUpdateForm(articleToValidate) {
+            const numberOfErrors = await this.$store.dispatch('validateArticle', articleToValidate);
+            if (numberOfErrors === 0) {
+                const data = {
+                    slug: this.$route.params.slug,
+                    article: articleToValidate,
+                }
+                const createSuccess = await this.$store.dispatch('updateArticle', data);
+                if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
+            }
+        }
+    },
 }
 </script>

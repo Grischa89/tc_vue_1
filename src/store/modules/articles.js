@@ -10,6 +10,8 @@ const state = {
     articleRaw: {},
 
     article: {},
+
+    articleValidationErrors: [],
 };
 
 const getters = {
@@ -89,6 +91,10 @@ const getters = {
 
     articleMeta: state => {
         return state.article?.meta_data;
+    },
+
+    articleValidationErrors: state => {
+        return state.articleValidationErrors;
     }
 };
 
@@ -173,6 +179,53 @@ const actions = {
             .catch(err => {
                 console.log('%cerr in updateArticle', 'color: darkseagreen; font-weight: bold;', err);
             });
+    },
+
+    validateArticle({ commit }, article) {
+        let articleValidationErrors = [];
+        let headingExists = false;
+        let summaryExists = false;
+
+        article.forEach(element => {
+            if (!element.key) articleValidationErrors.push({ message: `Please choose a section or delete the row.` });
+
+            if (!element.value) articleValidationErrors.push({ message: `Please enter content for the section ${element.key} or delete the row.` });
+
+            if (element.key === 'heading') headingExists = true;
+
+            if (element.key === 'summary') summaryExists = true;
+
+            if (element.key === 'table') {
+                if (!element.shape) articleValidationErrors.push({ message: 'Please enter a shape for the table.' });
+                const shapeArray = element.shape.split(',');
+                // Check shape for containing only two integer vals
+                if (shapeArray.length > 2) articleValidationErrors.push({ message: 'The table shape cannot contain more than two comma separated integers.' });
+
+                if (!element.table_head) articleValidationErrors.push({ message: 'Please enter column names (table heads).' });
+
+                const numberOfColumnsTableHead = parseInt(element.table_head.split(',').length);
+                const shapeRows = parseInt(shapeArray[0]);
+                const shapeColumns = parseInt(shapeArray[1]);
+
+                // Check if columns match in head & shape
+                if (numberOfColumnsTableHead !== shapeColumns) articleValidationErrors.push({ message: `Number of columns under Head (${numberOfColumnsTableHead}) and under Shape (${shapeColumns}) must match.` });
+
+                const numberOfTableContentCells = parseInt(element.value.split(',').length);
+                // Check if rows * columns & # of comma separated vals in content match
+                if (numberOfTableContentCells !== (shapeRows * shapeColumns)) articleValidationErrors.push({ message: `Number of cells (${numberOfTableContentCells}) and multiplied shape (${shapeRows} * ${shapeColumns} = ${(shapeRows * shapeColumns)}) do not match.` });
+            }
+        });
+
+        if (!headingExists) {
+            articleValidationErrors.push({ message: 'Heading is a required section.' });
+        }
+
+        if (!summaryExists) {
+                articleValidationErrors.push({ message: 'Summary is a required section.' })
+        }
+
+        commit('setArticleValidationErrors', articleValidationErrors);
+        return articleValidationErrors.length;
     }
 };
 
@@ -192,8 +245,13 @@ const mutations = {
     setArticleRaw(state, article) {
         state.articleRaw = article;
     },
+
     setArticle(state, article) {
         state.article = article;
+    },
+
+    setArticleValidationErrors(state, errors) {
+        state.articleValidationErrors = errors;
     }
 };
 

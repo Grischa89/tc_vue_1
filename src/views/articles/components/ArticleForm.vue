@@ -61,10 +61,7 @@
                 <div v-if="errors.length" class="form-article__footer__errors">
                     <p v-for="(error, i) in errors" :key="i">{{ error.message }}</p>
                 </div>
-                <template v-if="showButtons">
-                    <button v-if="currentRouteName === 'UpdateArticle'" class="form-article__footer__button" type="button" @click="submitUpdateForm">Update Article</button>
-                    <button v-else class="form-article__footer__button" type="button" @click="submitForm">Create Article</button>
-                </template>
+                <slot v-if="showButtons" name="submitButton" :articleToValidate="article"></slot>
             </div>
         </div>
         <div class="preview-article">
@@ -111,7 +108,6 @@ export default {
     created() {
         this.$store.dispatch('getArticleSections');
         this.$store.dispatch('getArticleRecommendations');
-        console.log('%carticleSections', 'color: darkseagreen; font-weight: bold;', this.articleSections);
     },
 
     data() {
@@ -135,7 +131,6 @@ export default {
                     { key: 'table', value: '', id: Math.floor(Date.now() * Math.random()) },
                 ]
             },
-            errors: [],
         }
     },
 
@@ -185,6 +180,7 @@ export default {
 
         ...mapGetters({
             articleSections: 'articleSections',
+            errors: 'articleValidationErrors',
         }),
 
         rowCount() {
@@ -250,28 +246,6 @@ export default {
             }
         },
 
-        async submitForm() {
-            const numberOfErrors = await this.validateArticle(this.article);
-            if (numberOfErrors === 0) {
-                const createSuccess = await this.$store.dispatch('postArticle', this.article);
-                if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
-            }
-        },
-
-        async submitUpdateForm() {
-            const numberOfErrors = await this.validateArticle(this.article);
-            if (numberOfErrors === 0) {
-                const data = {
-                    slug: this.$route.params.slug,
-                    article: this.article,
-                }
-                console.log('%cdata', 'color: darkseagreen; font-weight: bold;', data);
-                const createSuccess = await this.$store.dispatch('updateArticle', data);
-                // toString().charAt(0) === '2'
-                if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
-            }
-        },
-
         addRow() {
             const newRow = { key: '', value: '', id: Math.floor(Date.now() * Math.random()) };
             this.article.push(newRow);
@@ -283,52 +257,6 @@ export default {
             });
             this.article.splice(index, 1);
         },
-
-        validateArticle(article) {
-            this.errors = [];
-            let headingExists = false;
-            let summaryExists = false;
-
-            article.forEach(element => {
-                if (!element.key) this.errors.push({ message: `Please choose a section or delete the row.` });
-
-                if (!element.value) this.errors.push({ message: `Please enter content for the section ${element.key} or delete the row.` });
-
-                if (element.key === 'heading') headingExists = true;
-
-                if (element.key === 'summary') summaryExists = true;
-
-                if (element.key === 'table') {
-                    if (!element.shape) this.errors.push({ message: 'Please enter a shape for the table.' });
-                    const shapeArray = element.shape.split(',');
-                    // Check shape for containing only two integer vals
-                    if (shapeArray.length > 2) this.errors.push({ message: 'The table shape cannot contain more than two comma separated integers.' });
-
-                    if (!element.table_head) this.errors.push({ message: 'Please enter column names (table heads).' });
-
-                    const numberOfColumnsTableHead = parseInt(element.table_head.split(',').length);
-                    const shapeRows = parseInt(shapeArray[0]);
-                    const shapeColumns = parseInt(shapeArray[1]);
-
-                    // Check if columns match in head & shape
-                    if (numberOfColumnsTableHead !== shapeColumns) this.errors.push({ message: `Number of columns under Head (${numberOfColumnsTableHead}) and under Shape (${shapeColumns}) must match.` });
-
-                    const numberOfTableContentCells = parseInt(element.value.split(',').length);
-                    // Check if rows * columns & # of comma separated vals in content match
-                    if (numberOfTableContentCells !== (shapeRows * shapeColumns)) this.errors.push({ message: `Number of cells (${numberOfTableContentCells}) and multiplied shape (${shapeRows} * ${shapeColumns} = ${(shapeRows * shapeColumns)}) do not match.` });
-                }
-            });
-
-            if (!headingExists) {
-                this.errors.push({ message: 'Heading is a required section.' });
-            }
-
-            if (!summaryExists) {
-                 this.errors.push({ message: 'Summary is a required section.' })
-            }
-
-            return this.errors.length;
-        }
     }
 }
 </script>

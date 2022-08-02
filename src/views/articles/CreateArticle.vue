@@ -1,5 +1,9 @@
 <template>
-    <ArticleForm />
+    <ArticleForm>
+        <template #submitButton="{ articleToValidate }">
+            <button class="form-article__footer__button" type="button" @click="submitForm(articleToValidate)">Create Article</button>
+        </template>
+    </ArticleForm>
 </template>
 
 <script>
@@ -10,6 +14,16 @@ export default {
 
     components: {
         ArticleForm,
+    },
+
+    methods: {
+        async submitForm(articleToValidate) {
+            const numberOfErrors = await this.$store.dispatch('validateArticle', articleToValidate);
+            if (numberOfErrors === 0) {
+                const createSuccess = await this.$store.dispatch('postArticle', articleToValidate);
+                if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
+            }
+        },
     },
 }
 </script>
