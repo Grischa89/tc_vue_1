@@ -21,7 +21,7 @@
                     <li>{{ listItem }}</li>
                 </ul>
             </div>
-            <div class="article__table" v-if="section.key === 'table'">
+            <div class="article__table" v-if="section.key === 'table' && section.table_head">
                 <table class="article__table__table">
                     <thead class="article__table__table__head">
                         <tr class="article__table__table__head__row">
