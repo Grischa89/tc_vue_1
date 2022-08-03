@@ -12,6 +12,8 @@ const state = {
     article: {},
 
     articleValidationErrors: [],
+
+    singleArticleLoadStatus: null,
 };
 
 const getters = {
@@ -95,6 +97,10 @@ const getters = {
 
     articleValidationErrors: state => {
         return state.articleValidationErrors;
+    },
+
+    singleArticleLoadStatus: state => {
+        return state.singleArticleLoadStatus;
     }
 };
 
@@ -145,13 +151,17 @@ const actions = {
 
     getArticle({ commit }, slug) {
 
+        commit('setSingleArticleLoadStatus', 'loading');
+
         axios.get(`/api/v1/articles/draggable/${slug}/`)
             .then(res => {
                 console.log('%cres getArticle', 'color: darkseagreen; font-weight: bold;', res);
                 commit('setArticle', res.data);
+                commit('setSingleArticleLoadStatus', 'success');
             })
             .catch(err => {
                 console.log('%cerr getArticle', 'color: red; font-weight: bold;', err);
+                commit('setSingleArticleLoadStatus', 'error');
             });
     },
 
@@ -252,6 +262,10 @@ const mutations = {
 
     setArticleValidationErrors(state, errors) {
         state.articleValidationErrors = errors;
+    },
+
+    setSingleArticleLoadStatus(state, status) {
+        state.singleArticleLoadStatus = status;
     }
 };
 
