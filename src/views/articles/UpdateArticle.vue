@@ -26,6 +26,7 @@ export default {
     beforeUnmount() {
         // Clear article form by setting article to empty string so chosen article will be shown in fomr and NOT article from the last request
         this.$store.commit('setArticle', '');
+        this.$store.commit('setArticleValidationErrors', '');
     },
 
     computed: {

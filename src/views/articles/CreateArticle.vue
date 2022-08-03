@@ -16,6 +16,10 @@ export default {
         ArticleForm,
     },
 
+    beforeUnmount() {
+        this.$store.commit('setArticleValidationErrors', '');
+    },
+
     methods: {
         async submitForm(articleToValidate) {
             const numberOfErrors = await this.$store.dispatch('validateArticle', articleToValidate);
