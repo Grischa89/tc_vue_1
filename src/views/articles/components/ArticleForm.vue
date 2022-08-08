@@ -1,22 +1,23 @@
 <template>
     <div class="edit">
         <div class="form-article">
-            <div v-if="currentRouteName === 'UpdateArticle'" class="form-article__header">
-                <h1 class="form-article__header__title">Update article</h1>
-            </div>
-            <div v-else class="form-article__header">
-                <h1 class="form-article__header__title">Create a new article</h1>
+            <div  class="form-article__header">
+                <slot name="title"></slot>
                 <div class="form-article__header__select-start">
+                    <slot name="templateSelect"></slot>
+                </div>
+            </div>
+            <!-- <div v-if="currentRouteName === 'CreateArticle'" class="form-article__header"> -->
+
+                <!-- <div class="form-article__header__select-start">
                     <select class="form-article__header__select-start__select" name="template" id="template" @change="setTemplate">
                         <option value selected disabled>Choose a template</option>
                         <option value="templateBasic">Basic Article</option>
                         <option value="templateTable">Article with Table</option>
                         <option value="templateEmpty">Start Empty</option>
                     </select>
-                    <!-- <span class="form-article__header__select-start__text">or</span>
-                    <button class="form-article__header__select-start__empty" type="button" @click="setTemplate($event, 'templateEmpty')">Start empty</button> -->
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
             <div class="form-article__main">
                 <!-- <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button> -->
                 <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300" :delayOnTouchOnly="true">
@@ -99,15 +100,19 @@ export default {
     },
 
     props: {
+        chosenTemplate: {
+            type: Array,
+            required: false
+        },
         articleToUpdate: {
             type: Array,
             required: false,
         }    
     },
 
-    created() {
-        this.$store.dispatch('getArticleSections');
-        this.$store.dispatch('getArticleRecommendations');
+    updated() {
+        if (this.chosenTemplate) this.article = this.chosenTemplate;
+        this.$store.dispatch('setDisabledSectionValuesBasedOnArticle', this.chosenTemplate || this.articleToUpdate);
     },
 
     data() {
@@ -115,22 +120,6 @@ export default {
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
             article: this.articleToUpdate || [],
-            templates: {
-                templateEmpty: [
-                    { key: '', value: '', id: Math.floor(Date.now() * Math.random()) },
-                ],
-                templateBasic: [
-                    { key: 'heading', value: '', id: Math.floor(Date.now() * Math.random()) },
-                    { key: 'summary', value: '', id: Math.floor(Date.now() * Math.random()) },
-                    { key: 'paragraph', value: '', id: Math.floor(Date.now() * Math.random()) },
-                ],
-                templateTable: [
-                    { key: 'heading', value: '', id: Math.floor(Date.now() * Math.random()) },
-                    { key: 'summary', value: '', id: Math.floor(Date.now() * Math.random()) },
-                    { key: 'paragraph', value: '', id: Math.floor(Date.now() * Math.random()) },
-                    { key: 'table', value: '', id: Math.floor(Date.now() * Math.random()) },
-                ]
-            },
         }
     },
 
@@ -193,39 +182,11 @@ export default {
     },
 
     methods: {
-        setTemplate(e) {
-            const templateName = e.target.value;
-            // Create deep copy
-            const template = JSON.parse(JSON.stringify(this.templates[`${templateName}`]));
-            this.article = template;
-            this.setDisabledPropsForTemplateArticle();
-        },
-
-        setDisabledPropsForTemplateArticle() {
-            this.article.forEach(element => {
-                if (!element.key) {
-                    this.articleSections.forEach(element => element.disabled = false)
-                }
-
-                if (this.uniqueOptions.includes(element.key)) {
-                    const i = this.findIndexOfUniqueOption(element.key);
-                    this.articleSections[i].disabled = true;
-                }
-            });
-        },
-
         setPreviousSelected(e) {
             this.previousSelected = e.target.value;
-        },     
-
-        findIndexOfUniqueOption(uniqueOption) {
-            const index = this.articleSections.findIndex(object => {
-                    return object.name === uniqueOption;
-                });
-            return index
         },
 
-        disableUniqueOption(e) {
+        async disableUniqueOption(e) {
             const currentSelected = e.target.value;
 
             // Prevent that any disabled prop can be changed
@@ -236,13 +197,13 @@ export default {
             // (since it cannot be re-selected because it's disabled)
             // So the uniqueOptions disabled value can be set to true
             if (this.uniqueOptions.includes(this.previousSelected)) {
-                const index = this.findIndexOfUniqueOption(this.previousSelected);
-                this.articleSections[index].disabled = false;
+                const index = await this.$store.dispatch('findIndexOfUniqueSection', this.previousSelected);
+                this.$store.commit('setDisabledValueOnArticleSections', { sectionIndex: index, isDisabled: false });
             }
 
             if (this.uniqueOptions.includes(currentSelected)) {
-                const index = this.findIndexOfUniqueOption(currentSelected);
-                this.articleSections[index].disabled = true;
+                const index = await this.$store.dispatch('findIndexOfUniqueSection', currentSelected);
+                this.$store.commit('setDisabledValueOnArticleSections', { sectionIndex: index, isDisabled: true });
             }
         },
 
