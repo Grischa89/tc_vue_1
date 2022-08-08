@@ -101,7 +101,6 @@ export default {
 
     updated() {
         if (this.chosenTemplate) this.article = this.chosenTemplate;
-        this.$store.dispatch('setDisabledSectionValuesBasedOnArticle', this.chosenTemplate || this.articleToUpdate);
     },
 
     data() {
