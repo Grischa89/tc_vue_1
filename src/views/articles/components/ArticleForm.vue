@@ -7,20 +7,9 @@
                     <slot name="templateSelect"></slot>
                 </div>
             </div>
-            <!-- <div v-if="currentRouteName === 'CreateArticle'" class="form-article__header"> -->
-
-                <!-- <div class="form-article__header__select-start">
-                    <select class="form-article__header__select-start__select" name="template" id="template" @change="setTemplate">
-                        <option value selected disabled>Choose a template</option>
-                        <option value="templateBasic">Basic Article</option>
-                        <option value="templateTable">Article with Table</option>
-                        <option value="templateEmpty">Start Empty</option>
-                    </select>
-                </div> -->
-            <!-- </div> -->
             <div class="form-article__main">
                 <!-- <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button> -->
-                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300" :delayOnTouchOnly="true">
+                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300">
                     <template #item="{element}">
                         <div class="form-article__main__form">
                             <label class="form-article__main__form__label" for="key">Section:</label>
