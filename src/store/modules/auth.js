@@ -210,6 +210,9 @@ const actions = {
         const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
         tc_user.username = res.data.username;
         tc_user.is_active = res.data.is_active;
+        tc_user.is_staff = res.data.is_staff;
+        // For testing:
+        // tc_user.is_staff = false;
         localStorage.tc_user = JSON.stringify(tc_user);
 
         // Set state.user to retrieved user

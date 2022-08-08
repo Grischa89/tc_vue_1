@@ -1,5 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import store from '../store'
+import { createRouter, createWebHistory } from 'vue-router';
+import store from '../store';
+
+import auth from '../middleware/auth';
+import staff from '../middleware/staff';
+import guest from '../middleware/guest';
 
 const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue');
 const Continent = () => import(/* webpackChunkName: "continent" */ '../views/Continent.vue');
@@ -53,7 +57,7 @@ const routes = [
     name: 'AddCode',
     component: AddCode,
     meta: {
-      requiresAuth: true, //, TODO: REMOVE before push
+      middleware: auth, //, TODO: REMOVE before push
       title: 'Add Your Own Code',
     },
   },
@@ -63,7 +67,7 @@ const routes = [
     name: 'SignUp',
     component: SignUp,
     meta: {
-      requiresGuest: true,
+      middleware: guest,
       title: 'Sign Up',
     },
   },
@@ -73,7 +77,7 @@ const routes = [
     name: 'LogIn',
     component: LogIn,
     meta: {
-      requiresGuest: true,
+      middleware: guest,
       title: 'Log In',
     },
   },
@@ -83,7 +87,7 @@ const routes = [
     name: 'Profile',
     component: Profile,
     meta: {
-      requiresAuth: true,
+      middleware: auth,
       title: 'Your Profile',
     },
     children: [
@@ -91,7 +95,9 @@ const routes = [
         path: '',
         name: 'ProfileOverview',
         component: ProfileOverview,
-        meta: { transition: 'fade' },
+        meta: { 
+          transition: 'fade' 
+        },
       },
       {
         path: 'codes',
@@ -118,7 +124,7 @@ const routes = [
     name: 'ProfileSettings',
     component: ProfileSettings,
     meta: {
-      requiresAuth: true,
+      middleware: auth,
       title: 'View and Change Your Profile Settings',
     },
   },
@@ -137,7 +143,7 @@ const routes = [
     name: 'RequestPasswordReset',
     component: RequestPasswordReset,
     meta: {
-      requiresGuest: true,
+      middleware: guest,
       title: 'Request Password Reset',
     },
   },
@@ -147,7 +153,7 @@ const routes = [
     name: 'RequestSuccess',
     component: RequestSuccess,
     meta: {
-      requiresGuest: true,
+      middleware: guest,
       title: 'Request Successful',
     },
   },
@@ -157,7 +163,7 @@ const routes = [
     name: 'ResetPassword',
     component: ResetPassword,
     meta: {
-      requiresGuest: true,
+      middleware: guest,
       title: 'Reset Password',
     },
   },
@@ -176,7 +182,7 @@ const routes = [
     name: 'AddSubscription',
     component: AddSubscription,
     meta: {
-      requiresAuth: true,
+      middleware: auth,
       title: 'Add A Subscription',
     },
   },
@@ -217,6 +223,9 @@ const routes = [
     path: '/articles/create',
     name: 'CreateArticle',
     component: CreateArticle,
+    meta: {
+      middleware: staff,
+    },
   },
 
   {
@@ -229,12 +238,18 @@ const routes = [
     path: '/articles/update',
     name: 'ListArticlesUpdate',
     component: ListArticlesUpdate,
+    meta: {
+      middleware: staff,
+    },
   },
 
   {
     path: '/articles/update/:slug',
     name: 'UpdateArticle',
     component: UpdateArticle,
+    meta: {
+      middleware: staff,
+    },
   },
 
   {
@@ -321,10 +336,60 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   scrollBehavior,
-})
+});
+
+/* 
+  Middleware logic adjusted based on this blog article
+  https://markus.oberlehner.net/blog/implementing-a-simple-middleware-with-vue-router/
+*/
+
+// Creates a `nextMiddleware()` function which not only
+// runs the default `next()` callback but also triggers
+// the subsequent Middleware function.
+function nextFactory(context, middleware, index) {
+    const subsequentMiddleware = middleware[index];
+    // If no subsequent Middleware exists,
+    // the default `next()` callback is returned.
+    if (!subsequentMiddleware) return context.next;
+  
+    return (...parameters) => {
+      // Run the default Vue Router `next()` callback first.
+      context.next(...parameters);
+      // Then run the subsequent Middleware with a new
+      // `nextMiddleware()` callback.
+      const nextMiddleware = nextFactory(context, middleware, index + 1);
+      subsequentMiddleware({ ...context, next: nextMiddleware });
+    };
+  }
 
 router.beforeEach((to, from, next) => {
+  // TODO: How to concatenate unicode with string: https://www.compart.com/en/unicode/U+2014
+  window.document.title = to.meta && to.meta.title ? (to.meta.title += ` — trainercodes.net`) : 'trainercodes.net';
+
+  if (to.redirectedFrom && to.redirectedFrom.name) {
+    store.commit('setToRouteName', to.redirectedFrom.name);
+  }
+
+  if (to.meta.middleware) {
+    const middleware = Array.isArray(to.meta.middleware)
+      ? to.meta.middleware
+      : [to.meta.middleware];
+
+    const context = {
+        from,
+        next,
+        router,
+        to,
+      };
+
+    const nextMiddleware = nextFactory(context, middleware, 1);
+
+    return middleware[0]({ ...context, next: nextMiddleware });
+  }
+
+  return next();
   
+  /*
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   const requiresGuest = to.matched.some(record => record.meta.requiresGuest);
   const isAuthenticated = store.state.auth.isAuthenticated;
@@ -360,7 +425,9 @@ router.beforeEach((to, from, next) => {
     // console.log('router.beforeEach else', isAuthenticated, requiresAuth, requiresGuest);
     next();
   }
-})
+  */
+  
+});
 // why is this better ? https://router.vuejs.org/guide/advanced/meta.html
 
 export default router
