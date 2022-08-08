@@ -3,6 +3,9 @@ import axios from 'axios';
 const state = {
     articleSections: [],
     // articleSections: ['heading', 'summary', 'paragraph', 'subheading', 'listarray', 'table'],
+
+    uniqueSections: ['heading', 'summary'],
+
     articleRecommendations: null,
 
     articles: null,
@@ -18,11 +21,13 @@ const state = {
 
 const getters = {
     articleSections: state => {
-        const mappedArticleSections = state.articleSections.map(element => {
-            return { name: element, disabled: false };
-        });
+        // const mappedArticleSections = state.articleSections.map(element => {
+        //     return { name: element, disabled: false };
+        // });
+
+        // console.log('%c', 'color: darkseagreen; font-weight: bold;');
         
-        return mappedArticleSections;
+        return state.articleSections;
     },
 
     articleRecommendations: state => {
@@ -106,13 +111,42 @@ const getters = {
 
 const actions = {
     getArticleSections({ commit }) {
-        axios.get('/api/v1/articles/get_article_columns/')
+        console.log('%cgetArticleSections run', 'color: aqua; font-weight: bold;');
+        return axios.get('/api/v1/articles/get_article_columns/')
         .then(res => {
-            commit('setArticleSections', res.data.columns);
+            commit('setDisabledPropOnArticleSections', res.data.columns);
+            return res.status;
         })
         .catch(err => {
             console.log('err', err);
         });
+    },
+
+    setDisabledSectionValuesBasedOnArticle({ dispatch, commit, state }, article) {
+        // NOTE: forEach needs to be marked with async keyword (and not the higher level function setDisabledSectionValuesBasedOnArticle), because it is the directly enclosing function of the await keyword
+        article.forEach(async element => {
+            if (!element.key) {
+                commit('setDisabledValueOnArticleSections', { sectionIndex: -1, isDisabled: false });
+            }
+            console.log('%csetDisabledSectionValuesBasedOnArticle', 'color: red; font-weight: bold;', Date.now());
+            // console.log('%cstate.uniqueSections', 'color: red; font-weight: bold;', state.articleSections);
+
+            if (state.uniqueSections.includes(element.key)) {
+                const i = await dispatch('findIndexOfUniqueSection', element.key);
+                // TODO mmutation
+                console.log('%cstate.uniqueSections', 'color: gold; font-weight: bold;', state.articleSections[i]);
+                commit('setDisabledValueOnArticleSections', { sectionIndex: i, isDisabled: true })
+                // state.articleSections[i].disabled = true;
+            }
+        })
+    },
+
+    findIndexOfUniqueSection({ commit }, uniqueSection) {
+        const index = state.articleSections.findIndex(object => {
+            return object.name === uniqueSection;
+        });
+
+        return index;
     },
 
     getArticleRecommendations({ commit }) {
@@ -153,11 +187,12 @@ const actions = {
 
         commit('setSingleArticleLoadStatus', 'loading');
 
-        axios.get(`/api/v1/articles/draggable/${slug}/`)
+        return axios.get(`/api/v1/articles/draggable/${slug}/`)
             .then(res => {
                 console.log('%cres getArticle', 'color: darkseagreen; font-weight: bold;', res);
                 commit('setArticle', res.data);
                 commit('setSingleArticleLoadStatus', 'success');
+                return res.status
             })
             .catch(err => {
                 console.log('%cerr getArticle', 'color: red; font-weight: bold;', err);
@@ -240,8 +275,24 @@ const actions = {
 };
 
 const mutations = {
-    setArticleSections(state, columns) {
-        state.articleSections = columns;
+    setDisabledPropOnArticleSections(state, columns) {
+        console.log('%cIn setDisabledPropOnArticleSections', 'color: pink; font-weight: bold;');
+        const mappedArticleSections = columns.map(element => {
+            return { name: element, disabled: false };
+        });
+        console.log('%cmappedArticleSections', 'color: pink; font-weight: bold;', mappedArticleSections);
+        state.articleSections = mappedArticleSections;
+    },
+
+    setDisabledValueOnArticleSections(state, data) {
+        console.log('%csetDisabledValueOnArticleSections', 'color: hotpink; font-weight: bold;');
+        if (data.sectionIndex >= 0) {
+            console.log('%cstate.articleSections (alter one)', 'color: hotpink; font-weight: bold;', state.articleSections);
+            state.articleSections[data.sectionIndex].disabled = data.isDisabled;
+            return
+        }
+        console.log('%cstate.articleSections (alter all)', 'color: hotpink; font-weight: bold;', state.articleSections);
+        state.articleSections.forEach(element => element.disabled = data.isDisabled);
     },
 
     setArticleRecommendations(state, recommendations) {

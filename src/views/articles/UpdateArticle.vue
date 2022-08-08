@@ -2,9 +2,13 @@
     <ArticleForm 
         v-if="article"
         :articleToUpdate="article.articleForForm">
-        <template #submitButton="{ articleToValidate }">
-            <button class="form-article__footer__button" type="button" @click="submitUpdateForm(articleToValidate)">Update Article</button>
-        </template>
+            <template #title>
+                <h1 class="form-article__header__title">{{ title }}</h1>
+            </template>
+
+            <template #submitButton="{ articleToValidate }">
+                <button class="form-article__footer__button" type="button" @click="submitUpdateForm(articleToValidate)">{{ submitButtonText }}</button>
+            </template>
     </ArticleForm>
 </template>
 <script>
@@ -19,8 +23,29 @@ export default {
         ArticleForm
     },
 
+    data() {
+        return {
+            title: 'Edit Article',
+            submitButtonText: 'Update Article',
+        }
+    },
+
     created() {
-        this.$store.dispatch('getArticle', this.$route.params.slug);
+        const articleSectionsSuccess = this.$store.dispatch('getArticleSections');
+        const articleSuccess = this.$store.dispatch('getArticle', this.$route.params.slug);
+
+        Promise.all([articleSectionsSuccess, articleSuccess])
+            .then(values => {
+                console.log('%cvalues', 'color: crimson; font-weight: bold;', values);
+                this.$store.dispatch('setDisabledSectionValuesBasedOnArticle', this.article.articleForForm);
+            })
+        this.$store.dispatch('getArticleRecommendations');
+        
+    },
+
+    updated() {
+        // console.log('%cupdated in UpdateArticle', 'color: darkseagreen; font-weight: bold;');
+        // if (this.article) this.$store.dispatch('setDisabledSectionValuesBasedOnArticle', this.article.articleForForm);
     },
 
     beforeUnmount() {
@@ -44,6 +69,7 @@ export default {
                     article: articleToValidate,
                 }
                 const createSuccess = await this.$store.dispatch('updateArticle', data);
+                console.log('%ccreateSuccess', 'color: darkseagreen; font-weight: bold;', createSuccess);
                 if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
             }
         }
