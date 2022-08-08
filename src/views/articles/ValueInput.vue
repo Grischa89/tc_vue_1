@@ -4,7 +4,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 
 export default {
     name: 'ValueInput',
@@ -12,12 +11,6 @@ export default {
     props: ['modelValue'],
 
     emits: ['update:modelValue'],
-
-    computed: {
-        ...mapGetters({
-            articleRecommendations: 'articleRecommendations'
-        }),
-    }
 }
 </script>
 
