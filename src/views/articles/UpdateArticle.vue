@@ -36,16 +36,10 @@ export default {
 
         Promise.all([articleSectionsSuccess, articleSuccess])
             .then(values => {
-                console.log('%cvalues', 'color: crimson; font-weight: bold;', values);
                 this.$store.dispatch('setDisabledSectionValuesBasedOnArticle', this.article.articleForForm);
             })
         this.$store.dispatch('getArticleRecommendations');
         
-    },
-
-    updated() {
-        // console.log('%cupdated in UpdateArticle', 'color: darkseagreen; font-weight: bold;');
-        // if (this.article) this.$store.dispatch('setDisabledSectionValuesBasedOnArticle', this.article.articleForForm);
     },
 
     beforeUnmount() {
@@ -69,7 +63,6 @@ export default {
                     article: articleToValidate,
                 }
                 const createSuccess = await this.$store.dispatch('updateArticle', data);
-                console.log('%ccreateSuccess', 'color: darkseagreen; font-weight: bold;', createSuccess);
                 if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
             }
         }

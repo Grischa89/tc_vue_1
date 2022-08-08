@@ -76,14 +76,10 @@ export default {
         },
 
         setTemplate(e) {
-            console.log('%csetTemplate in CreateArticle', 'color: darkseagreen; font-weight: bold;');
             const templateName = e.target.value;
-            console.log('%ctemplateName', 'color: darkseagreen; font-weight: bold;', templateName);
             // Create deep copy
             const template = JSON.parse(JSON.stringify(this.templates[`${templateName}`]));
             this.chosenTemplate = template;
-            console.log('%cthis.chosenTemplate', 'color: hotpink; font-weight: bold;', this.chosenTemplate);
-            // this.setDisabledPropsForTemplateArticle();
             this.$store.dispatch('setDisabledSectionValuesBasedOnArticle', this.chosenTemplate);
         },
     },

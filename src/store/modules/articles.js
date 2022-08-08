@@ -111,7 +111,6 @@ const getters = {
 
 const actions = {
     getArticleSections({ commit }) {
-        console.log('%cgetArticleSections run', 'color: aqua; font-weight: bold;');
         return axios.get('/api/v1/articles/get_article_columns/')
         .then(res => {
             commit('setDisabledPropOnArticleSections', res.data.columns);
@@ -128,15 +127,10 @@ const actions = {
             if (!element.key) {
                 commit('setDisabledValueOnArticleSections', { sectionIndex: -1, isDisabled: false });
             }
-            console.log('%csetDisabledSectionValuesBasedOnArticle', 'color: red; font-weight: bold;', Date.now());
-            // console.log('%cstate.uniqueSections', 'color: red; font-weight: bold;', state.articleSections);
 
             if (state.uniqueSections.includes(element.key)) {
                 const i = await dispatch('findIndexOfUniqueSection', element.key);
-                // TODO mmutation
-                console.log('%cstate.uniqueSections', 'color: gold; font-weight: bold;', state.articleSections[i]);
-                commit('setDisabledValueOnArticleSections', { sectionIndex: i, isDisabled: true })
-                // state.articleSections[i].disabled = true;
+                commit('setDisabledValueOnArticleSections', { sectionIndex: i, isDisabled: true });
             }
         })
     },
@@ -276,22 +270,17 @@ const actions = {
 
 const mutations = {
     setDisabledPropOnArticleSections(state, columns) {
-        console.log('%cIn setDisabledPropOnArticleSections', 'color: pink; font-weight: bold;');
         const mappedArticleSections = columns.map(element => {
             return { name: element, disabled: false };
         });
-        console.log('%cmappedArticleSections', 'color: pink; font-weight: bold;', mappedArticleSections);
         state.articleSections = mappedArticleSections;
     },
 
     setDisabledValueOnArticleSections(state, data) {
-        console.log('%csetDisabledValueOnArticleSections', 'color: hotpink; font-weight: bold;');
         if (data.sectionIndex >= 0) {
-            console.log('%cstate.articleSections (alter one)', 'color: hotpink; font-weight: bold;', state.articleSections);
             state.articleSections[data.sectionIndex].disabled = data.isDisabled;
             return
         }
-        console.log('%cstate.articleSections (alter all)', 'color: hotpink; font-weight: bold;', state.articleSections);
         state.articleSections.forEach(element => element.disabled = data.isDisabled);
     },
 
