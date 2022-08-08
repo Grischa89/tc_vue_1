@@ -78,7 +78,7 @@ export default {
 
                 const loginSuccess = await this.$store.dispatch('login', loginData);
 
-                if (loginSuccess === 200) {
+                if (loginSuccess.status === 200) {
 
                     try {
                         // Get user data

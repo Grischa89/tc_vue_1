@@ -218,7 +218,7 @@ const actions = {
         // Set state.user to retrieved user
         commit('setUser', res.data);
         
-        return res.status;
+        return res;
       })
       .catch(err => {
         return Promise.reject(err);

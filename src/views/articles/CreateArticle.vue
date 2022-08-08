@@ -67,12 +67,19 @@ export default {
     },
 
     methods: {
-        async submitForm(articleToValidate) {
-            const numberOfErrors = await this.$store.dispatch('validateArticle', articleToValidate);
-            if (numberOfErrors === 0) {
-                const createSuccess = await this.$store.dispatch('postArticle', articleToValidate);
-                if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
-            }
+        submitForm(articleToValidate) {
+            const numberOfErrors = this.$store.dispatch('validateArticle', articleToValidate);
+            const user = this.$store.dispatch('getUserProfile');
+
+            Promise.all([numberOfErrors, user])
+                .then(async values => {
+                    console.log('%cvalues', 'color: hotpink; font-weight: bold;', values[0], values[1].data.is_staff);
+
+                    if (values[0] === 0 && values[1].data.is_staff) {
+                        const createSuccess = await this.$store.dispatch('postArticle', articleToValidate);
+                        if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
+                    }
+                });
         },
 
         setTemplate(e) {
