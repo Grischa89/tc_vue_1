@@ -4,6 +4,7 @@ import store from '../store';
 import auth from '../middleware/auth';
 import staff from '../middleware/staff';
 import guest from '../middleware/guest';
+import test from '../middleware/test';
 
 const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue');
 const Continent = () => import(/* webpackChunkName: "continent" */ '../views/Continent.vue');
@@ -343,24 +344,29 @@ const router = createRouter({
   https://markus.oberlehner.net/blog/implementing-a-simple-middleware-with-vue-router/
 */
 
+// Assuming an array of middleware like so: [log, auth]
 // Creates a `nextMiddleware()` function which not only
 // runs the default `next()` callback but also triggers
 // the subsequent Middleware function.
 function nextFactory(context, middleware, index) {
-    const subsequentMiddleware = middleware[index];
-    // If no subsequent Middleware exists,
-    // the default `next()` callback is returned.
-    if (!subsequentMiddleware) return context.next;
-  
-    return (...parameters) => {
-      // Run the default Vue Router `next()` callback first.
-      context.next(...parameters);
-      // Then run the subsequent Middleware with a new
-      // `nextMiddleware()` callback.
-      const nextMiddleware = nextFactory(context, middleware, index + 1);
-      subsequentMiddleware({ ...context, next: nextMiddleware });
-    };
-  }
+  // If one route has more than one middleware to pass
+  const subsequentMiddleware = middleware[index]; // middleware[1] === auth (since middleware[0] === log)
+  // If no subsequent Middleware exists,
+  // the default `next()` callback is returned.
+  if (!subsequentMiddleware) return context.next;
+
+  // Indefinite number of arguments as array (rest parameter syntax)
+  // Collects individual arguments that you pass into a function and returns an array
+  return (...parameters) => {
+    // Run the default Vue Router `next()` callback first.
+    // next has been overwritten in line (A) and is now another nextFactory() call
+    context.next(...parameters);
+    // Then run the subsequent Middleware with a new
+    // `nextMiddleware()` callback.
+    const nextMiddleware = nextFactory(context, middleware, index + 1);
+    subsequentMiddleware({ ...context, next: nextMiddleware });
+  };
+}
 
 router.beforeEach((to, from, next) => {
   // TODO: How to concatenate unicode with string: https://www.compart.com/en/unicode/U+2014
@@ -382,50 +388,15 @@ router.beforeEach((to, from, next) => {
         to,
       };
 
+    // Using function expression (no hoisting, defined in line)
     const nextMiddleware = nextFactory(context, middleware, 1);
 
-    return middleware[0]({ ...context, next: nextMiddleware });
+    // Run first middleware function of middleware array with arguments
+    // return middleware[0]({ ...context});
+    return middleware[0]({ ...context, next: nextMiddleware }); // (A)
   }
 
   return next();
-  
-  /*
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  const requiresGuest = to.matched.some(record => record.meta.requiresGuest);
-  const isAuthenticated = store.state.auth.isAuthenticated;
-
-  console.log('Router isAuthenticated', isAuthenticated);
-
-  // TODO: How to concatenate unicode with string: https://www.compart.com/en/unicode/U+2014
-  window.document.title = to.meta && to.meta.title ? (to.meta.title += ` — trainercodes.net`) : 'trainercodes.net';
-
-  if (to.redirectedFrom && to.redirectedFrom.name) {
-    store.commit('setToRouteName', to.redirectedFrom.name);
-  }
-
-  if(requiresAuth && !isAuthenticated) {
-
-    console.log('%cROUTER requiresAuth && !isAuthenticated ', 'color: plum; font-weight: bold;', requiresAuth, isAuthenticated);
-
-    // NOTE: Changed from next() to router.push() due to "expected" error:
-    // Navigating to /profile while being !isAuthenticated should redirect to /log-in --
-    // Vue router threw an error because the resolving of the route /profile didn't go as expected, but was redirected
-    // router.push({ name: 'LogIn' });
-    // to.redirectedFrom object was not available when using router.push, switching back to next()
-    // NOTE: to.redirectedFrom is crucial fo redirecting user to a route they intended to visit
-    next({ name: 'LogIn' });
-
-  } else if (requiresGuest && isAuthenticated) {
-    console.log('%cROUTER requiresGuest && isAuthenticated ', 'color: plum; font-weight: bold;', requiresGuest, isAuthenticated);
-
-    // NOTE: See notice above
-    router.push({ name: 'ProfileOverview' });
-  } 
-  else {
-    // console.log('router.beforeEach else', isAuthenticated, requiresAuth, requiresGuest);
-    next();
-  }
-  */
   
 });
 // why is this better ? https://router.vuejs.org/guide/advanced/meta.html

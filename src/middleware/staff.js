@@ -1,7 +1,6 @@
 import store from '../store';
 
 export default function staff({ next, router }) {
-    console.log('%cstaff() ran', 'color: darkseagreen; font-weight: bold;');
     const isAuthenticated = store.state.auth.isAuthenticated;
     const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
 
