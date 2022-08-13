@@ -124,28 +124,22 @@ export default {
   },
 
   created() {
-    console.log('%cthis.isDarkMode', 'color: darkseagreen; font-weight: bold;', this.isDarkMode);
-    console.log('%cthis.darkMode', 'color: darkseagreen; font-weight: bold;', this.darkMode);
     this.isDarkMode = this.darkMode;
+  },
+
+  computed: {
+    ...mapGetters({
+      continentNames: 'continentNames',
+      scrollYPosition: 'scrollYPosition',
+    })
   },
 
   data() {
     return {
       showMenu: false,
       atTop: 0,
-      // TODO: If mode is set in localStorage, take val from there
       isDarkMode: false,
     }
-  },
-
-  computed: {
-    // isDarkMode() {
-    //   const tc_colorMode = JSON.parse(localStorage.getItem('tc_colorMode')) || '';
-    //   if (tc_colorMode === 'dark' || (window.matchMedia('(prefers-color-scheme: dark)').matches && !tc_colorMode)) {
-    //     return true;
-    //   }
-    //   return false;
-    // }
   },
 
   methods: {
@@ -166,13 +160,7 @@ export default {
       }
     },
 
-    toggleNavbar(e) {
-      // console.log('e.target', e.target);
-      // const canToggle = e.target.closest('[data-toggle-menu]');
-      // // const canToggle = e.target.dataset;
-      // console.log('canToggle', canToggle);
-      // if (!canToggle) return;
-
+    toggleNavbar() {
       this.showMenu = !this.showMenu;
     },
 
@@ -208,13 +196,6 @@ export default {
       this.toggleNavbar();
     }
     
-  },
-
-  computed: {
-    ...mapGetters({
-      continentNames: 'continentNames',
-      scrollYPosition: 'scrollYPosition',
-    })
   },
 
 }
@@ -384,37 +365,5 @@ export default {
       margin-left: 0.75rem; // 12px
     }
   }
-
 }
-
-// .dropdown__toggle-menu {
-//   display: none;
-// }
-
-// .dropdown__toggle-menu__btn {
-//   height: 1.25rem; // 20px
-//   width: 1.25rem; // 20px
-//   margin-left: .25rem; // 4px
-// }
-
-// .dropdown__menu {
-//   display: none;
-//   padding-bottom: .5rem; // 8px
-//   background-color: rgb(255 255 255 / 0.7);
-//   // font-size: 0.875rem/* 14px */;
-//   // line-height: 1.25rem/* 20px */;
-//   border-radius: 0.25rem/* 4px */;
-//   z-index: 60;
-
-//   &__item__link{
-//     // py-1 text-md inline-flex items-center justify-content
-//     display: inline-flex;
-//     padding: .25rem 0; // 4px
-//   }
-// }
-// /* When hidden input[type=checkbox] gets checked, the ul with .dropdown
-// gets attached the display block property and is therfor visible. */
-// input:checked~ul.dropdown__menu {
-//   display: block;
-// }
 </style>
