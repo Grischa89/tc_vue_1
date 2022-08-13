@@ -342,9 +342,10 @@ const router = createRouter({
 /* 
   Middleware logic adjusted based on this blog article
   https://markus.oberlehner.net/blog/implementing-a-simple-middleware-with-vue-router/
+
+  Assuming an array of middleware like so: [log, auth]
 */
 
-// Assuming an array of middleware like so: [log, auth]
 // Creates a `nextMiddleware()` function which not only
 // runs the default `next()` callback but also triggers
 // the subsequent Middleware function.
@@ -392,7 +393,7 @@ router.beforeEach((to, from, next) => {
     const nextMiddleware = nextFactory(context, middleware, 1);
 
     // Run first middleware function of middleware array with arguments
-    // return middleware[0]({ ...context});
+    // Replacing next function with nextFactory(context, middleware, 1)
     return middleware[0]({ ...context, next: nextMiddleware }); // (A)
   }
 
