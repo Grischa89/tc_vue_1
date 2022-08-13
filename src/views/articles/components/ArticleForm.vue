@@ -7,9 +7,12 @@
                     <slot name="templateSelect"></slot>
                 </div>
             </div>
-            <div class="form-article__main">
+            
+            <!-- <div class="form-article__main"> -->
+            <form class="form-article__main" @submit.prevent enctype="multipart/form-data">
                 <!-- <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button> -->
-                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300">
+                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false">
+                <!-- <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300"> -->
                     <template #item="{element}">
                         <div class="form-article__main__form">
                             <label class="form-article__main__form__label" for="key">Section:</label>
@@ -21,6 +24,10 @@
                                     :value="column.name"
                                     :disabled="column.disabled">{{ column.name }}</option>
                             </select>
+                            <template v-if="element.key === 'image'">
+                                <label class="form-article__main__form__label" for="image">Image:</label>
+                                <input @change="handleImage($event, element)" class="form-article__main__form__value" type="file" accept="image/*" name="image" id="image">
+                            </template>
                             <template v-if="element.key === 'table'">
                                 <label class="form-article__main__form__label" for="tableShape">Shape: (n*n=content.length)</label>
                                 <input v-model="element.shape" class="form-article__main__form__value" type="text" name="tableShape" id="tableShape" />
@@ -46,12 +53,12 @@
                     </template>
                 </draggable>
                 <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button>
-            </div>
+            </form>
             <div class="form-article__footer">
                 <div v-if="errors.length" class="form-article__footer__errors">
                     <p v-for="(error, i) in errors" :key="i">{{ error.message }}</p>
                 </div>
-                <slot v-if="showButtons" name="submitButton" :articleToValidate="article"></slot>
+                <slot v-if="showButtons" name="submitButton" :articleToValidate="article" :imagesToValidate="images"></slot>
             </div>
         </div>
         <div class="preview-article">
@@ -100,7 +107,9 @@ export default {
     },
 
     updated() {
-        if (this.chosenTemplate) this.article = this.chosenTemplate;
+        if (this.article.length === 0 && this.chosenTemplate) this.article = this.chosenTemplate;
+        // console.log('%ctype article', 'color: darkseagreen; font-weight: bold;', typeof this.article, Array.isArray(this.article));
+        // console.log('%ctype pandas', 'color: darkseagreen; font-weight: bold;', typeof this.pandas, Array.isArray(this.pandas));
     },
 
     data() {
@@ -108,6 +117,12 @@ export default {
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
             article: this.articleToUpdate || [],
+            images: [],
+            pandas: [
+                { name: 'panda1' },
+                { name: 'panda2' },
+                { name: 'panda3' },
+            ]
         }
     },
 
@@ -170,6 +185,15 @@ export default {
     },
 
     methods: {
+        handleImage(e, element) {
+            console.log('%ce', 'color: hotpink; font-weight: bold;', e, e.target.name, e.target.files, element);
+            const i = this.article.findIndex(section => section.id === element.id);
+            console.log('%ci', 'color: hotpink; font-weight: bold;', i);
+            this.article[i].value = e.target.files[0].name;
+            this.images.push({ data: e.target.files[0], name: e.target.name});
+            console.log('%cthis.images', 'color: hotpink; font-weight: bold;', this.images);
+        },
+
         setPreviousSelected(e) {
             this.previousSelected = e.target.value;
         },

@@ -197,7 +197,13 @@ const actions = {
     postArticle({ commit }, article) {
         console.log('%carticle in postArticle', 'color: darkseagreen; font-weight: bold;', article);
 
-        return axios.post('/api/v1/articles/add1/', article)
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+
+        return axios.post('/api/v1/articles/add/', article, config)
             .then(res => {
                 console.log('%cres from postArticle', 'color: darkseagreen; font-weight: bold;', res);
                 return res.status;

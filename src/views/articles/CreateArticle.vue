@@ -17,8 +17,8 @@
             </div>
         </template>
 
-        <template #submitButton="{ articleToValidate }">
-            <button class="form-article__footer__button" type="button" @click="submitForm(articleToValidate)">{{ submitButtonText }}</button>
+        <template #submitButton="{ articleToValidate, imagesToValidate }">
+            <button class="form-article__footer__button" type="button" @click="submitForm(articleToValidate, imagesToValidate)">{{ submitButtonText }}</button>
         </template>
     </ArticleForm>
 </template>
@@ -67,19 +67,46 @@ export default {
     },
 
     methods: {
-        submitForm(articleToValidate) {
+        createFormData(article, images) {
+            const formData = new FormData();
+
+            formData.append('data', article);
+            for (const image of images) {
+                formData.append('file', image);
+            }
+
+            return formData;
+        },
+
+        submitForm(articleToValidate, imagesToValidate) {
+            console.log('%cdata', 'color: darkseagreen; font-weight: bold;', articleToValidate, imagesToValidate);
             const numberOfErrors = this.$store.dispatch('validateArticle', articleToValidate);
             const user = this.$store.dispatch('getUserProfile');
 
             Promise.all([numberOfErrors, user])
-                .then(async values => {
+                .then(values => {
                     console.log('%cvalues', 'color: hotpink; font-weight: bold;', values[0], values[1].data.is_staff);
 
                     if (values[0] === 0 && values[1].data.is_staff) {
-                        const createSuccess = await this.$store.dispatch('postArticle', articleToValidate);
-                        if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
+                        const formData = this.createFormData(articleToValidate, imagesToValidate);
+                        return formData;
                     }
+                })
+                .then(async formData => {
+                    const createSuccess = await this.$store.dispatch('postArticle', formData);
+                    if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
                 });
+
+            // const formData = new FormData();
+
+            // formData.append('data', JSON.stringify(articleToValidate));
+            // for (const image of imagesToValidate) {
+            //     console.log('%cfile to append', 'color: blue; font-weight: bold;', image, image.data);
+            //     formData.append('file', image.data);
+            // }
+
+            // const createSuccess = await this.$store.dispatch('postArticle', formData);
+            // if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
         },
 
         setTemplate(e) {
