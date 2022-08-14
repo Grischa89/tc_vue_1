@@ -70,9 +70,9 @@ export default {
         createFormData(article, images) {
             const formData = new FormData();
 
-            formData.append('data', article);
+            formData.append('data', JSON.stringify(article));
             for (const image of images) {
-                formData.append('file', image);
+                formData.append('file', image.data);
             }
 
             return formData;
@@ -96,17 +96,6 @@ export default {
                     const createSuccess = await this.$store.dispatch('postArticle', formData);
                     if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
                 });
-
-            // const formData = new FormData();
-
-            // formData.append('data', JSON.stringify(articleToValidate));
-            // for (const image of imagesToValidate) {
-            //     console.log('%cfile to append', 'color: blue; font-weight: bold;', image, image.data);
-            //     formData.append('file', image.data);
-            // }
-
-            // const createSuccess = await this.$store.dispatch('postArticle', formData);
-            // if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
         },
 
         setTemplate(e) {
