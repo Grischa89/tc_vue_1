@@ -27,6 +27,10 @@
                             <template v-if="element.key === 'image'">
                                 <label class="form-article__main__form__label" for="image">Image:</label>
                                 <input @change="handleImage($event, element)" class="form-article__main__form__value" type="file" accept="image/*" name="image" id="image">
+                                <label class="form-article__main__form__label" for="titleImage">Title Image? (Boolean)</label>
+                                <input v-model="element.is_title_image" type="text" name="titleImage" id="titleImage">
+                                <label class="form-article__main__form__label" for="alt">Alternative Text</label>
+                                <input v-model="element.alt" type="text" name="alt" id="alt">
                             </template>
                             <template v-if="element.key === 'table'">
                                 <label class="form-article__main__form__label" for="tableShape">Shape: (n*n=content.length)</label>
