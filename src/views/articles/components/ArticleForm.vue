@@ -112,8 +112,6 @@ export default {
 
     updated() {
         if (this.article.length === 0 && this.chosenTemplate) this.article = this.chosenTemplate;
-        // console.log('%ctype article', 'color: darkseagreen; font-weight: bold;', typeof this.article, Array.isArray(this.article));
-        // console.log('%ctype pandas', 'color: darkseagreen; font-weight: bold;', typeof this.pandas, Array.isArray(this.pandas));
     },
 
     data() {
@@ -122,11 +120,6 @@ export default {
             previousSelected: null,
             article: this.articleToUpdate || [],
             images: [],
-            pandas: [
-                { name: 'panda1' },
-                { name: 'panda2' },
-                { name: 'panda3' },
-            ]
         }
     },
 
