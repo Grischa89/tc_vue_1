@@ -85,16 +85,22 @@ export default {
 
             Promise.all([numberOfErrors, user])
                 .then(values => {
-                    console.log('%cvalues', 'color: hotpink; font-weight: bold;', values[0], values[1].data.is_staff);
+                    const [errors, user] = values;
 
-                    if (values[0] === 0 && values[1].data.is_staff) {
-                        const formData = this.createFormData(articleToValidate, imagesToValidate);
-                        return formData;
+                    if (errors === 0 && user.is_staff === true) {
+                        return this.createFormData(articleToValidate, imagesToValidate);
                     }
                 })
                 .then(async formData => {
-                    const createSuccess = await this.$store.dispatch('postArticle', formData);
+                    return await this.$store.dispatch('postArticle', formData);
+                })
+                .then(createSuccess => {
                     if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
+                })
+                .catch(err => {
+                    console.log('%cerr in Promise.all (create)', 'color: red; font-weight: bold;', err);
+
+                    if (err.response) console.log('%cerr.response', 'color: red; font-weight: bold;', err.response);
                 });
         },
 

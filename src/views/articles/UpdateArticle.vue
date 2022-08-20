@@ -61,16 +61,23 @@ export default {
 
             Promise.all([numberOfErrors, user])
                 .then(async values => {
-                    console.log('%cvalues', 'color: hotpink; font-weight: bold;', values[0], values[1].data.is_staff);
+                    const [errors, user] = values;
 
-                    if (values[0] === 0 && values[1].data.is_staff) {
+                    if (errors === 0 && user.is_staff === true) {
                         const data = {
                             slug: this.$route.params.slug,
                             article: articleToValidate,
                         }
-                        const createSuccess = await this.$store.dispatch('updateArticle', data);
-                        if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
+                        return await this.$store.dispatch('updateArticle', data);
                     }
+                })
+                .then(createSuccess => {
+                    if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
+                })
+                .catch(err => {
+                    console.log('%cerr in Promise.all (update)', 'color: red; font-weight: bold;', err);
+
+                    if (err.response) console.log('%cerr.response', 'color: red; font-weight: bold;', err.response);
                 });
         }
     },
