@@ -232,8 +232,18 @@ export default {
             const index = this.article.findIndex(object => {
                 return object.id === id;
             });
-            this.article.splice(index, 1);
+            const deletedRow = this.article.splice(index, 1);
+            this.deleteImage(deletedRow);
         },
+
+        deleteImage(deletedRow) {
+            const [row] = deletedRow;
+
+            if (row.key !== 'image') return;
+
+            const index = this.images.findIndex(image => image.name === row.value);
+            this.images.splice(index, 1);
+        }
     }
 }
 </script>
