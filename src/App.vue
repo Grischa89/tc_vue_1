@@ -461,6 +461,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   color: var(--text);
   background-color: var(--surface1);
+  transition: color 300ms, background-color 300ms;
 }
 
 #app {
