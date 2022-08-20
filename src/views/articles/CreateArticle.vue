@@ -72,7 +72,7 @@ export default {
 
             formData.append('data', JSON.stringify(article));
             for (const image of images) {
-                formData.append('file', image.data);
+                formData.append('file', image);
             }
 
             return formData;
@@ -91,17 +91,17 @@ export default {
                         return this.createFormData(articleToValidate, imagesToValidate);
                     }
                 })
-                .then(async formData => {
-                    return await this.$store.dispatch('postArticle', formData);
-                })
-                .then(createSuccess => {
-                    if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
-                })
-                .catch(err => {
-                    console.log('%cerr in Promise.all (create)', 'color: red; font-weight: bold;', err);
+                // .then(async formData => {
+                //     return await this.$store.dispatch('postArticle', formData);
+                // })
+                // .then(createSuccess => {
+                //     if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
+                // })
+                // .catch(err => {
+                //     console.log('%cerr in Promise.all (create)', 'color: red; font-weight: bold;', err);
 
-                    if (err.response) console.log('%cerr.response', 'color: red; font-weight: bold;', err.response);
-                });
+                //     if (err.response) console.log('%cerr.response', 'color: red; font-weight: bold;', err.response);
+                // });
         },
 
         setTemplate(e) {

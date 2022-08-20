@@ -194,7 +194,7 @@ export default {
             const i = this.article.findIndex(section => section.id === element.id);
             console.log('%ci', 'color: hotpink; font-weight: bold;', i);
             this.article[i].value = e.target.files[0].name;
-            this.images.push({ data: e.target.files[0], name: e.target.name});
+            this.images.push(e.target.files[0]);
             console.log('%cthis.images', 'color: hotpink; font-weight: bold;', this.images);
         },
 
