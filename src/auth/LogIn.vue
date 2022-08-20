@@ -78,14 +78,17 @@ export default {
 
                 const loginSuccess = await this.$store.dispatch('login', loginData);
 
-                if (loginSuccess.status === 200) {
-
+                if (loginSuccess === 200) {
+                    console.log('%cWE ARE IN IF', 'color: green; font-weight: bold;', loginSuccess);
                     try {
+                        console.log('%cIN TRY', 'color: green; font-weight: bold;');
                         // Get user data
                         // Either push to route user intended to visit (but was not authenticated) or to profile
                         await this.$store.dispatch('getUserProfile', data.email);
+                        console.log('%crouteName', 'color: green; font-weight: bold;', this.routeName);
                         this.toRouteName ? this.$router.push({ name: `${this.toRouteName}` }) : this.$router.push({ name: 'ProfileOverview' });
                     } catch (err) {
+                        console.log('%cIN CATCH', 'color: hotpink; font-weight: bold;');
                         // Handle error in getUserProfile (404)
                         // Perform logout() so user is treated as unauthenticated (tokens deleted + sessionStorage empty)
                         this.$store.dispatch('logout');
@@ -98,6 +101,7 @@ export default {
                     }
                     
                 } else {
+                    console.log('%cin ELSE', 'color: darkseagreen; font-weight: bold;');
                     this.errors.unauthorized = 'No active account found with the given credentials. Please try again.';
                     this.forwardSuggestion.routeName = 'ResendActivationEmail';
                     this.forwardSuggestion.textContent = 'Resend Activation Email?';
