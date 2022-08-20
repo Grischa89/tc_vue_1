@@ -311,26 +311,6 @@ const scrollBehavior = (to, from, savedPosition) => {
     // console.log('%cELSE to.name', 'color: aqua; font-weight: bold;', to.name);
     return { top: 0 };
   }
-  
-  // else {
-  //   const position = {};
-  //   if (to.hash) {
-  //     // console.log('%cWE ARE IN TO.HASH', 'color: plum; font-weight: bold;');
-  //     position.selector = to.hash;
-  //     if (to.hash === '#profile__nav') {
-  //       // console.log('%c& TO.HASH IS PROFILE__NAV', 'color: plum; font-weight: bold;');
-  //       position.offset = { y: 250 };
-  //     }
-  //     if (document.querySelector(to.hash)) {
-  //       // console.log('%c& EL WITH TO.HASH EXISTS', 'color: plum; font-weight: bold;');
-  //       return position;
-  //     }
-  //     return false;
-  //   }
-  //   // console.log('%cWE DONT HAVE A TO.HASH', 'color: plum; font-weight: bold;');
-
-  //   return { top: 0 };
-  // }
 };
 
 const router = createRouter({
