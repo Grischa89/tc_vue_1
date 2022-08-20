@@ -60,6 +60,15 @@
             <router-link :to="{ name: 'AddCode' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Add Your Code</router-link>
           </li>
 
+          <template v-if="isStaff">
+            <li class="navbar__menu__item">
+              <router-link :to="{ name: 'CreateArticle' }" class="navbar__menu__item__link navbar__menu__item__link--accented" @click="toggleNavbar" data-toggle-menu>Create Article</router-link>
+            </li>
+            <li class="navbar__menu__item">
+              <router-link :to="{ name: 'ListArticlesUpdate' }" class="navbar__menu__item__link navbar__menu__item__link--accented" @click="toggleNavbar" data-toggle-menu>Update Article</router-link>
+            </li>
+          </template>
+
           <template v-if="!isAuthenticated">
             <li class="navbar__menu__item">
               <router-link :to="{ name: 'LogIn' }" class="navbar__menu__item__link" @click="toggleNavbar" data-toggle-menu>Login</router-link>
@@ -125,6 +134,8 @@ export default {
 
   created() {
     this.isDarkMode = this.darkMode;
+    const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
+    this.isStaff = tc_user.is_staff === true ? true : false;
   },
 
   computed: {
@@ -139,6 +150,7 @@ export default {
       showMenu: false,
       atTop: 0,
       isDarkMode: false,
+      isStaff: false,
     }
   },
 
@@ -351,6 +363,11 @@ export default {
     &__icon {
       height: $mobile-subheading;
       width: $mobile-subheading;
+    }
+
+    &--accented {
+      font-style: italic;
+      color: var(--accent);
     }
   }
 
