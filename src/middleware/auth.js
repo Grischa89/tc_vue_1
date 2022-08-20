@@ -1,12 +1,11 @@
 import store from '../store';
 
-export default function auth({ next, router }) {
-    console.log('%cauth() ran', 'color: darkseagreen; font-weight: bold;');
+export default function auth({ to, next, router }) {
     const isAuthenticated = store.state.auth.isAuthenticated;
 
     if (!isAuthenticated) {
-        console.log('%cUser not authenticated!', 'color: red; font-weight: bold;');
-        return router.push({ name: 'LogIn'});
+        store.commit('setToRouteName', to.name);
+        return router.push({ name: 'LogIn' });
     }
   
     return next();

@@ -373,10 +373,6 @@ router.beforeEach((to, from, next) => {
   // TODO: How to concatenate unicode with string: https://www.compart.com/en/unicode/U+2014
   window.document.title = to.meta && to.meta.title ? (to.meta.title += ` — trainercodes.net`) : 'trainercodes.net';
 
-  if (to.redirectedFrom && to.redirectedFrom.name) {
-    store.commit('setToRouteName', to.redirectedFrom.name);
-  }
-
   if (to.meta.middleware) {
     const middleware = Array.isArray(to.meta.middleware)
       ? to.meta.middleware
