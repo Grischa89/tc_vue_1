@@ -21,13 +21,13 @@ const state = {
 
 const getters = {
     articleSections: state => {
-        // const mappedArticleSections = state.articleSections.map(element => {
-        //     return { name: element, disabled: false };
-        // });
+        const sortAlph = JSON.parse(JSON.stringify(state.articleSections));
+        sortAlph.sort((first, second) => {
+            if (first.name > second.name) return 1;
+            return -1;
+        });
 
-        // console.log('%c', 'color: darkseagreen; font-weight: bold;');
-        
-        return state.articleSections;
+        return sortAlph;
     },
 
     articleRecommendations: state => {
