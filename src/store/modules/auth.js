@@ -1,6 +1,4 @@
-import { whileStatement } from '@babel/types';
 import axios from 'axios';
-import { resolve } from 'path';
 
 const state = {
   user: {},
