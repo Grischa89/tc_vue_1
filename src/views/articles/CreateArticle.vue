@@ -78,30 +78,13 @@ export default {
             return formData;
         },
 
-        submitForm(articleToValidate, imagesToValidate) {
-            console.log('%cdata', 'color: darkseagreen; font-weight: bold;', articleToValidate, imagesToValidate);
-            const numberOfErrors = this.$store.dispatch('validateArticle', articleToValidate);
-            const user = this.$store.dispatch('getUserProfile');
+        async submitForm(articleToValidate, imagesToValidate) {
+            const [numberOfErrors, user] = await Promise.all([this.$store.dispatch('validateArticle', articleToValidate), this.$store.dispatch('getUserProfile')]);
+            if (numberOfErrors !== 0 || user.is_staff !== true) return;
 
-            Promise.all([numberOfErrors, user])
-                .then(values => {
-                    const [errors, user] = values;
-
-                    if (errors === 0 && user.is_staff === true) {
-                        return this.createFormData(articleToValidate, imagesToValidate);
-                    }
-                })
-                // .then(async formData => {
-                //     return await this.$store.dispatch('postArticle', formData);
-                // })
-                // .then(createSuccess => {
-                //     if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
-                // })
-                // .catch(err => {
-                //     console.log('%cerr in Promise.all (create)', 'color: red; font-weight: bold;', err);
-
-                //     if (err.response) console.log('%cerr.response', 'color: red; font-weight: bold;', err.response);
-                // });
+            const formData = this.createFormData(articleToValidate, imagesToValidate);
+            const createSuccess = await this.$store.dispatch('postArticle', formData);
+            if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
         },
 
         setTemplate(e) {
