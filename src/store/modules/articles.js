@@ -154,9 +154,8 @@ const actions = {
     },
 
     getArticles({ commit }) {
-        axios.get('/api/v1/articles/')
+        axios.get('/api/v1/articles/all/')
         .then(res => {
-            console.log('%cgetArticles', 'color: crimson; font-weight: bold;', res.data);
             commit('setArticles', res.data);
         })
         .catch(err => {
