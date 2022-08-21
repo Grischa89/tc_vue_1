@@ -44,6 +44,15 @@ export default {
   border-radius: 0.25rem/* 4px */;
   z-index: 60;
 
+  @media (min-width: 1024px) {
+    position: absolute;
+    color: var(--textInverse);
+    background-color: var(--backgroundInverse);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+
   &__item {
 
     &:hover {
@@ -55,6 +64,11 @@ export default {
       display: inline-flex;
       padding: .25rem 0; // 4px
     }
+
+    // @media (min-width: 1024px) { // TODO
+    //   &:hover {
+    //   }
+    // }
   }
 
   // &__item
