@@ -48,7 +48,7 @@
                                 v-else
                                 v-model="element.value" />
         
-                            <button class="form-article__main__form__button" type="button" @click="deleteRow(element.id)">
+                            <button class="form-article__main__form__button" type="button" @click="deleteRow(element.value)">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
@@ -221,10 +221,9 @@ export default {
             this.article.push(newRow);
         },
 
-        deleteRow(id) {
-            const index = this.article.findIndex(object => {
-                return object.id === id;
-            });
+        deleteRow(value) {
+            // NOTE: Formerly id
+            const index = this.article.findIndex(object => object.value === value);
             const deletedRow = this.article.splice(index, 1);
             this.deleteImage(deletedRow);
         },
@@ -236,6 +235,7 @@ export default {
 
             const index = this.images.findIndex(image => image.name === row.value);
             this.images.splice(index, 1);
+            console.log('%cimages', 'color: darkseagreen; font-weight: bold;', this.images);
         }
     }
 }
