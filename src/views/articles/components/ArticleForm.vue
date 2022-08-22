@@ -26,7 +26,7 @@
                             </select>
                             <template v-if="element.key === 'image'">
                                 <label class="form-article__main__form__label" for="image">Image:</label>
-                                <input @change="handleImage($event, element)" class="form-article__main__form__value" type="file" accept="image/*" name="image" id="image">
+                                <input @change="handleImage($event)" class="form-article__main__form__value" type="file" accept="image/*" name="image" id="image">
                                 <label class="form-article__main__form__label" for="titleImage">Title Image? (Boolean)</label>
                                 <input v-model="element.is_title_image" type="text" name="titleImage" id="titleImage">
                                 <label class="form-article__main__form__label" for="alt">Alternative Text</label>
@@ -182,11 +182,7 @@ export default {
     },
 
     methods: {
-        handleImage(e, element) {
-            console.log('%ce', 'color: hotpink; font-weight: bold;', e, e.target.name, e.target.files, element);
-            const i = this.article.findIndex(section => section.id === element.id);
-            console.log('%ci', 'color: hotpink; font-weight: bold;', i);
-            this.article[i].value = e.target.files[0].name;
+        handleImage(e) {
             this.images.push(e.target.files[0]);
             console.log('%cthis.images', 'color: hotpink; font-weight: bold;', this.images);
         },

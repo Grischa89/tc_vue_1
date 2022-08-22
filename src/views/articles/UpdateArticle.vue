@@ -6,8 +6,8 @@
                 <h1 class="form-article__header__title">{{ title }}</h1>
             </template>
 
-            <template #submitButton="{ articleToValidate }">
-                <button class="form-article__footer__button" type="button" @click="submitUpdateForm(articleToValidate)">{{ submitButtonText }}</button>
+            <template #submitButton="{ articleToValidate, imagesToValidate }">
+                <button class="form-article__footer__button" type="button" @click="submitUpdateForm(articleToValidate, imagesToValidate)">{{ submitButtonText }}</button>
             </template>
     </ArticleForm>
 </template>
@@ -55,30 +55,29 @@ export default {
     },
 
     methods: {
-        submitUpdateForm(articleToValidate) {
-            const numberOfErrors = this.$store.dispatch('validateArticle', articleToValidate);
-            const user = this.$store.dispatch('getUserProfile');
+        createFormData(article, images) {
+            const formData = new FormData();
 
-            Promise.all([numberOfErrors, user])
-                .then(async values => {
-                    const [errors, user] = values;
+            formData.append('data', JSON.stringify(article));
+            for (const image of images) {
+                formData.append('file', image);
+            }
 
-                    if (errors === 0 && user.is_staff === true) {
-                        const data = {
+            return formData;
+        },
+
+        async submitUpdateForm(articleToValidate, imagesToValidate) {
+            const [numberOfErrors, user] = await Promise.all([this.$store.dispatch('validateArticle', articleToValidate), this.$store.dispatch('getUserProfile')]);
+
+            if (numberOfErrors !== 0 || user.is_staff !== true) return;
+
+            const formData = this.createFormData(articleToValidate, imagesToValidate);
+            const data = {
                             slug: this.$route.params.slug,
-                            article: articleToValidate,
+                            article: formData,
                         }
-                        return await this.$store.dispatch('updateArticle', data);
-                    }
-                })
-                .then(createSuccess => {
-                    if (createSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
-                })
-                .catch(err => {
-                    console.log('%cerr in Promise.all (update)', 'color: red; font-weight: bold;', err);
-
-                    if (err.response) console.log('%cerr.response', 'color: red; font-weight: bold;', err.response);
-                });
+            const updateSuccess = await this.$store.dispatch('updateArticle', data);
+            if (updateSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
         }
     },
 }

@@ -194,7 +194,7 @@ const actions = {
     },
 
     postArticle({ commit }, article) {
-        console.log('%carticle in postArticle', 'color: darkseagreen; font-weight: bold;', article);
+        console.log('%carticle in postArticle + type', 'color: darkseagreen; font-weight: bold;', article, typeof article);
 
         const config = {
             headers: {
@@ -213,7 +213,7 @@ const actions = {
     },
 
     updateArticle({ commit }, data) {
-        console.log('%cupdateArticle', 'color: orange; font-weight: bold;', data);
+        console.log('%cupdateArticle article + type', 'color: orange; font-weight: bold;', data.article, typeof data.article);
 
         return axios.put(`/api/v1/articles/draggable/${data.slug}/`, data.article)
             .then(res => {
@@ -222,6 +222,7 @@ const actions = {
             })
             .catch(err => {
                 console.log('%cerr in updateArticle', 'color: darkseagreen; font-weight: bold;', err);
+                if (err.response) console.log('%cerr in updateArticle', 'color: darkseagreen; font-weight: bold;', err.response.status);
             });
     },
 
