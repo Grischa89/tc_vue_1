@@ -41,7 +41,7 @@
 
   <Footer :userExists="userExists" />
 
-  <vue-cookie-comply
+  <!-- <vue-cookie-comply
     class="cookie-comply--sticky"
     v-if="consentNeeded"
     :headerTitle="headerTitle"
@@ -49,25 +49,7 @@
     :preferences="preferences"
     @on-accept-all-cookies="acceptedAll"
     @on-save-cookie-preferences="runPrefScripts"
-  >
-    <!-- <template v-slot:header>
-      <header>Custom header</header>
-    </template>
-
-    <template v-slot:modal-header>
-      <h3>My custom modal header</h3>
-    </template>
-
-    <template v-slot:modal-body="{ preference, index }">
-      <div>{{ preference.title }}</div>
-    </template>
-
-    <template v-slot:modal-footer>
-      <footer>
-        My custom modal footer
-      </footer>
-    </template> -->
-  </vue-cookie-comply>
+  ></vue-cookie-comply> -->
 </template>
 
 <script>
