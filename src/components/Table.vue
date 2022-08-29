@@ -53,7 +53,7 @@
                 </Tooltip>
               </div>
 
-              <div class="table__body__row__cell__container tooltip" @mouseover="showTooltip($event, 'Open QR-Code')" @mouseleave="hideTooltip($event, code.player_code)">
+              <div class="table__body__row__cell__container tooltip" @mouseover="showTooltip($event, 'Open QR-Code')" @mouseleave="hideTooltip($event, code.player_code)" @click="hideTooltip($event, code.player_code)">
                 <IconButton @click="openQRCodeModal(code)">
                   <svg xmlns="http://www.w3.org/2000/svg" class="button__prepend" viewBox="0 0 20 20" fill="currentColor" aria-labelledby="open-qrcode-modal">
                     <title id="open-qrcode-modal">Open Trainer Code as QR Code</title>
