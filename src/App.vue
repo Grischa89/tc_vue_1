@@ -297,7 +297,7 @@ export default {
   --surface2: #fefbf7;
   --surface3: #ffffff;
   --surface4: #ffffff;
-  --surfaceQR: #ffffff;
+  --surfaceModal: #ffffff;
   
   --hover-surface: hsla(33, 91%, 73%, .04); // Derived froom $in-between, Light Orange: #fcdcb6ff;
   // --hover-surface1: hsla(0, 3%, 14%, .04); // Derived from $black, Raisin Black: #252323ff;
