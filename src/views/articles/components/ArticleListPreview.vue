@@ -12,10 +12,8 @@
                 <button @click="openUpdateArticle(article.slug)" class="article-preview__text__update__button" type="button">Update</button>
             </div>
         </div>
-        <div class="article-preview__image">
-            <div class="article-preview__image__img">
-
-            </div>
+        <div v-if="article.image?.is_title_image" class="article-preview__image">
+            <img :src="article.image.url" class="article-preview__image__img">
 
             <div class="article-preview__image__backdrop">
 
