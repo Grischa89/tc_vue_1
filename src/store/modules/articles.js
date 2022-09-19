@@ -202,7 +202,7 @@ const actions = {
             }
         }
 
-        return axios.post('/api/v1/articles/add/', article, config)
+        return axios.post('/api/v1/articles/draggable/add/', article, config)
             .then(res => {
                 console.log('%cres from postArticle', 'color: darkseagreen; font-weight: bold;', res);
                 return res.status;
@@ -234,7 +234,8 @@ const actions = {
         article.forEach(element => {
             if (!element.key) articleValidationErrors.push({ message: `Please choose a section or delete the row.` });
 
-            if (!element.value) articleValidationErrors.push({ message: `Please enter content for the section ${element.key} or delete the row.` });
+            // Only image section is allowed to have an empty value field
+            if (element.key !== 'image' && !element.value) articleValidationErrors.push({ message: `Please enter content for the section ${element.key} or delete the row.` });
 
             if (element.key === 'heading') headingExists = true;
 
