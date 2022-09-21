@@ -15,6 +15,8 @@
                 <!-- <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300"> -->
                     <template #item="{element}">
                         <div class="form-article__main__form">
+
+                            <!-- Choose a section -->
                             <label class="form-article__main__form__label" for="key">Section:</label>
                             <select class="form-article__main__form__key" name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
                                 <option value selected disabled >Choose A Column</option>
@@ -24,29 +26,50 @@
                                     :value="column.name"
                                     :disabled="column.disabled">{{ column.name }}</option>
                             </select>
+
+                            <!-- IMAGE -->
                             <template v-if="element.key === 'image'">
                                 <label class="form-article__main__form__label" for="image">Image:</label>
-                                <input @change="handleImage($event)" class="form-article__main__form__value" type="file" accept="image/*" name="image" id="image">
+                                <input @change="handleImage($event, element.pk, element.lastModified, element.id)" @input="logEvent" class="form-article__main__form__value" type="file" accept="image/*" name="image" id="image">
+                                <template v-if="element.pk">
+                                    <label class="form-article__main__form__label" for="imagePK">PK:</label>
+                                    <input v-model="element.pk" class="form-article__main__form__value" type="text" name="imagePK" id="imagePK" disabled>
+                                </template>
+                                <template v-if="element.url">
+                                    <label class="form-article__main__form__label" for="imageURL">URL:</label>
+                                    <input v-model="element.url" class="form-article__main__form__value" type="text" name="imageURL" id="imageURL" disabled>
+                                </template>
                                 <label class="form-article__main__form__label" for="titleImage">Title Image? (Boolean)</label>
-                                <input v-model="element.is_title_image" type="text" name="titleImage" id="titleImage">
+                                <input v-model="element.is_title_image" class="form-article__main__form__value" type="text" name="titleImage" id="titleImage">
                                 <label class="form-article__main__form__label" for="alt">Alternative Text</label>
-                                <input v-model="element.alt" type="text" name="alt" id="alt">
+                                <input v-model="element.alt" class="form-article__main__form__value" type="text" name="alt" id="alt">
                             </template>
-                            <template v-if="element.key === 'table'">
+
+                            <!-- TABLE -->
+                            <template v-else-if="element.key === 'table'">
                                 <label class="form-article__main__form__label" for="tableShape">Shape: (n*n=content.length)</label>
                                 <input v-model="element.shape" class="form-article__main__form__value" type="text" name="tableShape" id="tableShape" />
                                 <label class="form-article__main__form__label" for="tableHead">Head:</label>
                                 <input v-model="element.table_head" class="form-article__main__form__value" type="text" name="tableHead" id="tableHead" />
                             </template>
-                            <label v-if="element.key.includes('article_')" class="form-article__main__form__label" for="valueSelect">Content:</label>
-                            <label v-else-if="element.key === 'listarray'" class="form-article__main__form__label" for="valueInput">Content: (semicolon (;) separated values)</label>
-                            <label v-else class="form-article__main__form__label" for="valueInput">Content:</label>
-                            <ValueSelect
-                                v-if="element.key.includes('article_')"
-                                v-model="element.value" />
-                            <ValueInput
-                                v-else
-                                v-model="element.value" />
+
+                            <!-- LISTARRAY -->
+                            <template v-else-if="element.key === 'listarray'">
+                                <label class="form-article__main__form__label" for="valueInput">Content: (semicolon (;) separated values)</label>
+                                <ValueInput v-model="element.value" />
+                            </template>
+
+                            <!-- ARTICLE_PREV / NEXT -->
+                            <template v-else-if="element.key.includes('article_')">
+                                <label class="form-article__main__form__label" for="valueSelect">Content:</label>
+                                <ValueSelect v-model="element.value" />
+                            </template>
+
+                            <!-- DEFAULT -->
+                            <template v-else>
+                                <label class="form-article__main__form__label" for="valueInput">Content:</label>
+                                <ValueInput v-model="element.value" />
+                            </template>
         
                             <button class="form-article__main__form__button" type="button" @click="deleteRow(element.value)">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -182,7 +205,51 @@ export default {
     },
 
     methods: {
-        handleImage(e) {
+        resetImage(i) {
+            console.log('%cresetImage executed', 'color: cornflowerblue; font-weight: bold;');
+            delete this.article[i].pk;
+            delete this.article[i].url;
+            delete this.article[i].height_field;
+            delete this.article[i].width_field;
+        },
+
+        setNewImage(i, file) {
+            this.article[i].lastModified = file.lastModified;
+            this.article[i].lastModifiedDate = file.lastModifiedDate;
+            this.article[i].name = file.name;
+            this.article[i].size = file.size;
+            this.article[i].type = file.type;
+            this.article[i].webkitRelativePath = file.webkitRelativePath;
+
+            console.log('%csetNewImage executed', 'color: orange; font-weight: bold;', this.article[i]);
+        },
+
+        handleImage(e, pk = undefined, lastModified = undefined, id = undefined) {
+            console.log('%cfile', 'color: hotpink; font-weight: bold;', e.target.files[0]);
+            console.log('%cpk', 'color: hotpink; font-weight: bold;', pk);
+            console.log('%clastModified', 'color: hotpink; font-weight: bold;', lastModified);
+            console.log('%cid', 'color: hotpink; font-weight: bold;', id);
+            console.log('%carticle', 'color: hotpink; font-weight: bold;', this.article);
+
+            // Existing image gets updated for the 1st time after page load
+            if (pk !== undefined) {
+                const i = this.article.findIndex(item => item.pk === pk);
+                this.resetImage(i);
+                this.setNewImage(i, e.target.files[0]);
+            }
+
+            // Existing image gets updated for the n-th time after page load
+            if (lastModified !== undefined) {
+                const i = this.article.findIndex(item => item.lastModified === lastModified);
+                this.setNewImage(i, e.target.files[0]);
+            }
+
+            // Image gets created for the first time || image that hasn't been POSTed yet gets immediately updated
+            if (id !== undefined) {
+                const i = this.article.findIndex(item => item.id === id);
+                this.setNewImage(i, e.target.files[0]);
+            }
+
             this.images.push(e.target.files[0]);
             console.log('%cthis.images', 'color: hotpink; font-weight: bold;', this.images);
         },
@@ -213,7 +280,8 @@ export default {
         },
 
         addRow() {
-            const newRow = { key: '', value: '', id: Math.floor(Date.now() * Math.random()) };
+            // const newRow = { key: '', value: '', id: Math.floor(Date.now() * Math.random()) };
+            const newRow = { key: '', id: Math.floor(Date.now() * Math.random()) };
             this.article.push(newRow);
         },
 
