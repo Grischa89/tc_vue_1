@@ -11,7 +11,7 @@
             <!-- <div class="form-article__main"> -->
             <form class="form-article__main" @submit.prevent enctype="multipart/form-data">
                 <!-- <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button> -->
-                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false">
+                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" @change="sortImageFilesAccordingToArticle()">
                 <!-- <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300"> -->
                     <template #item="{element}">
                         <div class="form-article__main__form">
@@ -29,8 +29,17 @@
 
                             <!-- IMAGE -->
                             <template v-if="element.key === 'image'">
-                                <label class="form-article__main__form__label" for="image">Image:</label>
-                                <input @change="handleImage($event, element.pk, element.lastModified, element.id)" @input="logEvent" class="form-article__main__form__value" type="file" accept="image/*" name="image" id="image">
+                                <label class="form-article__main__form__label form-article__main__form__label--image" :for="element.id || element.pk">Choose image</label>
+                                <input @change="handleImage($event, element.pk, element.id)"
+                                    @focus="saveLastModifiedOfPreviousImage(element.lastModified)" class="form-article__main__form__value form-article__main__form__value--image"
+                                    type="file"
+                                    accept="image/*"
+                                    name="image"
+                                    :id="element.id || element.pk">
+                                <template v-if="element.name">
+                                    <label class="form-article__main__form__label" for="imageName">Name:</label>
+                                    <input v-model="element.name" class="form-article__main__form__value" type="text" name="imageName" id="imageName" disabled>
+                                </template>
                                 <template v-if="element.pk">
                                     <label class="form-article__main__form__label" for="imagePK">PK:</label>
                                     <input v-model="element.pk" class="form-article__main__form__value" type="text" name="imagePK" id="imagePK" disabled>
@@ -142,6 +151,7 @@ export default {
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
             article: this.articleToUpdate || [],
+            lastModifiedPreviousImage: '',
             images: [],
         }
     },
@@ -205,9 +215,30 @@ export default {
     },
 
     methods: {
+        handleImage(e, pk = undefined, id = undefined) {
+            // Existing image gets updated for the nth time after page load
+            if (pk !== undefined) {
+                const i = this.article.findIndex(item => item.pk === pk);
+                this.resetImage(i);
+                this.setNewImage(i, e.target.files[0]);
+            }
+
+            // Image gets created for the first time || image that hasn't been POSTed yet gets immediately updated
+            if (id !== undefined) {
+                const i = this.article.findIndex(item => item.id === id);
+                this.setNewImage(i, e.target.files[0]);
+            }
+            
+            // If image files array already has element(s), image file must be put at exact position of that image in the article order
+            if (this.images.length > 0) {
+                this.insertImageInFileArray(e.target.files[0]);
+                return;
+            }
+
+            this.images.push(e.target.files[0]);
+        },
+
         resetImage(i) {
-            console.log('%cresetImage executed', 'color: cornflowerblue; font-weight: bold;');
-            delete this.article[i].pk;
             delete this.article[i].url;
             delete this.article[i].height_field;
             delete this.article[i].width_field;
@@ -217,41 +248,49 @@ export default {
             this.article[i].lastModified = file.lastModified;
             this.article[i].lastModifiedDate = file.lastModifiedDate;
             this.article[i].name = file.name;
-            this.article[i].size = file.size;
-            this.article[i].type = file.type;
-            this.article[i].webkitRelativePath = file.webkitRelativePath;
-
-            console.log('%csetNewImage executed', 'color: orange; font-weight: bold;', this.article[i]);
         },
 
-        handleImage(e, pk = undefined, lastModified = undefined, id = undefined) {
-            console.log('%cfile', 'color: hotpink; font-weight: bold;', e.target.files[0]);
-            console.log('%cpk', 'color: hotpink; font-weight: bold;', pk);
-            console.log('%clastModified', 'color: hotpink; font-weight: bold;', lastModified);
-            console.log('%cid', 'color: hotpink; font-weight: bold;', id);
-            console.log('%carticle', 'color: hotpink; font-weight: bold;', this.article);
+        saveLastModifiedOfPreviousImage(prev) {
+            // Save image identifier of previous image on focus
+            this.lastModifiedPreviousImage = prev;
+        },
 
-            // Existing image gets updated for the 1st time after page load
-            if (pk !== undefined) {
-                const i = this.article.findIndex(item => item.pk === pk);
-                this.resetImage(i);
-                this.setNewImage(i, e.target.files[0]);
-            }
+        getArticleImages() {
+            // Get article image objects
+            const articleImages = this.article.filter(item => item.key === 'image');
+            return articleImages;
+        },        
 
-            // Existing image gets updated for the n-th time after page load
-            if (lastModified !== undefined) {
-                const i = this.article.findIndex(item => item.lastModified === lastModified);
-                this.setNewImage(i, e.target.files[0]);
-            }
+        insertImageInFileArray(file) {
+            // Check with lastModifiedPreviousImage whether an image file for that image section already exists (meaning that image needs to be replaced)
+            const indexImageFileToBeReplaced = this.images.findIndex(item => item.lastModified === this.lastModifiedPreviousImage);
+            // Remove file of previous image
+            if (indexImageFileToBeReplaced !== -1) this.images.splice(indexImageFileToBeReplaced, 1);
 
-            // Image gets created for the first time || image that hasn't been POSTed yet gets immediately updated
-            if (id !== undefined) {
-                const i = this.article.findIndex(item => item.id === id);
-                this.setNewImage(i, e.target.files[0]);
-            }
+            // Get article image objects
+            const articleImages = this.getArticleImages();
+            // Get index of current image with specific lastModified in image only array (articleImages)
+            const i = articleImages.findIndex(item => item.lastModified === file.lastModified);
 
-            this.images.push(e.target.files[0]);
-            console.log('%cthis.images', 'color: hotpink; font-weight: bold;', this.images);
+            // At retrieved index i of the image file array, delete 0 elements, and insert the current image file
+            this.images.splice(i, 0, file);
+        },
+
+        sortImageFilesAccordingToArticle() {
+            // Image file array does not need to be sorted if empty / contains 1 file
+            if (this.images.length <= 1) return;
+
+            // If image file array has more than one item
+            // Get article image order
+            const articleImages = this.getArticleImages();
+
+            // Derive prop value with that in image can be identified & that is both in image section object as well as image file array object (here lastModified)
+            const imagesOrderToBe = articleImages.map(item => item.lastModified);
+
+            // Use imagesOrderToBe simple array to sort image file array (this.images)
+            this.images.sort((a, b) => {
+                return imagesOrderToBe.indexOf(a.lastModified) - imagesOrderToBe.indexOf(b.lastModified);
+            });
         },
 
         setPreviousSelected(e) {
@@ -299,7 +338,6 @@ export default {
 
             const index = this.images.findIndex(image => image.name === row.value);
             this.images.splice(index, 1);
-            console.log('%cimages', 'color: darkseagreen; font-weight: bold;', this.images);
         }
     }
 }
@@ -397,8 +435,20 @@ export default {
                     }
 
                     &__label {
-                    align-self: flex-start;
-                    margin-top: .25rem;
+                        align-self: flex-start;
+                        margin-top: .25rem;
+
+                        &--image {
+                            background-color: var(--accent);
+                            color: #fff;
+                            font-weight: 600;
+                            text-transform: capitalize;
+                            padding: .5rem 1.125rem;
+                            margin-top: .5rem;
+                            margin-bottom: .5rem;
+                            border-radius: 0.3rem;
+                            cursor: pointer;
+                        }
                     }
 
                     &__key {
@@ -427,6 +477,10 @@ export default {
                         border: .0625rem solid var(--border-input);
                         border-radius: 0.25em;
                         min-height: 2.5rem;
+
+                        &--image {
+                            display: none;
+                        }
                     }
 
                     &__button {
