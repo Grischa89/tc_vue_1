@@ -79,8 +79,14 @@
                                 <label class="form-article__main__form__label" for="valueInput">Content:</label>
                                 <ValueInput v-model="element.value" />
                             </template>
+
+                            <button v-if="element.key === 'image'" class="form-article__main__form__button" type="button" @click="deleteRow(element.lastModified, true)">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
         
-                            <button class="form-article__main__form__button" type="button" @click="deleteRow(element.value)">
+                            <button v-else class="form-article__main__form__button" type="button" @click="deleteRow(element.value, false)">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
@@ -324,21 +330,24 @@ export default {
             this.article.push(newRow);
         },
 
-        deleteRow(value) {
-            // NOTE: Formerly id
-            const index = this.article.findIndex(object => object.value === value);
-            const deletedRow = this.article.splice(index, 1);
-            this.deleteImage(deletedRow);
+        deleteRow(identifier, isImage) {
+
+            // If section to be deleted is an image (lastModified as identifier)
+            if (isImage) {
+                const articleIndex = this.article.findIndex(item => item.lastModified === identifier);
+                this.article.splice(articleIndex, 1);
+
+                if (this.images.length !== 0) {
+                    const fileArrayIndex = this.images.findIndex(item => item.lastModified === identifier);
+                    this.images.splice(fileArrayIndex, 1);
+                }
+                return;
+            }
+
+            // Any other section (value as identifier)
+            const articleIndex = this.article.findIndex(item => item.value === identifier);
+            this.article.splice(articleIndex, 1);
         },
-
-        deleteImage(deletedRow) {
-            const [row] = deletedRow;
-
-            if (row.key !== 'image') return;
-
-            const index = this.images.findIndex(image => image.name === row.value);
-            this.images.splice(index, 1);
-        }
     }
 }
 </script>
