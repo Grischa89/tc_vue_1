@@ -56,10 +56,12 @@
 
                             <!-- TABLE -->
                             <template v-else-if="element.key === 'table'">
-                                <label class="form-article__main__form__label" for="tableShape">Shape: (n*n=content.length)</label>
+                                <label class="form-article__main__form__label" for="tableShape">Shape: (rows *  cols = content.length)</label>
                                 <input v-model="element.shape" class="form-article__main__form__value" type="text" name="tableShape" id="tableShape" />
                                 <label class="form-article__main__form__label" for="tableHead">Head:</label>
                                 <input v-model="element.table_head" class="form-article__main__form__value" type="text" name="tableHead" id="tableHead" />
+                                <label class="form-article__main__form__label" for="valueInput">Content:</label>
+                                <ValueInput v-model="element.value" />
                             </template>
 
                             <!-- LISTARRAY -->
