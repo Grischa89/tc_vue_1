@@ -231,6 +231,9 @@ export default {
 
     methods: {
         handleImage(e, pk = undefined, id = undefined) {
+            // Handle cancelled image upload (no image chosen)
+            if (e.target.files.length === 0) return;
+
             // Existing image gets updated for the nth time after page load
             if (pk !== undefined) {
                 const i = this.article.findIndex(item => item.pk === pk);
