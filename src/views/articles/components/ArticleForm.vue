@@ -48,8 +48,8 @@
                                     <label class="form-article__main__form__label" for="imageURL">URL:</label>
                                     <input v-model="element.url" class="form-article__main__form__value" type="text" name="imageURL" id="imageURL" disabled>
                                 </template>
-                                <label class="form-article__main__form__label" for="titleImage">Title Image? (Boolean)</label>
-                                <input v-model.trim="element.is_title_image" class="form-article__main__form__value" type="text" name="titleImage" id="titleImage">
+                                <label class="form-article__main__form__label" for="titleImage">Title Image? (check if true)</label>
+                                <input v-model="element.is_title_image" type="checkbox" name="titleImage" id="titleImage">
                                 <label class="form-article__main__form__label" for="alt">Alternative Text</label>
                                 <input v-model="element.alt" class="form-article__main__form__value" type="text" name="alt" id="alt">
                             </template>
