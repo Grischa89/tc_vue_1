@@ -54,6 +54,7 @@ const getters = {
                 // Handle listarrays since they need to be split for articleForDisplay
                 if (element === 'listarray') {
                     const section = article[i];
+                    section.id = Math.floor(Date.now() * Math.random());
                     // Preserve article[i] for articleForForm (if not 'value' will be mutated as for articleForDisplay)
                     const listarray = JSON.parse(JSON.stringify(article[i]));
                     listarray.value = listarray.value.split(';');
@@ -66,6 +67,7 @@ const getters = {
                 // Handle tables since they need to be split for articleForDisplay
                 if (element === 'table') {
                     const section = article[i];
+                    section.id = Math.floor(Date.now() * Math.random());
                     // Preserve article[i] for articleForForm (if not 'value' will be mutated as for articleForDisplay)
                     const table = JSON.parse(JSON.stringify(article[i]));
                     table.table_head = table.table_head.split(',');
@@ -85,6 +87,7 @@ const getters = {
                 }
 
                 const section = article[i];
+                section.id = Math.floor(Date.now() * Math.random());
                 articleForDisplay.push(article[i]);
                 article.splice(i, 1);
 
