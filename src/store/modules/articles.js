@@ -42,7 +42,6 @@ const getters = {
         if (state.article?.meta_data) {
             const order = state.article.meta_data.order;
             const article = JSON.parse(JSON.stringify(state.article?.draggable_data));
-            console.log('%cSOMETHING', 'color: orange; font-weight: bold;');
 
             const articleForDisplay = [];
             const articleForForm = order.map(element => {
@@ -226,12 +225,16 @@ const actions = {
             });
     },
 
-    validateArticle({ commit }, article) {
+    validateArticle({ commit }, data) {
+        console.log('%cdata', 'color: darkseagreen; font-weight: bold;', data.article, data.images);
         let articleValidationErrors = [];
         let headingExists = false;
         let summaryExists = false;
 
-        article.forEach(element => {
+        // let imageValidationErrors = [];
+        let imagesInArticle = 0;
+
+        data.article.forEach(element => {
             if (!element.key) articleValidationErrors.push({ message: `Please choose a section or delete the row.` });
 
             // Only image section is allowed to have an empty value field
@@ -260,6 +263,17 @@ const actions = {
                 // Check if rows * columns & # of comma separated vals in content match
                 if (numberOfTableContentCells !== (shapeRows * shapeColumns)) articleValidationErrors.push({ message: `Number of cells (${numberOfTableContentCells}) and multiplied shape (${shapeRows} * ${shapeColumns} = ${(shapeRows * shapeColumns)}) do not match.` });
             }
+
+            if (element.key === 'image') {
+                if (element.id || element.pk) imagesInArticle += 1;
+
+                // Former, not updated image
+                if (element.url) imagesInArticle -= 1;
+
+                if (element.is_title_image !== 'true' && element.is_title_image !== true && element.is_title_image !== 'false' && element.is_title_image !== false) {
+                    articleValidationErrors.push({ message: `Please enter either "true" or "false" as value of Title Image in the image section (without quotation marks).` });
+                }
+            }
         });
 
         if (!headingExists) {
@@ -267,7 +281,14 @@ const actions = {
         }
 
         if (!summaryExists) {
-                articleValidationErrors.push({ message: 'Summary is a required section.' })
+            articleValidationErrors.push({ message: 'Summary is a required section.' });
+        }
+
+        // Do amount of images in article and image file array match?
+        if (imagesInArticle - data.images.length !== 0) {
+            data.images.length < imagesInArticle ? 
+            articleValidationErrors.push({ message: `The article contains ${imagesInArticle} image ${imagesInArticle === 1 ? 'section' : 'sections'}, but ${data.images.length} ${data.images.length === 1 ? 'image has' : 'images have'} been uploaded. Please upload the missing ${imagesInArticle - data.images.length === 1 ? 'image' : 'images'} or delete the  ${imagesInArticle - data.images.length === 1 ? 'section' : 'sections'}.` }) :
+            articleValidationErrors.push({ message: `The article contains ${imagesInArticle} image ${imagesInArticle === 1 ? 'section' : 'sections'}, but ${data.images.length} ${data.images.length === 1 ? 'has' : 'have'} been uploaded. This is a problem. Please reload the page and/ or inform your admin.` });
         }
 
         commit('setArticleValidationErrors', articleValidationErrors);

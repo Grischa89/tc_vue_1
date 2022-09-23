@@ -79,7 +79,7 @@ export default {
         },
 
         async submitForm(articleToValidate, imagesToValidate) {
-            const [numberOfErrors, user] = await Promise.all([this.$store.dispatch('validateArticle', articleToValidate), this.$store.dispatch('getUserProfile')]);
+            const [numberOfErrors, user] = await Promise.all([this.$store.dispatch('validateArticle', { article: articleToValidate, images: imagesToValidate }), this.$store.dispatch('getUserProfile')]);
             if (numberOfErrors !== 0 || user.is_staff !== true) return;
 
             const formData = this.createFormData(articleToValidate, imagesToValidate);
