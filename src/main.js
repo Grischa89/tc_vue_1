@@ -15,7 +15,7 @@ axios.interceptors.response.use(function (response) {
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Let response pass
 
-  console.log('%cRequest worked: ', 'color: green; font-weight: bold;', response.config);
+  console.log('%cRequest worked: ', 'color: green; font-weight: bold;',  response.config.method, response.config.url);
   if (response.data.access){
     console.log('%cWith this access our request worked: ', 'color: green; font-weight: bold;', response.data.access);
   }
@@ -115,7 +115,7 @@ axios.interceptors.response.use(function (response) {
     
   } // Handle errors of non-GET methods
   else if (error.config.method !== 'get' && !originalRequest._retry) {
-    console.log('%cWe have another method: ', 'color: orange; font-weight: bold;', error.config.method, error.config.url);
+    console.log('%cWe have another method: ', 'color: orange; font-weight: bold;', error.config.method, error.config.url, error.message, error.config, error.code, error.request);
     // originalRequest.url should not be repeated (no loop)
     originalRequest._retry = true;
 
@@ -128,7 +128,7 @@ axios.interceptors.response.use(function (response) {
       return Promise.reject(error);
     }
 
-    // Return e.g. 'image required' or 'file size too large' (PUT)
+    // Return e.g. 'image required' (or 'file size too large') (PUT)
     if (error.config.url.includes('/api/v1/articles/draggable') && error.response.status === 400) {
       return Promise.reject(error);
     }
