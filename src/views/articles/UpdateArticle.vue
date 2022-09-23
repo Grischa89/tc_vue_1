@@ -73,10 +73,11 @@ export default {
 
             const formData = this.createFormData(articleToValidate, imagesToValidate);
             const data = {
-                            slug: this.$route.params.slug,
-                            article: formData,
-                        }
+                slug: this.$route.params.slug,
+                article: formData,
+            }
             const updateSuccess = await this.$store.dispatch('updateArticle', data);
+            
             if (updateSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
             if (updateSuccess.status === 400 && updateSuccess.data) {
                 let articleValidationErrors = [];
