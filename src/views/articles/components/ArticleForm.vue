@@ -65,7 +65,8 @@
                             <!-- LISTARRAY -->
                             <template v-else-if="element.key === 'listarray'">
                                 <label class="form-article__main__form__label" for="valueInput">Content: (semicolon (;) separated values)</label>
-                                <ValueInput v-model="element.value" />
+                                <!-- Here using non-vue version of v-model.lazy because the .lazy modifier which should fire on change actually fired on input -->
+                                <ValueInput :value="element.value" @change="element.value = $event.target.value" />
                             </template>
 
                             <!-- ARTICLE_PREV / NEXT -->
@@ -197,7 +198,13 @@ export default {
                     }
 
                     // Handle special case of listarray right when assigning content
-                    section.value = element.key === 'listarray' ? element.value.split(';') : element.value;
+                    if (element.key === 'listarray') {
+                        section.value = element.value.split(';');
+                        return section;
+                    }
+
+                    // Every other case (for now)
+                    section.value = element.value;
                     
                     return section;
                 });
