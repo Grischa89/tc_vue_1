@@ -207,6 +207,7 @@ const actions = {
                 return res.status;
             })
             .catch(err => {
+                if (err.response) return err.response
                 console.log('%cerr from postArticle', 'color: red; font-weight: bold;', err);
             });
     },
@@ -220,8 +221,8 @@ const actions = {
                 return res.status;
             })
             .catch(err => {
-                console.log('%cerr in updateArticle', 'color: darkseagreen; font-weight: bold;', err);
-                if (err.response) console.log('%cerr in updateArticle', 'color: darkseagreen; font-weight: bold;', err.response.status);
+                console.log('%cerr in updateArticle', 'color: red; font-weight: bold;', err);
+                if (err.response) return err.response;
             });
     },
 

@@ -85,6 +85,12 @@ export default {
             const formData = this.createFormData(articleToValidate, imagesToValidate);
             const createSuccess = await this.$store.dispatch('postArticle', formData);
             if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
+            if (createSuccess.status === 400 && createSuccess.data) {
+                console.log('%cerrrrrror', 'color: pink; font-weight: bold;', createSuccess);
+                let articleValidationErrors = [];
+                articleValidationErrors.push({ message: `${createSuccess.data}` });
+                this.$store.commit('setArticleValidationErrors', articleValidationErrors);
+            }
         },
 
         setTemplate(e) {

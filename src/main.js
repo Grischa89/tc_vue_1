@@ -115,11 +115,21 @@ axios.interceptors.response.use(function (response) {
     
   } // Handle errors of non-GET methods
   else if (error.config.method !== 'get' && !originalRequest._retry) {
-    console.log('%cWe have another method: ', 'color: orange; font-weight: bold;', error.config.method);
+    console.log('%cWe have another method: ', 'color: orange; font-weight: bold;', error.config.method, error.config.url);
     // originalRequest.url should not be repeated (no loop)
     originalRequest._retry = true;
 
     if (error.config.url === '/api/v1/codes/' && error.response.status === 404) {
+      return Promise.reject(error);
+    }
+
+    // Return e.g. 'image required' error (POST)
+    if (error.config.url === '/api/v1/articles/draggable/add/' && error.response.status === 400) {
+      return Promise.reject(error);
+    }
+
+    // Return e.g. 'image required' or 'file size too large' (PUT)
+    if (error.config.url.includes('/api/v1/articles/draggable') && error.response.status === 400) {
       return Promise.reject(error);
     }
 

@@ -78,6 +78,11 @@ export default {
                         }
             const updateSuccess = await this.$store.dispatch('updateArticle', data);
             if (updateSuccess.toString().charAt(0) === '2') this.$router.push({ name: 'ListArticlesUpdate' });
+            if (updateSuccess.status === 400 && updateSuccess.data) {
+                let articleValidationErrors = [];
+                articleValidationErrors.push({ message: `${updateSuccess.data}` });
+                this.$store.commit('setArticleValidationErrors', articleValidationErrors);
+            }
         }
     },
 }
