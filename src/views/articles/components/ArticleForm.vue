@@ -29,9 +29,9 @@
 
                             <!-- IMAGE -->
                             <template v-if="element.key === 'image'">
-                                <label class="form-article__main__form__label form-article__main__form__label--image" :for="element.id || element.pk">Choose image</label>
-                                <input @change="handleImage($event, element.pk, element.id)"
-                                    @focus="saveLastModifiedOfPreviousImage(element.lastModified)" class="form-article__main__form__value form-article__main__form__value--image"
+                                <label class="form-article__main__form__label form-article__main__form__label--image" :for="element.id || element.pk" @click="saveLastModifiedOfPreviousImage(element.lastModified)">Choose image</label>
+                                <input @change="handleImage($event, element.pk, element.id)" 
+                                    class="form-article__main__form__value form-article__main__form__value--image"
                                     type="file"
                                     accept="image/*"
                                     name="image"
