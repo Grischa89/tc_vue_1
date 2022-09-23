@@ -17,8 +17,8 @@
                         <div class="form-article__main__form">
 
                             <!-- Choose a section -->
-                            <label class="form-article__main__form__label" for="key">Section:</label>
-                            <select class="form-article__main__form__key" name="key" id="key" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
+                            <label class="form-article__main__form__label" :for="`key-${element.id}`">Section:</label>
+                            <select class="form-article__main__form__key" name="key" :id="`key-${element.id}`" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
                                 <option value selected disabled >Choose A Column</option>
                                 <option
                                     v-for="(column, i) in articleSections"
@@ -29,58 +29,58 @@
 
                             <!-- IMAGE -->
                             <template v-if="element.key === 'image'">
-                                <label class="form-article__main__form__label form-article__main__form__label--image" :for="element.id || element.pk" @click="saveLastModifiedOfPreviousImage(element.lastModified)">Choose image</label>
+                                <label class="form-article__main__form__label form-article__main__form__label--image" :for="`imageFile-${element.id}`" @click="saveLastModifiedOfPreviousImage(element.lastModified)">Choose image</label>
                                 <input @change="handleImage($event, element.pk, element.id)" 
                                     class="form-article__main__form__value form-article__main__form__value--image"
                                     type="file"
                                     accept="image/*"
                                     name="image"
-                                    :id="element.id || element.pk">
+                                    :id="`imageFile-${element.id}`">
                                 <template v-if="element.name">
-                                    <label class="form-article__main__form__label" for="imageName">Name:</label>
-                                    <input v-model="element.name" class="form-article__main__form__value" type="text" name="imageName" id="imageName" disabled>
+                                    <label class="form-article__main__form__label" :for="`imageName-${element.id}`">Name:</label>
+                                    <input v-model="element.name" class="form-article__main__form__value" type="text" name="imageName" :id="`imageName-${element.id}`" disabled>
                                 </template>
                                 <template v-if="element.pk">
-                                    <label class="form-article__main__form__label" for="imagePK">PK:</label>
-                                    <input v-model="element.pk" class="form-article__main__form__value" type="text" name="imagePK" id="imagePK" disabled>
+                                    <label class="form-article__main__form__label" :for="`imagePK-${element.id}`">PK:</label>
+                                    <input v-model="element.pk" class="form-article__main__form__value" type="text" name="imagePK" :id="`imagePK-${element.id}`" disabled>
                                 </template>
                                 <template v-if="element.url">
-                                    <label class="form-article__main__form__label" for="imageURL">URL:</label>
-                                    <input v-model="element.url" class="form-article__main__form__value" type="text" name="imageURL" id="imageURL" disabled>
+                                    <label class="form-article__main__form__label" :for="`imageURL-${element.id}`">URL:</label>
+                                    <input v-model="element.url" class="form-article__main__form__value" type="text" name="imageURL" :id="`imageURL-${element.id}`" disabled>
                                 </template>
-                                <label class="form-article__main__form__label" for="titleImage">Title Image? (check if true)</label>
-                                <input v-model="element.is_title_image" type="checkbox" name="titleImage" id="titleImage">
-                                <label class="form-article__main__form__label" for="alt">Alternative Text</label>
-                                <input v-model="element.alt" class="form-article__main__form__value" type="text" name="alt" id="alt">
+                                <label class="form-article__main__form__label" :for="`imageTitleImage-${element.id}`">Title Image? (check if true)</label>
+                                <input v-model="element.is_title_image" type="checkbox" name="titleImage" :id="`imageTitleImage-${element.id}`">
+                                <label class="form-article__main__form__label" :for="`imageAlt-${element.id}`">Alternative Text</label>
+                                <input v-model="element.alt" class="form-article__main__form__value" type="text" name="alt" :id="`imageAlt-${element.id}`">
                             </template>
 
                             <!-- TABLE -->
                             <template v-else-if="element.key === 'table'">
-                                <label class="form-article__main__form__label" for="tableShape">Shape: (rows *  cols = content.length)</label>
-                                <input v-model="element.shape" class="form-article__main__form__value" type="text" name="tableShape" id="tableShape" />
-                                <label class="form-article__main__form__label" for="tableHead">Head:</label>
-                                <input v-model="element.table_head" class="form-article__main__form__value" type="text" name="tableHead" id="tableHead" />
-                                <label class="form-article__main__form__label" for="valueInput">Content:</label>
-                                <ValueInput v-model="element.value" />
+                                <label class="form-article__main__form__label" :for="`tableShape-${element.id}`">Shape: (rows *  cols = content.length)</label>
+                                <input v-model="element.shape" class="form-article__main__form__value" type="text" name="tableShape" :id="`tableShape-${element.id}`" />
+                                <label class="form-article__main__form__label" :for="`tableHead-${element.id}`">Head:</label>
+                                <input v-model="element.table_head" class="form-article__main__form__value" type="text" name="tableHead" :id="`tableHead-${element.id}`" />
+                                <label class="form-article__main__form__label" :for="`${element.key}Content-${element.id}`">Content:</label>
+                                <ValueInput v-model="element.value" :idForLabel="`${element.key}Content-${element.id}`" />
                             </template>
 
                             <!-- LISTARRAY -->
                             <template v-else-if="element.key === 'listarray'">
-                                <label class="form-article__main__form__label" for="valueInput">Content: (semicolon (;) separated values)</label>
+                                <label class="form-article__main__form__label" :for="`${element.key}Content-${element.id}`">Content: (semicolon (;) separated values)</label>
                                 <!-- Here using non-vue version of v-model.lazy because the .lazy modifier which should fire on change actually fired on input -->
-                                <ValueInput :value="element.value" @change="element.value = $event.target.value" />
+                                <ValueInput :value="element.value" @change="element.value = $event.target.value" :idForLabel="`${element.key}Content-${element.id}`" />
                             </template>
 
                             <!-- ARTICLE_PREV / NEXT -->
                             <template v-else-if="element.key.includes('article_')">
-                                <label class="form-article__main__form__label" for="valueSelect">Content:</label>
-                                <ValueSelect v-model="element.value" />
+                                <label class="form-article__main__form__label" :for="`${element.key}Select-${element.id}`">Content:</label>
+                                <ValueSelect v-model="element.value" :idForLabel="`${element.key}Select-${element.id}`" />
                             </template>
 
                             <!-- DEFAULT -->
                             <template v-else>
-                                <label class="form-article__main__form__label" for="valueInput">Content:</label>
-                                <ValueInput v-model="element.value" />
+                                <label class="form-article__main__form__label" :for="`${element.key}Content-${element.id}`">Content:</label>
+                                <ValueInput v-model="element.value" :idForLabel="`${element.key}Content-${element.id}`" />
                             </template>
 
                             <button v-if="element.key === 'image'" class="form-article__main__form__button" type="button" @click="deleteRow(element.lastModified, true)">

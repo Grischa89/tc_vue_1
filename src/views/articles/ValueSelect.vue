@@ -2,7 +2,8 @@
     <select
         class="form-article__main__form__value"
         @change="$emit('update:modelValue', $event.target.value)"
-        name="valueSelect">
+        name="valueSelect"
+        :id="idForLabel">
 
         <option value selected disabled >Choose An Article</option>
         <option
@@ -18,6 +19,8 @@ import { mapGetters } from 'vuex';
 
 export default {
     name: 'ValueSelect',
+
+    props: ['idForLabel'],
 
     computed: {
         ...mapGetters({
