@@ -200,7 +200,7 @@ export default {
                     }
 
                     // Handle special case of listarray right when assigning content
-                    if (element.key === 'listarray') {
+                    if (element.key === 'listarray' && element.value) {
                         section.value = element.value.split(';');
                         return section;
                     }
