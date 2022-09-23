@@ -271,7 +271,7 @@ const actions = {
                 // Former, not updated image
                 if (element.url) imagesInArticle -= 1;
 
-                if (element.is_title_image !== 'true' && element.is_title_image !== true && element.is_title_image !== 'false' && element.is_title_image !== false) {
+                if (element.is_title_image.toLowerCase() !== 'true' && element.is_title_image !== true && element.is_title_image.toLowerCase() !== 'false' && element.is_title_image !== false) {
                     articleValidationErrors.push({ message: `Please enter either "true" or "false" as value of Title Image in the image section (without quotation marks).` });
                 }
             }
