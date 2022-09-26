@@ -1,6 +1,6 @@
 <template>
     <select
-        class="form-article__main__form__value"
+        class="form-article__main__form__value form-article__main__form__value--select"
         @change="$emit('update:modelValue', $event.target.value)"
         name="valueSelect"
         :id="idForLabel">
@@ -10,7 +10,6 @@
             v-for="(article, i) in articleRecommendations"
             :key="i"
             :value="article.slug">{{ article.heading }}</option>
-            
     </select>
 </template>
 
