@@ -475,8 +475,7 @@ export default {
         .form-article {
             display: flex;
             flex-direction: column;
-            width: 100%;
-            max-width: 60rem;
+            width: min(100%, 40rem);
             margin-left: auto;
             margin-right: auto;
 
@@ -746,8 +745,7 @@ export default {
         .preview-article {
             display: flex;
             flex-direction: column;
-            width: 100%;
-            max-width: 60rem;
+            width: min(100%, 40rem);
             margin-left: auto;
             margin-right: auto;
 
@@ -773,7 +771,7 @@ export default {
 
         @include desktop {
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: center;
             align-items: flex-start;
 
             .form-article, .preview-article {
