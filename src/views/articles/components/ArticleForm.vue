@@ -70,7 +70,7 @@
                                     <template v-if="element.name">
                                         <label class="form-article__main__form__section__label"
                                         :for="`imageName-${element.id}`">Name</label>
-                                        <ValueInput
+                                        <ArticleFormSectionInput
                                             v-model="element.name"
                                             class="form-article__main__form__section__value form-article__main__form__section__value--input"
                                             :idForLabel="`imageName-${element.id}`"
@@ -79,7 +79,7 @@
                                     <!-- PK -->
                                     <template v-if="element.pk">
                                         <label class="form-article__main__form__section__label" :for="`imagePK-${element.id}`">PK</label>
-                                        <ValueInput
+                                        <ArticleFormSectionInput
                                             v-model="element.pk"
                                             class="form-article__main__form__section__value form-article__main__form__section__value--input"
                                             :idForLabel="`imagePK-${element.id}`"
@@ -88,7 +88,7 @@
                                     <!-- URL -->
                                     <template v-if="element.url">
                                         <label class="form-article__main__form__section__label" :for="`imageURL-${element.id}`">URL</label>
-                                        <ValueInput
+                                        <ArticleFormSectionInput
                                             v-model="element.url"
                                             class="form-article__main__form__section__value form-article__main__form__section__value--input"
                                             :idForLabel="`imageURL-${element.id}`"
@@ -96,7 +96,7 @@
                                     </template>
                                     <!-- ALT -->
                                     <label class="form-article__main__form__section__label" :for="`imageAlt-${element.id}`">Alternative Text</label>
-                                    <ValueTextarea
+                                    <ArticleFormSectionTextarea
                                         class="form-article__main__form__section__value form-article__main__form__section__value--textarea"
                                         v-model="element.alt"
                                         :idForLabel="`imageAlt-${element.id}`" />
@@ -116,7 +116,7 @@
                                     <label class="form-article__main__form__section__label" :for="`tableHead-${element.id}`">Head</label>
                                     <input v-model="element.table_head" class="form-article__main__form__section__value" type="text" name="tableHead" :id="`tableHead-${element.id}`" />
                                     <label class="form-article__main__form__section__label" :for="`${element.key}Content-${element.id}`">Content</label>
-                                    <ValueTextarea
+                                    <ArticleFormSectionTextarea
                                         v-model="element.value"
                                         class="form-article__main__form__section__value form-article__main__form__section__value--textarea"
                                         :idForLabel="`${element.key}Content-${element.id}`" />
@@ -126,7 +126,7 @@
                                 <template v-else-if="element.key === 'listarray'">
                                     <label class="form-article__main__form__section__label" :for="`${element.key}Content-${element.id}`">Content: (semicolon (;) separated values)</label>
                                     <!-- Here using non-vue version of v-model.lazy because the .lazy modifier which should fire on change actually fired on input -->
-                                    <ValueTextarea
+                                    <ArticleFormSectionTextarea
                                     :value="element.value"
                                     @change="element.value = $event.target.value"
                                     class="form-article__main__form__section__value form-article__main__form__section__value--textarea"
@@ -136,13 +136,13 @@
                                 <!-- ARTICLE_PREV / NEXT SECTION -->
                                 <template v-else-if="element.key.includes('article_')">
                                     <label class="form-article__main__form__section__label" :for="`${element.key}Select-${element.id}`">Content</label>
-                                    <ValueSelect v-model="element.value" :idForLabel="`${element.key}Select-${element.id}`" />
+                                    <ArticleFormSectionSelect v-model="element.value" :idForLabel="`${element.key}Select-${element.id}`" />
                                 </template>
 
                                 <!-- DEFAULT SECTION (e.g. HEADING)-->
                                 <template v-else>
                                     <label class="form-article__main__form__section__label" :for="`${element.key}Content-${element.id}`">Content</label>
-                                    <ValueTextarea
+                                    <ArticleFormSectionTextarea
                                         v-model="element.value"
                                         class="form-article__main__form__section__value form-article__main__form__section__value--textarea"
                                         :idForLabel="`${element.key}Content-${element.id}`" />
@@ -196,9 +196,9 @@ import { mapGetters } from 'vuex';
 
 import draggable from 'vuedraggable'
 import Key from '../Key.vue';
-import ValueInput from './ValueInput.vue';
-import ValueTextarea from './ValueTextarea.vue';
-import ValueSelect from './ValueSelect.vue';
+import ArticleFormSectionInput from './ArticleFormSectionInput.vue';
+import ArticleFormSectionTextarea from './ArticleFormSectionTextarea.vue';
+import ArticleFormSectionSelect from './ArticleFormSectionSelect.vue';
 import ArticleTemplate from './ArticleTemplate.vue';
 import ArticleDisplay from './ArticleDisplay.vue';
 import IconExpand from '../../../components/icons/IconExpand.vue';
@@ -213,9 +213,9 @@ export default {
     components: {
     draggable,
     Key,
-    ValueInput,
-    ValueTextarea,
-    ValueSelect,
+    ArticleFormSectionInput,
+    ArticleFormSectionTextarea,
+    ArticleFormSectionSelect,
     ArticleTemplate,
     ArticleDisplay,
     IconExpand,
