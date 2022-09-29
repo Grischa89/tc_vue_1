@@ -8,7 +8,6 @@
                 </div>
             </div>
             
-            <!-- <div class="form-article__main"> -->
             <form class="form-article__main" @submit.prevent enctype="multipart/form-data">
                 <!-- <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button> -->
                 <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" @change="sortImageFilesAccordingToArticle()">
@@ -17,56 +16,36 @@
                         <div class="form-article__main__form">
 
                             <!-- SHRUNK SECTION -->
-                            <div class="form-article__main__form__section form-article__main__form__section--shrunk" :data-section-shrunk="element.id">
+                            <article-form-section-shrunk 
+                                class="form-article__main__form__section form-article__main__form__section--shrunk"
+                                :data-section-shrunk="element.id"
+                                :title="element.key || 'Please remember to choose a section.'"
+                                :identifier="element.name || element.value || ''">
 
-                                <button
-                                    class="form-article__main__form__section__button form-article__main__form__section__button--expand"
-                                    type="button"
-                                    @click="expandSection(element.id)">
-                                    <IconExpand class="form-article__main__form__section__button__icon" />
-                                </button>
-
-                                <template v-if="element.key">
-                                    <h6 class="form-article__main__form__section__title">{{ element.key }}
-                                    </h6>
-
-                                    <template v-if="element.key === 'image'">
-                                        <p v-if="element.url" class="form-article__main__form__section__identifier">
-                                            {{ element.url }}
-                                        </p>
-                                        <p v-else-if="element.name" class="form-article__main__form__section__identifier">
-                                            {{ element.name }}
-                                        </p>
-                                        <p v-else class="form-article__main__form__section__identifier">Please choose an image.</p>
-                                    </template>
-
-                                    <template v-else>
-                                        <p v-if="element.value" class="form-article__main__form__section__identifier">
-                                            {{ element.value }}
-                                        </p>
-                                    </template>
+                                <template #buttonExpand>
+                                    <article-form-section-button
+                                        class="form-article__main__form__section__button form-article__main__form__section__button--expand"
+                                        @click="expandSection(element.id)">
+                                        <template #icon>
+                                            <IconExpand class="form-article__main__form__section__button__icon" />
+                                        </template>
+                                    </article-form-section-button>
                                 </template>
-
-                                <template v-else>
-                                    <h6 
-                                        class="form-article__main__form__section__title form-article__main__form__section__title--invalid">
-                                        Please remember assign a section type.
-                                    </h6>
-                                </template>
-                                
-                            </div>
+                            
+                            </article-form-section-shrunk>
 
                             <!-- EXPANDED SECTION -->
                             <div class="form-article__main__form__section form-article__main__form__section--expanded" :data-section-expanded="element.id">
 
-                                <button
+                                <article-form-section-button
                                     class="form-article__main__form__section__button form-article__main__form__section__button--expand"
-                                    type="button"
                                     @click="expandSection(element.id)">
-                                    <IconShrink class="form-article__main__form__section__button__icon" />
-                                </button>
+                                    <template #icon>
+                                        <IconShrink class="form-article__main__form__section__button__icon" />
+                                    </template>
+                                </article-form-section-button>
                                 
-                                <!-- CHOOSE A SECTION -->
+                                <!-- CHOOSE A SECTION SELECT-->
                                 <label class="form-article__main__form__section__label" :for="`key-${element.id}`">Section</label>
                                 <select class="form-article__main__form__section__key" name="key" :id="`key-${element.id}`" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
                                     <option value selected disabled >Choose A Column</option>
@@ -77,7 +56,7 @@
                                         :disabled="column.disabled">{{ column.name }}</option>
                                 </select>
 
-                                <!-- IMAGE -->
+                                <!-- IMAGE SECTION -->
                                 <template v-if="element.key === 'image'">
                                     <!-- FILE -->
                                     <label class="form-article__main__form__section__label form-article__main__form__section__label--file" :for="`imageFile-${element.id}`" @click="saveLastModifiedOfPreviousImage(element.lastModified)">Choose image</label>
@@ -130,7 +109,7 @@
                                     <span class="form-article__main__form__section__label__text">Title Image</span></label>
                                 </template>
 
-                                <!-- TABLE -->
+                                <!-- TABLE SECTION -->
                                 <template v-else-if="element.key === 'table'">
                                     <label class="form-article__main__form__section__label" :for="`tableShape-${element.id}`">Shape: (rows *  cols = content.length)</label>
                                     <input v-model="element.shape" class="form-article__main__form__section__value" type="text" name="tableShape" :id="`tableShape-${element.id}`" />
@@ -143,7 +122,7 @@
                                         :idForLabel="`${element.key}Content-${element.id}`" />
                                 </template>
 
-                                <!-- LISTARRAY -->
+                                <!-- LISTARRAY SECTION -->
                                 <template v-else-if="element.key === 'listarray'">
                                     <label class="form-article__main__form__section__label" :for="`${element.key}Content-${element.id}`">Content: (semicolon (;) separated values)</label>
                                     <!-- Here using non-vue version of v-model.lazy because the .lazy modifier which should fire on change actually fired on input -->
@@ -154,13 +133,13 @@
                                     :idForLabel="`${element.key}Content-${element.id}`" />
                                 </template>
 
-                                <!-- ARTICLE_PREV / NEXT -->
+                                <!-- ARTICLE_PREV / NEXT SECTION -->
                                 <template v-else-if="element.key.includes('article_')">
                                     <label class="form-article__main__form__section__label" :for="`${element.key}Select-${element.id}`">Content</label>
                                     <ValueSelect v-model="element.value" :idForLabel="`${element.key}Select-${element.id}`" />
                                 </template>
 
-                                <!-- DEFAULT -->
+                                <!-- DEFAULT SECTION (e.g. HEADING)-->
                                 <template v-else>
                                     <label class="form-article__main__form__section__label" :for="`${element.key}Content-${element.id}`">Content</label>
                                     <ValueTextarea
@@ -170,12 +149,22 @@
                                 </template>
 
                                 <!-- DELETE BUTTON -->
-                                <button v-if="element.key === 'image'" class="form-article__main__form__section__button" type="button" @click="deleteRow(element.lastModified, true)">
-                                    <IconDelete class="form-article__main__form__section__button__icon form-article__main__form__section__button__icon--delete" />
-                                </button>
-                                <button v-else class="form-article__main__form__section__button" type="button" @click="deleteRow(element.id, false)">
-                                    <IconDelete class="form-article__main__form__section__button__icon form-article__main__form__section__button__icon--delete" />
-                                </button>
+                                <article-form-section-button
+                                    v-if="element.key === 'image'"
+                                    class="form-article__main__form__section__button"
+                                    @click="deleteRow(element.lastModified, true)">
+                                    <template #icon>
+                                        <IconDelete class="form-article__main__form__section__button__icon form-article__main__form__section__button__icon--delete" />
+                                    </template>
+                                </article-form-section-button>
+                                <article-form-section-button
+                                    v-else
+                                    class="form-article__main__form__section__button"
+                                    @click="deleteRow(element.id, false)">
+                                    <template #icon>
+                                        <IconDelete class="form-article__main__form__section__button__icon form-article__main__form__section__button__icon--delete" />
+                                    </template>
+                                </article-form-section-button>
                             </div>
 
                         </div>
@@ -215,6 +204,8 @@ import ArticleDisplay from './ArticleDisplay.vue';
 import IconExpand from '../../../components/icons/IconExpand.vue';
 import IconDelete from '../../../components/icons/IconDelete.vue';
 import IconShrink from '../../../components/icons/IconShrink.vue';
+import ArticleFormSectionShrunk from './ArticleFormSectionShrunk.vue';
+import ArticleFormSectionButton from './ArticleFormSectionButton.vue';
 
 export default {
     name: 'ArticleForm',
@@ -229,7 +220,9 @@ export default {
     ArticleDisplay,
     IconExpand,
     IconDelete,
-    IconShrink
+    IconShrink,
+    ArticleFormSectionShrunk,
+    ArticleFormSectionButton
 },
 
     props: {
@@ -249,7 +242,6 @@ export default {
 
     data() {
         return {
-            sectionExpanded: true,
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
             article: this.articleToUpdate || [],
@@ -454,15 +446,11 @@ export default {
         },
 
         expandSection(id) {
-            console.log('%cid', 'color: grey; font-weight: bold;', id);
             const sectionExpanded = document.querySelector(`[data-section-expanded="${id}"]`);
             const sectionShrunk = document.querySelector(`[data-section-shrunk="${id}"]`);
-            console.log('%csectionExpanded', 'color: grey; font-weight: bold;', sectionExpanded, window.getComputedStyle(sectionExpanded).display);
-            console.log('%csectionShrunk', 'color: pink; font-weight: bold;', sectionShrunk, window.getComputedStyle(sectionShrunk).display);
 
             sectionExpanded.style.display = window.getComputedStyle(sectionExpanded).display === 'none' ? 'flex' : 'none';
             sectionShrunk.style.display = window.getComputedStyle(sectionShrunk).display === 'none' ? 'flex' : 'none';
-            // this.sectionExpanded = !this.sectionExpanded;
         }
     }
 }
