@@ -233,7 +233,6 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import axios from 'axios';
 
 import draggable from 'vuedraggable';
 import ArticleFormSectionShrunk from './ArticleFormSectionShrunk.vue';
@@ -362,7 +361,7 @@ export default {
             const imagePreview = document.querySelector(`#imagePreview-${id}`);
             imagePreview.src = URL.createObjectURL(file);
 
-            const { data, status } = await this.preUploadImage(file);
+            const { data, status } = await this.$store.dispatch('postImage', file);
 
             if (status !== 201) console.log('%cPREUPLOAD ERROR', 'color: res; font-weight: bold;', status, data);
 
@@ -370,17 +369,6 @@ export default {
                 const i = this.article.findIndex(item => item.id === id);;
                 this.setNewImage(i, data);
             }
-        },
-
-        preUploadImage(file) {
-            // TODO: Move to articles.js
-            const formData = new FormData();
-            formData.append('file', file);
-
-            return axios.post('/api/v1/articles/pre_add_image/', formData)
-                .then(res => {
-                    return res
-                });
         },
 
         setNewImage(i, imageUploaded) {

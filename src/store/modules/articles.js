@@ -209,6 +209,19 @@ const actions = {
             });
     },
 
+    postImage({ commit }, file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        return axios.post('/api/v1/articles/pre_add_image/', formData)
+            .then(res => {
+                return res;
+            })
+            .catch(err => {
+                console.log('%cerr in postImage', 'color: darkseagreen; font-weight: bold;', err, err.response);
+            });
+    },
+
     updateArticle({ commit }, data) {
         console.log('%cupdateArticle article + type', 'color: orange; font-weight: bold;', data.article, typeof data.article);
 
