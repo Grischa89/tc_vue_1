@@ -7,7 +7,7 @@
             </template>
 
             <template #submitButton="{ articleToValidate, imagesToValidate }">
-                <button class="form-article__footer__button" type="button" @click="submitUpdateForm(articleToValidate, imagesToValidate)">{{ submitButtonText }}</button>
+                <button class="form-article__footer__button" type="button" @click="submitUpdateForm(articleToValidate)">{{ submitButtonText }}</button>
             </template>
     </ArticleForm>
 </template>
@@ -55,26 +55,14 @@ export default {
     },
 
     methods: {
-        createFormData(article, images) {
-            const formData = new FormData();
-
-            formData.append('data', JSON.stringify(article));
-            for (const image of images) {
-                formData.append('file', image);
-            }
-
-            return formData;
-        },
-
-        async submitUpdateForm(articleToValidate, imagesToValidate) {
-            const [numberOfErrors, user] = await Promise.all([this.$store.dispatch('validateArticle', { article: articleToValidate, images: imagesToValidate }), this.$store.dispatch('getUserProfile')]);
+        async submitUpdateForm(articleToValidate) {
+            const [numberOfErrors, user] = await Promise.all([this.$store.dispatch('validateArticle', { article: articleToValidate }), this.$store.dispatch('getUserProfile')]);
 
             if (numberOfErrors !== 0 || user.is_staff !== true) return;
 
-            const formData = this.createFormData(articleToValidate, imagesToValidate);
             const data = {
                 slug: this.$route.params.slug,
-                article: formData,
+                article: articleToValidate,
             }
             const updateSuccess = await this.$store.dispatch('updateArticle', data);
             

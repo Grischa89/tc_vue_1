@@ -18,7 +18,7 @@
         </template>
 
         <template #submitButton="{ articleToValidate, imagesToValidate }">
-            <button class="form-article__footer__button" type="button" @click="submitForm(articleToValidate, imagesToValidate)">{{ submitButtonText }}</button>
+            <button class="form-article__footer__button" type="button" @click="submitForm(articleToValidate)">{{ submitButtonText }}</button>
         </template>
     </ArticleForm>
 </template>
@@ -67,23 +67,12 @@ export default {
     },
 
     methods: {
-        createFormData(article, images) {
-            const formData = new FormData();
+        async submitForm(articleToValidate) {
+            const [numberOfErrors, user] = await Promise.all([this.$store.dispatch('validateArticle', { article: articleToValidate }), this.$store.dispatch('getUserProfile')]);
 
-            formData.append('data', JSON.stringify(article));
-            for (const image of images) {
-                formData.append('file', image);
-            }
-
-            return formData;
-        },
-
-        async submitForm(articleToValidate, imagesToValidate) {
-            const [numberOfErrors, user] = await Promise.all([this.$store.dispatch('validateArticle', { article: articleToValidate, images: imagesToValidate }), this.$store.dispatch('getUserProfile')]);
             if (numberOfErrors !== 0 || user.is_staff !== true) return;
 
-            const formData = this.createFormData(articleToValidate, imagesToValidate);
-            const createSuccess = await this.$store.dispatch('postArticle', formData);
+            const createSuccess = await this.$store.dispatch('postArticle', articleToValidate);
 
             if (createSuccess === 201) this.$router.push({ name: 'ListArticlesUpdate' });
             if (createSuccess.status === 400 && createSuccess.data) {

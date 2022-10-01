@@ -46,125 +46,160 @@
                                 </article-form-section-button>
                                 
                                 <!-- CHOOSE A SECTION SELECT-->
-                                <label class="form-article__main__form__section__label" :for="`key-${element.id}`">Section</label>
-                                <select class="form-article__main__form__section__key" name="key" :id="`key-${element.id}`" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
-                                    <option value selected disabled >Choose A Column</option>
-                                    <option
-                                        v-for="(column, i) in articleSections"
-                                        :key="i"
-                                        :value="column.name"
-                                        :disabled="column.disabled">{{ column.name }}</option>
-                                </select>
+                                <div class="form-article__main__form__section__row">
+                                    <label class="form-article__main__form__section__row__label" :for="`key-${element.id}`">Section</label>
+                                    <select class="form-article__main__form__section__row__key" name="key" :id="`key-${element.id}`" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
+                                        <option value selected disabled >Choose A Column</option>
+                                        <option
+                                            v-for="(column, i) in articleSections"
+                                            :key="i"
+                                            :value="column.name"
+                                            :disabled="column.disabled">{{ column.name }}</option>
+                                    </select>
+                                </div>
 
                                 <!-- IMAGE SECTION -->
                                 <template v-if="element.key === 'image'">
                                     <!-- FILE -->
-                                    <label class="form-article__main__form__section__label form-article__main__form__section__label--file" :for="`imageFile-${element.id}`" @click="saveLastModifiedOfPreviousImage(element.lastModified)">Choose image</label>
-                                    <input @change="handleImage($event, element.pk, element.id)"
-                                        class="form-article__main__form__section__value form-article__main__form__section__value--file"
-                                        type="file"
-                                        accept="image/*"
-                                        name="image"
-                                        :id="`imageFile-${element.id}`">
+                                    <div class="form-article__main__form__section__row">
+                                        <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--file" :for="`imageFile-${element.id}`" @click="saveLastModifiedOfPreviousImage(element.lastModified)">Choose image</label>
+                                        <input @change="handleImage($event, element.pk, element.id)"
+                                            class="form-article__main__form__section__row__value form-article__main__form__section__row__value--file"
+                                            type="file"
+                                            accept="image/*"
+                                            name="image"
+                                            :id="`imageFile-${element.id}`">
+                                    </div>
+                                    <!-- PREVIEW NEW IMAGE -->
+                                    <div class="form-article__main__form__section__row">
+                                        <img
+                                            class="form-article__main__form__section__row__image"
+                                            :src="element.url || ''"
+                                            :id="`imagePreview-${element.id}`">
+                                    </div>
                                     <!-- NAME -->
                                     <template v-if="element.name">
-                                        <label class="form-article__main__form__section__label"
-                                        :for="`imageName-${element.id}`">Name</label>
-                                        <ArticleFormSectionInput
-                                            v-model="element.name"
-                                            class="form-article__main__form__section__value form-article__main__form__section__value--input"
-                                            :idForLabel="`imageName-${element.id}`"
-                                            :isReadonly="true" />
+                                        <div class="form-article__main__form__section__row">
+                                            <label class="form-article__main__form__section__row__label"
+                                            :for="`imageName-${element.id}`">Name</label>
+                                            <ArticleFormSectionInput
+                                                v-model="element.name"
+                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
+                                                :idForLabel="`imageName-${element.id}`"
+                                                :isReadonly="true" />
+                                        </div>
                                     </template>
                                     <!-- PK -->
                                     <template v-if="element.pk">
-                                        <label class="form-article__main__form__section__label" :for="`imagePK-${element.id}`">PK</label>
-                                        <ArticleFormSectionInput
-                                            v-model="element.pk"
-                                            class="form-article__main__form__section__value form-article__main__form__section__value--input"
-                                            :idForLabel="`imagePK-${element.id}`"
-                                            :isReadonly="true" />
+                                        <div class="form-article__main__form__section__row">
+                                            <label class="form-article__main__form__section__row__label" :for="`imagePK-${element.id}`">PK</label>
+                                            <ArticleFormSectionInput
+                                                v-model="element.pk"
+                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
+                                                :idForLabel="`imagePK-${element.id}`"
+                                                :isReadonly="true" />
+                                        </div>
                                     </template>
                                     <!-- URL -->
                                     <template v-if="element.url">
-                                        <label class="form-article__main__form__section__label" :for="`imageURL-${element.id}`">URL</label>
-                                        <ArticleFormSectionInput
-                                            v-model="element.url"
-                                            class="form-article__main__form__section__value form-article__main__form__section__value--input"
-                                            :idForLabel="`imageURL-${element.id}`"
-                                            :isReadonly="true" />
+                                        <div class="form-article__main__form__section__row">
+                                            <label class="form-article__main__form__section__row__label" :for="`imageURL-${element.id}`">URL</label>
+                                            <ArticleFormSectionInput
+                                                v-model="element.url"
+                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
+                                                :idForLabel="`imageURL-${element.id}`"
+                                                :isReadonly="true" />
+                                        </div>
                                     </template>
                                     <!-- ALT -->
-                                    <label class="form-article__main__form__section__label" :for="`imageAlt-${element.id}`">Alternative Text</label>
-                                    <ArticleFormSectionTextarea
-                                        class="form-article__main__form__section__value form-article__main__form__section__value--textarea"
-                                        v-model="element.alt"
-                                        :idForLabel="`imageAlt-${element.id}`" />
+                                    <div class="form-article__main__form__section__row">
+                                        <label class="form-article__main__form__section__row__label" :for="`imageAlt-${element.id}`">Alternative Text</label>
+                                        <ArticleFormSectionTextarea
+                                            class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
+                                            v-model="element.alt"
+                                            :idForLabel="`imageAlt-${element.id}`" />
+                                    </div>
                                     <!-- TITLE IMAGE -->
-                                    <label class="form-article__main__form__section__label form-article__main__form__section__label--checkbox" :for="`imageTitleImage-${element.id}`">
-                                        <input
-                                            v-model="element.is_title_image"
-                                            class=""
-                                            type="checkbox" name="titleImage" :id="`imageTitleImage-${element.id}`">
-                                    <span class="form-article__main__form__section__label__text">Title Image</span></label>
+                                    <div class="form-article__main__form__section__row">
+                                        <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--checkbox" :for="`imageTitleImage-${element.id}`">
+                                            <input
+                                                v-model="element.is_title_image"
+                                                class=""
+                                                type="checkbox" name="titleImage" :id="`imageTitleImage-${element.id}`">
+                                        <span class="form-article__main__form__section__row__label__text">Title Image</span></label>
+                                    </div>
                                 </template>
 
                                 <!-- TABLE SECTION -->
                                 <template v-else-if="element.key === 'table'">
-                                    <label class="form-article__main__form__section__label" :for="`tableShape-${element.id}`">Shape: (rows *  cols = content.length)</label>
-                                    <input v-model="element.shape" class="form-article__main__form__section__value" type="text" name="tableShape" :id="`tableShape-${element.id}`" />
-                                    <label class="form-article__main__form__section__label" :for="`tableHead-${element.id}`">Head</label>
-                                    <input v-model="element.table_head" class="form-article__main__form__section__value" type="text" name="tableHead" :id="`tableHead-${element.id}`" />
-                                    <label class="form-article__main__form__section__label" :for="`${element.key}Content-${element.id}`">Content</label>
-                                    <ArticleFormSectionTextarea
-                                        v-model="element.value"
-                                        class="form-article__main__form__section__value form-article__main__form__section__value--textarea"
-                                        :idForLabel="`${element.key}Content-${element.id}`" />
+                                    <div class="form-article__main__form__section__row">
+                                        <label class="form-article__main__form__section__row__label" :for="`tableShape-${element.id}`">Shape: (rows *  cols = content.length)</label>
+                                        <input v-model="element.shape" class="form-article__main__form__section__row__value" type="text" name="tableShape" :id="`tableShape-${element.id}`" />
+                                    </div>
+                                    <div class="form-article__main__form__section__row">
+                                        <label class="form-article__main__form__section__row__label" :for="`tableHead-${element.id}`">Head</label>
+                                        <input v-model="element.table_head" class="form-article__main__form__section__row__value" type="text" name="tableHead" :id="`tableHead-${element.id}`" />
+                                    </div>
+                                    <div class="form-article__main__form__section__row">
+                                        <label class="form-article__main__form__section__row__label" :for="`${element.key}Content-${element.id}`">Content</label>
+                                        <ArticleFormSectionTextarea
+                                            v-model="element.value"
+                                            class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
+                                            :idForLabel="`${element.key}Content-${element.id}`" />
+                                    </div>
                                 </template>
 
                                 <!-- LISTARRAY SECTION -->
                                 <template v-else-if="element.key === 'listarray'">
-                                    <label class="form-article__main__form__section__label" :for="`${element.key}Content-${element.id}`">Content: (semicolon (;) separated values)</label>
-                                    <!-- Here using non-vue version of v-model.lazy because the .lazy modifier which should fire on change actually fired on input -->
-                                    <ArticleFormSectionTextarea
-                                    :value="element.value"
-                                    @change="element.value = $event.target.value"
-                                    class="form-article__main__form__section__value form-article__main__form__section__value--textarea"
-                                    :idForLabel="`${element.key}Content-${element.id}`" />
+                                    <div class="form-article__main__form__section__row">
+                                        <label class="form-article__main__form__section__row__label" :for="`${element.key}Content-${element.id}`">Content: (semicolon (;) separated values)</label>
+                                        <!-- Here using non-vue version of v-model.lazy because the .lazy modifier which should fire on change actually fired on input -->
+                                        <ArticleFormSectionTextarea
+                                        :value="element.value"
+                                        @change="element.value = $event.target.value"
+                                        class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
+                                        :idForLabel="`${element.key}Content-${element.id}`" />
+                                    </div>
                                 </template>
 
                                 <!-- ARTICLE_PREV / NEXT SECTION -->
                                 <template v-else-if="element.key.includes('article_')">
-                                    <label class="form-article__main__form__section__label" :for="`${element.key}Select-${element.id}`">Content</label>
-                                    <ArticleFormSectionSelect v-model="element.value" :idForLabel="`${element.key}Select-${element.id}`" />
+                                    <div class="form-article__main__form__section__row">
+                                        <label class="form-article__main__form__section__row__label" :for="`${element.key}Select-${element.id}`">Content</label>
+                                        <ArticleFormSectionSelect v-model="element.value" :idForLabel="`${element.key}Select-${element.id}`" />
+                                    </div>
                                 </template>
 
                                 <!-- DEFAULT SECTION (e.g. HEADING)-->
                                 <template v-else>
-                                    <label class="form-article__main__form__section__label" :for="`${element.key}Content-${element.id}`">Content</label>
-                                    <ArticleFormSectionTextarea
-                                        v-model="element.value"
-                                        class="form-article__main__form__section__value form-article__main__form__section__value--textarea"
-                                        :idForLabel="`${element.key}Content-${element.id}`" />
+                                    <div class="form-article__main__form__section__row">
+                                        <label class="form-article__main__form__section__row__label" :for="`${element.key}Content-${element.id}`">Content</label>
+                                        <ArticleFormSectionTextarea
+                                            v-model="element.value"
+                                            class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
+                                            :idForLabel="`${element.key}Content-${element.id}`" />
+                                    </div>
                                 </template>
 
                                 <!-- DELETE BUTTON -->
-                                <article-form-section-button
-                                    v-if="element.key === 'image'"
-                                    class="form-article__main__form__section__button"
-                                    @click="deleteRow(element.lastModified, true)">
-                                    <template #icon>
-                                        <IconDelete class="form-article__main__form__section__button__icon form-article__main__form__section__button__icon--delete" />
-                                    </template>
-                                </article-form-section-button>
-                                <article-form-section-button
-                                    v-else
-                                    class="form-article__main__form__section__button"
-                                    @click="deleteRow(element.id, false)">
-                                    <template #icon>
-                                        <IconDelete class="form-article__main__form__section__button__icon form-article__main__form__section__button__icon--delete" />
-                                    </template>
-                                </article-form-section-button>
+                                <div class="form-article__main__form__section__row">
+                                    <article-form-section-button
+                                        v-if="element.key === 'image'"
+                                        class="form-article__main__form__section__row__button"
+                                        @click="deleteRow(element.lastModified, true)">
+                                        <template #icon>
+                                            <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
+                                        </template>
+                                    </article-form-section-button>
+                                    <article-form-section-button
+                                        v-else
+                                        class="form-article__main__form__section__row__button"
+                                        @click="deleteRow(element.id, false)">
+                                        <template #icon>
+                                            <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
+                                        </template>
+                                    </article-form-section-button>
+                                </div>
                             </div>
 
                         </div>
@@ -176,9 +211,14 @@
                 <div v-if="errors.length" class="form-article__footer__errors">
                     <p v-for="(error, i) in errors" :key="i">{{ error.message }}</p>
                 </div>
-                <slot v-if="showButtons" name="submitButton" :articleToValidate="article" :imagesToValidate="images"></slot>
+                <slot 
+                    v-if="showButtons" 
+                    name="submitButton" 
+                    :articleToValidate="article">
+                </slot>
             </div>
         </div>
+        
         <div class="preview-article">
             <div class="preview-article__header">
                 <h2 class="preview-article__header__title">Article Preview</h2>
@@ -193,9 +233,11 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 
-import draggable from 'vuedraggable'
-import Key from '../Key.vue';
+import draggable from 'vuedraggable';
+import ArticleFormSectionShrunk from './ArticleFormSectionShrunk.vue';
+import ArticleFormSectionButton from './ArticleFormSectionButton.vue';
 import ArticleFormSectionInput from './ArticleFormSectionInput.vue';
 import ArticleFormSectionTextarea from './ArticleFormSectionTextarea.vue';
 import ArticleFormSectionSelect from './ArticleFormSectionSelect.vue';
@@ -204,15 +246,14 @@ import ArticleDisplay from './ArticleDisplay.vue';
 import IconExpand from '../../../components/icons/IconExpand.vue';
 import IconDelete from '../../../components/icons/IconDelete.vue';
 import IconShrink from '../../../components/icons/IconShrink.vue';
-import ArticleFormSectionShrunk from './ArticleFormSectionShrunk.vue';
-import ArticleFormSectionButton from './ArticleFormSectionButton.vue';
 
 export default {
     name: 'ArticleForm',
 
     components: {
     draggable,
-    Key,
+    ArticleFormSectionShrunk,
+    ArticleFormSectionButton,
     ArticleFormSectionInput,
     ArticleFormSectionTextarea,
     ArticleFormSectionSelect,
@@ -221,8 +262,6 @@ export default {
     IconExpand,
     IconDelete,
     IconShrink,
-    ArticleFormSectionShrunk,
-    ArticleFormSectionButton
 },
 
     props: {
@@ -315,42 +354,41 @@ export default {
     },
 
     methods: {
-        handleImage(e, pk = undefined, id = undefined) {
+        async handleImage(e, pk = undefined, id = undefined) {
+            const [file] = e.target.files;
             // Handle cancelled image upload (no image chosen)
-            if (e.target.files.length === 0) return;
+            if (!file) return;
 
-            // Existing image gets updated for the nth time after page load
-            if (pk !== undefined) {
-                const i = this.article.findIndex(item => item.pk === pk);
-                this.resetImage(i);
-                this.setNewImage(i, e.target.files[0]);
-            }
+            const imagePreview = document.querySelector(`#imagePreview-${id}`);
+            imagePreview.src = URL.createObjectURL(file);
 
-            // Image gets created for the first time || image that hasn't been POSTed yet gets immediately updated
+            const { data, status } = await this.preUploadImage(file);
+
+            if (status !== 201) console.log('%cPREUPLOAD ERROR', 'color: res; font-weight: bold;', status, data);
+
             if (id !== undefined) {
-                const i = this.article.findIndex(item => item.id === id);
-                this.setNewImage(i, e.target.files[0]);
+                const i = this.article.findIndex(item => item.id === id);;
+                this.setNewImage(i, data);
             }
-            
-            // If image files array already has element(s), image file must be put at exact position of that image in the article order
-            if (this.images.length > 0) {
-                this.insertImageInFileArray(e.target.files[0]);
-                return;
-            }
-
-            this.images.push(e.target.files[0]);
         },
 
-        resetImage(i) {
-            delete this.article[i].url;
-            delete this.article[i].height_field;
-            delete this.article[i].width_field;
+        preUploadImage(file) {
+            // TODO: Move to articles.js
+            const formData = new FormData();
+            formData.append('file', file);
+
+            return axios.post('/api/v1/articles/pre_add_image/', formData)
+                .then(res => {
+                    return res
+                });
         },
 
-        setNewImage(i, file) {
-            this.article[i].lastModified = file.lastModified;
-            this.article[i].lastModifiedDate = file.lastModifiedDate;
-            this.article[i].name = file.name;
+        setNewImage(i, imageUploaded) {
+            this.article[i].lastModified = imageUploaded.lastModified;
+            this.article[i].lastModifiedDate = imageUploaded.lastModifiedDate;
+            this.article[i].name = imageUploaded.name;
+            this.article[i].pk = imageUploaded.pk;
+            this.article[i].url = imageUploaded.url;
         },
 
         saveLastModifiedOfPreviousImage(prev) {
@@ -557,95 +595,131 @@ export default {
                             align-items: flex-start;
                         }
 
-                        &__label {
-                            align-self: flex-start;
-                            display: flex; // for checkbox label
-                            font-size: .875rem; // 14px
-                            font-weight: 500;
-                            letter-spacing: .025rem;
+                        &__row {
+                            display: flex;
+                            flex-direction: column;
+                            width: 100%;
 
-                            // &--checkbox {
-                            // }
+                            &__button {
+                                height: 2rem;
+                                margin-top: 1rem;
+                                margin-bottom: .75rem;
+                                border-radius: 0.25em;
 
-                            &--file {
-                                background-color: var(--accent);
-                                color: #fff;
-                                font-weight: 600;
-                                text-transform: capitalize;
-                                padding: .5rem 1.125rem;
+                                &--expand {
+                                    position: absolute;
+                                    top: -.25rem;
+                                    right: .25rem;
+                                    margin-top: 0;
+                                    margin-bottom: 0;
+                                }
+
+                                &__icon {
+                                    height: 1rem;
+                                    width: 1rem;
+
+                                    &--delete {
+                                        color: var(--error);
+                                    }
+                                }
+                            }
+
+                            &__image {
+                                align-self: flex-start;
+                                max-height: 150px;
+                                object-fit: contain;
                                 margin-top: .5rem;
                                 margin-bottom: 1rem;
-                                border-radius: 0.3rem;
-                                cursor: pointer;
                             }
 
-                            &--readonly {
-                                color: var(--help);
+                            &__key {
+                                // select element to select section key (heading, summary etc.)
+                                font-size: .9375rem; // 15px
+                                align-self: flex-start;
+                                text-indent: .125rem;
+                                height: 2rem;
+                                margin-top: .5rem;
+                                margin-bottom: 1rem;
+                                border: .0625rem solid var(--border-input);
+                                border-radius: 0.25em;
+                                width: 20ch;
                             }
 
-                            &__text {
-                                margin-left: .5rem;
+                            &__label {
+                                align-self: flex-start;
+                                display: flex; // for checkbox label
+                                font-size: .875rem; // 14px
+                                font-weight: 500;
+                                letter-spacing: .025rem;
+
+                                // &--checkbox {
+                                // }
+
+                                &--file {
+                                    background-color: var(--accent);
+                                    color: #fff;
+                                    font-weight: 600;
+                                    text-transform: capitalize;
+                                    padding: .5rem 1.125rem;
+                                    margin-top: .5rem;
+                                    margin-bottom: 1rem;
+                                    border-radius: 0.3rem;
+                                    cursor: pointer;
+                                }
+
+                                &--readonly {
+                                    color: var(--help);
+                                }
+
+                                &__text {
+                                    margin-left: .5rem;
+                                }
                             }
-                        }
 
-                        &__key {
-                            // select element to select section key (heading, summary etc.)
-                            font-size: .9375rem; // 15px
-                            align-self: flex-start;
-                            text-indent: .125rem;
-                            height: 2rem;
-                            // margin-right: .5rem;
-                            margin-top: .5rem;
-                            margin-bottom: 1rem;
-                            border: .0625rem solid var(--border-input);
-                            border-radius: 0.25em;
-                            width: 20ch;
-                            // max-width: 
-                        }
-
-                        &__value {
-                            align-self: flex-start;
-                            font-size: .9375rem; // 15px
-                            padding-top: .25rem;
-                            padding-bottom: .25rem;
-                            padding-left: .5rem;
-                            padding-right: .5rem;
-                            height: 2rem;
-                            width: 100%;
-                            margin-top: .5rem;
-                            margin-bottom: 1rem;
-                            border: .0625rem solid var(--border-input);
-                            border-radius: 0.25em;
-                            min-height: 1.875rem; // 2 * font-size // 30px
-
-                            &--checkbox {
+                            &__value {
+                                align-self: flex-start;
+                                font-size: .9375rem; // 15px
                                 padding-top: .25rem;
                                 padding-bottom: .25rem;
-                                padding-left: 0;
-                                padding-right: 0;
-                                height: auto;
-                                width: auto;
+                                padding-left: .5rem;
+                                padding-right: .5rem;
+                                height: 2rem;
+                                width: 100%;
                                 margin-top: .5rem;
-                                margin-bottom: .5rem;
+                                margin-bottom: 1rem;
                                 border: .0625rem solid var(--border-input);
-                                border-radius: 0;
-                                min-height: 0; // 2 * font-size // 30px
-                            }
+                                border-radius: 0.25em;
+                                min-height: 1.875rem; // 2 * font-size // 30px
 
-                            &--file {
-                                display: none;
-                            }
+                                &--checkbox {
+                                    padding-top: .25rem;
+                                    padding-bottom: .25rem;
+                                    padding-left: 0;
+                                    padding-right: 0;
+                                    height: auto;
+                                    width: auto;
+                                    margin-top: .5rem;
+                                    margin-bottom: .5rem;
+                                    border: .0625rem solid var(--border-input);
+                                    border-radius: 0;
+                                    min-height: 0; // 2 * font-size // 30px
+                                }
 
-                            &--input {
-                                min-width: 40px;
-                                max-width: 100%;
-                                text-overflow: ellipsis;
-                            }
+                                &--file {
+                                    display: none;
+                                }
 
-                            &--readonly {
-                                color: var(--help);
-                            }
+                                &--input {
+                                    min-width: 40px;
+                                    max-width: 100%;
+                                    text-overflow: ellipsis;
+                                }
 
+                                &--readonly {
+                                    color: var(--help);
+                                }
+
+                            }
                         }
 
                         &__button {
@@ -665,10 +739,6 @@ export default {
                             &__icon {
                                 height: 1rem;
                                 width: 1rem;
-
-                                &--delete {
-                                    color: var(--error);
-                                }
                             }
                         }
 

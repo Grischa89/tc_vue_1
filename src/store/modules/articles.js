@@ -198,13 +198,7 @@ const actions = {
     postArticle({ commit }, article) {
         console.log('%carticle in postArticle + type', 'color: darkseagreen; font-weight: bold;', article, typeof article);
 
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        }
-
-        return axios.post('/api/v1/articles/draggable/add/', article, config)
+        return axios.post('/api/v1/articles/draggable/add/', article)
             .then(res => {
                 console.log('%cres from postArticle', 'color: darkseagreen; font-weight: bold;', res);
                 return res.status;
@@ -230,13 +224,9 @@ const actions = {
     },
 
     validateArticle({ commit }, data) {
-        console.log('%cdata', 'color: darkseagreen; font-weight: bold;', data.article, data.images);
         let articleValidationErrors = [];
         let headingExists = false;
         let summaryExists = false;
-
-        // let imageValidationErrors = [];
-        let imagesInArticle = 0;
 
         data.article.forEach(element => {
             if (!element.key) articleValidationErrors.push({ message: `Please choose a section or delete the row.` });
@@ -268,12 +258,7 @@ const actions = {
                 if (numberOfTableContentCells !== (shapeRows * shapeColumns)) articleValidationErrors.push({ message: `Number of cells (${numberOfTableContentCells}) and multiplied shape (${shapeRows} * ${shapeColumns} = ${(shapeRows * shapeColumns)}) do not match.` });
             }
 
-            if (element.key === 'image') {
-                if (element.id || element.pk) imagesInArticle += 1;
-
-                // Former, not updated image
-                if (element.url) imagesInArticle -= 1;
-            }
+            // TODO: New image validation
         });
 
         if (!headingExists) {
@@ -282,13 +267,6 @@ const actions = {
 
         if (!summaryExists) {
             articleValidationErrors.push({ message: 'Summary is a required section.' });
-        }
-
-        // Do amount of images in article and image file array match?
-        if (imagesInArticle - data.images.length !== 0) {
-            data.images.length < imagesInArticle ? 
-            articleValidationErrors.push({ message: `The article contains ${imagesInArticle} image ${imagesInArticle === 1 ? 'section' : 'sections'}, but ${data.images.length} ${data.images.length === 1 ? 'image has' : 'images have'} been uploaded. Please upload the missing ${imagesInArticle - data.images.length === 1 ? 'image' : 'images'} or delete the  ${imagesInArticle - data.images.length === 1 ? 'section' : 'sections'}.` }) :
-            articleValidationErrors.push({ message: `The article contains ${imagesInArticle} image ${imagesInArticle === 1 ? 'section' : 'sections'}, but ${data.images.length} ${data.images.length === 1 ? 'has' : 'have'} been uploaded. This is a problem. Please reload the page and/ or inform your admin.` });
         }
 
         commit('setArticleValidationErrors', articleValidationErrors);
