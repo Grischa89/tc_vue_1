@@ -274,6 +274,9 @@ const actions = {
             // TODO: New image validation
             if (element.key === 'image') {
                 if (!element.url) articleValidationErrors.push({ message: 'Please choose an image to upload or delete this section.' });
+
+                // Since v-model ignores the initial value of a checkbox it needs to be set to false
+                if(element.is_title_image === undefined) element.is_title_image = false;
             }
         });
 

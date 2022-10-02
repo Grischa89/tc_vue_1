@@ -124,9 +124,8 @@
                                         <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--checkbox" :for="`imageTitleImage-${element.id}`">
                                             <input
                                                 v-model="element.is_title_image"
-                                                class=""
                                                 type="checkbox" name="titleImage" :id="`imageTitleImage-${element.id}`">
-                                        <span class="form-article__main__form__section__row__label__text">Title Image</span></label>
+                                        <span class="form-article__main__form__section__row__label__text">Title Image {{ element.is_title_image }}</span></label>
                                     </div>
                                 </template>
 
@@ -355,7 +354,7 @@ export default {
     methods: {
         async handleImage(e, pk = undefined, id = undefined) {
             const [file] = e.target.files;
-            
+
             // Handle cancelled image upload (no image chosen)
             if (!file) return;
             // Validate image (file.type)
@@ -369,7 +368,7 @@ export default {
                 const { data } = await this.$store.dispatch('postImage', file);
 
                 if (id !== undefined) {
-                    const i = this.article.findIndex(item => item.id === id);;
+                    const i = this.article.findIndex(item => item.id === id);
                     this.setNewImage(i, data);
                 }
             } catch (e) {
