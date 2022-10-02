@@ -242,10 +242,10 @@ const actions = {
         let summaryExists = false;
 
         data.article.forEach(element => {
-            if (!element.key) articleValidationErrors.push({ message: `Please choose a section or delete the row.` });
+            if (!element.key) articleValidationErrors.push({ message: `Please choose a section type or delete the section.` });
 
             // Only image section is allowed to have an empty value field
-            if (element.key !== 'image' && !element.value) articleValidationErrors.push({ message: `Please enter content for the section ${element.key} or delete the row.` });
+            if (element.key !== 'image' && !element.value) articleValidationErrors.push({ message: `Please enter content for the section ${element.key} or delete the section.` });
 
             if (element.key === 'heading') headingExists = true;
 
@@ -272,6 +272,9 @@ const actions = {
             }
 
             // TODO: New image validation
+            if (element.key === 'image') {
+                if (!element.url) articleValidationErrors.push({ message: 'Please choose an image to upload or delete this section.' });
+            }
         });
 
         if (!headingExists) {
@@ -284,7 +287,11 @@ const actions = {
 
         commit('setArticleValidationErrors', articleValidationErrors);
         return articleValidationErrors.length;
-    }
+    },
+
+    validateImage({ commit }, file) {
+        return file.type.includes('image');
+    },
 };
 
 const mutations = {

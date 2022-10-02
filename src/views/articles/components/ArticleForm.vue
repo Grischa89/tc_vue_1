@@ -355,19 +355,26 @@ export default {
     methods: {
         async handleImage(e, pk = undefined, id = undefined) {
             const [file] = e.target.files;
+            
             // Handle cancelled image upload (no image chosen)
             if (!file) return;
+            // Validate image (file.type)
+            const imageValid = await this.$store.dispatch('validateImage', file);
+            if (!imageValid) return;
 
             const imagePreview = document.querySelector(`#imagePreview-${id}`);
             imagePreview.src = URL.createObjectURL(file);
 
-            const { data, status } = await this.$store.dispatch('postImage', file);
+            try {
+                const { data } = await this.$store.dispatch('postImage', file);
 
-            if (status !== 201) console.log('%cPREUPLOAD ERROR', 'color: res; font-weight: bold;', status, data);
-
-            if (id !== undefined) {
-                const i = this.article.findIndex(item => item.id === id);;
-                this.setNewImage(i, data);
+                if (id !== undefined) {
+                    const i = this.article.findIndex(item => item.id === id);;
+                    this.setNewImage(i, data);
+                }
+            } catch (e) {
+                // e.response.status
+                console.log('%cPREUPLOAD ERROR', 'color: res; font-weight: bold;', e.response);
             }
         },
 
