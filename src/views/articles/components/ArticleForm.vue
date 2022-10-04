@@ -10,7 +10,7 @@
             
             <form class="form-article__main" @submit.prevent enctype="multipart/form-data">
                 <!-- <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button> -->
-                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" @change="sortImageFilesAccordingToArticle()">
+                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" @change="sortImageFilesAccordingToArticle()" :delay="300">
                 <!-- <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300"> -->
                     <template #item="{element}">
                         <div class="form-article__main__form">
@@ -19,8 +19,11 @@
                             <article-form-section-shrunk 
                                 class="form-article__main__form__section form-article__main__form__section--shrunk"
                                 :data-section-shrunk="element.id"
+                                :sectionId="element.id"
                                 :title="element.key || 'Please remember to choose a section.'"
-                                :identifier="element.name || element.value || ''">
+                                :identifier="element.name || element.value || ''"
+                                :sectionType="element.key || ''"
+                                :imageURL="element.url || ''">
 
                                 <template #buttonExpand>
                                     <article-form-section-button
@@ -364,6 +367,9 @@ export default {
             // Select DOM elements relevant to display image upload progress
             const imagePreview = document.querySelector(`#imagePreview-${id}`);
             imagePreview.src = URL.createObjectURL(file);
+            
+            const imagePreviewShrunk = document.querySelector(`#imagePreviewShrunk-${id}`);
+            imagePreviewShrunk.src = URL.createObjectURL(file);
 
             const imageProgressBar = document.querySelector(`#imageProgressBar-${id}`);
 
@@ -804,6 +810,18 @@ export default {
                             white-space: nowrap; // necessary for text-overflow prop
                             overflow: hidden; // necessary for text-overflow prop
                             text-overflow: ellipsis;
+                        }
+
+                        &__image {
+                            border-radius: .25rem;
+                            overflow: hidden; // for border-radius to be visible (otherwise img will hide it)
+                            margin-top: .5rem;
+                            margin-bottom: .25rem;
+
+                            &__img {
+                                max-height: 75px;
+                                object-fit: contain;
+                            }
                         }
 
                     }

@@ -1,6 +1,6 @@
 <template>
     <p>
-        {{ identifier }}
+        {{ compProps.sectionIdentifier }}
     </p>
 </template>
 
@@ -9,8 +9,8 @@
         name: 'ArticleFormSectionShrunkIdentifier',
 
         props: {
-            identifier: {
-                type: String,
+            compProps: {
+                type: Object,
                 required: true,
             }
         }
