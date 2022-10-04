@@ -625,12 +625,12 @@ export default {
                                 margin-top: .5rem;
                                 margin-bottom: 1rem;
                                 border-radius: .25rem;
-                                overflow: hidden; // to hide blurry edges of loading img (filter: blur(5px) overflows its own container)
+                                overflow: hidden; // to hide blurry edges of loading img (filter: blur(5px) overflows its own container) + for border-radius to be visible (otherwise img will hide it)
 
                                 &__img {
                                     max-height: 150px;
                                     object-fit: contain;
-                                    filter: blur(5px);
+                                    filter: blur(0);
                                 }
 
                                 &__overlay {

@@ -224,6 +224,7 @@ const actions = {
                 // Update progress bar style with updated uploadProgress number
                 // 3.6 needed because of circular progress (360°)
                 data.imageProgressBar.style.background = `conic-gradient(hsla(0, 0%, 100%, .8) ${uploadProgress * 3.6}deg, hsla(0, 0%, 100%, .4) ${uploadProgress * 3.6}deg)`;
+                data.imagePreview.style.filter = 'blur(5px)';
 
                 // If upload finished unblur img + hide progress bar
                 if (progressEvent.loaded === progressEvent.total) {
