@@ -209,11 +209,31 @@ const actions = {
             });
     },
 
-    postImage({ commit }, file) {
+    postImage({ commit }, data) {
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('file', data.file);
 
-        return axios.post('/api/v1/articles/pre_add_image/', formData)
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            onUploadProgress: ( progressEvent ) => {
+                // Derive percentage (number) between 0 - 100 from progressEvent loading related properties
+                const uploadProgress = parseInt(Math.round(( progressEvent.loaded / progressEvent.total ) * 100 ));
+
+                // Update progress bar style with updated uploadProgress number
+                // 3.6 needed because of circular progress (360°)
+                data.imageProgressBar.style.background = `conic-gradient(hsla(0, 0%, 100%, .8) ${uploadProgress * 3.6}deg, hsla(0, 0%, 100%, .4) ${uploadProgress * 3.6}deg)`;
+
+                // If upload finished unblur img + hide progress bar
+                if (progressEvent.loaded === progressEvent.total) {
+                    data.imagePreview.style.filter = 'blur(0)';
+                    data.imageProgressBar.style.background = '';
+                }
+            },
+        };
+
+        return axios.post('/api/v1/articles/pre_add_image/', formData, config)
             .then(res => {
                 return res;
             })
@@ -271,8 +291,8 @@ const actions = {
                 if (numberOfTableContentCells !== (shapeRows * shapeColumns)) articleValidationErrors.push({ message: `Number of cells (${numberOfTableContentCells}) and multiplied shape (${shapeRows} * ${shapeColumns} = ${(shapeRows * shapeColumns)}) do not match.` });
             }
 
-            // TODO: New image validation
             if (element.key === 'image') {
+                // No image file has been uploaded
                 if (!element.url) articleValidationErrors.push({ message: 'Please choose an image to upload or delete this section.' });
 
                 // Since v-model ignores the initial value of a checkbox it needs to be set to false

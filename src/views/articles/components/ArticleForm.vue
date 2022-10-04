@@ -70,13 +70,11 @@
                                             name="image"
                                             :id="`imageFile-${element.id}`">
                                     </div>
-                                    <!-- PREVIEW NEW IMAGE -->
-                                    <div class="form-article__main__form__section__row">
-                                        <img
-                                            class="form-article__main__form__section__row__image"
-                                            :src="element.url || ''"
-                                            :id="`imagePreview-${element.id}`">
-                                    </div>
+                                    <!-- PREVIEW WITH PROGRESS BAR -->
+                                    <ArticleFormSectionImage 
+                                        class="form-article__main__form__section__row"
+                                        :imageURL="element.url || ''"
+                                        :sectionId="element.id" />
                                     <!-- NAME -->
                                     <template v-if="element.name">
                                         <div class="form-article__main__form__section__row">
@@ -244,6 +242,7 @@ import ArticleDisplay from './ArticleDisplay.vue';
 import IconExpand from '../../../components/icons/IconExpand.vue';
 import IconDelete from '../../../components/icons/IconDelete.vue';
 import IconShrink from '../../../components/icons/IconShrink.vue';
+import ArticleFormSectionImage from './ArticleFormSectionImage.vue';
 
 export default {
     name: 'ArticleForm',
@@ -260,6 +259,7 @@ export default {
     IconExpand,
     IconDelete,
     IconShrink,
+    ArticleFormSectionImage
 },
 
     props: {
@@ -361,19 +361,20 @@ export default {
             const imageValid = await this.$store.dispatch('validateImage', file);
             if (!imageValid) return;
 
+            // Select DOM elements relevant to display image upload progress
             const imagePreview = document.querySelector(`#imagePreview-${id}`);
             imagePreview.src = URL.createObjectURL(file);
 
-            try {
-                const { data } = await this.$store.dispatch('postImage', file);
+            const imageProgressBar = document.querySelector(`#imageProgressBar-${id}`);
 
-                if (id !== undefined) {
-                    const i = this.article.findIndex(item => item.id === id);
-                    this.setNewImage(i, data);
-                }
+            try {
+                const { data } = await this.$store.dispatch('postImage', { file: file, imageProgressBar: imageProgressBar, imagePreview: imagePreview });
+
+                const i = this.article.findIndex(item => item.id === id);
+                this.setNewImage(i, data);
             } catch (e) {
-                // e.response.status
-                console.log('%cPREUPLOAD ERROR', 'color: res; font-weight: bold;', e.response);
+                // e.response.status TODO
+                console.log('%cPREUPLOAD ERROR', 'color: res; font-weight: bold;', e);
             }
         },
 
@@ -559,7 +560,7 @@ export default {
                     margin-bottom: 1rem;
                     height: 2rem;
                     width: 15ch;
-                    border-radius: 0.25em;
+                    border-radius: .25rem;
                     background-color: var(--text);
                     color: var(--textInverse);
                     text-transform: capitalize;
@@ -620,10 +621,58 @@ export default {
 
                             &__image {
                                 align-self: flex-start;
-                                max-height: 150px;
-                                object-fit: contain;
+                                position: relative;
                                 margin-top: .5rem;
                                 margin-bottom: 1rem;
+                                border-radius: .25rem;
+                                overflow: hidden; // to hide blurry edges of loading img (filter: blur(5px) overflows its own container)
+
+                                &__img {
+                                    max-height: 150px;
+                                    object-fit: contain;
+                                    filter: blur(5px);
+                                }
+
+                                &__overlay {
+                                    position: absolute;
+                                    top: 0;
+                                    bottom: 0;
+                                    left: 0;
+                                    right: 0;
+                                    height: 100%;
+                                    width: 100%;
+                                    background-color: rgba($black, .5);
+                                }
+
+                                &__progress {
+                                    position: absolute;
+                                    display: grid; // to center pseude ::before
+                                    place-items: center;
+                                    --progress-wh: 1.25rem; 
+                                    width: var(--progress-wh);
+                                    height: var(--progress-wh);
+                                    // top: calc(50% - calc(var(--progress-wh) / 2)); // to center
+                                    // left: calc(50% - calc(var(--progress-wh) / 2)); // to center
+                                    right: calc(var(--progress-wh) / 3);
+                                    bottom: calc(var(--progress-wh) / 3);
+                                    border-radius: 50%;
+
+                                    &::before {
+                                        content: '';
+                                        position: absolute;
+                                        height: 0%; // the higher the slimmer the loading circle
+                                        width: 0%; // the higher the slimmer the loading circle
+                                        background-color: hsla(0, 0%, 100%, .8);
+                                        border-radius: 50%;
+                                    }
+
+                                    &__text {
+                                        position: relative;
+                                        font-size: 1.125rem;
+                                        font-weight: bold;
+                                        color: black;
+                                    }
+                                }
                             }
 
                             &__key {

@@ -296,6 +296,7 @@ export default {
   --primary4: #f48b0b; // $secondary
   --secondary: hsla(33, 91%, 50%, 1);
   --accent: #5f32dc;
+  --accent-light: #cab9f3;
 
   --help: hsla(0, 3%, 14%, .66);
   --help-shadow: hsla(0, 3%, 14%, .33);
@@ -369,6 +370,7 @@ export default {
   --primary4: #f48b0b; // $secondary
   // --accent: #5f32dc;
   --accent: #745eb0;
+  --accent-light: #e7e4f2;
   --secondary: #d37f17;
   // --secondary: #e8a34f;
   // --secondary: #d5a162;
