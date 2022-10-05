@@ -167,6 +167,7 @@ export default {
         font-size: $mobile-help;
         // color: rgba($black, .6);
         color: var(--textHelp);
+        user-select: none;
 
         &:hover {
           color: var(--text);
