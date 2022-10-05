@@ -21,7 +21,7 @@
                                 :data-section-shrunk="element.id"
                                 :sectionId="element.id"
                                 :title="element.key || 'Please remember to choose a section.'"
-                                :identifier="element.name || element.value || ''"
+                                :identifier="element.name || element.value || 'No content.'"
                                 :sectionType="element.key || ''"
                                 :imageURL="element.url || ''">
 
@@ -593,7 +593,9 @@ export default {
 
                         &--shrunk {
                             display: none;
-                            align-items: flex-start;
+                            flex-direction: row;
+                            gap: 1rem;
+                            // align-items: flex-start;
                         }
 
                         &__row {
@@ -803,9 +805,7 @@ export default {
 
                         &__identifier {
                             font-size: .9375rem; // 15px
-                            width: 100%;
-                            padding-top: .5rem;
-                            padding-bottom: .5rem;
+                            max-width: 60%;
                             text-align: left;
                             white-space: nowrap; // necessary for text-overflow prop
                             overflow: hidden; // necessary for text-overflow prop

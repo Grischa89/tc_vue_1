@@ -1,5 +1,5 @@
 <template>
-    <p>
+    <p class="form-article__main__form__section__identifier">
         {{ compProps.sectionIdentifier }}
     </p>
 </template>
