@@ -604,6 +604,7 @@ export default {
 
                             &__button {
                                 height: 2rem;
+                                width: 2rem;
                                 margin-top: 1rem;
                                 margin-bottom: .75rem;
                                 border-radius: 0.25em;
