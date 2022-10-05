@@ -10,8 +10,7 @@
             
             <form class="form-article__main" @submit.prevent enctype="multipart/form-data">
                 <!-- <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button> -->
-                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" @change="sortImageFilesAccordingToArticle()" :delay="300">
-                <!-- <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="300"> -->
+                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" @change="sortImageFilesAccordingToArticle()" :delay="200" :delayOnTouchOnly="true" :touchStartThreshold="4" :animation="150">
                     <template #item="{element}">
                         <div class="form-article__main__form">
 
@@ -898,5 +897,5 @@ export default {
                 margin-right: 1rem;
             }
         }
-    } 
+    }
 </style>
