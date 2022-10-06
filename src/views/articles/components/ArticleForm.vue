@@ -734,13 +734,16 @@ export default {
                                 padding-bottom: .25rem;
                                 padding-left: .5rem;
                                 padding-right: .5rem;
-                                height: 2rem;
                                 width: 100%;
                                 margin-top: .5rem;
                                 margin-bottom: 1rem;
                                 border: .0625rem solid var(--border-input);
                                 border-radius: 0.25em;
                                 min-height: 1.875rem; // 2 * font-size // 30px
+
+                                &--textarea {
+                                    background: linear-gradient(135deg,var(--textarea-bg) 0,var(--textarea-bg) 97.5%,var(--accent-light) 98%);
+                                }
 
                                 &--checkbox {
                                     padding-top: .25rem;
@@ -758,15 +761,18 @@ export default {
 
                                 &--file {
                                     display: none;
+                                    height: 2rem;
                                 }
 
                                 &--input {
+                                    height: 2rem;
                                     min-width: 40px;
                                     max-width: 100%;
                                     text-overflow: ellipsis;
                                 }
 
                                 &--readonly {
+                                    height: 2rem;
                                     color: var(--help);
                                 }
 

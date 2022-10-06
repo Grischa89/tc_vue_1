@@ -314,6 +314,7 @@ export default {
   --info-shadow: hsla(215, 63%, 48%, .4);
   --info-bg-fade: hsla(215, 63%, 48%, .15);
 
+  --textarea-bg: hsl(0, 0%, 100%, 1);
   --divider: hsla(0, 3%, 14%, .1);
   --border: #e1e1e1;
   --border-input: #d5d5d5;
@@ -391,6 +392,7 @@ export default {
   --info-shadow: hsla(214, 44%, 69%, .4);
   --info-bg-fade: hsla(214, 44%, 69%, .15);
 
+  --textarea-bg: hsla(0, 0%, 23%, 1);
   --divider: #494949; // hsla(0, 3%, 14%, .96);
   --border: #494949;
   --border-input: #757575;
