@@ -47,7 +47,7 @@
                                     </template>
                                 </article-form-section-button>
                                 
-                                <!-- CHOOSE A SECTION SELECT-->
+                                <!-- CHOOSE A SECTION -->
                                 <div class="form-article__main__form__section__row">
                                     <label class="form-article__main__form__section__row__label" :for="`key-${element.id}`">Section</label>
                                     <select class="form-article__main__form__section__row__key" name="key" :id="`key-${element.id}`" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
@@ -151,13 +151,27 @@
                                 <!-- LISTARRAY SECTION -->
                                 <template v-else-if="element.key === 'listarray'">
                                     <div class="form-article__main__form__section__row">
-                                        <label class="form-article__main__form__section__row__label" :for="`${element.key}Content-${element.id}`">Content: (semicolon (;) separated values)</label>
-                                        <!-- Here using non-vue version of v-model.lazy because the .lazy modifier which should fire on change actually fired on input -->
-                                        <ArticleFormSectionTextarea
-                                        :value="element.value"
-                                        @change="element.value = $event.target.value"
-                                        class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
-                                        :idForLabel="`${element.key}Content-${element.id}`" />
+                                        <label class="form-article__main__form__section__row__label" :for="`${element.key}Items-${element.id}`">Items</label>
+
+                                        <template v-for="(item, i) in element.items" :key="`${element.key}Items-${element.id}-Item${i}`">
+                                            <ArticleFormSectionTextarea
+                                                v-model="item.value"
+                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
+                                                :idForLabel="`${element.key}Items-${element.id}`"
+                                                :rows="listArrayTextareaRows" />
+                                        </template>
+                                        <article-form-section-button 
+                                            class="form-article__main__form__section__row__button"
+                                            @click="addListArrayItem(element.id)">
+                                            <template #text-prepend>
+                                                <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">
+                                                    Add item
+                                                </span>
+                                            </template>
+                                            <template #icon>
+                                                <IconPlus class="form-article__main__form__section__row__button__icon" />
+                                            </template>
+                                        </article-form-section-button>
                                     </div>
                                 </template>
 
@@ -245,6 +259,7 @@ import IconExpand from '../../../components/icons/IconExpand.vue';
 import IconDelete from '../../../components/icons/IconDelete.vue';
 import IconShrink from '../../../components/icons/IconShrink.vue';
 import ArticleFormSectionImage from './ArticleFormSectionImage.vue';
+import IconPlus from '../../../components/icons/IconPlus.vue';
 
 export default {
     name: 'ArticleForm',
@@ -261,7 +276,8 @@ export default {
     IconExpand,
     IconDelete,
     IconShrink,
-    ArticleFormSectionImage
+    ArticleFormSectionImage,
+    IconPlus
 },
 
     props: {
@@ -284,6 +300,7 @@ export default {
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
             article: this.articleToUpdate || [],
+            listArrayTextareaRows: 1,
             lastModifiedPreviousImage: '',
             images: [],
         }
@@ -324,8 +341,8 @@ export default {
                     }
 
                     // Handle special case of listarray right when assigning content
-                    if (element.key === 'listarray' && element.value) {
-                        section.value = element.value.split(';');
+                    if (element.key === 'listarray' && element.items?.length) {
+                        section.items = element.items.map(({ value }) => value);
                         return section;
                     }
 
@@ -334,7 +351,6 @@ export default {
                     
                     return section;
                 });
-
                 return articleMapped;
             }
         },
@@ -431,6 +447,18 @@ export default {
             // Use imagesOrderToBe simple array to sort image file array (this.images)
             this.images.sort((a, b) => {
                 return imagesOrderToBe.indexOf(a.lastModified) - imagesOrderToBe.indexOf(b.lastModified);
+            });
+        },
+
+        addListArrayItem(id) {
+            // Find index of listarray section with id
+            const idListArray = this.article.findIndex(item => item.id === id);
+            console.log('%cidListArray', 'color: cornflowerblue; font-weight: bold;', idListArray);
+            // Check whether items array already exists else create it
+            if (this.article[idListArray].items === undefined) this.article[idListArray].items = [];
+            // Push new empty item to listarray section with that id
+            this.article[idListArray].items.push({
+                value: ''
             });
         },
 
@@ -603,8 +631,10 @@ export default {
                             width: 100%;
 
                             &__button {
-                                height: 2rem;
-                                width: 2rem;
+                                display: flex;
+                                align-items: center;
+                                // height: 2rem;
+                                // width: 2rem;
                                 margin-top: 1rem;
                                 margin-bottom: .75rem;
                                 border-radius: 0.25em;
@@ -623,6 +653,14 @@ export default {
 
                                     &--delete {
                                         color: var(--error);
+                                    }
+                                }
+
+                                &__text {
+                                    font-size: .875rem; // 14px
+
+                                    &--prepend {
+                                        margin-right: .25rem;
                                     }
                                 }
                             }

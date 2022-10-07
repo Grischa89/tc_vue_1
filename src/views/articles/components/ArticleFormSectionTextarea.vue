@@ -5,7 +5,7 @@
         @input="$emit('update:modelValue', $event.target.value)"
         name="valueTextarea" 
         :id="idForLabel" 
-        rows="5"></textarea>
+        :rows="rows || 5"></textarea>
 </template>
 
 <script>
@@ -13,7 +13,18 @@
 export default {
     name: 'ValueTextarea',
 
-    props: ['modelValue', 'idForLabel'],
+    props: {
+        modelValue: String,
+        idForLabel: {
+            type: String,
+            required: true,
+        },
+        rows: {
+            type: Number,
+            required: false,
+        }
+    },
+    // ['modelValue', 'idForLabel'],
 
     emits: ['update:modelValue'],
 }
