@@ -266,7 +266,7 @@ const actions = {
             if (!element.key) articleValidationErrors.push({ message: `Please choose a section type or delete the section.` });
 
             // Only image section is allowed to have an empty value field
-            if (element.key !== 'image' && !element.value) articleValidationErrors.push({ message: `Please enter content for the section ${element.key} or delete the section.` });
+            if ((element.key !== 'image' && !element.value) && (element.key !== 'listarray' && !element.value)) articleValidationErrors.push({ message: `Please enter content for the section ${element.key} or delete the section.` });
 
             if (element.key === 'heading') headingExists = true;
 
@@ -298,6 +298,15 @@ const actions = {
 
                 // Since v-model ignores the initial value of a checkbox it needs to be set to false
                 if(element.is_title_image === undefined) element.is_title_image = false;
+            }
+
+            if (element.key === 'listarray') {
+                // No items array set
+                if (!element.items || element.items.length === 0) articleValidationErrors.push({ message: 'Please enter list items or delete this section.' });
+
+                // One or more missing item values in array
+                const missingItemValues = element.items.some(({ value }) => value.length <= 0);
+                if (missingItemValues) articleValidationErrors.push({ message: 'One or more list item in this section has no content. Please enter text or delete the item.' });
             }
         });
 
