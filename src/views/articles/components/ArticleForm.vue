@@ -153,13 +153,21 @@
                                     <div class="form-article__main__form__section__row">
                                         <label class="form-article__main__form__section__row__label" :for="`${element.key}Items-${element.id}`">Items</label>
 
-                                        <template v-for="(item, i) in element.items" :key="`${element.key}Items-${element.id}-Item${i}`">
+                                        <div v-for="(item, i) in element.items" :key="`${element.key}Items-${element.id}`" class="form-article__main__form__section__row__list">
                                             <ArticleFormSectionTextarea
                                                 v-model="item.value"
                                                 class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
-                                                :idForLabel="`${element.key}Items-${element.id}`"
+                                                :idForLabel="`${element.key}Items-${element.id}-Item${i}`"
                                                 :rows="listArrayTextareaRows" />
-                                        </template>
+                                            <article-form-section-button 
+                                                class="form-article__main__form__section__row__button"
+                                                @click="deleteListArrayItem(element.id, i)">
+                                                <template #icon>
+                                                    <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                </template>
+                                            </article-form-section-button>
+                                        </div>
+                                        
                                         <article-form-section-button 
                                             class="form-article__main__form__section__row__button"
                                             @click="addListArrayItem(element.id)">
@@ -200,6 +208,9 @@
                                         v-if="element.key === 'image'"
                                         class="form-article__main__form__section__row__button"
                                         @click="deleteRow(element.lastModified, true)">
+                                        <template #text-prepend>
+                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">Delete Section</span>
+                                        </template>
                                         <template #icon>
                                             <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
                                         </template>
@@ -208,6 +219,9 @@
                                         v-else
                                         class="form-article__main__form__section__row__button"
                                         @click="deleteRow(element.id, false)">
+                                        <template #text-prepend>
+                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">Delete Section</span>
+                                        </template>
                                         <template #icon>
                                             <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
                                         </template>
@@ -453,13 +467,19 @@ export default {
         addListArrayItem(id) {
             // Find index of listarray section with id
             const idListArray = this.article.findIndex(item => item.id === id);
-            console.log('%cidListArray', 'color: cornflowerblue; font-weight: bold;', idListArray);
             // Check whether items array already exists else create it
             if (this.article[idListArray].items === undefined) this.article[idListArray].items = [];
             // Push new empty item to listarray section with that id
             this.article[idListArray].items.push({
                 value: ''
             });
+        },
+
+        deleteListArrayItem(sectionId, itemId) {
+            // Find index of listarray section with sectionId
+            const idListArray = this.article.findIndex(item => item.id === sectionId);
+            // Delete item in listarray
+            this.article[idListArray].items.splice(itemId, 1);
         },
 
         setPreviousSelected(e) {
@@ -762,6 +782,16 @@ export default {
 
                                 &__text {
                                     margin-left: .5rem;
+                                }
+                            }
+
+                            &__list {
+                                display: flex;
+                                align-items: center;
+
+                                :last-child {
+                                    align-self: flex-start;
+                                    margin-left: .25rem;
                                 }
                             }
 
