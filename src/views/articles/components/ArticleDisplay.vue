@@ -17,8 +17,8 @@
                 <h3>{{ section.value }}</h3>
             </div>
             <div class="article__listarray" v-if="section.key === 'listarray'">
-                <ul v-for="(listItem, j) in section.value" :key="j">
-                    <li>{{ listItem }}</li>
+                <ul v-for="(item, j) in section.items" :key="j">
+                    <li>{{ item }}</li>
                 </ul>
             </div>
             <div class="article__table" v-if="section.key === 'table' && section.table_head">
