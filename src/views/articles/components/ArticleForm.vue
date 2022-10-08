@@ -116,7 +116,7 @@
                                         <label class="form-article__main__form__section__row__label" :for="`imageAlt-${element.id}`">Alternative Text</label>
                                         <ArticleFormSectionTextarea
                                             class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
-                                            v-model="element.alt"
+                                            v-model.trim="element.alt"
                                             :idForLabel="`imageAlt-${element.id}`" />
                                     </div>
                                     <!-- TITLE IMAGE -->
@@ -133,16 +133,16 @@
                                 <template v-else-if="element.key === 'table'">
                                     <div class="form-article__main__form__section__row">
                                         <label class="form-article__main__form__section__row__label" :for="`tableShape-${element.id}`">Shape: (rows *  cols = content.length)</label>
-                                        <input v-model="element.shape" class="form-article__main__form__section__row__value" type="text" name="tableShape" :id="`tableShape-${element.id}`" />
+                                        <input v-model.trim="element.shape" class="form-article__main__form__section__row__value" type="text" name="tableShape" :id="`tableShape-${element.id}`" />
                                     </div>
                                     <div class="form-article__main__form__section__row">
                                         <label class="form-article__main__form__section__row__label" :for="`tableHead-${element.id}`">Head</label>
-                                        <input v-model="element.table_head" class="form-article__main__form__section__row__value" type="text" name="tableHead" :id="`tableHead-${element.id}`" />
+                                        <input v-model.trim="element.table_head" class="form-article__main__form__section__row__value" type="text" name="tableHead" :id="`tableHead-${element.id}`" />
                                     </div>
                                     <div class="form-article__main__form__section__row">
                                         <label class="form-article__main__form__section__row__label" :for="`${element.key}Content-${element.id}`">Content</label>
                                         <ArticleFormSectionTextarea
-                                            v-model="element.value"
+                                            v-model.trim="element.value"
                                             class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
                                             :idForLabel="`${element.key}Content-${element.id}`" />
                                     </div>
@@ -155,7 +155,7 @@
 
                                         <div v-for="(item, i) in element.items" :key="`${element.key}Items-${element.id}`" class="form-article__main__form__section__row__list">
                                             <ArticleFormSectionTextarea
-                                                v-model="item.value"
+                                                v-model.trim="item.value"
                                                 class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
                                                 :idForLabel="`${element.key}Items-${element.id}-Item${i}`"
                                                 :rows="listArrayTextareaRows" />
@@ -196,7 +196,7 @@
                                     <div class="form-article__main__form__section__row">
                                         <label class="form-article__main__form__section__row__label" :for="`${element.key}Content-${element.id}`">Content</label>
                                         <ArticleFormSectionTextarea
-                                            v-model="element.value"
+                                            v-model.trim="element.value"
                                             class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
                                             :idForLabel="`${element.key}Content-${element.id}`" />
                                     </div>
