@@ -633,11 +633,6 @@ export default {
                         display: flex;
                         flex-direction: column;
 
-                        &--expanded {
-                            justify-content: center;
-                            align-items: center;
-                        }
-
                         &--shrunk {
                             display: none;
                             flex-direction: row;
@@ -648,13 +643,11 @@ export default {
                         &__row {
                             display: flex;
                             flex-direction: column;
-                            width: 100%;
 
                             &__button {
+                                align-self: flex-start;
                                 display: flex;
                                 align-items: center;
-                                // height: 2rem;
-                                // width: 2rem;
                                 margin-top: 1rem;
                                 margin-bottom: .75rem;
                                 border-radius: 0.25em;
