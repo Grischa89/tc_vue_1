@@ -298,6 +298,8 @@ const actions = {
 
                 // Since v-model ignores the initial value of a checkbox it needs to be set to false
                 if(element.is_title_image === undefined) element.is_title_image = false;
+
+                if (element.value === '') delete element.value;
             }
 
             if (element.key === 'listarray') {
@@ -307,6 +309,8 @@ const actions = {
                 // One or more missing item values in array
                 const missingItemValues = element.items.some(({ value }) => value.length <= 0);
                 if (missingItemValues) articleValidationErrors.push({ message: 'One or more list item in this section has no content. Please enter text or delete the item.' });
+
+                if (element.value === '') delete element.value;
             }
         });
 
