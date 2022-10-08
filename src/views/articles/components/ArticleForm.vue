@@ -125,7 +125,7 @@
                                             <input
                                                 v-model="element.is_title_image"
                                                 type="checkbox" name="titleImage" :id="`imageTitleImage-${element.id}`">
-                                        <span class="form-article__main__form__section__row__label__text">Title Image {{ element.is_title_image }}</span></label>
+                                        <span class="form-article__main__form__section__row__label__text">Title Image</span></label>
                                     </div>
                                 </template>
 
