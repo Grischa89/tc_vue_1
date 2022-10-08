@@ -65,8 +65,8 @@
                                 <template v-if="element.key === 'image'">
                                     <!-- FILE -->
                                     <div class="form-article__main__form__section__row">
-                                        <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--file" :for="`imageFile-${element.id}`" @click="saveLastModifiedOfPreviousImage(element.lastModified)">Choose image</label>
-                                        <input @change="handleImage($event, element.pk, element.id)"
+                                        <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--file" :for="`imageFile-${element.id}`">Choose image</label>
+                                        <input @change="handleImage($event, element.id)"
                                             class="form-article__main__form__section__row__value form-article__main__form__section__row__value--file"
                                             type="file"
                                             accept="image/*"
@@ -206,20 +206,8 @@
                                 <!-- DELETE BUTTON -->
                                 <div class="form-article__main__form__section__row">
                                     <article-form-section-button
-                                        v-if="element.key === 'image'"
                                         class="form-article__main__form__section__row__button"
-                                        @click="deleteRow(element.lastModified, true)">
-                                        <template #text-prepend>
-                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">Delete Section</span>
-                                        </template>
-                                        <template #icon>
-                                            <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
-                                        </template>
-                                    </article-form-section-button>
-                                    <article-form-section-button
-                                        v-else
-                                        class="form-article__main__form__section__row__button"
-                                        @click="deleteRow(element.id, false)">
+                                        @click="deleteRow(element.id)">
                                         <template #text-prepend>
                                             <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">Delete Section</span>
                                         </template>
@@ -316,8 +304,6 @@ export default {
             previousSelected: null,
             article: this.articleToUpdate || [],
             listArrayTextareaRows: 1,
-            lastModifiedPreviousImage: '',
-            images: [],
         }
     },
 
@@ -385,7 +371,7 @@ export default {
     },
 
     methods: {
-        async handleImage(e, pk = undefined, id = undefined) {
+        async handleImage(e, id) {
             const [file] = e.target.files;
 
             // Handle cancelled image upload (no image chosen)
@@ -422,49 +408,6 @@ export default {
             this.article[i].url = imageUploaded.url;
         },
 
-        saveLastModifiedOfPreviousImage(prev) {
-            // Save image identifier of previous image on focus
-            this.lastModifiedPreviousImage = prev;
-        },
-
-        getArticleImages() {
-            // Get article image objects
-            const articleImages = this.article.filter(item => item.key === 'image');
-            return articleImages;
-        },        
-
-        insertImageInFileArray(file) {
-            // Check with lastModifiedPreviousImage whether an image file for that image section already exists (meaning that image needs to be replaced)
-            const indexImageFileToBeReplaced = this.images.findIndex(item => item.lastModified === this.lastModifiedPreviousImage);
-            // Remove file of previous image
-            if (indexImageFileToBeReplaced !== -1) this.images.splice(indexImageFileToBeReplaced, 1);
-
-            // Get article image objects
-            const articleImages = this.getArticleImages();
-            // Get index of current image with specific lastModified in image only array (articleImages)
-            const i = articleImages.findIndex(item => item.lastModified === file.lastModified);
-
-            // At retrieved index i of the image file array, delete 0 elements, and insert the current image file
-            this.images.splice(i, 0, file);
-        },
-
-        sortImageFilesAccordingToArticle() {
-            // Image file array does not need to be sorted if empty / contains 1 file
-            if (this.images.length <= 1) return;
-
-            // If image file array has more than one item
-            // Get article image order
-            const articleImages = this.getArticleImages();
-
-            // Derive prop value with that in image can be identified & that is both in image section object as well as image file array object (here lastModified)
-            const imagesOrderToBe = articleImages.map(item => item.lastModified);
-
-            // Use imagesOrderToBe simple array to sort image file array (this.images)
-            this.images.sort((a, b) => {
-                return imagesOrderToBe.indexOf(a.lastModified) - imagesOrderToBe.indexOf(b.lastModified);
-            });
-        },
-
         addListArrayItem(id) {
             // Find index of listarray section with id
             const idListArray = this.article.findIndex(item => item.id === id);
@@ -487,9 +430,7 @@ export default {
             this.previousSelected = e.target.value;
         },
 
-        async handleSectionSelect(sectionSelected, sectionId) {
-            console.log('%csectionSelected, sectionId', 'color: mediumpurple; font-weight: bold;', sectionSelected, sectionId);
-
+        handleSectionSelect(sectionSelected, sectionId) {
             // Prevent that any disabled prop can be changed
             // This is actually not possible because the if previousSelected is 'heading' or 'summary' it cannot be the currentSelected (this.disableUniqueOption will not be executed)
             if (this.previousSelected === sectionSelected) return
@@ -548,22 +489,20 @@ export default {
             this.article.push(newRow);
         },
 
-        deleteRow(identifier, isImage) {
-            // If section to be deleted is an image (lastModified as identifier)
-            if (isImage) {
-                const articleIndex = this.article.findIndex(item => item.lastModified === identifier);
-                this.article.splice(articleIndex, 1);
+        async deleteRow(id) {
 
-                if (this.images.length !== 0) {
-                    const fileArrayIndex = this.images.findIndex(item => item.lastModified === identifier);
-                    this.images.splice(fileArrayIndex, 1);
-                }
-                return;
+            // Find section in article by id
+            const sectionIndex = this.article.findIndex(item => item.id === id);
+            const sectionKey = this.article[sectionIndex].key;
+
+            // If a section that ought to be unique gets deleted, set its disabled prop to true to make it selectable again
+            if (this.uniqueOptions.includes(sectionKey)) {
+                const index = await this.$store.dispatch('findIndexOfUniqueSection', sectionKey);
+                this.$store.commit('setDisabledValueOnArticleSections', { sectionIndex: index, isDisabled: false });
             }
 
-            // Any other section (id as identifier)
-            const articleIndex = this.article.findIndex(item => item.id === identifier);
-            this.article.splice(articleIndex, 1);
+            // Delete the section from the article
+            this.article.splice(sectionIndex, 1);
         },
 
         expandSection(id) {
