@@ -50,7 +50,8 @@
                                 <!-- CHOOSE A SECTION -->
                                 <div class="form-article__main__form__section__row">
                                     <label class="form-article__main__form__section__row__label" :for="`key-${element.id}`">Section</label>
-                                    <select class="form-article__main__form__section__row__key" name="key" :id="`key-${element.id}`" v-model="element.key" @focus="setPreviousSelected" @change="disableUniqueOption">
+                                    <select class="form-article__main__form__section__row__key"
+                                    name="key" :id="`key-${element.id}`" v-model="element.key" @focus="setPreviousSelected" @change="handleSectionSelect($event.target.value, element.id)">
                                         <option value selected disabled >Choose A Column</option>
                                         <option
                                             v-for="(column, i) in articleSections"
@@ -486,24 +487,58 @@ export default {
             this.previousSelected = e.target.value;
         },
 
-        async disableUniqueOption(e) {
-            const currentSelected = e.target.value;
+        async handleSectionSelect(sectionSelected, sectionId) {
+            console.log('%csectionSelected, sectionId', 'color: mediumpurple; font-weight: bold;', sectionSelected, sectionId);
 
             // Prevent that any disabled prop can be changed
             // This is actually not possible because the if previousSelected is 'heading' or 'summary' it cannot be the currentSelected (this.disableUniqueOption will not be executed)
-            if (this.previousSelected === currentSelected) return
+            if (this.previousSelected === sectionSelected) return
 
-            // If previousSelected is any of the uniqueOptions, this means that it will get changed
-            // (since it cannot be re-selected because it's disabled)
-            // So the uniqueOptions disabled value can be set to true
+            this.disableUniqueOption(sectionSelected);
+
+            this.resetSectionAfterSelectChange(this.previousSelected,sectionId);
+        },
+
+        async disableUniqueOption(sectionSelected) {
+            const currentSelected = sectionSelected;
+            // If previousSelected is any of the uniqueOptions, this means that a unique option (heading, summary) will be changed
+
+            // So the uniqueOptions disabled value can be set to false
             if (this.uniqueOptions.includes(this.previousSelected)) {
                 const index = await this.$store.dispatch('findIndexOfUniqueSection', this.previousSelected);
                 this.$store.commit('setDisabledValueOnArticleSections', { sectionIndex: index, isDisabled: false });
             }
 
+            // Likewise if the currentSelected is in uniqueOptions the disabled attribute needs to be set to true
             if (this.uniqueOptions.includes(currentSelected)) {
                 const index = await this.$store.dispatch('findIndexOfUniqueSection', currentSelected);
                 this.$store.commit('setDisabledValueOnArticleSections', { sectionIndex: index, isDisabled: true });
+            }
+        },
+
+        resetSectionAfterSelectChange(previousSection, id) {
+            // Get index of section whose value should be reset
+            const sectionIndex = this.article.findIndex(section => section.id === id);
+
+            // Reset previous section's props
+            switch (previousSection) {
+                case 'image':
+                    this.article[sectionIndex].url = '';
+                    this.article[sectionIndex].name = '';
+                    this.article[sectionIndex].pk = '';
+                    this.article[sectionIndex].alt = '';
+                    this.article[sectionIndex].is_title_image = false;
+                    this.article[sectionIndex].value = '';
+                    break;
+
+                case 'listarray':
+                    this.article[sectionIndex].items = [];
+                    this.article[sectionIndex].value = '';
+                    break;
+            
+                default:
+                    this.article[sectionIndex].value = '';
+                    break;
             }
         },
 
