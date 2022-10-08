@@ -160,7 +160,7 @@
                                                 :idForLabel="`${element.key}Items-${element.id}-Item${i}`"
                                                 :rows="listArrayTextareaRows" />
                                             <article-form-section-button 
-                                                class="form-article__main__form__section__row__button"
+                                                class="form-article__main__form__section__row__button form-article__main__form__section__row__button--inline"
                                                 @click="deleteListArrayItem(element.id, i)">
                                                 <template #icon>
                                                     <IconDelete class="form-article__main__form__section__row__button__icon" />
@@ -665,6 +665,10 @@ export default {
                                     right: .25rem;
                                     margin-top: 0;
                                     margin-bottom: 0;
+                                }
+
+                                &--inline {
+                                    margin-top: .5rem;
                                 }
 
                                 &__icon {
