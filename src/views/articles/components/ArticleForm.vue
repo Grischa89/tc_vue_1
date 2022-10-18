@@ -132,20 +132,86 @@
 
                                 <!-- TABLE SECTION -->
                                 <template v-else-if="element.key === 'table'">
+
+                                    <!-- COLUMNS -->
                                     <div class="form-article__main__form__section__row">
-                                        <label class="form-article__main__form__section__row__label" :for="`tableShape-${element.id}`">Shape: (rows *  cols = content.length)</label>
-                                        <input v-model.trim="element.shape" class="form-article__main__form__section__row__value" type="text" name="tableShape" :id="`tableShape-${element.id}`" />
+                                        <fieldset>
+                                            <legend>Columns</legend>
+
+                                            <div v-for="(column, i) in element.columns"
+                                                :key="`${element.key}Cols-${element.id}`" class="form-article__main__form__section__row__list">
+                                                <label class="form-article__main__form__section__row__label" :for="`${element.key}Col${i}-${element.id}`">Col {{ i + 1 }}</label>
+                                                
+                                                <input
+                                                    v-model.trim.lazy="column.name" 
+                                                    @focus="saveColumnName(column.name)"
+                                                    @blur="updateRowProps($event, this.previousColumnName, element.id)"
+                                                    :id="`${element.key}Col${i}-${element.id}`"
+                                                    class="form-article__main__form__section__row__value"
+                                                    type="text">
+                                                <article-form-section-button 
+                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--inline"
+                                                    @click="deleteTableColumn(element.id, i)">
+                                                    <template #icon>
+                                                        <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                    </template>
+                                                </article-form-section-button>
+                                            </div>
+                                        </fieldset>
+
+                                        <article-form-section-button 
+                                            class="form-article__main__form__section__row__button"
+                                            @click="addTableColumn(element.id)">
+                                            <template #text-prepend>
+                                                <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">
+                                                    Add column
+                                                </span>
+                                            </template>
+                                            <template #icon>
+                                                <IconPlus class="form-article__main__form__section__row__button__icon" />
+                                            </template>
+                                        </article-form-section-button>
                                     </div>
+
+                                    <!-- ROWS -->
                                     <div class="form-article__main__form__section__row">
-                                        <label class="form-article__main__form__section__row__label" :for="`tableHead-${element.id}`">Head</label>
-                                        <input v-model.trim="element.table_head" class="form-article__main__form__section__row__value" type="text" name="tableHead" :id="`tableHead-${element.id}`" />
-                                    </div>
-                                    <div class="form-article__main__form__section__row">
-                                        <label class="form-article__main__form__section__row__label" :for="`${element.key}Content-${element.id}`">Content</label>
-                                        <ArticleFormSectionTextarea
-                                            v-model.trim="element.value"
-                                            class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
-                                            :idForLabel="`${element.key}Content-${element.id}`" />
+                                        <fieldset>
+                                            <legend>Rows</legend>
+
+                                            <div v-for="(row, i) in element.rows" :key="`${element.key}Rows-${element.id}`" class="form-article__main__form__section__row__list">
+                                                <label class="form-article__main__form__section__row__label">Row {{ i + 1 }}</label>
+                                                <template v-for="(cell, j) in element.columns">
+                                                    
+                                                    <label class="form-article__main__form__section__row__label--visually-hidden" :for="`${element.key}Row${i}-Col${j}-${element.id}`"></label>
+                                                    <input
+                                                        v-model.trim.lazy="row[`${element.columns[j].name}`]"
+                                                        class="form-article__main__form__section__row__value"
+                                                        :placeholder="element.columns[j].name"
+                                                        :id="`${element.key}Row${i}-Col${j}-${element.id}`"
+                                                        type="text">
+                                                </template>
+                                                <article-form-section-button 
+                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--inline"
+                                                    @click="deleteTableRow(element.id, i)">
+                                                    <template #icon>
+                                                        <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                    </template>
+                                                </article-form-section-button>
+                                            </div>
+                                        </fieldset>
+
+                                        <article-form-section-button 
+                                            class="form-article__main__form__section__row__button"
+                                            @click="addTableRow(element.id)">
+                                            <template #text-prepend>
+                                                <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">
+                                                    Add row
+                                                </span>
+                                            </template>
+                                            <template #icon>
+                                                <IconPlus class="form-article__main__form__section__row__button__icon" />
+                                            </template>
+                                        </article-form-section-button>
                                     </div>
                                 </template>
 
@@ -168,7 +234,7 @@
                                                 </template>
                                             </article-form-section-button>
                                         </div>
-                                        
+
                                         <article-form-section-button 
                                             class="form-article__main__form__section__row__button"
                                             @click="addListArrayItem(element.id)">
@@ -303,6 +369,7 @@ export default {
             uniqueOptions: ['heading', 'summary'],
             previousSelected: null,
             article: this.articleToUpdate || [],
+            previousColumnName: '',
             listArrayTextareaRows: 1,
         }
     },
@@ -325,19 +392,23 @@ export default {
 
                     section.key = element.key;
 
-                    // Handle special case of table on its own
-                    if (element.key === 'table' && element.value && element.shape && element.table_head) {
-                        const numberOfColumns = parseInt(element.shape.split(',')[1]);
-                        const columns = element.table_head.split(',');
-                        const tableContentSplit = element.value.split(',');
+                    // Handle table section
+                    if (element.key === 'table' && element.columns) {
+                        section.table_head = element.columns.map(({ name }) => name);
 
-                        const rows = [];
-                        for (let i = 0; i < tableContentSplit.length; i += numberOfColumns) {
-                            const row = tableContentSplit.slice(i, i + numberOfColumns);
-                            rows.push(row);
+                        if (element.rows?.length) {
+                            section.rows = [];
+                            for (const item of element.rows) {
+
+                                const row = [];
+
+                                for (const cell in item) {
+                                    row.push(item[cell]);
+                                }
+
+                                section.rows.push(row);
+                            }
                         }
-                        section.table_head = columns;
-                        section.rows = rows;
                         return section;
                     }
 
@@ -424,6 +495,80 @@ export default {
             const idListArray = this.article.findIndex(item => item.id === sectionId);
             // Delete item in listarray
             this.article[idListArray].items.splice(itemId, 1);
+        },
+
+        addTableColumn(id) {
+            // Find index of table section with id
+            const indexTable = this.article.findIndex(item => item.id === id);
+            // Check whether columns array already exists else create it
+            if (this.article[indexTable].columns === undefined) this.article[indexTable].columns = [];
+            // Push new empty object with name prop to table section with that id
+            this.article[indexTable].columns.push({
+                name: ''
+            });
+        },
+
+        deleteTableColumn(sectionId, columnId) {
+            // Find index of table section with sectionId
+            const indexTable = this.article.findIndex(item => item.id === sectionId);
+            // Save columnName to pass as argument to deleteTableCells fn
+            const columnName = this.article[indexTable].columns[columnId].name;
+            // Delete column object in table columns
+            this.article[indexTable].columns.splice(columnId, 1);
+            // Delete respective cells from row that belong to column
+            this.deleteTableCells(indexTable, columnName);
+        },
+
+        saveColumnName(columnName) {
+            if (columnName === '') return;
+            this.previousColumnName = columnName;
+        },
+
+        addTableRow(id) {
+            // Find index of table section with id
+            const indexTable = this.article.findIndex(item => item.id === id);
+            // Check whether rows array already exists else create it
+            if (this.article[indexTable].rows === undefined) this.article[indexTable].rows = [];
+            // Push new empty object table section with that id (TODO row_id, is necessary?)
+            this.article[indexTable].rows.push({ });
+        },
+
+        deleteTableRow(sectionId, rowId) {
+            // Find index of table section with sectionId
+            const indexTable = this.article.findIndex(item => item.id === sectionId);
+            // Delete row object in table rows
+            this.article[indexTable].rows.splice(rowId, 1);
+        },
+
+        updateRowProps(e, previousColumnName, sectionId) {
+            // If no previousColumnName exists, return
+            if (previousColumnName === '') return;
+
+            const currentColumnName = e.target.value;
+            
+            // If no changes were made to columnName, return
+            if (currentColumnName === previousColumnName) return;
+
+            // Get table object id
+            const tableIndex = this.article.findIndex(section => section.id === sectionId);
+
+            // If rows array doesn't exist in table or is empty, return (previousColumnName prop does not exist either)
+            if (this.article[tableIndex].rows === undefined || this.article[tableIndex].rows.length === 0) return;
+
+            // If previousColumnName exists in first row of rows array in table, loop through each object and set the contents of previousColumnName to currentColumnName + delete previousColumnName
+            if (this.article[tableIndex].rows[0][previousColumnName]) {
+                this.article[tableIndex].rows.forEach(row => {
+                    row[currentColumnName] = row[previousColumnName];
+                    delete row[previousColumnName];
+                });
+            }
+        },
+
+        deleteTableCells(indexTable, columnName) {
+            // Delete prop that is named after column in every object (row) of rows array
+            this.article[indexTable].rows.forEach(row => {
+                delete row[columnName];
+            });
         },
 
         setPreviousSelected(e) {
@@ -731,6 +876,7 @@ export default {
                                 font-size: .875rem; // 14px
                                 font-weight: 500;
                                 letter-spacing: .025rem;
+                                white-space: nowrap;
 
                                 // &--checkbox {
                                 // }
@@ -749,6 +895,20 @@ export default {
 
                                 &--readonly {
                                     color: var(--help);
+                                }
+
+                                &--visually-hidden {
+                                    // Source: https://a11y-guidelines.orange.com/en/web/components-examples/accessible-hiding/
+                                    position: absolute;
+                                    position: absolute !important;
+                                    width: 1px !important;
+                                    height: 1px !important;
+                                    padding: 0 !important;
+                                    margin: -1px !important;
+                                    overflow: hidden !important;
+                                    clip: rect(0,0,0,0) !important;
+                                    white-space: nowrap !important;
+                                    border: 0 !important;
                                 }
 
                                 &__text {
