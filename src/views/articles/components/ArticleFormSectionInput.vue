@@ -1,12 +1,13 @@
 <template>
     <input
         :class="{ 'form-article__main__form__section__value--readonly': isReadonly }"
-        :style="{ width: `${modelValue.toString().length + 2}ch` }"
+        :style="[ isReadonly ? {'width': `${modelValue.toString().length + 2}ch`} : {'width': 'auto'}]"
         type="text"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         name="valueInput"
         :id="idForLabel"
+        :placeholder="placeholder"
         :readonly="isReadonly" />
 </template>
 
@@ -15,12 +16,8 @@
 export default {
     name: 'ValueInput',
 
-    props: ['modelValue', 'idForLabel', 'isReadonly'],
+    props: ['modelValue', 'idForLabel', 'isReadonly', 'placeholder'],
 
     emits: ['update:modelValue'],
 }
 </script>
-
-<style>
-
-</style>
