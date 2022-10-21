@@ -141,14 +141,14 @@
                                             <div v-for="(column, i) in element.columns"
                                                 :key="`${element.key}Cols-${element.id}`" class="form-article__main__form__section__row__list">
                                                 <label class="form-article__main__form__section__row__label" :for="`${element.key}Col${i}-${element.id}`">Col {{ i + 1 }}</label>
-                                                
-                                                <input
-                                                    v-model.trim.lazy="column.name" 
+
+                                                <ArticleFormSectionInput
+                                                    v-model.trim="column.name"
                                                     @focus="saveColumnName(column.name)"
                                                     @blur="updateRowProps($event, this.previousColumnName, element.id)"
-                                                    :id="`${element.key}Col${i}-${element.id}`"
-                                                    class="form-article__main__form__section__row__value"
-                                                    type="text">
+                                                    class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
+                                                    :idForLabel="`${element.key}Col${i}-${element.id}`"
+                                                    :isReadonly="false" />
                                                 <article-form-section-button 
                                                     class="form-article__main__form__section__row__button form-article__main__form__section__row__button--inline"
                                                     @click="deleteTableColumn(element.id, i)">
@@ -183,12 +183,13 @@
                                                 <template v-for="(cell, j) in element.columns">
                                                     
                                                     <label class="form-article__main__form__section__row__label--visually-hidden" :for="`${element.key}Row${i}-Col${j}-${element.id}`"></label>
-                                                    <input
-                                                        v-model.trim.lazy="row[`${element.columns[j].name}`]"
-                                                        class="form-article__main__form__section__row__value"
+
+                                                    <ArticleFormSectionInput
+                                                        v-model.trim="row[`${element.columns[j].name}`]"
+                                                        class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
+                                                        :idForLabel="`${element.key}Row${i}-Col${j}-${element.id}`"
                                                         :placeholder="element.columns[j].name"
-                                                        :id="`${element.key}Row${i}-Col${j}-${element.id}`"
-                                                        type="text">
+                                                        :isReadonly="false" />
                                                 </template>
                                                 <article-form-section-button 
                                                     class="form-article__main__form__section__row__button form-article__main__form__section__row__button--inline"
