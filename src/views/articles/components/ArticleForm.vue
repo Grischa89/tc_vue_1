@@ -503,10 +503,14 @@ export default {
             const indexTable = this.article.findIndex(item => item.id === id);
             // Check whether columns array already exists else create it
             if (this.article[indexTable].columns === undefined) this.article[indexTable].columns = [];
+            // Find out columns array length to set preliminary name for added column
+            const colNumber = this.article[indexTable].columns.length;
             // Push new empty object with name prop to table section with that id
             this.article[indexTable].columns.push({
-                name: ''
+                name: `Column ${colNumber + 1}`
             });
+            // Select added col name input for user
+            this.selectTableColumnInput(id, colNumber);
         },
 
         deleteTableColumn(sectionId, columnId) {
@@ -523,6 +527,15 @@ export default {
         saveColumnName(columnName) {
             if (columnName === '') return;
             this.previousColumnName = columnName;
+        },
+
+        selectTableColumnInput(sectionId, columnId) {
+            const selectTimeout = setTimeout(() => {
+                const tableColumnInput = document.querySelector(`#tableCol${columnId}-${sectionId}`);
+                tableColumnInput.focus();
+                tableColumnInput.select();
+                clearTimeout(selectTimeout);
+            }, 150);
         },
 
         addTableRow(id) {
