@@ -502,9 +502,9 @@ export default {
             this.article[idListArray].items.splice(itemId, 1);
         },
 
-        addTableColumn(id) {
+        addTableColumn(sectionId) {
             // Find index of table section with id
-            const indexTable = this.article.findIndex(item => item.id === id);
+            const indexTable = this.findArticleSectionIndex(sectionId);
             // Check whether columns array already exists else create it
             if (this.article[indexTable].columns === undefined) this.article[indexTable].columns = [];
             // Find out columns array length to set preliminary name for added column
