@@ -443,6 +443,10 @@ export default {
     },
 
     methods: {
+        findArticleSectionIndex(sectionId) {
+            return this.article.findIndex(section => section.id === sectionId);
+        },
+
         async handleImage(e, id) {
             const [file] = e.target.files;
 
