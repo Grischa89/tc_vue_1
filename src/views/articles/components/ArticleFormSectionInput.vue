@@ -14,7 +14,7 @@
 <script>
 
 export default {
-    name: 'ValueInput',
+    name: 'ArticleFormSectionInput',
 
     props: ['modelValue', 'idForLabel', 'isReadonly', 'placeholder'],
 
