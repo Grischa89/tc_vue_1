@@ -484,22 +484,22 @@ export default {
             this.article[i].url = imageUploaded.url;
         },
 
-        addListArrayItem(id) {
+        addListArrayItem(sectionId) {
             // Find index of listarray section with id
-            const idListArray = this.article.findIndex(item => item.id === id);
+            const indexListArray = this.findArticleSectionIndex(sectionId);
             // Check whether items array already exists else create it
-            if (this.article[idListArray].items === undefined) this.article[idListArray].items = [];
+            if (this.article[indexListArray].items === undefined) this.article[indexListArray].items = [];
             // Push new empty item to listarray section with that id
-            this.article[idListArray].items.push({
+            this.article[indexListArray].items.push({
                 value: ''
             });
         },
 
         deleteListArrayItem(sectionId, itemId) {
             // Find index of listarray section with sectionId
-            const idListArray = this.article.findIndex(item => item.id === sectionId);
+            const indexListArray = this.findArticleSectionIndex(sectionId);
             // Delete item in listarray
-            this.article[idListArray].items.splice(itemId, 1);
+            this.article[indexListArray].items.splice(itemId, 1);
         },
 
         addTableColumn(sectionId) {
@@ -514,12 +514,12 @@ export default {
                 name: `Column ${colNumber + 1}`
             });
             // Select added col name input for user
-            this.selectTableColumnInput(id, colNumber);
+            this.selectTableColumnInput(sectionId, colNumber);
         },
 
         deleteTableColumn(sectionId, columnId) {
             // Find index of table section with sectionId
-            const indexTable = this.article.findIndex(item => item.id === sectionId);
+            const indexTable = this.findArticleSectionIndex(sectionId);
             // Save columnName to pass as argument to deleteTableCells fn
             const columnName = this.article[indexTable].columns[columnId].name;
             // Delete column object in table columns
@@ -546,21 +546,25 @@ export default {
             // Set currently entered name
             const currentColumnName = e.target.value;
             // Get table object id
-            const tableIndex = this.article.findIndex(section => section.id === sectionId);
+            const indexTable = this.findArticleSectionIndex(sectionId);
             // Create array with only column name strings
-            const columnNames = this.article[tableIndex].columns.map(({ name }) => name);
+            const columnNames = this.article[indexTable].columns.map(({ name }) => name);
             // Check columnNames for duplicate values
             const duplicateColumnNames = this.containsDuplicateColumnNames(columnNames);
 
+            // If currentColumnName (the one just entered) is a duplicate then change it back to its provisional name
             if (duplicateColumnNames) {
-                this.article[tableIndex].columns[currentColumnIndex].name = `Column ${currentColumnIndex + 1}`;
+                const provisonalColumnName = `Column ${currentColumnIndex + 1}`;
+                this.article[indexTable].columns[currentColumnIndex].name = provisonalColumnName;
                 // Select added col name input for user
                 this.selectTableColumnInput(sectionId, currentColumnIndex);
-                this.updateRowProps(`Column ${currentColumnIndex + 1}`, this.previousColumnName, tableIndex);
+                // Update row objects with provisional name
+                this.updateRowProps(provisonalColumnName, this.previousColumnName, indexTable);
                 return;
             }
 
-            this.updateRowProps(currentColumnName, this.previousColumnName, tableIndex);
+            // If currentColumnName is not a duplicate, update rows
+            this.updateRowProps(currentColumnName, this.previousColumnName, indexTable);
         },
 
         containsDuplicateColumnNames(columnNamesArray) {
@@ -592,9 +596,9 @@ export default {
             }
         },
 
-        addTableRow(id) {
+        addTableRow(sectionId) {
             // Find index of table section with id
-            const indexTable = this.article.findIndex(item => item.id === id);
+            const indexTable = this.findArticleSectionIndex(sectionId);
             // Check whether rows array already exists else create it
             if (this.article[indexTable].rows === undefined) this.article[indexTable].rows = [];
             // Push new empty object table section with that id (TODO row_id, is necessary?)
@@ -603,7 +607,7 @@ export default {
 
         deleteTableRow(sectionId, rowId) {
             // Find index of table section with sectionId
-            const indexTable = this.article.findIndex(item => item.id === sectionId);
+            const indexTable =  this.findArticleSectionIndex(sectionId);
             // Delete row object in table rows
             this.article[indexTable].rows.splice(rowId, 1);
         },
@@ -648,28 +652,28 @@ export default {
             }
         },
 
-        resetSectionAfterSelectChange(previousSection, id) {
+        resetSectionAfterSelectChange(previousSection, sectionId) {
             // Get index of section whose value should be reset
-            const sectionIndex = this.article.findIndex(section => section.id === id);
+            const indexSection = this.findArticleSectionIndex(sectionId);
 
             // Reset previous section's props
             switch (previousSection) {
                 case 'image':
-                    this.article[sectionIndex].url = '';
-                    this.article[sectionIndex].name = '';
-                    this.article[sectionIndex].pk = '';
-                    this.article[sectionIndex].alt = '';
-                    this.article[sectionIndex].is_title_image = false;
-                    this.article[sectionIndex].value = '';
+                    this.article[indexSection].url = '';
+                    this.article[indexSection].name = '';
+                    this.article[indexSection].pk = '';
+                    this.article[indexSection].alt = '';
+                    this.article[indexSection].is_title_image = false;
+                    this.article[indexSection].value = '';
                     break;
 
                 case 'listarray':
-                    this.article[sectionIndex].items = [];
-                    this.article[sectionIndex].value = '';
+                    this.article[indexSection].items = [];
+                    this.article[indexSection].value = '';
                     break;
             
                 default:
-                    this.article[sectionIndex].value = '';
+                    this.article[indexSection].value = '';
                     break;
             }
         },
@@ -680,11 +684,11 @@ export default {
             this.article.push(newRow);
         },
 
-        async deleteRow(id) {
+        async deleteRow(sectionId) {
 
             // Find section in article by id
-            const sectionIndex = this.article.findIndex(item => item.id === id);
-            const sectionKey = this.article[sectionIndex].key;
+            const indexSection = this.findArticleSectionIndex(sectionId);
+            const sectionKey = this.article[indexSection].key;
 
             // If a section that ought to be unique gets deleted, set its disabled prop to true to make it selectable again
             if (this.uniqueOptions.includes(sectionKey)) {
@@ -693,7 +697,7 @@ export default {
             }
 
             // Delete the section from the article
-            this.article.splice(sectionIndex, 1);
+            this.article.splice(indexSection, 1);
         },
 
         expandSection(id) {
