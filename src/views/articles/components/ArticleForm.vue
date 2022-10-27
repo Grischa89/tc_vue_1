@@ -145,7 +145,7 @@
                                                 <ArticleFormSectionInput
                                                     v-model.trim="column.name"
                                                     @focus="saveColumnName(column.name)"
-                                                    @blur="handleColumnInput($event, this.previousColumnName, element.id, i)"
+                                                    @blur="handleColumnInput($event, element.id, i)"
                                                     class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
                                                     :idForLabel="`${element.key}Col${i}-${element.id}`"
                                                     :isReadonly="false" />
@@ -538,23 +538,7 @@ export default {
             }, 150);
         },
 
-        addTableRow(id) {
-            // Find index of table section with id
-            const indexTable = this.article.findIndex(item => item.id === id);
-            // Check whether rows array already exists else create it
-            if (this.article[indexTable].rows === undefined) this.article[indexTable].rows = [];
-            // Push new empty object table section with that id (TODO row_id, is necessary?)
-            this.article[indexTable].rows.push({ });
-        },
-
-        deleteTableRow(sectionId, rowId) {
-            // Find index of table section with sectionId
-            const indexTable = this.article.findIndex(item => item.id === sectionId);
-            // Delete row object in table rows
-            this.article[indexTable].rows.splice(rowId, 1);
-        },
-
-        handleColumnInput(e, previousColumnName, sectionId, currentColumnIndex) {
+        handleColumnInput(e, sectionId, currentColumnIndex) {
             // Set currently entered name
             const currentColumnName = e.target.value;
             // Get table object id
@@ -589,7 +573,7 @@ export default {
             // If no previousColumnName exists, return
             if (previousColumnName === '') return;
             
-            // If no changes were made to columnName, return
+            // If no changes were made to currentColumnName, return
             if (currentColumnName === previousColumnName) return;
 
             // If rows array doesn't exist in table or is empty, return (previousColumnName prop does not exist either)
@@ -602,6 +586,22 @@ export default {
                     delete row[previousColumnName];
                 });
             }
+        },
+
+        addTableRow(id) {
+            // Find index of table section with id
+            const indexTable = this.article.findIndex(item => item.id === id);
+            // Check whether rows array already exists else create it
+            if (this.article[indexTable].rows === undefined) this.article[indexTable].rows = [];
+            // Push new empty object table section with that id (TODO row_id, is necessary?)
+            this.article[indexTable].rows.push({ });
+        },
+
+        deleteTableRow(sectionId, rowId) {
+            // Find index of table section with sectionId
+            const indexTable = this.article.findIndex(item => item.id === sectionId);
+            // Delete row object in table rows
+            this.article[indexTable].rows.splice(rowId, 1);
         },
 
         deleteTableCells(indexTable, columnName) {
