@@ -145,7 +145,7 @@
                                                 <ArticleFormSectionInput
                                                     v-model.trim="column.name"
                                                     @focus="saveColumnName(column.name)"
-                                                    @blur="updateRowProps($event, this.previousColumnName, element.id)"
+                                                    @blur="handleColumnInput($event, this.previousColumnName, element.id, i)"
                                                     class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
                                                     :idForLabel="`${element.key}Col${i}-${element.id}`"
                                                     :isReadonly="false" />
@@ -554,17 +554,43 @@ export default {
             this.article[indexTable].rows.splice(rowId, 1);
         },
 
-        updateRowProps(e, previousColumnName, sectionId) {
+        handleColumnInput(e, previousColumnName, sectionId, currentColumnIndex) {
+            // Set currently entered name
+            const currentColumnName = e.target.value;
+            // Get table object id
+            const tableIndex = this.article.findIndex(section => section.id === sectionId);
+            // Create array with only column name strings
+            const columnNames = this.article[tableIndex].columns.map(({ name }) => name);
+            // Check columnNames for duplicate values
+            const duplicateColumnNames = this.containsDuplicateColumnNames(columnNames);
+
+            if (duplicateColumnNames) {
+                this.article[tableIndex].columns[currentColumnIndex].name = `Column ${currentColumnIndex + 1}`;
+                // Select added col name input for user
+                this.selectTableColumnInput(sectionId, currentColumnIndex);
+                this.updateRowProps(`Column ${currentColumnIndex + 1}`, this.previousColumnName, tableIndex);
+                return;
+            }
+
+            this.updateRowProps(currentColumnName, this.previousColumnName, tableIndex);
+        },
+
+        containsDuplicateColumnNames(columnNamesArray) {
+            return columnNamesArray.some(columnName => {
+                if (columnNamesArray.indexOf(columnName) !== columnNamesArray.lastIndexOf(columnName)) {
+                    return true;
+                }
+
+                return false;
+            });
+        },
+
+        updateRowProps(currentColumnName, previousColumnName, tableIndex) {
             // If no previousColumnName exists, return
             if (previousColumnName === '') return;
-
-            const currentColumnName = e.target.value;
             
             // If no changes were made to columnName, return
             if (currentColumnName === previousColumnName) return;
-
-            // Get table object id
-            const tableIndex = this.article.findIndex(section => section.id === sectionId);
 
             // If rows array doesn't exist in table or is empty, return (previousColumnName prop does not exist either)
             if (this.article[tableIndex].rows === undefined || this.article[tableIndex].rows.length === 0) return;
