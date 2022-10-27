@@ -609,6 +609,8 @@ export default {
         },
 
         deleteTableCells(indexTable, columnName) {
+            // If rows array doesn't exist in table or is empty, return
+            if (this.article[indexTable].rows === undefined || this.article[indexTable].rows.length === 0) return;
             // Delete prop that is named after column in every object (row) of rows array
             this.article[indexTable].rows.forEach(row => {
                 delete row[columnName];
