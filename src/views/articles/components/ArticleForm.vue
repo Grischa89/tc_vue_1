@@ -545,6 +545,8 @@ export default {
         handleColumnInput(e, sectionId, currentColumnIndex) {
             // Set currently entered name
             const currentColumnName = e.target.value;
+            // If no changes were made, return
+            if (this.previousColumnName === currentColumnName) return;
             // Get table object id
             const indexTable = this.findArticleSectionIndex(sectionId);
             // Create array with only column name strings
@@ -578,12 +580,6 @@ export default {
         },
 
         updateRowProps(currentColumnName, previousColumnName, tableIndex) {
-            // If no previousColumnName exists, return
-            if (previousColumnName === '') return;
-            
-            // If no changes were made to currentColumnName, return
-            if (currentColumnName === previousColumnName) return;
-
             // If rows array doesn't exist in table or is empty, return (previousColumnName prop does not exist either)
             if (this.article[tableIndex].rows === undefined || this.article[tableIndex].rows.length === 0) return;
 
