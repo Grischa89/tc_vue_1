@@ -68,18 +68,29 @@ const getters = {
                 if (element === 'table') {
                     const section = article[i];
                     section.id = Math.floor(Date.now() * Math.random());
+                    // Create array of objects from cols
+                    section.columns = section.cols.map(column => {
+                        const column_object = {};
+                        column_object.name = column;
+                        return column_object;
+                    });
+                    
                     // Preserve article[i] for articleForForm (if not 'value' will be mutated as for articleForDisplay)
                     const table = JSON.parse(JSON.stringify(article[i]));
-                    table.table_head = table.table_head.split(',');
-                    const numberOfColumns = table.table_head.length;
-                    table.value = table.value.split(',');
-                    table.rows = [];
+                    
+                    table.table_head = table.cols;
+                    let row_arr = []
+                    for (const item of table.rows) {
+                        
+                        const row_item = [];
 
-                    // Create array of arrays with length of numberOfColumns
-                    for (let i = 0; i < table.value.length; i+= numberOfColumns) {
-                        const row = table.value.slice(i, i + numberOfColumns);
-                        table.rows.push(row);
+                        for (const cell in item) {
+                            row_item.push(item[cell]);
+                        }
+
+                        row_arr.push(row_item);
                     }
+                    table.rows = row_arr;
                     articleForDisplay.push(table);
 
                     article.splice(i, 1);
