@@ -43,63 +43,82 @@ const getters = {
             const order = state.article.meta_data.order;
             const article = JSON.parse(JSON.stringify(state.article?.draggable_data));
 
+            // Array containing the article processed in a way to be displayed for the user
             const articleForDisplay = [];
+            // Array containing the article processed in a way to used in the ArticleForm component (for form elements)
+            // While mapping though the order (to KEEP that order) both arrays will be filled
+            
             const articleForForm = order.map(element => {
 
-                // Get index of object in article array where key's value is 'element'
-                const i = article.findIndex((item, index, array) => {
-                    return item.key === `${element}`
+                // Get index of object in article array where key's value is 'element' (element being 'heading', 'summary' etc)
+                const i = article.findIndex(section => {
+                    return section.key === `${element}`;
                 });
 
-                // Handle listarrays since they need to be split for articleForDisplay
+                // Handle listarrays
                 if (element === 'listarray') {
                     const section = article[i];
+                    // Create id for section
                     section.id = Math.floor(Date.now() * Math.random());
+
                     // Preserve article[i] for articleForForm (if not 'value' will be mutated as for articleForDisplay)
                     const listarray = JSON.parse(JSON.stringify(article[i]));
-                    listarray.value = listarray.value.split(';');
+                    // Save Listarray item (string) in array
+                    listarray.items = listarray.items.map(({value}) => value);
                     articleForDisplay.push(listarray);
 
+                    // Current article section needs to be deleted from article
+                    // If not, findIndex will return index of that (first) section again and not ne one of the next ones (e.g in case of multiple listarrays, paragraphs, tables)
                     article.splice(i, 1);
                     return section;
                 }
 
-                // Handle tables since they need to be split for articleForDisplay
+                // Handle tables
                 if (element === 'table') {
                     const section = article[i];
+                    // Create id for section
                     section.id = Math.floor(Date.now() * Math.random());
-                    // Create array of objects from cols
-                    section.columns = section.cols.map(column => {
-                        const column_object = {};
-                        column_object.name = column;
-                        return column_object;
+                    // Create array of objects from cols ({name: 'columnName'}) in order to display it correctly in the form again
+                    section.columns = section.cols.map(columnName => {
+                        const column = {};
+                        column.name = columnName;
+                        return column;
                     });
                     
                     // Preserve article[i] for articleForForm (if not 'value' will be mutated as for articleForDisplay)
                     const table = JSON.parse(JSON.stringify(article[i]));
                     
+                    // Since cols is aalready an array of string (of column names) just assign it to the table_head prop
                     table.table_head = table.cols;
-                    let row_arr = []
+                    // Create empty rows array to store arrays of table content strings (cells)
+                    const rows = [];
+                    // Loop through table.rows
                     for (const item of table.rows) {
                         
-                        const row_item = [];
-
+                        const row = [];
+                        // Loop through row objects + push prop item to row array
                         for (const cell in item) {
-                            row_item.push(item[cell]);
+                            row.push(item[cell]);
                         }
 
-                        row_arr.push(row_item);
+                        rows.push(row);
                     }
-                    table.rows = row_arr;
+                    table.rows = rows;
                     articleForDisplay.push(table);
 
+                    // Current article section needs to be deleted from article
+                    // If not, findIndex will return index of that (first) section again and not ne one of the next ones (e.g in case of multiple listarrays, paragraphs, tables)
                     article.splice(i, 1);
                     return section;
                 }
 
                 const section = article[i];
+                // Create id for section
                 section.id = Math.floor(Date.now() * Math.random());
+                // If nothing needs to be procees for the article displayed to the user, just push it to the array
                 articleForDisplay.push(article[i]);
+                // Current article section needs to be deleted from article
+                // If not, findIndex will return index of that (first) section again and not ne one of the next ones (e.g in case of multiple listarrays, paragraphs, tables)
                 article.splice(i, 1);
 
                 return section;
@@ -195,7 +214,6 @@ const actions = {
 
         return axios.get(`/api/v1/articles/draggable/${slug}/`)
             .then(res => {
-                console.log('%cres getArticle', 'color: darkseagreen; font-weight: bold;', res);
                 commit('setArticle', res.data);
                 commit('setSingleArticleLoadStatus', 'success');
                 return res.status
