@@ -472,7 +472,7 @@ export default {
             try {
                 const { data } = await this.$store.dispatch('postImage', { file: file, imageProgressBar: imageProgressBar, imagePreview: imagePreview });
 
-                const i = this.article.findIndex(item => item.id === id);
+                const i = this.findArticleSectionIndex(id);
                 this.setNewImage(i, data);
             } catch (e) {
                 // e.response.status TODO
