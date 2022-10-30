@@ -168,7 +168,8 @@
 
                                         <article-form-section-button 
                                             class="form-article__main__form__section__row__button"
-                                            @click="addTableColumn(element.id)">
+                                            @click="addTableColumn(element.id)"
+                                            :id="`${element.key}ColumnBtn-${element.id}`">
                                             <template #text-prepend>
                                                 <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">
                                                     Add column
@@ -378,6 +379,7 @@ export default {
             previousSelected: null,
             article: this.articleToUpdate || [],
             previousColumnName: '',
+            columnLimit: 4,
             listArrayTextareaRows: 1,
         }
     },
@@ -543,6 +545,10 @@ export default {
             });
             // Select added col name input for user
             this.selectTableColumnInput(sectionId, colNumber);
+            // Disable button for adding columns if limit is exceeded
+            if (this.article[indexTable].columns.length >= this.columnLimit) {
+                this.disableTableColumnButton(true, sectionId);
+            }
         },
 
         deleteTableColumn(sectionId, columnId) {
@@ -554,6 +560,13 @@ export default {
             this.article[indexTable].columns.splice(columnId, 1);
             // Delete respective cells from row that belong to column
             this.deleteTableCells(indexTable, columnName);
+            // Enable button for adding columns
+            this.disableTableColumnButton(false, sectionId);
+        },
+
+        disableTableColumnButton(state, sectionId) {
+            const tableColumnButton = document.querySelector(`#tableColumnBtn-${sectionId}`);
+            tableColumnButton.disabled = state;
         },
 
         saveColumnName(columnName) {
