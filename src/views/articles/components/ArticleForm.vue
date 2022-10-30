@@ -537,6 +537,12 @@ export default {
             const indexTable = this.findArticleSectionIndex(sectionId);
             // Check whether columns array already exists else create it
             if (this.article[indexTable].columns === undefined) this.article[indexTable].columns = [];
+            // Disable button for adding columns if limit would be exceeded
+            if (this.article[indexTable].columns.length === this.columnLimit) {
+                console.log('%c===', 'color: darkseagreen; font-weight: bold;');
+                this.disableTableColumnButton(true, sectionId);
+                return;
+            }
             // Find out columns array length to set preliminary name for added column
             const colNumber = this.article[indexTable].columns.length;
             // Push new empty object with name prop to table section with that id
@@ -545,10 +551,6 @@ export default {
             });
             // Select added col name input for user
             this.selectTableColumnInput(sectionId, colNumber);
-            // Disable button for adding columns if limit is exceeded
-            if (this.article[indexTable].columns.length >= this.columnLimit) {
-                this.disableTableColumnButton(true, sectionId);
-            }
         },
 
         deleteTableColumn(sectionId, columnId) {
