@@ -52,7 +52,7 @@
                                     <label class="form-article__main__form__section__row__label" :for="`key-${element.id}`">Section</label>
                                     <select class="form-article__main__form__section__row__key"
                                     name="key" :id="`key-${element.id}`" v-model="element.key" @focus="setPreviousSelected" @change="handleSectionSelect($event.target.value, element.id)">
-                                        <option value selected disabled >Choose A Column</option>
+                                        <option value selected disabled >Choose A Section</option>
                                         <option
                                             v-for="(column, i) in articleSections"
                                             :key="i"
