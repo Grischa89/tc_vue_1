@@ -541,7 +541,7 @@ export default {
             const colNumber = this.article[indexTable].columns.length;
             // Push new empty object with name prop to table section with that id
             this.article[indexTable].columns.push({
-                name: `Column ${colNumber + 1}`
+                name: this.createProvisionalColumnName()
             });
             // Select added col name input for user
             this.selectTableColumnInput(sectionId, colNumber);
@@ -567,6 +567,11 @@ export default {
         disableTableColumnButton(state, sectionId) {
             const tableColumnButton = document.querySelector(`#tableColumnBtn-${sectionId}`);
             tableColumnButton.disabled = state;
+        },
+
+        createProvisionalColumnName() {
+            const randomString = Math.random().toString(36).substring(2, 6);
+            return `Column-${randomString}`;
         },
 
         saveColumnName(columnName) {
