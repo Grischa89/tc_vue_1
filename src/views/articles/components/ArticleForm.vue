@@ -61,8 +61,15 @@
                                     </select>
                                 </div>
 
+                                <!-- NO SECTION CHOSEN YET -->
+                                <template v-if="element.key === ''">
+                                    <div class="form-article__main__form__section__row">
+                                        Please remember to choose a section.
+                                    </div>
+                                </template>
+
                                 <!-- IMAGE SECTION -->
-                                <template v-if="element.key === 'image'">
+                                <template v-else-if="element.key === 'image'">
                                     <!-- FILE -->
                                     <div class="form-article__main__form__section__row">
                                         <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--file" :for="`imageFile-${element.id}`">Choose image</label>
