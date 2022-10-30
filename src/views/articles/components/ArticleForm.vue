@@ -513,14 +513,9 @@ export default {
         },
 
         selectListarrayInput(sectionId, itemId) {
-            // `listarrayItems-${sectionId}-Item${itemId}`
-            // listarrayItems-175508524333-Item0
-            console.log('%csectionId, itemId', 'color: darkseagreen; font-weight: bold;', sectionId, itemId);
             const selectTimeout = setTimeout(() => {
                 const listarrayItemInput = document.querySelector(`#listarrayItems-${sectionId}-Item${itemId}`);
-                console.log('%clistarrayItemInput', 'color: darkseagreen; font-weight: bold;', listarrayItemInput);
                 listarrayItemInput.focus();
-                // tableColumnInput.select();
                 clearTimeout(selectTimeout);
             }, 150);
         },
@@ -539,7 +534,6 @@ export default {
             if (this.article[indexTable].columns === undefined) this.article[indexTable].columns = [];
             // Disable button for adding columns if limit would be exceeded
             if (this.article[indexTable].columns.length === this.columnLimit) {
-                console.log('%c===', 'color: darkseagreen; font-weight: bold;');
                 this.disableTableColumnButton(true, sectionId);
                 return;
             }
@@ -605,9 +599,9 @@ export default {
             // Check columnNames for duplicate values
             const duplicateColumnNames = this.containsDuplicateColumnNames(columnNames);
 
-            // If the user entered duplicate column name (one that is already occupied by another column) OR an empty string, then change it back to its provisional name, 'Column n'
+            // If the user entered duplicate column name (one that is already occupied by another column) OR an empty string, then change it back to its provisional name, 'Column-xyz'
             if (duplicateColumnNames || currentColumnName === '') {
-                const provisonalColumnName = `Column ${currentColumnIndex + 1}`;
+                const provisonalColumnName = this.createProvisionalColumnName();
                 this.article[indexTable].columns[currentColumnIndex].name = provisonalColumnName;
                 // Select added col name input for user
                 this.selectTableColumnInput(sectionId, currentColumnIndex);
