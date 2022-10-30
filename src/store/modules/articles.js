@@ -291,32 +291,12 @@ const actions = {
         data.article.forEach(element => {
             if (!element.key) articleValidationErrors.push({ message: `Please choose a section type or delete the section.` });
 
-            // Only image section is allowed to have an empty value field
-            if ((element.key !== 'image' && !element.value) && (element.key !== 'listarray' && !element.value)) articleValidationErrors.push({ message: `Please enter content for the section ${element.key} or delete the section.` });
+            // Only image / listarray / table sections are allowed to have an empty value field
+            if ((element.key !== 'image' && !element.value) && (element.key !== 'listarray' && !element.value) && (element.key !== 'table' && !element.value)) articleValidationErrors.push({ message: `Please enter content for the section ${element.key} or delete the section.` });
 
+            // At this point for the relevant sections the value prop is not empty, so it can be assumed that the required sections exist
             if (element.key === 'heading') headingExists = true;
-
             if (element.key === 'summary') summaryExists = true;
-
-            if (element.key === 'table') {
-                if (!element.shape) articleValidationErrors.push({ message: 'Please enter a shape for the table.' });
-                const shapeArray = element.shape.split(',');
-                // Check shape for containing only two integer vals
-                if (shapeArray.length > 2) articleValidationErrors.push({ message: 'The table shape cannot contain more than two comma separated integers.' });
-
-                if (!element.table_head) articleValidationErrors.push({ message: 'Please enter column names (table heads).' });
-
-                const numberOfColumnsTableHead = parseInt(element.table_head.split(',').length);
-                const shapeRows = parseInt(shapeArray[0]);
-                const shapeColumns = parseInt(shapeArray[1]);
-
-                // Check if columns match in head & shape
-                if (numberOfColumnsTableHead !== shapeColumns) articleValidationErrors.push({ message: `Number of columns under Head (${numberOfColumnsTableHead}) and under Shape (${shapeColumns}) must match.` });
-
-                const numberOfTableContentCells = parseInt(element.value.split(',').length);
-                // Check if rows * columns & # of comma separated vals in content match
-                if (numberOfTableContentCells !== (shapeRows * shapeColumns)) articleValidationErrors.push({ message: `Number of cells (${numberOfTableContentCells}) and multiplied shape (${shapeRows} * ${shapeColumns} = ${(shapeRows * shapeColumns)}) do not match.` });
-            }
 
             if (element.key === 'image') {
                 // No image file has been uploaded
@@ -334,9 +314,22 @@ const actions = {
 
                 // One or more missing item values in array
                 const missingItemValues = element.items.some(({ value }) => value.length <= 0);
-                if (missingItemValues) articleValidationErrors.push({ message: 'One or more list item in this section has no content. Please enter text or delete the item.' });
+                if (missingItemValues) articleValidationErrors.push({ message: 'One or more list item in this section have no content. Please enter text or delete the items.' });
 
                 if (element.value === '') delete element.value;
+            }
+
+            if (element.key === 'table') {
+                // Check if a column's name property is empty
+                element.columns.forEach(column => {
+                    // Double check for empty string (should already be check @blur event of column name input)
+                    if (column.name === '') articleValidationErrors.push({ message: 'Please enter a column name.' });
+
+                    // Check if column name exceeds max-length
+                    if (column.name.length > 30) articleValidationErrors.push({ message: 'Please enter a column name with 30 characters or less.' });
+                });
+
+                // NOTE: The user should have the opportunity to leave a cell empty. Hence, no check
             }
         });
 
