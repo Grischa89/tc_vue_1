@@ -329,6 +329,8 @@ const actions = {
                     if (column.name.length > 30) articleValidationErrors.push({ message: 'Please enter a column name with 30 characters or less.' });
                 });
 
+                if (element.value === '') delete element.value;
+
                 // NOTE: The user should have the opportunity to leave a cell empty. Hence, no check
             }
         });
