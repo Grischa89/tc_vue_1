@@ -497,6 +497,23 @@ export default {
             this.article[indexListArray].items.push({
                 value: ''
             });
+            // Find out index of added item
+            const itemId = this.article[indexListArray].items.length - 1;
+            // Select added listarray item input
+            this.selectListarrayInput(sectionId, itemId);
+        },
+
+        selectListarrayInput(sectionId, itemId) {
+            // `listarrayItems-${sectionId}-Item${itemId}`
+            // listarrayItems-175508524333-Item0
+            console.log('%csectionId, itemId', 'color: darkseagreen; font-weight: bold;', sectionId, itemId);
+            const selectTimeout = setTimeout(() => {
+                const listarrayItemInput = document.querySelector(`#listarrayItems-${sectionId}-Item${itemId}`);
+                console.log('%clistarrayItemInput', 'color: darkseagreen; font-weight: bold;', listarrayItemInput);
+                listarrayItemInput.focus();
+                // tableColumnInput.select();
+                clearTimeout(selectTimeout);
+            }, 150);
         },
 
         deleteListArrayItem(sectionId, itemId) {
