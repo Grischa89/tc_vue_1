@@ -395,18 +395,22 @@ export default {
 
                     // Handle table section
                     if (element.key === 'table' && element.columns) {
+                        // Save columns object prop 'name' as string in new array
                         section.table_head = element.columns.map(({ name }) => name);
 
                         if (element.rows?.length) {
                             section.rows = [];
+                            // Loop through rows array
                             for (const item of element.rows) {
 
                                 const row = [];
 
+                                // Loop trhough objects of rows array + push value of each prop to own array 'row'
                                 for (const cell in item) {
                                     row.push(item[cell]);
                                 }
 
+                                // Push row array containing table cell content to rows array (creating an array of arrays)
                                 section.rows.push(row);
                             }
                         }
