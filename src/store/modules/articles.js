@@ -273,11 +273,8 @@ const actions = {
     },
 
     updateArticle({ commit }, data) {
-        console.log('%cupdateArticle article + type', 'color: orange; font-weight: bold;', data.article, typeof data.article);
-
         return axios.put(`/api/v1/articles/draggable/${data.slug}/`, data.article)
             .then(res => {
-                console.log('%cres in updateArticle', 'color: orange; font-weight: bold;', res);
                 return res.status;
             })
             .catch(err => {
