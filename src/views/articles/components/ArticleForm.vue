@@ -548,9 +548,12 @@ export default {
 
         handleColumnInput(e, sectionId, currentColumnIndex) {
             // Set currently entered name
+            // NOTE: Since props are retrieved via string notation (obj['key']) for now, also characters that would be invalid inside identifiers can be used, like '€'
             const currentColumnName = e.target.value;
             // If no changes were made, return
             if (this.previousColumnName === currentColumnName) return;
+
+            // Now it can be assumed that the user entered a column name that was not the previous
             // Get table object id
             const indexTable = this.findArticleSectionIndex(sectionId);
             // Create array with only column name strings
@@ -558,8 +561,8 @@ export default {
             // Check columnNames for duplicate values
             const duplicateColumnNames = this.containsDuplicateColumnNames(columnNames);
 
-            // If currentColumnName (the one just entered) is a duplicate then change it back to its provisional name
-            if (duplicateColumnNames) {
+            // If the user entered duplicate column name (one that is already occupied by another column) OR an empty string, then change it back to its provisional name, 'Column n'
+            if (duplicateColumnNames || currentColumnName === '') {
                 const provisonalColumnName = `Column ${currentColumnIndex + 1}`;
                 this.article[indexTable].columns[currentColumnIndex].name = provisonalColumnName;
                 // Select added col name input for user
@@ -569,7 +572,7 @@ export default {
                 return;
             }
 
-            // If currentColumnName is not a duplicate, update rows
+            // If the user entered a new, unique, non-empty column name, update rows
             this.updateRowProps(currentColumnName, this.previousColumnName, indexTable);
         },
 
