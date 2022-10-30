@@ -595,6 +595,7 @@ export default {
 
         containsDuplicateColumnNames(columnNamesArray) {
             return columnNamesArray.some(columnName => {
+                // If a columnName is unique the index of its first + last occurence is the same, if not it's a duplicate
                 if (columnNamesArray.indexOf(columnName) !== columnNamesArray.lastIndexOf(columnName)) {
                     return true;
                 }
