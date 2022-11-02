@@ -142,85 +142,87 @@
 
                                     <!-- COLUMNS -->
                                     <div class="form-article__main__form__section__row">
-                                        <fieldset>
-                                            <legend>Columns</legend>
-
-                                            <div v-for="(column, i) in element.columns"
-                                                :key="`${element.key}Cols-${element.id}`" class="form-article__main__form__section__row__list">
-                                                <label class="form-article__main__form__section__row__label" :for="`${element.key}Col${i}-${element.id}`">Col {{ i + 1 }}</label>
-
-                                                <ArticleFormSectionInput
-                                                    v-model.trim="column.name"
-                                                    @focus="saveColumnName(column.name)"
-                                                    @blur="handleColumnInput($event, element.id, i)"
-                                                    class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
-                                                    :idForLabel="`${element.key}Col${i}-${element.id}`"
-                                                    :isReadonly="false" />
-                                                <article-form-section-button 
-                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--inline"
-                                                    @click="deleteTableColumn(element.id, i)">
+                                        <fieldset class="form-article__main__form__section__row__fieldset">
+                                            <legend class="form-article__main__form__section__row__fieldset__legend">Columns</legend>
+                                            <div class="form-article__main__form__section__row__fieldset__grid">
+                                                <div v-for="(column, i) in element.columns"
+                                                    :key="`${element.key}Cols-${element.id}`"
+                                                    class="form-article__main__form__section__row__fieldset__grid__item form-article__main__form__section__row__fieldset__grid__item--columns">
+                                                    <label class="form-article__main__form__section__row__fieldset__grid__item__label" :for="`${element.key}Col${i}-${element.id}`" >Column {{ i + 1 }}</label>
+                                                    <input
+                                                        v-model.trim="column.name"
+                                                        @focus="saveColumnName(column.name)"
+                                                        @blur="handleColumnInput($event, element.id, i)"
+                                                        class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
+                                                        :id="`${element.key}Col${i}-${element.id}`"
+                                                        :placeholder="`Column ${i + 1}`" />
+                                                    <article-form-section-button
+                                                        @click="deleteTableColumn(element.id, i)">
+                                                        <template #icon>
+                                                            <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                        </template>
+                                                    </article-form-section-button>
+                                                    <div class="form-article__main__form__section__row__fieldset__grid__item__divider"></div>
+                                                </div>
+                                                <article-form-section-button
+                                                    @click="addTableColumn(element.id)"
+                                                    :id="`${element.key}ColumnBtn-${element.id}`"
+                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
+                                                    >
                                                     <template #icon>
-                                                        <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                        <IconPlus class="form-article__main__form__section__row__button__icon" />
+                                                    </template>
+                                                    <template #text-append>
+                                                        <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--append">
+                                                            Column
+                                                        </span>
                                                     </template>
                                                 </article-form-section-button>
                                             </div>
                                         </fieldset>
-
-                                        <article-form-section-button 
-                                            class="form-article__main__form__section__row__button"
-                                            @click="addTableColumn(element.id)"
-                                            :id="`${element.key}ColumnBtn-${element.id}`">
-                                            <template #text-prepend>
-                                                <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">
-                                                    Add column
-                                                </span>
-                                            </template>
-                                            <template #icon>
-                                                <IconPlus class="form-article__main__form__section__row__button__icon" />
-                                            </template>
-                                        </article-form-section-button>
                                     </div>
 
                                     <!-- ROWS -->
                                     <div class="form-article__main__form__section__row">
-                                        <fieldset>
-                                            <legend>Rows</legend>
+                                        <fieldset class="form-article__main__form__section__row__fieldset">
+                                            <legend         class="form-article__main__form__section__row__fieldset__legend">Rows</legend>
 
-                                            <div v-for="(row, i) in element.rows" :key="`${element.key}Rows-${element.id}`" class="form-article__main__form__section__row__list">
-                                                <label class="form-article__main__form__section__row__label">Row {{ i + 1 }}</label>
-                                                <template v-for="(cell, j) in element.columns">
-                                                    
-                                                    <label class="form-article__main__form__section__row__label--visually-hidden" :for="`${element.key}Row${i}-Col${j}-${element.id}`"></label>
-
-                                                    <ArticleFormSectionInput
-                                                        v-model.trim="row[`${element.columns[j].name}`]"
-                                                        class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
-                                                        :idForLabel="`${element.key}Row${i}-Col${j}-${element.id}`"
-                                                        :placeholder="element.columns[j].name"
-                                                        :isReadonly="false" />
-                                                </template>
+                                            <div 
+                                                class="form-article__main__form__section__row__fieldset__grid">
+                                                <div v-for="(row, i) in element.rows" :key="`${element.key}Rows-${element.id}`" class="form-article__main__form__section__row__fieldset__grid__item form-article__main__form__section__row__fieldset__grid__item--rows">
+                                                    <label class="form-article__main__form__section__row__fieldset__grid__item__label">Row {{ i + 1 }}</label>
+                                                    <div class="form-article__main__form__section__row__fieldset__grid__item__nested">
+                                                        <template v-for="(cell, j) in element.columns">
+                                                            <label class="form-article__main__form__section__row__label--visually-hidden" :for="`${element.key}Row${i}-Col${j}-${element.id}`"></label>
+                                                            <input
+                                                                v-model.trim="row[`${element.columns[j].name}`]"
+                                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input form-article__main__form__section__row__fieldset__grid__item__nested__item"
+                                                                :id="`${element.key}Row${i}-Col${j}-${element.id}`"
+                                                                :placeholder="element.columns[j].name" />
+                                                        </template>
+                                                    </div>
+                                                    <article-form-section-button
+                                                        @click="deleteTableRow(element.id, i)">
+                                                        <template #icon>
+                                                            <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                        </template>
+                                                    </article-form-section-button>
+                                                    <div class="form-article__main__form__section__row__fieldset__grid__item__divider"></div>
+                                                </div>
                                                 <article-form-section-button 
-                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--inline"
-                                                    @click="deleteTableRow(element.id, i)">
-                                                    <template #icon>
-                                                        <IconDelete class="form-article__main__form__section__row__button__icon" />
-                                                    </template>
-                                                </article-form-section-button>
+                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
+                                                    @click="addTableRow(element.id)">
+                                                        <template #icon>
+                                                            <IconPlus class="form-article__main__form__section__row__button__icon" />
+                                                        </template>
+                                                        <template #text-append>
+                                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--append">
+                                                                Row
+                                                            </span>
+                                                        </template>
+                                                	</article-form-section-button>
                                             </div>
                                         </fieldset>
-
-                                        <article-form-section-button 
-                                            class="form-article__main__form__section__row__button"
-                                            @click="addTableRow(element.id)">
-                                            <template #text-prepend>
-                                                <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">
-                                                    Add row
-                                                </span>
-                                            </template>
-                                            <template #icon>
-                                                <IconPlus class="form-article__main__form__section__row__button__icon" />
-                                            </template>
-                                        </article-form-section-button>
                                     </div>
                                 </template>
 
@@ -281,10 +283,10 @@
                                 <!-- DELETE BUTTON -->
                                 <div class="form-article__main__form__section__row">
                                     <article-form-section-button
-                                        class="form-article__main__form__section__row__button"
+                                        class="form-article__main__form__section__row__button form-article__main__form__section__row__button--delete"
                                         @click="deleteRow(element.id)">
                                         <template #text-prepend>
-                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">Delete Section</span>
+                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">Delete {{ element.key }}</span>
                                         </template>
                                         <template #icon>
                                             <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
@@ -854,14 +856,32 @@ export default {
                         &__row {
                             display: flex;
                             flex-direction: column;
+                            margin-bottom: 1rem;
+
+                            &:last-of-type {
+                                margin-bottom: 0;
+                            }
 
                             &__button {
                                 align-self: flex-start;
                                 display: flex;
                                 align-items: center;
-                                margin-top: 1rem;
-                                margin-bottom: .75rem;
-                                border-radius: 0.25em;
+                                justify-content: center;
+                                border-radius: 25rem;
+                                padding-top: .5rem;
+                                padding-bottom: .5rem;
+                                padding-left: .75rem;
+                                padding-right: .75rem;
+
+                                &--add {
+                                    background-color: var(--accent);
+                                }
+
+                                &--delete {
+                                    color: var(--error);
+                                    padding: 0;
+                                }
+
 
                                 &--expand {
                                     position: absolute;
@@ -886,9 +906,79 @@ export default {
 
                                 &__text {
                                     font-size: .875rem; // 14px
+                                    font-weight: 500;
 
                                     &--prepend {
                                         margin-right: .25rem;
+                                    }
+
+                                    &--append {
+                                        font-size: 1rem;
+                                        margin-left: .25rem;
+                                    }
+                                }
+                            }
+
+                            &__fieldset {
+                                display: flex;
+                                flex-direction:column;
+                                border-radius: .25rem;
+
+                                &__legend {
+                                    text-align: left;
+                                    font-weight: 500;
+                                    letter-spacing: .025rem;
+                                }
+
+                                &__grid {
+                                    display: grid;
+                                    gap: .5rem;
+                                    grid-template-columns: repeat(8,1fr);
+                                    padding-top: 1rem;
+                                    padding-bottom: 1rem;
+
+                                    &__item {
+                                        display: flex;
+                                        flex-direction: column;
+
+                                        &--columns {
+                                            grid-column: span 4;
+                                        }
+                                        
+                                        &--rows {
+                                            grid-column: span 8;
+                                        }
+
+                                        &__divider {
+                                            border-bottom: 1px solid var(--divider);
+                                            width: 90%;
+                                            padding-top: 1rem;
+                                            margin-bottom: 1rem;
+                                            margin-left: auto;
+                                            margin-right: auto;
+                                        }
+
+                                        &__label {
+                                            font-family: 'Courier New', Courier, monospace;
+                                            font-size: 1.125rem;
+                                            text-align: left;
+                                        }
+
+                                    
+                                        &__nested {
+                                            display: grid;
+                                            gap: .5rem;
+                                            grid-template-columns: repeat(2,1fr);
+
+                                            &__item {
+                                                grid-column: span 1;
+                                            }
+                                        }
+                                    }
+
+                                    &__button {
+                                        grid-column-start: 1;
+                                        grid-column-end: 9;
                                     }
                                 }
                             }
@@ -965,10 +1055,14 @@ export default {
                             &__label {
                                 align-self: flex-start;
                                 display: flex; // for checkbox label
-                                font-size: .875rem; // 14px
+                                font-size: 1rem; // 14px
                                 font-weight: 500;
                                 letter-spacing: .025rem;
                                 white-space: nowrap;
+
+                                @include tablet-landscape {
+                                    font-size: .875rem;
+                                }
 
                                 // &--checkbox {
                                 // }
@@ -1011,11 +1105,25 @@ export default {
                             &__list {
                                 display: flex;
                                 align-items: center;
+                                flex-wrap: wrap;
+                                // border: 1px solid red;
+                                border-radius: .25rem;
+                                padding: .25rem;
+                                margin-left: auto;
+                                margin-right: auto;
 
-                                :last-child {
-                                    align-self: flex-start;
-                                    margin-left: .25rem;
+                                &:nth-of-type(2n) {
+                                    background-color: black;
                                 }
+
+                                &:first-child {
+                                    
+                                }
+
+                                // &:last-child {
+                                //     align-self: flex-start;
+                                //     margin-left: .25rem;
+                                // }
                             }
 
                             &__value {
