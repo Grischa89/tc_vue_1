@@ -295,6 +295,7 @@ export default {
   --primary3: #f6a746; // $secondary-lighter
   --primary4: #f48b0b; // $secondary
   --secondary: hsla(33, 91%, 50%, 1);
+  --secondary-tonal: hsla(33, 91%, 50%, .3);
   --accent: #5f32dc;
   --accent-light: #cab9f3;
 
@@ -315,6 +316,7 @@ export default {
   --info-bg-fade: hsla(215, 63%, 48%, .15);
 
   --textarea-bg: hsl(0, 0%, 100%, 1);
+  --textarea-resize-indicator: hsla(33, 91%, 50%, .7);
   --divider: hsla(0, 3%, 14%, .1);
   --border: #e1e1e1;
   --border-input: #d5d5d5;
@@ -373,6 +375,7 @@ export default {
   --accent: #745eb0;
   --accent-light: #e7e4f2;
   --secondary: #d37f17;
+  --secondary-tonal: hsla(33, 80%, 46%, .3);
   // --secondary: #e8a34f;
   // --secondary: #d5a162;
 
@@ -393,6 +396,7 @@ export default {
   --info-bg-fade: hsla(214, 44%, 69%, .15);
 
   --textarea-bg: hsla(0, 0%, 23%, 1);
+  --textarea-resize-indicator: hsla(33, 80%, 46%, .85);
   --divider: #494949; // hsla(0, 3%, 14%, .96);
   --border: #494949;
   --border-input: #757575;

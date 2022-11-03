@@ -157,6 +157,7 @@
                                                         :id="`${element.key}Col${i}-${element.id}`"
                                                         :placeholder="`Column ${i + 1}`" />
                                                     <article-form-section-button
+                                                        class="form-article__main__form__section__row__button"
                                                         @click="deleteTableColumn(element.id, i)">
                                                         <template #icon>
                                                             <IconDelete class="form-article__main__form__section__row__button__icon" />
@@ -202,6 +203,7 @@
                                                         </template>
                                                     </div>
                                                     <article-form-section-button
+                                                        class="form-article__main__form__section__row__button"
                                                         @click="deleteTableRow(element.id, i)">
                                                         <template #icon>
                                                             <IconDelete class="form-article__main__form__section__row__button__icon" />
@@ -212,15 +214,15 @@
                                                 <article-form-section-button 
                                                     class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
                                                     @click="addTableRow(element.id)">
-                                                        <template #icon>
-                                                            <IconPlus class="form-article__main__form__section__row__button__icon" />
-                                                        </template>
-                                                        <template #text-append>
-                                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--append">
-                                                                Row
-                                                            </span>
-                                                        </template>
-                                                	</article-form-section-button>
+                                                    <template #icon>
+                                                        <IconPlus class="form-article__main__form__section__row__button__icon" />
+                                                    </template>
+                                                    <template #text-append>
+                                                        <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--append">
+                                                            Row
+                                                        </span>
+                                                    </template>
+                                                </article-form-section-button>
                                             </div>
                                         </fieldset>
                                     </div>
@@ -229,35 +231,38 @@
                                 <!-- LISTARRAY SECTION -->
                                 <template v-else-if="element.key === 'listarray'">
                                     <div class="form-article__main__form__section__row">
-                                        <label class="form-article__main__form__section__row__label" :for="`${element.key}Items-${element.id}`">Items</label>
-
-                                        <div v-for="(item, i) in element.items" :key="`${element.key}Items-${element.id}`" class="form-article__main__form__section__row__list">
-                                            <ArticleFormSectionTextarea
-                                                v-model.trim="item.value"
-                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
-                                                :idForLabel="`${element.key}Items-${element.id}-Item${i}`"
-                                                :rows="listArrayTextareaRows" />
-                                            <article-form-section-button 
-                                                class="form-article__main__form__section__row__button form-article__main__form__section__row__button--inline"
-                                                @click="deleteListArrayItem(element.id, i)">
+                                        <fieldset class="form-article__main__form__section__row__fieldset">
+                                            <legend class="form-article__main__form__section__row__fieldset__legend">Items</legend>
+                                            <div class="form-article__main__form__section__row__fieldset__container">
+                                                <div v-for="(item, i) in element.items" :key="`${element.key}Items-${element.id}`" class="form-article__main__form__section__row__fieldset__container__row">
+                                                    <label :for="`${element.key}Items-${element.id}-Item${i}`" class="form-article__main__form__section__row__fieldset__container__row__item form-article__main__form__section__row__fieldset__grid__item__label">{{ i + 1 }}</label>
+                                                    <ArticleFormSectionTextarea
+                                                        v-model.trim="item.value"
+                                                        class="form-article__main__form__section__row__fieldset__container__row__item form-article__main__form__section__row__value--textarea"
+                                                        :idForLabel="`${element.key}Items-${element.id}-Item${i}`"
+                                                        :rows="listArrayTextareaRows" />
+                                                    <article-form-section-button
+                                                    class="form-article__main__form__section__row__button--inline"
+                                                        @click="deleteListArrayItem(element.id, i)">
+                                                        <template #icon>
+                                                            <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                        </template>
+                                                    </article-form-section-button>
+                                                </div>
+                                                <article-form-section-button
+                                                class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
+                                                @click="addListArrayItem(element.id)">
                                                 <template #icon>
-                                                    <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                    <IconPlus class="form-article__main__form__section__row__button__icon" />
+                                                </template>
+                                                <template #text-append>
+                                                    <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--append">
+                                                        Item
+                                                    </span>
                                                 </template>
                                             </article-form-section-button>
-                                        </div>
-
-                                        <article-form-section-button 
-                                            class="form-article__main__form__section__row__button"
-                                            @click="addListArrayItem(element.id)">
-                                            <template #text-prepend>
-                                                <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">
-                                                    Add item
-                                                </span>
-                                            </template>
-                                            <template #icon>
-                                                <IconPlus class="form-article__main__form__section__row__button__icon" />
-                                            </template>
-                                        </article-form-section-button>
+                                            </div>
+                                        </fieldset>
                                     </div>
                                 </template>
 
@@ -285,11 +290,8 @@
                                     <article-form-section-button
                                         class="form-article__main__form__section__row__button form-article__main__form__section__row__button--delete"
                                         @click="deleteRow(element.id)">
-                                        <template #text-prepend>
-                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--prepend">Delete {{ element.key }}</span>
-                                        </template>
-                                        <template #icon>
-                                            <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
+                                        <template #text-append>
+                                            <span class="form-article__main__form__section__row__button__text">Delete {{ element.key }}</span>
                                         </template>
                                     </article-form-section-button>
                                 </div>
@@ -298,7 +300,16 @@
                         </div>
                     </template>
                 </draggable>
-                <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button>
+                <article-form-section-button v-if="showButtons" 
+                    class="form-article__main__button"
+                    @click="addRow">
+                    <template #icon>
+                        <IconPlus class="form-article__main__form__section__row__button__icon" />
+                    </template>
+                    <template #text-append>
+                        <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--append">Section</span>
+                    </template>
+                </article-form-section-button>
             </form>
             <div class="form-article__footer">
                 <div v-if="errors.length" class="form-article__footer__errors">
@@ -821,14 +832,16 @@ export default {
 
                 &__button {
                     align-self: flex-end;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding-top: .5rem;
+                    padding-bottom: .5rem;
                     padding-left: 1rem;
-                    padding-right: 1rem;
-                    margin-bottom: 1rem;
-                    height: 2rem;
-                    width: 15ch;
-                    border-radius: .25rem;
-                    background-color: var(--text);
-                    color: var(--textInverse);
+                    padding-right: 1.5rem;
+                    margin-top: 1rem;
+                    border-radius: 25rem;
+                    background-color: var(--secondary-tonal);
                     text-transform: capitalize;
                 }
 
@@ -868,20 +881,20 @@ export default {
                                 align-items: center;
                                 justify-content: center;
                                 border-radius: 25rem;
-                                padding-top: .5rem;
-                                padding-bottom: .5rem;
-                                padding-left: .75rem;
-                                padding-right: .75rem;
 
                                 &--add {
-                                    background-color: var(--accent);
+                                    background-color: var(--secondary-tonal);
+                                    width: 100%;
+                                    padding-top: .5rem;
+                                    padding-bottom: .5rem;
+                                    margin-top: 1rem;
                                 }
 
                                 &--delete {
-                                    color: var(--error);
-                                    padding: 0;
+                                    color: var(--help);
+                                    text-transform: uppercase;
+                                    letter-spacing: .025rem;
                                 }
-
 
                                 &--expand {
                                     position: absolute;
@@ -901,6 +914,8 @@ export default {
 
                                     &--delete {
                                         color: var(--error);
+                                        height: .875rem;
+                                        width: .875rem;
                                     }
                                 }
 
@@ -913,9 +928,14 @@ export default {
                                     }
 
                                     &--append {
-                                        font-size: 1rem;
+                                        // font-size: 1rem;
                                         margin-left: .25rem;
                                     }
+
+                                    &--append-sm {
+                                        margin-left: .25rem;
+                                    }
+
                                 }
                             }
 
@@ -928,6 +948,22 @@ export default {
                                     text-align: left;
                                     font-weight: 500;
                                     letter-spacing: .025rem;
+                                }
+
+                                &__container {
+                                    display: flex;
+                                    flex-direction: column;
+                                    margin-top: 1rem;
+                                    margin-bottom: 1rem;
+
+                                    &__row {
+                                        display: flex;
+                                        align-items: flex-start;
+
+                                        &__item {
+                                            margin-right: 1rem;
+                                        }
+                                    }
                                 }
 
                                 &__grid {
@@ -949,11 +985,11 @@ export default {
                                             grid-column: span 8;
                                         }
 
+
                                         &__divider {
                                             border-bottom: 1px solid var(--divider);
                                             width: 90%;
                                             padding-top: 1rem;
-                                            margin-bottom: 1rem;
                                             margin-left: auto;
                                             margin-right: auto;
                                         }
@@ -1141,7 +1177,7 @@ export default {
                                 min-height: 1.875rem; // 2 * font-size // 30px
 
                                 &--textarea {
-                                    background: linear-gradient(135deg,var(--textarea-bg) 0,var(--textarea-bg) 97.5%,var(--accent-light) 98%);
+                                    background: linear-gradient(135deg,var(--textarea-bg) 0,var(--textarea-bg) 97.5%,var(--textarea-resize-indicator) 98%);
                                 }
 
                                 &--checkbox {
@@ -1248,18 +1284,19 @@ export default {
                 &__button {
                     padding-top: .5rem;
                     padding-bottom: .5rem;
-                    padding-left: 1rem;
-                    padding-right: 1rem;
-                    margin-top: 2rem;
+                    padding-left: 1.75rem;
+                    padding-right: 1.75rem;
+                    margin-top: 1.5rem;
                     margin-bottom: 1rem;
                     margin-left: auto;
                     margin-right: auto;
-                    border-radius: 0.25em;
+                    border-radius: 25rem;
                     background-color: var(--secondary);
-                    color: $white;
-                    font-weight: 600;
-                    letter-spacing: .1ch;
-                    text-transform: uppercase;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    width: 100%;
+                    // letter-spacing: .1ch;
+                    // text-transform: uppercase;
                 }
             }
 
