@@ -325,7 +325,7 @@
             </div>
         </div>
         
-        <div class="preview-article">
+        <div class="preview-article" v-if="displayArticle.length">
             <div class="preview-article__header">
                 <h2 class="preview-article__header__title">Article Preview</h2>
             </div>
@@ -453,6 +453,7 @@ export default {
                     
                     return section;
                 });
+                console.log('%carticleMapped', 'color: darkseagreen; font-weight: bold;', articleMapped);
                 return articleMapped;
             }
         },
