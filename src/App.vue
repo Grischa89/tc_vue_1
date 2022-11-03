@@ -315,6 +315,7 @@ export default {
   --info-shadow: hsla(215, 63%, 48%, .4);
   --info-bg-fade: hsla(215, 63%, 48%, .15);
 
+  --article-form-bg: #ffffff;
   --textarea-bg: hsl(0, 0%, 100%, 1);
   --textarea-resize-indicator: hsla(33, 91%, 50%, .7);
   --divider: hsla(0, 3%, 14%, .1);
@@ -395,6 +396,7 @@ export default {
   --info-shadow: hsla(214, 44%, 69%, .4);
   --info-bg-fade: hsla(214, 44%, 69%, .15);
 
+  --article-form-bg: #1d1d1d;
   --textarea-bg: hsla(0, 0%, 23%, 1);
   --textarea-resize-indicator: hsla(33, 80%, 46%, .85);
   --divider: #494949; // hsla(0, 3%, 14%, .96);

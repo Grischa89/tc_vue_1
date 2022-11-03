@@ -850,11 +850,10 @@ export default {
 
                 &__form {
                     position: relative;
-
-                    background-color: var(--surface2);
+                    background-color: var(--article-form-bg);
                     padding: .5rem;
                     margin-bottom: .5rem;
-                    border: .0625rem solid var(--border);
+                    border: 1.5px solid var(--border);
                     border-radius: .25rem;
 
                     &__section {
