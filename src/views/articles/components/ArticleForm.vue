@@ -1138,30 +1138,6 @@ export default {
                                 }
                             }
 
-                            &__list {
-                                display: flex;
-                                align-items: center;
-                                flex-wrap: wrap;
-                                // border: 1px solid red;
-                                border-radius: .25rem;
-                                padding: .25rem;
-                                margin-left: auto;
-                                margin-right: auto;
-
-                                &:nth-of-type(2n) {
-                                    background-color: black;
-                                }
-
-                                &:first-child {
-                                    
-                                }
-
-                                // &:last-child {
-                                //     align-self: flex-start;
-                                //     margin-left: .25rem;
-                                // }
-                            }
-
                             &__value {
                                 align-self: flex-start;
                                 font-size: .9375rem; // 15px
