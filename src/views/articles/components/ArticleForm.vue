@@ -165,7 +165,7 @@
                                                             <IconDelete class="form-article__main__form__section__row__button__icon" />
                                                         </template>
                                                     </article-form-section-button>
-                                                    <div class="form-article__main__form__section__row__fieldset__grid__item__divider"></div>
+                                                    <div v-if="i < element.columns.length - 2" class="form-article__main__form__section__row__fieldset__grid__item__divider form-article__main__form__section__row__fieldset__grid__item__divider--columns"></div>
                                                 </div>
                                                 <article-form-section-button
                                                     @click="addTableColumn(element.id)"
@@ -211,7 +211,7 @@
                                                             <IconDelete class="form-article__main__form__section__row__button__icon" />
                                                         </template>
                                                     </article-form-section-button>
-                                                    <div class="form-article__main__form__section__row__fieldset__grid__item__divider"></div>
+                                                        <div v-if="i < element.rows.length - 1" class="form-article__main__form__section__row__fieldset__grid__item__divider"></div>
                                                 </div>
                                                 <article-form-section-button 
                                                     class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
@@ -889,10 +889,12 @@ export default {
 
                                 &--add {
                                     background-color: var(--secondary-tonal);
-                                    width: 100%;
+                                    width: min(100%, 300px);
                                     padding-top: .5rem;
                                     padding-bottom: .5rem;
                                     margin-top: 1rem;
+                                    margin-left: auto;
+                                    margin-right: auto;
                                 }
 
                                 &--delete {
@@ -980,6 +982,10 @@ export default {
 
                                         &--columns {
                                             grid-column: span 4;
+
+                                            @include tablet {
+                                                grid-column: span 2;
+                                            }
                                         }
                                         
                                         &--rows {
@@ -993,6 +999,13 @@ export default {
                                             padding-top: 1rem;
                                             margin-left: auto;
                                             margin-right: auto;
+
+                                            &--columns {
+                                                @include tablet {
+                                                    border: none;
+                                                    padding: 0;
+                                                }
+                                            }
                                         }
 
                                         &__label {
@@ -1007,6 +1020,10 @@ export default {
                                             gap: .5rem;
                                             grid-template-columns: repeat(2,1fr);
 
+                                            @include tablet {
+                                                grid-template-columns: repeat(4,1fr);
+                                            }
+
                                             &__item {
                                                 grid-column: span 1;
                                             }
@@ -1016,6 +1033,11 @@ export default {
                                     &__button {
                                         grid-column-start: 1;
                                         grid-column-end: 9;
+
+                                        @include tablet {
+                                            grid-column-start: 3;
+                                            grid-column-end: 7;
+                                        }
                                     }
                                 }
                             }
@@ -1108,6 +1130,7 @@ export default {
                                     align-self: center;
                                     background-color: var(--secondary-tonal);
                                     font-weight: 500;
+                                    font-size: 1rem;
                                     letter-spacing: normal;
                                     text-transform: capitalize;
                                     text-align: center;
@@ -1115,7 +1138,7 @@ export default {
                                     margin-top: .5rem;
                                     border-radius: 25rem;
                                     cursor: pointer;
-                                    width: 100%;
+                                    width: min(100%, 300px);
                                 }
 
                                 &--readonly {
@@ -1280,9 +1303,7 @@ export default {
                     background-color: var(--secondary);
                     font-size: 1rem;
                     font-weight: 500;
-                    width: 100%;
-                    // letter-spacing: .1ch;
-                    // text-transform: uppercase;
+                    width: min(100%, 300px);
                 }
             }
 
