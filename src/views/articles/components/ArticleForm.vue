@@ -840,8 +840,8 @@ export default {
                     justify-content: center;
                     padding-top: .5rem;
                     padding-bottom: .5rem;
-                    padding-left: 1rem;
-                    padding-right: 1.5rem;
+                    padding-left: 1.25rem;
+                    padding-right: 1.75rem;
                     margin-top: 1rem;
                     border-radius: 25rem;
                     background-color: var(--secondary-tonal);
