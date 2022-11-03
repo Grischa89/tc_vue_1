@@ -795,7 +795,9 @@ export default {
                 &__select-start {
                     display: flex;
                     flex-direction: column;
-                    margin: 1.5rem auto;
+                    margin-top: 1.5rem;
+                    margin-left: auto;
+                    margin-right: auto;
 
                     &__select {
                         align-self: center;
