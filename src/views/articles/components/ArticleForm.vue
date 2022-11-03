@@ -72,7 +72,7 @@
                                 <template v-else-if="element.key === 'image'">
                                     <!-- FILE -->
                                     <div class="form-article__main__form__section__row">
-                                        <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--file" :for="`imageFile-${element.id}`">Choose image</label>
+                                        <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--file" :for="`imageFile-${element.id}`"><span class="form-article__main__form__section__row__label__text">Choose image</span></label>
                                         <input @change="handleImage($event, element.id)"
                                             class="form-article__main__form__section__row__value form-article__main__form__section__row__value--file"
                                             type="file"
@@ -125,15 +125,17 @@
                                         <ArticleFormSectionTextarea
                                             class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
                                             v-model.trim="element.alt"
-                                            :idForLabel="`imageAlt-${element.id}`" />
+                                            :idForLabel="`imageAlt-${element.id}`"
+                                            :rows="imageAltTextareaRows" />
                                     </div>
                                     <!-- TITLE IMAGE -->
                                     <div class="form-article__main__form__section__row">
                                         <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--checkbox" :for="`imageTitleImage-${element.id}`">
+                                            <span class="form-article__main__form__section__row__label__checkbox">Title Image</span>
                                             <input
                                                 v-model="element.is_title_image"
                                                 type="checkbox" name="titleImage" :id="`imageTitleImage-${element.id}`">
-                                        <span class="form-article__main__form__section__row__label__text">Title Image</span></label>
+                                        </label>
                                     </div>
                                 </template>
 
@@ -291,7 +293,7 @@
                                         class="form-article__main__form__section__row__button form-article__main__form__section__row__button--delete"
                                         @click="deleteRow(element.id)">
                                         <template #text-append>
-                                            <span class="form-article__main__form__section__row__button__text">Delete {{ element.key }}</span>
+                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--delete">Delete {{ element.key }}</span>
                                         </template>
                                     </article-form-section-button>
                                 </div>
@@ -394,6 +396,7 @@ export default {
             previousColumnName: '',
             columnLimit: 4,
             listArrayTextareaRows: 1,
+            imageAltTextareaRows: 2,
         }
     },
 
@@ -894,6 +897,7 @@ export default {
                                     color: var(--help);
                                     text-transform: uppercase;
                                     letter-spacing: .025rem;
+                                    padding-top:1rem;
                                 }
 
                                 &--expand {
@@ -920,20 +924,15 @@ export default {
                                 }
 
                                 &__text {
-                                    font-size: .875rem; // 14px
+                                    font-size: 1rem;
                                     font-weight: 500;
 
-                                    &--prepend {
-                                        margin-right: .25rem;
-                                    }
-
                                     &--append {
-                                        // font-size: 1rem;
                                         margin-left: .25rem;
                                     }
 
-                                    &--append-sm {
-                                        margin-left: .25rem;
+                                    &--delete {
+                                        font-size: .875rem; // 14px
                                     }
 
                                 }
@@ -1104,15 +1103,17 @@ export default {
                                 // }
 
                                 &--file {
-                                    background-color: var(--accent);
-                                    color: #fff;
-                                    font-weight: 600;
+                                    align-self: center;
+                                    background-color: var(--secondary-tonal);
+                                    font-weight: 500;
+                                    letter-spacing: normal;
                                     text-transform: capitalize;
-                                    padding: .5rem 1.125rem;
+                                    text-align: center;
+                                    padding: .5rem 1.75rem;
                                     margin-top: .5rem;
-                                    margin-bottom: 1rem;
-                                    border-radius: 0.3rem;
+                                    border-radius: 25rem;
                                     cursor: pointer;
+                                    width: 100%;
                                 }
 
                                 &--readonly {
@@ -1133,8 +1134,13 @@ export default {
                                     border: 0 !important;
                                 }
 
+                                &__checkbox {
+                                    margin-right: 1rem;
+                                }
+
                                 &__text {
-                                    margin-left: .5rem;
+                                    margin-left: auto;
+                                    margin-right: auto;
                                 }
                             }
 
@@ -1182,9 +1188,11 @@ export default {
                                     text-overflow: ellipsis;
                                 }
 
-                                &--readonly {
+                                &:read-only {
                                     height: 2rem;
                                     color: var(--help);
+                                    background-color: var(--help-bg-fade);
+                                    cursor: default;
                                 }
 
                             }

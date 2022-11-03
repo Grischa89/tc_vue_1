@@ -1,7 +1,7 @@
 <template>
     <input
         :class="{ 'form-article__main__form__section__value--readonly': isReadonly }"
-        :style="[ isReadonly ? {'width': `${modelValue.toString().length + 2}ch`} : {'width': 'auto'}]"
+        :style="[ isReadonly ? {'width': `${modelValue.toString().length + 3}ch`} : {'width': 'auto'}]"
         type="text"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"

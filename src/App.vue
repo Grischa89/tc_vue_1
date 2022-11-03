@@ -379,9 +379,9 @@ export default {
   // --secondary: #e8a34f;
   // --secondary: #d5a162;
 
-  --help: hsla(0, 0%, 100%, .66);
+  --help: hsla(0, 0%, 100%, .5);
   --help-shadow: hsla(0, 0%, 100%, .5);
-  --help-bg-fade: hsla(0, 0%, 100%, .15);
+  --help-bg-fade: rgba(255, 255, 255, 0.25);
 
   --error: #e1566f;
   --error-shadow: hsla(349, 70%, 61%, .4);
