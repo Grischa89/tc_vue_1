@@ -334,7 +334,7 @@
                                         class="form-article__main__form__section__row__button form-article__main__form__section__row__button--delete"
                                         @click="deleteRow(element.id)">
                                         <template #text-append>
-                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--delete">Delete {{ element.key }}</span>
+                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--delete">Delete {{ element.key || `section` }}</span>
                                         </template>
                                     </article-form-section-button>
                                 </div>
