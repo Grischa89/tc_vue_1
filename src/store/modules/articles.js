@@ -297,6 +297,8 @@ const actions = {
                     break;
 
                 case 'heading':
+                    element.errors.value = '';
+
                     if (!element.value) {
                         if (!element.errors) element.errors = {};
                         element.errors.value = `Please enter content for the ${element.key}. It is required in order to create an article.`;
@@ -307,6 +309,8 @@ const actions = {
                     break;
 
                 case 'summary':
+                    element.errors.value = '';
+
                     if (!element.value) {
                         if (!element.errors) element.errors = {};
                         element.errors.value = `Please enter content for the ${element.key}. It is required in order to create an article.`;
@@ -317,6 +321,8 @@ const actions = {
                     break;
 
                 case 'image':
+                    element.errors.missingImage = '';
+
                     // No image file has been uploaded
                     if (!element.url) {
                         if (!element.errors) element.errors = {};
@@ -330,6 +336,8 @@ const actions = {
                     break;
 
                 case 'listarray':
+                    element.errors.missingItems = '';
+
                     // Items array not set or empty
                     if (!element.items || element.items.length === 0) {
                         if (!element.errors) element.errors = {};
@@ -339,6 +347,7 @@ const actions = {
                     // Check for empty list items
                     if (element.items) {
                         element.items.forEach(item => {
+                            item.errors.missingItemContent = '';
                             if (!item.value) {
                                 item.errors = {};
                                 item.errors.missingItemContent = `Please enter content for this item or delete it.`
@@ -351,6 +360,9 @@ const actions = {
                     break;
                 
                 case 'table':
+                    element.errors.missingColumns = '';
+                    element.errors.missingRows = '';
+
                     // Check if columns exist
                     if (!element.columns || element.columns.length === 0) {
                         if (!element.errors) element.errors = {};
@@ -366,6 +378,8 @@ const actions = {
                     // Check if a column's name property is empty
                     if (element.columns) {
                         element.columns.forEach(column => {
+                            column.errors.missingColumnName = '';
+                            column.errors.maxLengthExceeded = '';
                             // Double check for empty string (should already be check @blur event of column name input)
                             if (column.name === '') {
                                 column.errors = {};
@@ -387,6 +401,8 @@ const actions = {
                     
                 default:
                     // Sections: paragraph
+                    element.errors.value = '';
+
                     if (!element.value) {
                         if (!element.errors) element.errors = {};
                         element.errors.value = `Please enter content for this ${element.key} or delete the section.`;
