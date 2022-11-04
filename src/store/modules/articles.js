@@ -284,54 +284,100 @@ const actions = {
     },
 
     validateArticle({ commit }, data) {
+        console.log('%carticle in validate', 'color: darkseagreen; font-weight: bold;', data.article);
         let articleValidationErrors = [];
         let headingExists = false;
         let summaryExists = false;
 
         data.article.forEach(element => {
-            if (!element.key) articleValidationErrors.push({ message: `Please choose a section type or delete the section.` });
+            switch (element.key) {
+                case '':
+                    articleValidationErrors.push({ message: `Please choose a section type or delete the section.` });
+                    break;
 
-            // Only image / listarray / table sections are allowed to have an empty value field
-            if ((element.key !== 'image' && !element.value) && (element.key !== 'listarray' && !element.value) && (element.key !== 'table' && !element.value)) articleValidationErrors.push({ message: `Please enter content for the section ${element.key} or delete the section.` });
+                case 'heading':
+                    if (!element.value) {
+                        if (!element.errors) element.errors = {};
+                        element.errors.value = `Please enter content for the ${element.key}. It is required in order to create an article.`;
+                    } else if (element.value) {
+                        if (element.key === 'heading') headingExists = true;
+                        // TODO Here delete errors?
+                    }
+                    break;
 
-            // At this point for the relevant sections the value prop is not empty, so it can be assumed that the required sections exist
-            if (element.key === 'heading') headingExists = true;
-            if (element.key === 'summary') summaryExists = true;
+                case 'summary':
+                    if (!element.value) {
+                        if (!element.errors) element.errors = {};
+                        element.errors.value = `Please enter content for the ${element.key}. It is required in order to create an article.`;
+                    } else if (element.value) {
+                        if (element.key === 'summary') summaryExists = true;
+                        // TODO Here delete errors?
+                    }
+                    break;
 
-            if (element.key === 'image') {
-                // No image file has been uploaded
-                if (!element.url) articleValidationErrors.push({ message: 'Please choose an image to upload or delete this section.' });
+                case 'image':
+                    // No image file has been uploaded
+                    if (!element.url) {
+                        if (!element.errors) element.errors = {};
+                        element.errors.missingImage = `Please choose an image to upload or delete this section.`;
+                    }
 
-                // Since v-model ignores the initial value of a checkbox it needs to be set to false
-                if(element.is_title_image === undefined) element.is_title_image = false;
+                    // Since v-model ignores the initial value of a checkbox it needs to be set to false
+                    if(element.is_title_image === undefined) element.is_title_image = false;
 
-                if (element.value === '') delete element.value;
-            }
+                    if (element.value === '') delete element.value;
+                    break;
 
-            if (element.key === 'listarray') {
-                // No items array set
-                if (!element.items || element.items.length === 0) articleValidationErrors.push({ message: 'Please enter list items or delete this section.' });
+                case 'listarray':
+                    // Items array not set or empty
+                    if (!element.items || element.items.length === 0) {
+                        if (!element.errors) element.errors = {};
+                        element.errors.missingItems = `Please add items to this ${element.key} or delete the section.`
+                    }
 
-                // One or more missing item values in array
-                const missingItemValues = element.items.some(({ value }) => value.length <= 0);
-                if (missingItemValues) articleValidationErrors.push({ message: 'One or more list item in this section have no content. Please enter text or delete the items.' });
+                    // Check for empty list items
+                    if (element.items) {
+                        element.items.forEach(item => {
+                            if (!item.value) {
+                                item.errors = {};
+                                item.errors.missingItemContent = `Please enter content for this item or delete it.`
+                            }
+                        });
+                    }
 
-                if (element.value === '') delete element.value;
-            }
+                    if (element.value === '') delete element.value;
+                    // delete errors? TODO
+                    break;
+                
+                case 'table':
+                    // Check if a column's name property is empty
+                    element.columns.forEach(column => {
+                        // Double check for empty string (should already be check @blur event of column name input)
+                        if (column.name === '') {
+                            column.errors = {};
+                            column.errors.missingColumnName = `A column name is required. Please enter one or delete the column.`;
+                        }
 
-            if (element.key === 'table') {
-                // Check if a column's name property is empty
-                element.columns.forEach(column => {
-                    // Double check for empty string (should already be check @blur event of column name input)
-                    if (column.name === '') articleValidationErrors.push({ message: 'Please enter a column name.' });
+                        // Check if column name exceeds max-length
+                        if (column.name.length > 30) {
+                            column.errors = {};
+                            column.errors.maxLengthExceeded = `Please enter a column name with 30 characters or less.`;
+                        }
+                    });
 
-                    // Check if column name exceeds max-length
-                    if (column.name.length > 30) articleValidationErrors.push({ message: 'Please enter a column name with 30 characters or less.' });
-                });
+                    if (element.value === '') delete element.value;
 
-                if (element.value === '') delete element.value;
-
-                // NOTE: The user should have the opportunity to leave a cell empty. Hence, no check
+                    // NOTE: The user should have the opportunity to leave a cell empty. Hence, no check
+                    break;
+                    
+                default:
+                    // Sections: paragraph
+                    if (!element.value) {
+                        if (!element.errors) element.errors = {};
+                        element.errors.value = `Please enter content for this ${element.key} or delete the section.`;
+                    }
+                    // else if delete errors? TODO
+                    break;
             }
         });
 

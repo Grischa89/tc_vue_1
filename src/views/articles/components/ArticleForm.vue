@@ -10,7 +10,7 @@
             
             <form class="form-article__main" @submit.prevent enctype="multipart/form-data">
                 <!-- <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button> -->
-                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" @change="sortImageFilesAccordingToArticle()" :delay="200" :delayOnTouchOnly="true" :touchStartThreshold="4" :animation="150">
+                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="200" :delayOnTouchOnly="true" :touchStartThreshold="4" :animation="150">
                     <template #item="{element}">
                         <div class="form-article__main__form">
 
@@ -64,7 +64,7 @@
                                 <!-- NO SECTION CHOSEN YET -->
                                 <template v-if="element.key === ''">
                                     <div class="form-article__main__form__section__row">
-                                        Please remember to choose a section.
+                                        <p class="form-article__main__form__section__row__info">Please remember to choose a section.</p>
                                     </div>
                                 </template>
 
@@ -80,6 +80,9 @@
                                             name="image"
                                             :id="`imageFile-${element.id}`">
                                     </div>
+                                    <ArticleFormSectionError
+                                            v-if="element.errors?.missingImage"
+                                            :error="element.errors.missingImage" />
                                     <!-- PREVIEW WITH PROGRESS BAR -->
                                     <ArticleFormSectionImage 
                                         class="form-article__main__form__section__row"
@@ -165,6 +168,12 @@
                                                             <IconDelete class="form-article__main__form__section__row__button__icon" />
                                                         </template>
                                                     </article-form-section-button>
+                                                    <ArticleFormSectionError
+                                                        v-if="column.errors?.missingColumnName"
+                                                        :error="column.errors.missingColumnName" />
+                                                    <ArticleFormSectionError
+                                                        v-if="column.errors?.maxLengthExceeded"
+                                                        :error="column.errors.maxLengthExceeded" />
                                                     <div v-if="i < element.columns.length - 2" class="form-article__main__form__section__row__fieldset__grid__item__divider form-article__main__form__section__row__fieldset__grid__item__divider--columns"></div>
                                                 </div>
                                                 <article-form-section-button
@@ -211,7 +220,11 @@
                                                             <IconDelete class="form-article__main__form__section__row__button__icon" />
                                                         </template>
                                                     </article-form-section-button>
-                                                        <div v-if="i < element.rows.length - 1" class="form-article__main__form__section__row__fieldset__grid__item__divider"></div>
+                                                    <template v-if="!element.columns">
+                                                            <ArticleFormSectionError
+                                                                :error="rowsError" />
+                                                        </template>
+                                                    <div v-if="i < element.rows.length - 1" class="form-article__main__form__section__row__fieldset__grid__item__divider"></div>
                                                 </div>
                                                 <article-form-section-button 
                                                     class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
@@ -236,35 +249,43 @@
                                         <fieldset class="form-article__main__form__section__row__fieldset">
                                             <legend class="form-article__main__form__section__row__fieldset__legend">Items</legend>
                                             <div class="form-article__main__form__section__row__fieldset__container">
-                                                <div v-for="(item, i) in element.items" :key="`${element.key}Items-${element.id}`" class="form-article__main__form__section__row__fieldset__container__row">
-                                                    <label :for="`${element.key}Items-${element.id}-Item${i}`" class="form-article__main__form__section__row__fieldset__container__row__item form-article__main__form__section__row__fieldset__grid__item__label">{{ i + 1 }}</label>
-                                                    <ArticleFormSectionTextarea
-                                                        v-model.trim="item.value"
-                                                        class="form-article__main__form__section__row__fieldset__container__row__item form-article__main__form__section__row__value--textarea"
-                                                        :idForLabel="`${element.key}Items-${element.id}-Item${i}`"
-                                                        :rows="listArrayTextareaRows" />
-                                                    <article-form-section-button
-                                                    class="form-article__main__form__section__row__button--inline"
-                                                        @click="deleteListArrayItem(element.id, i)">
-                                                        <template #icon>
-                                                            <IconDelete class="form-article__main__form__section__row__button__icon" />
-                                                        </template>
-                                                    </article-form-section-button>
+                                                <div v-for="(item, i) in element.items" :key="`${element.key}Items-${element.id}`">
+                                                    <div class="form-article__main__form__section__row__fieldset__container__row">
+                                                        <label :for="`${element.key}Items-${element.id}-Item${i}`" class="form-article__main__form__section__row__fieldset__container__row__item form-article__main__form__section__row__fieldset__grid__item__label">{{ i + 1 }}</label>
+                                                        <ArticleFormSectionTextarea
+                                                            v-model.trim="item.value"
+                                                            class="form-article__main__form__section__row__fieldset__container__row__item form-article__main__form__section__row__value--textarea"
+                                                            :idForLabel="`${element.key}Items-${element.id}-Item${i}`"
+                                                            :rows="listArrayTextareaRows" />
+                                                        <article-form-section-button
+                                                        class="form-article__main__form__section__row__button--inline"
+                                                            @click="deleteListArrayItem(element.id, i)">
+                                                            <template #icon>
+                                                                <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                            </template>
+                                                        </article-form-section-button>
+                                                    </div>
+                                                    <ArticleFormSectionError
+                                                        v-if="item.errors?.missingItemContent"
+                                                        :error="item.errors.missingItemContent" />
                                                 </div>
                                                 <article-form-section-button
-                                                class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
-                                                @click="addListArrayItem(element.id)">
-                                                <template #icon>
-                                                    <IconPlus class="form-article__main__form__section__row__button__icon" />
-                                                </template>
-                                                <template #text-append>
-                                                    <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--append">
-                                                        Item
-                                                    </span>
-                                                </template>
-                                            </article-form-section-button>
+                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
+                                                    @click="addListArrayItem(element.id)">
+                                                    <template #icon>
+                                                        <IconPlus class="form-article__main__form__section__row__button__icon" />
+                                                    </template>
+                                                    <template #text-append>
+                                                        <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--append">
+                                                            Item
+                                                        </span>
+                                                    </template>
+                                                </article-form-section-button>
                                             </div>
                                         </fieldset>
+                                        <ArticleFormSectionError
+                                            v-if="element.errors?.missingItems"
+                                            :error="element.errors.missingItems" />
                                     </div>
                                 </template>
 
@@ -284,12 +305,23 @@
                                             v-model.trim="element.value"
                                             class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
                                             :idForLabel="`${element.key}Content-${element.id}`" />
+                                        <ArticleFormSectionError
+                                            v-if="element.errors.value"
+                                            :error="element.errors.value" />
                                     </div>
                                 </template>
 
                                 <!-- DELETE BUTTON -->
                                 <div class="form-article__main__form__section__row">
                                     <article-form-section-button
+                                        v-if="element.key !== 'heading' && element.key !== 'summary'"
+                                        class="form-article__main__form__section__row__button form-article__main__form__section__row__button--notallowed">
+                                        <template #text-append>
+                                            <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--delete">Delete {{ element.key }}</span>
+                                        </template>
+                                    </article-form-section-button>
+                                    <article-form-section-button
+                                        v-else
                                         class="form-article__main__form__section__row__button form-article__main__form__section__row__button--delete"
                                         @click="deleteRow(element.id)">
                                         <template #text-append>
@@ -315,7 +347,9 @@
             </form>
             <div class="form-article__footer">
                 <div v-if="errors.length" class="form-article__footer__errors">
-                    <p v-for="(error, i) in errors" :key="i">{{ error.message }}</p>
+                    <ArticleFormSectionError
+                        v-for="(error, i) in errors" :key="i"
+                        :error="error.message" />
                 </div>
                 <slot 
                     v-if="showButtons" 
@@ -346,6 +380,7 @@ import ArticleFormSectionButton from './ArticleFormSectionButton.vue';
 import ArticleFormSectionInput from './ArticleFormSectionInput.vue';
 import ArticleFormSectionTextarea from './ArticleFormSectionTextarea.vue';
 import ArticleFormSectionSelect from './ArticleFormSectionSelect.vue';
+import ArticleFormSectionError from './ArticleFormSectionError.vue';
 import ArticleTemplate from './ArticleTemplate.vue';
 import ArticleDisplay from './ArticleDisplay.vue';
 import IconExpand from '../../../components/icons/IconExpand.vue';
@@ -364,6 +399,7 @@ export default {
     ArticleFormSectionInput,
     ArticleFormSectionTextarea,
     ArticleFormSectionSelect,
+    ArticleFormSectionError,
     ArticleTemplate,
     ArticleDisplay,
     IconExpand,
@@ -395,6 +431,7 @@ export default {
             article: this.articleToUpdate || [],
             previousColumnName: '',
             columnLimit: 4,
+            rowsError: 'Please enter a column first in order to set content for rows.',
             listArrayTextareaRows: 1,
             imageAltTextareaRows: 2,
         }
@@ -453,7 +490,7 @@ export default {
                     
                     return section;
                 });
-                console.log('%carticleMapped', 'color: darkseagreen; font-weight: bold;', articleMapped);
+                
                 return articleMapped;
             }
         },
@@ -620,6 +657,20 @@ export default {
             if (duplicateColumnNames || currentColumnName === '') {
                 const provisonalColumnName = this.createProvisionalColumnName();
                 this.article[indexTable].columns[currentColumnIndex].name = provisonalColumnName;
+
+                // In case of an empty column name
+                if (currentColumnName === '') {
+                    // Show error message to user
+                    this.article[indexTable].columns[currentColumnIndex].errors = {};
+                    this.article[indexTable].columns[currentColumnIndex].errors.missingColumnName = `A column name is required. A provisional name has been set for now. Please change it to your liking or delete the column.`;
+
+                    // Clear error message after some time
+                    const errorTimeout = setTimeout(() => {
+                        this.article[indexTable].columns[currentColumnIndex].errors.missingColumnName = '';
+                        clearTimeout(errorTimeout);
+                    }, 5000);
+                }
+
                 // Select added col name input for user
                 this.selectTableColumnInput(sectionId, currentColumnIndex);
                 // Update row objects with provisional name
@@ -773,6 +824,8 @@ export default {
    .edit {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        min-height: 50vh;
 
         .form-article {
             display: flex;
@@ -901,7 +954,7 @@ export default {
                                     color: var(--help);
                                     text-transform: uppercase;
                                     letter-spacing: .025rem;
-                                    padding-top:1rem;
+                                    padding-top: 1rem;
                                 }
 
                                 &--expand {
@@ -914,6 +967,14 @@ export default {
 
                                 &--inline {
                                     margin-top: .5rem;
+                                }
+
+                                &--not-allowed {
+                                    color: var(--help);
+                                    text-transform: uppercase;
+                                    letter-spacing: .025rem;
+                                    padding-top: 1rem;
+                                    cursor: not-allowed;
                                 }
 
                                 &__icon {
@@ -1096,6 +1157,15 @@ export default {
                                         color: black;
                                     }
                                 }
+                            }
+
+                            &__info {
+                                color: var(--info);
+                                background-color: var(--info-bg-fade);
+                                font-size: .875rem;
+                                text-align: left;
+                                padding: .25rem .5rem;
+                                border-radius: .25rem;
                             }
 
                             &__key {
