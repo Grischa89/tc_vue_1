@@ -292,7 +292,8 @@ const actions = {
         data.article.forEach(element => {
             switch (element.key) {
                 case '':
-                    articleValidationErrors.push({ message: `Please choose a section type or delete the section.` });
+                    if (!element.errors) element.errors = {};
+                    element.errors.missingSection = `Please choose a section type or delete the section.`;
                     break;
 
                 case 'heading':
@@ -361,7 +362,7 @@ const actions = {
                         if (!element.errors) element.errors = {};
                         element.errors.missingRows = `Rows with entries are required to create a table section. Please create at least one row or delete the section.`;
                     }
-                    
+
                     // Check if a column's name property is empty
                     if (element.columns) {
                         element.columns.forEach(column => {

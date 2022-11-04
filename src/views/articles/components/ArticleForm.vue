@@ -64,7 +64,10 @@
                                 <!-- NO SECTION CHOSEN YET -->
                                 <template v-if="element.key === ''">
                                     <div class="form-article__main__form__section__row">
-                                        <p class="form-article__main__form__section__row__info">Please remember to choose a section.</p>
+                                        <ArticleFormSectionError
+                                            v-if="element.errors?.missingSection"
+                                            :error="element.errors.missingSection" />
+                                        <p v-else class="form-article__main__form__section__row__info">Please remember to choose a section.</p>
                                     </div>
                                 </template>
 
@@ -81,8 +84,8 @@
                                             :id="`imageFile-${element.id}`">
                                     </div>
                                     <ArticleFormSectionError
-                                            v-if="element.errors?.missingImage"
-                                            :error="element.errors.missingImage" />
+                                        v-if="element.errors?.missingImage"
+                                        :error="element.errors.missingImage" />
                                     <!-- PREVIEW WITH PROGRESS BAR -->
                                     <ArticleFormSectionImage 
                                         class="form-article__main__form__section__row"
