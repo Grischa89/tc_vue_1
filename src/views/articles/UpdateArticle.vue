@@ -6,7 +6,7 @@
                 <h1 class="form-article__header__title">{{ title }}</h1>
             </template>
 
-            <template #submitButton="{ articleToValidate, imagesToValidate }">
+            <template #submitButton="{ articleToValidate }">
                 <button class="form-article__footer__button" type="button" @click="submitUpdateForm(articleToValidate)">{{ submitButtonText }}</button>
             </template>
     </ArticleForm>

@@ -17,7 +17,7 @@
             </div>
         </template>
 
-        <template #submitButton="{ articleToValidate, imagesToValidate }">
+        <template #submitButton="{ articleToValidate }">
             <button class="form-article__footer__button" type="button" @click="submitForm(articleToValidate)">{{ submitButtonText }}</button>
         </template>
     </ArticleForm>
