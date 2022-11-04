@@ -192,6 +192,9 @@
                                                 </article-form-section-button>
                                             </div>
                                         </fieldset>
+                                        <ArticleFormSectionError
+                                            v-if="element.errors?.missingColumns"
+                                            :error="element.errors.missingColumns" />
                                     </div>
 
                                     <!-- ROWS -->
@@ -240,6 +243,9 @@
                                                 </article-form-section-button>
                                             </div>
                                         </fieldset>
+                                        <ArticleFormSectionError
+                                            v-if="element.errors?.missingRows"
+                                            :error="element.errors.missingRows" />
                                     </div>
                                 </template>
 

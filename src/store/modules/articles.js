@@ -350,20 +350,34 @@ const actions = {
                     break;
                 
                 case 'table':
-                    // Check if a column's name property is empty
-                    element.columns.forEach(column => {
-                        // Double check for empty string (should already be check @blur event of column name input)
-                        if (column.name === '') {
-                            column.errors = {};
-                            column.errors.missingColumnName = `A column name is required. Please enter one or delete the column.`;
-                        }
+                    // Check if columns exist
+                    if (!element.columns || element.columns.length === 0) {
+                        if (!element.errors) element.errors = {};
+                        element.errors.missingColumns = `Columns are required to create a table section. Please create at least one column or delete the section.`;
+                    }
 
-                        // Check if column name exceeds max-length
-                        if (column.name.length > 30) {
-                            column.errors = {};
-                            column.errors.maxLengthExceeded = `Please enter a column name with 30 characters or less.`;
-                        }
-                    });
+                    // Check if rows exist
+                    if (!element.rows || element.rows.length === 0) {
+                        if (!element.errors) element.errors = {};
+                        element.errors.missingRows = `Rows with entries are required to create a table section. Please create at least one row or delete the section.`;
+                    }
+                    
+                    // Check if a column's name property is empty
+                    if (element.columns) {
+                        element.columns.forEach(column => {
+                            // Double check for empty string (should already be check @blur event of column name input)
+                            if (column.name === '') {
+                                column.errors = {};
+                                column.errors.missingColumnName = `A column name is required. Please enter one or delete the column.`;
+                            }
+    
+                            // Check if column name exceeds max-length
+                            if (column.name.length > 30) {
+                                column.errors = {};
+                                column.errors.maxLengthExceeded = `Please enter a column name with 30 characters or less.`;
+                            }
+                        });
+                    }
 
                     if (element.value === '') delete element.value;
 
