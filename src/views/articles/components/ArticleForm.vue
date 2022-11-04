@@ -314,8 +314,8 @@
                                 <!-- DELETE BUTTON -->
                                 <div class="form-article__main__form__section__row">
                                     <article-form-section-button
-                                        v-if="element.key !== 'heading' && element.key !== 'summary'"
-                                        class="form-article__main__form__section__row__button form-article__main__form__section__row__button--notallowed">
+                                        v-if="element.key === 'heading' || element.key === 'summary'"
+                                        class="form-article__main__form__section__row__button form-article__main__form__section__row__button--not-allowed">
                                         <template #text-append>
                                             <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--delete">Delete {{ element.key }}</span>
                                         </template>
