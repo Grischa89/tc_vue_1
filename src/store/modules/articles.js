@@ -297,11 +297,11 @@ const actions = {
                     break;
 
                 case 'heading':
-                    element.errors.value = '';
+                    element.errors.missingContent = '';
 
                     if (!element.value) {
                         if (!element.errors) element.errors = {};
-                        element.errors.value = `Please enter content for the ${element.key}. It is required in order to create an article.`;
+                        element.errors.missingContent = `Please enter content for the ${element.key}. It is required in order to create an article.`;
                     } else if (element.value) {
                         if (element.key === 'heading') headingExists = true;
                         // TODO Here delete errors?
@@ -309,11 +309,11 @@ const actions = {
                     break;
 
                 case 'summary':
-                    element.errors.value = '';
+                    element.errors.missingContent = '';
 
                     if (!element.value) {
                         if (!element.errors) element.errors = {};
-                        element.errors.value = `Please enter content for the ${element.key}. It is required in order to create an article.`;
+                        element.errors.missingContent = `Please enter content for the ${element.key}. It is required in order to create an article.`;
                     } else if (element.value) {
                         if (element.key === 'summary') summaryExists = true;
                         // TODO Here delete errors?
@@ -401,11 +401,11 @@ const actions = {
                     
                 default:
                     // Sections: paragraph
-                    element.errors.value = '';
+                    element.errors.missingContent = '';
 
                     if (!element.value) {
                         if (!element.errors) element.errors = {};
-                        element.errors.value = `Please enter content for this ${element.key} or delete the section.`;
+                        element.errors.missingContent = `Please enter content for this ${element.key} or delete the section.`;
                     }
                     // else if delete errors? TODO
                     break;
