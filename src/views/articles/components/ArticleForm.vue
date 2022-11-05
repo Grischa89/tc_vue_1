@@ -152,7 +152,7 @@
                                     <div class="form-article__main__form__section__row">
                                         <fieldset class="form-article__main__form__section__row__fieldset">
                                             <legend class="form-article__main__form__section__row__fieldset__legend">Columns</legend>
-                                            <div class="form-article__main__form__section__row__fieldset__grid">
+                                            <div v-if="element.columns" class="form-article__main__form__section__row__fieldset__grid">
                                                 <div v-for="(column, i) in element.columns"
                                                     :key="`${element.key}Cols-${element.id}`"
                                                     class="form-article__main__form__section__row__fieldset__grid__item form-article__main__form__section__row__fieldset__grid__item--columns">
@@ -179,10 +179,11 @@
                                                         :error="column.errors.maxLengthExceeded" />
                                                     <div v-if="i < element.columns.length - 2" class="form-article__main__form__section__row__fieldset__grid__item__divider form-article__main__form__section__row__fieldset__grid__item__divider--columns"></div>
                                                 </div>
-                                                <article-form-section-button
+                                            </div>
+                                            <article-form-section-button
                                                     @click="addTableColumn(element.id)"
                                                     :id="`${element.key}ColumnBtn-${element.id}`"
-                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
+                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add"
                                                     >
                                                     <template #icon>
                                                         <IconPlus class="form-article__main__form__section__row__button__icon" />
@@ -193,7 +194,6 @@
                                                         </span>
                                                     </template>
                                                 </article-form-section-button>
-                                            </div>
                                         </fieldset>
                                         <ArticleFormSectionError
                                             v-if="element.errors?.missingColumns"
@@ -205,7 +205,7 @@
                                         <fieldset class="form-article__main__form__section__row__fieldset">
                                             <legend         class="form-article__main__form__section__row__fieldset__legend">Rows</legend>
 
-                                            <div 
+                                            <div v-if="element.rows"
                                                 class="form-article__main__form__section__row__fieldset__grid">
                                                 <div v-for="(row, i) in element.rows" :key="`${element.key}Rows-${element.id}`" class="form-article__main__form__section__row__fieldset__grid__item form-article__main__form__section__row__fieldset__grid__item--rows">
                                                     <label class="form-article__main__form__section__row__fieldset__grid__item__label">Row {{ i + 1 }}</label>
@@ -232,8 +232,9 @@
                                                     </template>
                                                     <div v-if="i < element.rows.length - 1" class="form-article__main__form__section__row__fieldset__grid__item__divider"></div>
                                                 </div>
+                                            </div>
                                                 <article-form-section-button 
-                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
+                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add"
                                                     @click="addTableRow(element.id)">
                                                     <template #icon>
                                                         <IconPlus class="form-article__main__form__section__row__button__icon" />
@@ -244,7 +245,6 @@
                                                         </span>
                                                     </template>
                                                 </article-form-section-button>
-                                            </div>
                                         </fieldset>
                                         <ArticleFormSectionError
                                             v-if="element.errors?.missingRows"
@@ -952,7 +952,7 @@ export default {
 
                                 &--add {
                                     background-color: var(--secondary-tonal);
-                                    width: min(100%, 300px);
+                                    width: min(100%, 400px);
                                     padding-top: .5rem;
                                     padding-bottom: .5rem;
                                     margin-top: 1rem;
@@ -1105,16 +1105,6 @@ export default {
                                             }
                                         }
                                     }
-
-                                    &__button {
-                                        grid-column-start: 1;
-                                        grid-column-end: 9;
-
-                                        @include tablet {
-                                            grid-column-start: 3;
-                                            grid-column-end: 7;
-                                        }
-                                    }
                                 }
                             }
 
@@ -1223,7 +1213,7 @@ export default {
                                     margin-top: .5rem;
                                     border-radius: 25rem;
                                     cursor: pointer;
-                                    width: min(100%, 300px);
+                                    width: min(100%, 400px);
                                 }
 
                                 &--readonly {
@@ -1388,7 +1378,7 @@ export default {
                     background-color: var(--secondary);
                     font-size: 1rem;
                     font-weight: 500;
-                    width: min(100%, 300px);
+                    width: min(100%, 400px);
                 }
             }
 
