@@ -345,7 +345,7 @@ const actions = {
                     // Check for empty list items
                     if (element.items) {
                         element.items.forEach(item => {
-                            item.errors.missingItemContent = '';
+                            if (item.errors) item.errors.missingItemContent = '';
                             if (!item.value) {
                                 item.errors = {};
                                 item.errors.missingItemContent = `Please enter content for this item or delete it.`
@@ -357,8 +357,10 @@ const actions = {
                     break;
                 
                 case 'table':
-                    element.errors.missingColumns = '';
-                    element.errors.missingRows = '';
+                    if (element.errors) {
+                        element.errors.missingColumns = '';
+                        element.errors.missingRows = '';
+                    }
 
                     // Check if columns exist
                     if (!element.columns || element.columns.length === 0) {
@@ -375,8 +377,11 @@ const actions = {
                     // Check if a column's name property is empty
                     if (element.columns) {
                         element.columns.forEach(column => {
-                            column.errors.missingColumnName = '';
-                            column.errors.maxLengthExceeded = '';
+                            if (column.errors) {
+                                column.errors.missingColumnName = '';
+                                column.errors.maxLengthExceeded = '';
+                            }
+                            
                             // Double check for empty string (should already be check @blur event of column name input)
                             if (column.name === '') {
                                 column.errors = {};
