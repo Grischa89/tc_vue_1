@@ -227,9 +227,9 @@
                                                         </template>
                                                     </article-form-section-button>
                                                     <template v-if="!element.columns">
-                                                            <ArticleFormSectionError
-                                                                :error="rowsError" />
-                                                        </template>
+                                                        <ArticleFormSectionError
+                                                            :error="rowsError" />
+                                                    </template>
                                                     <div v-if="i < element.rows.length - 1" class="form-article__main__form__section__row__fieldset__grid__item__divider"></div>
                                                 </div>
                                                 <article-form-section-button 
@@ -277,6 +277,7 @@
                                                     <ArticleFormSectionError
                                                         v-if="item.errors?.missingItemContent"
                                                         :error="item.errors.missingItemContent" />
+                                                    <div v-if="i < element.items.length - 1" class="form-article__main__form__section__row__fieldset__grid__item__divider form-article__main__form__section__row__fieldset__grid__item__divider--listarray"></div>
                                                 </div>
                                                 <article-form-section-button
                                                     class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
@@ -1075,6 +1076,11 @@ export default {
                                                     border: none;
                                                     padding: 0;
                                                 }
+                                            }
+
+                                            &--listarray {
+                                                padding-top: .5rem;
+                                                margin-bottom: .5rem;
                                             }
                                         }
 
