@@ -304,7 +304,6 @@ const actions = {
                         element.errors.missingContent = `Please enter content for the ${element.key}. It is required in order to create an article.`;
                     } else if (element.value) {
                         if (element.key === 'heading') headingExists = true;
-                        // TODO Here delete errors?
                     }
                     break;
 
@@ -316,7 +315,6 @@ const actions = {
                         element.errors.missingContent = `Please enter content for the ${element.key}. It is required in order to create an article.`;
                     } else if (element.value) {
                         if (element.key === 'summary') summaryExists = true;
-                        // TODO Here delete errors?
                     }
                     break;
 
@@ -356,7 +354,6 @@ const actions = {
                     }
 
                     if (element.value === '') delete element.value;
-                    // delete errors? TODO
                     break;
                 
                 case 'table':
@@ -407,7 +404,6 @@ const actions = {
                         if (!element.errors) element.errors = {};
                         element.errors.missingContent = `Please enter content for this ${element.key} or delete the section.`;
                     }
-                    // else if delete errors? TODO
                     break;
             }
         });
