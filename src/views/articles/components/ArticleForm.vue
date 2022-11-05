@@ -864,6 +864,7 @@ export default {
                     margin-right: auto;
 
                     &__select {
+                        background-color: var(--select-bg);
                         align-self: center;
                         display: block;
                         text-indent: .5rem;
@@ -1175,6 +1176,7 @@ export default {
 
                             &__key {
                                 // select element to select section key (heading, summary etc.)
+                                background-color: var(--select-bg);
                                 font-size: .9375rem; // 15px
                                 align-self: flex-start;
                                 text-indent: .125rem;
@@ -1246,6 +1248,7 @@ export default {
 
                             &__value {
                                 align-self: flex-start;
+                                background-color: var(--input-bg);
                                 font-size: .9375rem; // 15px
                                 padding-top: .25rem;
                                 padding-bottom: .25rem;
