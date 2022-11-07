@@ -316,7 +316,7 @@
                                             class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
                                             :idForLabel="`${element.key}Content-${element.id}`" />
                                         <ArticleFormSectionError
-                                            v-if="element.errors.missingContent"
+                                            v-if="element.errors?.missingContent"
                                             :error="element.errors.missingContent" />
                                     </div>
                                 </template>
