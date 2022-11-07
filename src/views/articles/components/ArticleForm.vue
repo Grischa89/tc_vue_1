@@ -381,7 +381,7 @@
         </div>
 
 
-        <!-- DELETE NOTIFICATION -->
+        <!-- DELETE SECTION NOTIFICATION -->
         <Teleport to="body">
             <NotificationBottom
                 v-if="openDeleteNotification"
@@ -401,13 +401,15 @@
             </NotificationBottom>
         </Teleport>
 
-        <!-- RESTORE NOTIFICATION -->
+        <!-- RESTORE SECTION NOTIFICATION -->
         <Teleport to="body">
             <NotificationBottom
                 v-if="openRestoreNotification"
                 @on-close="closeRestoreNotification">
                 <template #text>
-                    The section has been restored.
+                    <p class="notification__main__text">
+                        The {{ sectionToRestoreName }} section has been restored.
+                    </p>
                 </template>
             </NotificationBottom>
         </Teleport>
