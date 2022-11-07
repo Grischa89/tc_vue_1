@@ -333,7 +333,7 @@
                                     <article-form-section-button
                                         v-else
                                         class="form-article__main__form__section__row__button form-article__main__form__section__row__button--delete"
-                                        @click="deleteRow(element.id)">
+                                        @click="handleDelete(element)">
                                         <template #text-append>
                                             <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--delete">Delete {{ element.key || `section` }}</span>
                                         </template>
@@ -379,6 +379,38 @@
                 </ArticleTemplate>
             </div>
         </div>
+
+
+        <!-- DELETE NOTIFICATION -->
+        <Teleport to="body">
+            <NotificationBottom
+                v-if="openDeleteNotification"
+                @on-close="closeDeleteNotification"
+                >
+                <template #text>
+                    <p class="notification__main__text">The {{ sectionToRestoreName }} section has been deleted.</p>
+                </template>
+                <template #action>
+                    <button
+                        @click="handleUndoDelete"
+                        type="button"
+                        class="notification__main__button">
+                        Undo
+                    </button>
+                </template>
+            </NotificationBottom>
+        </Teleport>
+
+        <!-- RESTORE NOTIFICATION -->
+        <Teleport to="body">
+            <NotificationBottom
+                v-if="openRestoreNotification"
+                @on-close="closeRestoreNotification">
+                <template #text>
+                    The section has been restored.
+                </template>
+            </NotificationBottom>
+        </Teleport>
     </div>
 </template>
 <script>
@@ -398,6 +430,7 @@ import IconDelete from '../../../components/icons/IconDelete.vue';
 import IconShrink from '../../../components/icons/IconShrink.vue';
 import ArticleFormSectionImage from './ArticleFormSectionImage.vue';
 import IconPlus from '../../../components/icons/IconPlus.vue';
+import NotificationBottom from '../../../components/NotificationBottom.vue';
 
 export default {
     name: 'ArticleForm',
@@ -416,7 +449,8 @@ export default {
     IconDelete,
     IconShrink,
     ArticleFormSectionImage,
-    IconPlus
+    IconPlus,
+    NotificationBottom
 },
 
     props: {
@@ -444,6 +478,10 @@ export default {
             rowsError: 'Please enter a column first in order to set content for rows.',
             listArrayTextareaRows: 1,
             imageAltTextareaRows: 2,
+            openDeleteNotification: false,
+            timeoutDeleteNotification: null,
+            openRestoreNotification: false,
+            timeoutRestoreNotification: null,
         }
     },
 
@@ -508,6 +546,8 @@ export default {
         ...mapGetters({
             articleSections: 'articleSections',
             errors: 'articleValidationErrors',
+            sectionToRestore: 'sectionToDelete',
+            sectionToRestoreName: 'sectionToDeleteName',
         }),
 
         rowCount() {
@@ -804,10 +844,34 @@ export default {
             this.article.push(newRow);
         },
 
-        async deleteRow(sectionId) {
+        handleDelete(element) {
+            // Get index of section in article
+            const indexSection = this.findArticleSectionIndex(element.id);
 
+            // Save section object to store in case user wants to undo delete
+            this.$store.commit('setSectionToDelete', { section: element, index: indexSection});
+
+            // Delete the section from the article
+            this.deleteSection(indexSection);
+
+            // Clear restore timeout + hide notification
+            if (this.timeoutRestoreNotification) clearTimeout(this.timeoutRestoreNotification);
+            this.openRestoreNotification = false;
+
+            // Show delete notification with undo button
+            this.openDeleteNotification = true;
+
+            // Timeout that closes notification
+            this.timeoutDeleteNotification = setTimeout(() => {
+                this.openDeleteNotification = false;
+            }, 6000);
+        },
+
+        async deleteSection(indexSection) {
             // Find section in article by id
-            const indexSection = this.findArticleSectionIndex(sectionId);
+            // const indexSection = this.findArticleSectionIndex(sectionId);
+
+            // Get type of section with key prop
             const sectionKey = this.article[indexSection].key;
 
             // If a section that ought to be unique gets deleted, set its disabled prop to true to make it selectable again
@@ -818,6 +882,33 @@ export default {
 
             // Delete the section from the article
             this.article.splice(indexSection, 1);
+        },
+
+        handleUndoDelete() {
+            // Add section back to article in original index position
+            this.article.splice(this.sectionToRestore.index, 0, this.sectionToRestore.section);
+
+            // Clear delete timeout + hide notification
+            clearTimeout(this.timeoutDeleteNotification);
+            this.openDeleteNotification = false;
+
+            // Show restore notification
+            this.openRestoreNotification = true;
+
+            // Close restore notification after some time
+            this.timeoutRestoreNotification = setTimeout(() => {
+                this.openRestoreNotification = false;
+            }, 4000);
+        },
+
+        closeDeleteNotification() {
+            clearTimeout(this.timeoutDeleteNotification);
+            this.openDeleteNotification = false; 
+        },
+
+        closeRestoreNotification() {
+            clearTimeout(this.timeoutRestoreNotification);
+            this.openRestoreNotification = false; 
         },
 
         expandSection(id) {

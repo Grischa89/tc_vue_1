@@ -312,7 +312,9 @@ export default {
   --success-bg-fade: hsla(137, 69%, 29%, .15);
 
   --info: #2d6ec8;
+  --infoInverse: #8caad2;
   --info-shadow: hsla(215, 63%, 48%, .4);
+  --info-bg-solid: hsla(215, 63%, 48%, 1);
   --info-bg-fade: hsla(215, 63%, 48%, .15);
 
   --article-form-bg: #ffffff;
@@ -395,7 +397,9 @@ export default {
   --success-bg-fade: hsla(137, 49%, 57%, .15);
 
   --info: #8caad2;
+  --infoInverse: #2d6ec8;
   --info-shadow: hsla(214, 44%, 69%, .4);
+  --info-bg-solid: hsla(214, 44%, 69%, 1);
   --info-bg-fade: hsla(214, 44%, 69%, .15);
 
   --article-form-bg: #1d1d1d;

@@ -17,6 +17,8 @@ const state = {
     articleValidationErrors: [],
 
     singleArticleLoadStatus: null,
+
+    sectionToDelete: null,
 };
 
 const getters = {
@@ -138,6 +140,14 @@ const getters = {
 
     singleArticleLoadStatus: state => {
         return state.singleArticleLoadStatus;
+    },
+
+    sectionToDelete: state => {
+        return state.sectionToDelete;
+    },
+
+    sectionToDeleteName: state => {
+        return state.sectionToDelete.section.key;
     }
 };
 
@@ -448,6 +458,11 @@ const mutations = {
 
     setArticleRecommendations(state, recommendations) {
         state.articleRecommendations = recommendations;
+    },
+
+    setSectionToDelete(state, data) {
+        // data.section, data.index
+        state.sectionToDelete = data;
     },
 
     setArticles(state, articles) {
