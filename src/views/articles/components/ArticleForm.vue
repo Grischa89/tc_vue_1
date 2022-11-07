@@ -168,7 +168,7 @@
                                                         class="form-article__main__form__section__row__button"
                                                         @click="deleteTableColumn(element.id, i)">
                                                         <template #icon>
-                                                            <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                            <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
                                                         </template>
                                                     </article-form-section-button>
                                                     <ArticleFormSectionError
@@ -223,7 +223,7 @@
                                                         class="form-article__main__form__section__row__button"
                                                         @click="deleteTableRow(element.id, i)">
                                                         <template #icon>
-                                                            <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                            <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
                                                         </template>
                                                     </article-form-section-button>
                                                     <template v-if="!element.columns">
@@ -270,7 +270,7 @@
                                                         class="form-article__main__form__section__row__button--inline"
                                                             @click="deleteListArrayItem(element.id, i)">
                                                             <template #icon>
-                                                                <IconDelete class="form-article__main__form__section__row__button__icon" />
+                                                                <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
                                                             </template>
                                                         </article-form-section-button>
                                                     </div>
@@ -1003,6 +1003,10 @@ export default {
                     border-radius: 25rem;
                     background-color: var(--secondary-tonal);
                     text-transform: capitalize;
+
+                    &:hover, &:focus {
+                        background-color: rgba(var(--secondary-tonal-rgb), var(--hover));
+                    }
                 }
 
                 &__form {
@@ -1049,6 +1053,10 @@ export default {
                                     margin-top: 1rem;
                                     margin-left: auto;
                                     margin-right: auto;
+
+                                    &:hover, &:focus {
+                                        background-color: rgb(var(--secondary-tonal-rgb), var(--hover));
+                                    }
                                 }
 
                                 &--delete {
@@ -1083,9 +1091,10 @@ export default {
                                     width: 1rem;
 
                                     &--delete {
-                                        color: var(--error);
-                                        height: .875rem;
-                                        width: .875rem;
+
+                                        &:hover, &:focus {
+                                            color: var(--error);
+                                        }
                                     }
                                 }
 
@@ -1099,6 +1108,11 @@ export default {
 
                                     &--delete {
                                         font-size: .875rem; // 14px
+                                        border-radius: 25rem;
+
+                                        &:hover {
+                                            color: var(--error);
+                                        }
                                     }
 
                                 }
@@ -1472,6 +1486,10 @@ export default {
                     font-size: 1rem;
                     font-weight: 500;
                     width: min(100%, 400px);
+
+                    &:hover, &:focus {
+                        background-color: rgba(var(--secondary-rgb), var(--hoverInverse));
+                    }
                 }
             }
 

@@ -286,6 +286,9 @@ export default {
   --hover-button: hsla(33, 91%, 73%, .4);
   --focus-button: hsla(33, 91%, 73%, .6);
 
+  --hover: .35;
+  --hoverInverse: .95;
+
   --hover-button-inverse: hsla(0, 3%, 14%, .8);
   --focus-button-inverse: hsla(0, 3%, 14%, .66);
 
@@ -295,7 +298,9 @@ export default {
   --primary3: #f6a746; // $secondary-lighter
   --primary4: #f48b0b; // $secondary
   --secondary: hsla(33, 91%, 50%, 1);
+  --secondary-rgb: 244, 139, 11;
   --secondary-tonal: hsla(33, 91%, 50%, .3);
+  --secondary-tonal-rgb: 244, 139, 11;
   --accent: #5f32dc;
   --accent-light: #cab9f3;
 
@@ -364,8 +369,13 @@ export default {
   --hover-surface: hsla(33, 91%, 73%, .04); // Derived froom $in-between, Light Orange: #fcdcb6ff;
   // --hover-surface1: hsla(0, 0%, 100%, .04); // Derived from --text
 
-  --hover-button: hsla(33, 91%, 73%, .4);
-  --focus-button: hsla(33, 91%, 73%, .6);
+  // --hover-button: hsla(33, 91%, 73%, .4);
+  // --focus-button: hsla(33, 91%, 73%, .6);
+
+  --hover: .35;
+  --hoverInverse: .95;
+  --hover-button: rgba(255, 255, 255, 0.3);
+  --focus-button: rgba(255, 255, 255, 0.6);
 
   --hover-button-inverse: hsla(0, 0%, 100%, .75);
   --focus-button-inverse: hsla(0, 0%, 100%, .66);
@@ -380,7 +390,9 @@ export default {
   --accent: #745eb0;
   --accent-light: #e7e4f2;
   --secondary: #d37f17;
+  --secondary-rgb: 211, 127, 23;
   --secondary-tonal: hsla(33, 80%, 46%, .3);
+  --secondary-tonal-rgb: 211, 127, 23;
   // --secondary: #e8a34f;
   // --secondary: #d5a162;
 
