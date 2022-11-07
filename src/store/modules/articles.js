@@ -294,23 +294,23 @@ const actions = {
     },
 
     validateArticle({ commit }, data) {
-        console.log('%carticle in validate', 'color: darkseagreen; font-weight: bold;', data.article);
         let articleValidationErrors = [];
         let headingExists = false;
         let summaryExists = false;
 
         data.article.forEach(element => {
+            // Delete errors objectto start fresh (+ to not send it to API)
+            if (element.errors) delete element.errors;
+
             switch (element.key) {
                 case '':
-                    if (!element.errors) element.errors = {};
+                    element.errors = {};
                     element.errors.missingSection = `Please choose a section type or delete the section.`;
                     break;
 
                 case 'heading':
-                    element.errors.missingContent = '';
-
                     if (!element.value) {
-                        if (!element.errors) element.errors = {};
+                        element.errors = {};
                         element.errors.missingContent = `Please enter content for the ${element.key}. It is required in order to create an article.`;
                     } else if (element.value) {
                         if (element.key === 'heading') headingExists = true;
@@ -318,10 +318,8 @@ const actions = {
                     break;
 
                 case 'summary':
-                    element.errors.missingContent = '';
-
                     if (!element.value) {
-                        if (!element.errors) element.errors = {};
+                        element.errors = {};
                         element.errors.missingContent = `Please enter content for the ${element.key}. It is required in order to create an article.`;
                     } else if (element.value) {
                         if (element.key === 'summary') summaryExists = true;
@@ -329,33 +327,30 @@ const actions = {
                     break;
 
                 case 'image':
-                    element.errors.missingImage = '';
-
                     // No image file has been uploaded
                     if (!element.url) {
-                        if (!element.errors) element.errors = {};
+                        element.errors = {};
                         element.errors.missingImage = `Please choose an image to upload or delete this section.`;
                     }
 
                     // Since v-model ignores the initial value of a checkbox it needs to be set to false
-                    if(element.is_title_image === undefined) element.is_title_image = false;
+                    if (element.is_title_image === undefined) element.is_title_image = false;
 
                     if (element.value === '') delete element.value;
                     break;
 
                 case 'listarray':
-                    element.errors.missingItems = '';
-
                     // Items array not set or empty
                     if (!element.items || element.items.length === 0) {
-                        if (!element.errors) element.errors = {};
+                        element.errors = {};
                         element.errors.missingItems = `Please add items to this ${element.key} or delete the section.`
                     }
 
                     // Check for empty list items
                     if (element.items) {
                         element.items.forEach(item => {
-                            if (item.errors) item.errors.missingItemContent = '';
+                            delete item.errors;
+
                             if (!item.value) {
                                 item.errors = {};
                                 item.errors.missingItemContent = `Please enter content for this item or delete it.`
@@ -367,11 +362,6 @@ const actions = {
                     break;
                 
                 case 'table':
-                    if (element.errors) {
-                        element.errors.missingColumns = '';
-                        element.errors.missingRows = '';
-                    }
-
                     // Check if columns exist
                     if (!element.columns || element.columns.length === 0) {
                         if (!element.errors) element.errors = {};
@@ -387,21 +377,20 @@ const actions = {
                     // Check if a column's name property is empty
                     if (element.columns) {
                         element.columns.forEach(column => {
-                            if (column.errors) {
-                                column.errors.missingColumnName = '';
-                                column.errors.maxLengthExceeded = '';
-                            }
+                            delete column.errors;
                             
                             // Double check for empty string (should already be check @blur event of column name input)
                             if (column.name === '') {
-                                column.errors = {};
+                                if (!column.errors) column.errors = {};
                                 column.errors.missingColumnName = `A column name is required. Please enter one or delete the column.`;
                             }
     
                             // Check if column name exceeds max-length
                             if (column.name.length > 30) {
-                                column.errors = {};
+                                if (!column.errors) column.errors = {};
                                 column.errors.maxLengthExceeded = `Please enter a column name with 30 characters or less.`;
+                            } else {
+                                delete column.errors;
                             }
                         });
                     }
@@ -413,10 +402,8 @@ const actions = {
                     
                 default:
                     // Sections: paragraph
-                    element.errors.missingContent = '';
-
                     if (!element.value) {
-                        if (!element.errors) element.errors = {};
+                        element.errors = {};
                         element.errors.missingContent = `Please enter content for this ${element.key} or delete the section.`;
                     }
                     break;
