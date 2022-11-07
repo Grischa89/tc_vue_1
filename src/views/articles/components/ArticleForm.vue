@@ -868,9 +868,6 @@ export default {
         },
 
         async deleteSection(indexSection) {
-            // Find section in article by id
-            // const indexSection = this.findArticleSectionIndex(sectionId);
-
             // Get type of section with key prop
             const sectionKey = this.article[indexSection].key;
 
