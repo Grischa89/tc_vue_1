@@ -62,6 +62,9 @@ const getters = {
                     const section = article[i];
                     // Create id for section
                     section.id = Math.floor(Date.now() * Math.random());
+                    section.shrunk = {
+                        value: `Items: ${article[i].items.map(({value}) => value).join(', ')}`,
+                    }
 
                     // Preserve article[i] for articleForForm (if not 'value' will be mutated as for articleForDisplay)
                     const listarray = JSON.parse(JSON.stringify(article[i]));
@@ -86,6 +89,9 @@ const getters = {
                         column.name = columnName;
                         return column;
                     });
+                    section.shrunk = {
+                        value: `Columns: ${article[i].columns.map(({name}) => name).join(', ')}`,
+                    }
                     
                     // Preserve article[i] for articleForForm (if not 'value' will be mutated as for articleForDisplay)
                     const table = JSON.parse(JSON.stringify(article[i]));
@@ -117,6 +123,9 @@ const getters = {
                 const section = article[i];
                 // Create id for section
                 section.id = Math.floor(Date.now() * Math.random());
+                section.shrunk = {
+                    value: article[i].value,
+                }
                 // If nothing needs to be procees for the article displayed to the user, just push it to the array
                 articleForDisplay.push(article[i]);
                 // Current article section needs to be deleted from article

@@ -1,6 +1,9 @@
 <template>
     <!-- NOTE: img src is set in ArticleForm component and not passed via a prop. This makes it more difficult to toggle a message for when there is / is not an image since the src attribute needs to be tracked since there is not reactive prop -->
     <!-- <p v-if="!imgSrcSet" class="form-article__main__form__section__identifier">No image uploaded.</p> -->
+    <div v-if="compProps.imageURL === ''">
+        <p class="form-article__main__form__section__identifier--image" style="width:fit-content;">No image uploaded.</p>
+    </div>
 
     <div class="form-article__main__form__section__image">
         <img 

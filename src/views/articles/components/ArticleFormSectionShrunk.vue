@@ -4,8 +4,8 @@
 
         <ArticleFormSectionShrunkTitle
             class="form-article__main__form__section__title"
-            :title="title" />
-
+            :title="sectionType" />
+            
         <component 
             :is="comp" 
             :sectionId="sectionId" 
@@ -22,19 +22,15 @@ import ArticleFormSectionShrunkImage from './ArticleFormSectionShrunkImage.vue';
 export default {
     name: 'ArticleFormSectionShrunk',
     props: {
-        title: {
-            type: String,
-            required: true,
-        },
-        identifier: {
-            type: String,
-            required: true,
-        },
         sectionId: {
             type: Number,
             required: true,
         },
         sectionType: {
+            type: String,
+            required: true,
+        },
+        identifier: {
             type: String,
             required: true,
         },

@@ -19,9 +19,8 @@
                                 class="form-article__main__form__section form-article__main__form__section--shrunk"
                                 :data-section-shrunk="element.id"
                                 :sectionId="element.id"
-                                :title="element.key || 'Please remember to choose a section.'"
-                                :identifier="element.name || element.value || 'No content.'"
-                                :sectionType="element.key || ''"
+                                :sectionType="element.key || 'Choose a section.'"
+                                :identifier="element.shrunk?.value || 'No content.'"
                                 :imageURL="element.url || ''">
 
                                 <template #buttonExpand>
@@ -263,6 +262,7 @@
                                                         <label :for="`${element.key}Items-${element.id}-Item${i}`" class="form-article__main__form__section__row__fieldset__container__row__item form-article__main__form__section__row__fieldset__grid__item__label">{{ i + 1 }}</label>
                                                         <ArticleFormSectionTextarea
                                                             v-model.trim="item.value"
+                                                            @change="handleInputForShrunkSections(element.id)"
                                                             class="form-article__main__form__section__row__fieldset__container__row__item form-article__main__form__section__row__value--textarea"
                                                             :idForLabel="`${element.key}Items-${element.id}-Item${i}`"
                                                             :rows="listArrayTextareaRows" />
@@ -313,6 +313,7 @@
                                         <label class="form-article__main__form__section__row__label" :for="`${element.key}Content-${element.id}`">Content</label>
                                         <ArticleFormSectionTextarea
                                             v-model.trim="element.value"
+                                            @change="handleInputForShrunkSections(element.id)"
                                             class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
                                             :idForLabel="`${element.key}Content-${element.id}`" />
                                         <ArticleFormSectionError
@@ -383,7 +384,7 @@
 
         <!-- DELETE SECTION NOTIFICATION -->
         <Teleport to="body">
-            <NotificationBottom
+            <notification-bottom
                 v-if="openDeleteNotification"
                 @on-close="closeDeleteNotification"
                 >
@@ -398,12 +399,12 @@
                         Undo
                     </button>
                 </template>
-            </NotificationBottom>
+            </notification-bottom>
         </Teleport>
 
         <!-- RESTORE SECTION NOTIFICATION -->
         <Teleport to="body">
-            <NotificationBottom
+            <notification-bottom
                 v-if="openRestoreNotification"
                 @on-close="closeRestoreNotification">
                 <template #text>
@@ -411,7 +412,7 @@
                         The {{ sectionToRestoreName }} section has been restored.
                     </p>
                 </template>
-            </NotificationBottom>
+            </notification-bottom>
         </Teleport>
     </div>
 </template>
@@ -566,7 +567,39 @@ export default {
             return this.article.findIndex(section => section.id === sectionId);
         },
 
-        async handleImage(e, id) {
+        handleInputForShrunkSections(sectionId) {
+            // For now concerns these types of sections: heading, summary, listarray, paragraph, subheading, sub_subheading, table (col input)
+            // Image handled when uploaded (src set, CreateArticle) or via url (UpdateArticle)
+            const oneValueSections = ['heading', 'summary', 'paragraph', 'subheading', 'sub_subheading'];
+            // Get index of section in article
+            const indexSection = this.findArticleSectionIndex(sectionId);
+            const sectionType = this.article[indexSection].key;
+
+            // Create shrunk object on section
+            if (!this.article[indexSection].shrunk) this.article[indexSection].shrunk = {};
+
+            // If no key was selected
+            if (sectionType === '') this.article[indexSection].shrunk.value = '';
+
+            // Handle input processing depending on sectionType
+            if (oneValueSections.includes(sectionType)) {
+                // Format: 'This is an awesome heading...'
+                this.article[indexSection].shrunk.value = this.article[indexSection].value;
+            }
+
+            if (sectionType === 'listarray') {
+                // Format: 'Items: item 1, item 2, item 3'
+                this.article[indexSection].shrunk.value = `Items: ${this.article[indexSection].items.map(({value}) => value).join(', ')}`;
+
+            }
+
+            if (sectionType === 'table') {
+                // Format: 'Columns: column 1, column 2, column 3'
+                this.article[indexSection].shrunk.value = `Columns: ${this.article[indexSection].columns.map(({name}) => name).join(', ')}`;
+            }
+        },
+
+        async handleImage(e, sectionId) {
             const [file] = e.target.files;
 
             // Handle cancelled image upload (no image chosen)
@@ -576,18 +609,20 @@ export default {
             if (!imageValid) return;
 
             // Select DOM elements relevant to display image upload progress
-            const imagePreview = document.querySelector(`#imagePreview-${id}`);
+            const imagePreview = document.querySelector(`#imagePreview-${sectionId}`);
             imagePreview.src = URL.createObjectURL(file);
+
+            // this.handleInputForShrunkSections(sectionId);
             
-            const imagePreviewShrunk = document.querySelector(`#imagePreviewShrunk-${id}`);
+            const imagePreviewShrunk = document.querySelector(`#imagePreviewShrunk-${sectionId}`);
             imagePreviewShrunk.src = URL.createObjectURL(file);
 
-            const imageProgressBar = document.querySelector(`#imageProgressBar-${id}`);
+            const imageProgressBar = document.querySelector(`#imageProgressBar-${sectionId}`);
 
             try {
                 const { data } = await this.$store.dispatch('postImage', { file: file, imageProgressBar: imageProgressBar, imagePreview: imagePreview });
 
-                const i = this.findArticleSectionIndex(id);
+                const i = this.findArticleSectionIndex(sectionId);
                 this.setNewImage(i, data);
             } catch (e) {
                 // e.response.status TODO
@@ -631,6 +666,8 @@ export default {
             const indexListArray = this.findArticleSectionIndex(sectionId);
             // Delete item in listarray
             this.article[indexListArray].items.splice(itemId, 1);
+            // Update listarray shrunk section
+            this.handleInputForShrunkSections(sectionId);
         },
 
         addTableColumn(sectionId) {
@@ -651,6 +688,7 @@ export default {
             });
             // Select added col name input for user
             this.selectTableColumnInput(sectionId, colNumber);
+            this.handleInputForShrunkSections(sectionId);
         },
 
         deleteTableColumn(sectionId, columnId) {
@@ -664,6 +702,8 @@ export default {
             this.deleteTableCells(indexTable, columnName);
             // Enable button for adding columns
             this.disableTableColumnButton(false, sectionId);
+            // Update table shrunk section
+            this.handleInputForShrunkSections(sectionId);
         },
 
         disableTableColumnButton(state, sectionId) {
@@ -727,11 +767,14 @@ export default {
                 this.selectTableColumnInput(sectionId, currentColumnIndex);
                 // Update row objects with provisional name
                 this.updateRowProps(provisonalColumnName, this.previousColumnName, indexTable);
+                // Update table shrunk object
+                this.handleInputForShrunkSections(sectionId);
                 return;
             }
 
             // If the user entered a new, unique, non-empty column name, update rows
             this.updateRowProps(currentColumnName, this.previousColumnName, indexTable);
+            this.handleInputForShrunkSections(sectionId);
         },
 
         containsDuplicateColumnNames(columnNamesArray) {
@@ -842,7 +885,7 @@ export default {
 
         addRow() {
             // const newRow = { key: '', value: '', id: Math.floor(Date.now() * Math.random()) };
-            const newRow = { key: '', id: Math.floor(Date.now() * Math.random()) };
+            const newRow = { key: '', id: Math.floor(Date.now() * Math.random()), shrunk: { value: '' } };
             this.article.push(newRow);
         },
 
