@@ -120,6 +120,27 @@ const getters = {
                     return section;
                 }
 
+                // Handle images
+                if (element === 'image') {
+                    // articleForForm
+                    const section = article[i]
+                    // Create id for section
+                    section.id = Math.floor(Date.now() * Math.random());
+
+                    // articleForDisplay
+                    const image = JSON.parse(JSON.stringify(article[i]));
+                    image.url = article[i].url;
+                    image.is_title_image = article[i].is_title_image;
+                    image.alt = article[i].alt;
+                    image.height = article[i].height_field;
+                    image.width = article[i].width_field;
+                    // If image has is_title_image === true it needs to be placed at the beginning
+                    if (image.is_title_image) articleForDisplay.unshift(image);
+
+                    article.splice(i, 1);
+                    return section;
+                }
+
                 const section = article[i];
                 // Create id for section
                 section.id = Math.floor(Date.now() * Math.random());
@@ -135,7 +156,7 @@ const getters = {
                 return section;
             });
 
-            return { articleForForm: articleForForm, articleForDisplay: articleForDisplay };
+            return { articleForForm, articleForDisplay };
         }
     },
 
@@ -215,11 +236,8 @@ const actions = {
     },
 
     getArticleJSON({ commit }, slug) {
-        console.log('%cslug', 'color: darkseagreen; font-weight: bold;', slug);
-
         axios.get(`/api/v1/articles/${slug}/`)
             .then(res => {
-                console.log('%cres getArticleJSON', 'color: darkseagreen; font-weight: bold;', res.data);
                 commit('setArticleRaw', res.data);
             })
             .catch(err => {
@@ -244,11 +262,8 @@ const actions = {
     },
 
     postArticle({ commit }, article) {
-        console.log('%carticle in postArticle + type', 'color: darkseagreen; font-weight: bold;', article, typeof article);
-
         return axios.post('/api/v1/articles/draggable/add/', article)
             .then(res => {
-                console.log('%cres from postArticle', 'color: darkseagreen; font-weight: bold;', res);
                 return res.status;
             })
             .catch(err => {

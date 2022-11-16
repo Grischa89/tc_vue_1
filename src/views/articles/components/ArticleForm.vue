@@ -497,12 +497,14 @@ export default {
         displayArticle() {
             if (this.article) {
                 const article = this.article;
+                let hasTitleImage = false;
+                let titleImageSectionId;
 
                 // Derive loopable array from article
                 const articleMapped = article.map(element => {
                     const section = {
                         key: '',
-                        value: {}
+                        // value: {}
                     };
 
                     section.key = element.key;
@@ -537,11 +539,32 @@ export default {
                         return section;
                     }
 
+                    // Handle image
+                    if (element.key === 'image') {
+                        section.url = element.url;
+                        section.is_title_image = element.is_title_image;
+                        section.alt = element.alt;
+                        section.height = element.height_field;
+                        section.width = element.width_field;
+
+                        if (section.is_title_image) {
+                            hasTitleImage = true;
+                            titleImageSectionId = element.id;
+                        }
+                    }
+
                     // Every other case (for now)
                     section.value = element.value;
                     
                     return section;
                 });
+
+                // The image section with the title image needs to come first
+                if (hasTitleImage) {
+                    const i = this.findArticleSectionIndex(titleImageSectionId);
+                    const sectionWithTitleImage = articleMapped.splice(i, 1);
+                    articleMapped.unshift(sectionWithTitleImage[0]);
+                }
                 
                 return articleMapped;
             }
