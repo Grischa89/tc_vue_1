@@ -139,6 +139,7 @@
                                             <span class="form-article__main__form__section__row__label__checkbox">Title Image</span>
                                             <input
                                                 v-model="element.is_title_image"
+                                                @change="handleCheckboxAction($event, element.id)"
                                                 type="checkbox" name="titleImage" :id="`imageTitleImage-${element.id}`">
                                         </label>
                                     </div>
@@ -563,6 +564,23 @@ export default {
     },
 
     methods: {
+        getAllTitleImageCheckboxes() {
+            return document.querySelectorAll(`[id^="imageTitleImage"]`);
+        },
+
+        handleCheckboxAction(e, sectionId) {
+            const isChecked = e.target._modelValue;
+
+            // 1. Get all titleImage checkboxes + convert NodeList to array with spread operator
+            // 2. Filter checkboxes that don't have the current sectionId
+            const otherCheckboxes = [...this.getAllTitleImageCheckboxes()].filter(({ id }) => id !== `imageTitleImage-${sectionId}`);
+            
+            // Disable other image checkboxes if one is checked (true)
+            if (isChecked) otherCheckboxes.forEach(checkbox => checkbox.disabled = true);
+            // Enable other image checkboxes if one is unchecked (false)
+            if (!isChecked) otherCheckboxes.forEach(checkbox => checkbox.disabled = false);
+        },
+
         findArticleSectionIndex(sectionId) {
             return this.article.findIndex(section => section.id === sectionId);
         },
@@ -837,7 +855,22 @@ export default {
 
             this.disableUniqueOption(sectionSelected);
 
-            this.resetSectionAfterSelectChange(this.previousSelected,sectionId);
+            this.resetSectionAfterSelectChange(this.previousSelected, sectionId);
+
+            if (sectionSelected === 'image') {
+                // 1. Get all titleImage checkboxes
+                // 2. Check if one of them is checked
+                const hasTitleImage = [...this.getAllTitleImageCheckboxes()].some(({ checked }) => checked === true);
+
+                // If one is already checked, disable titleImage checkbox on current section
+                if (hasTitleImage) {
+                    // setTimeout needed for checkbox to render
+                    const titleImageTimeout = setTimeout(() => {
+                        document.querySelector(`#imageTitleImage-${sectionId}`).disabled = true;
+                        clearTimeout(titleImageTimeout);
+                    }, 150);
+                }
+            }
         },
 
         async disableUniqueOption(sectionSelected) {
@@ -897,7 +930,7 @@ export default {
             this.$store.commit('setSectionToDelete', { section: element, index: indexSection});
 
             // Delete the section from the article
-            this.deleteSection(indexSection);
+            this.deleteSection(indexSection, element.id);
 
             // Clear restore timeout + hide notification
             if (this.timeoutRestoreNotification) clearTimeout(this.timeoutRestoreNotification);
@@ -912,7 +945,7 @@ export default {
             }, 6000);
         },
 
-        async deleteSection(indexSection) {
+        async deleteSection(indexSection, sectionId) {
             // Get type of section with key prop
             const sectionKey = this.article[indexSection].key;
 
@@ -922,6 +955,16 @@ export default {
                 this.$store.commit('setDisabledValueOnArticleSections', { sectionIndex: index, isDisabled: false });
             }
 
+            // If deleted sections was an image, check whether is_title_image was checked
+            if (sectionKey === 'image') {
+                const isTitleImage = document.querySelector(`#imageTitleImage-${sectionId}`).checked;
+
+                if (isTitleImage) {
+                    // Enable titleImage checkboxes from other image sections again
+                    [...this.getAllTitleImageCheckboxes()].forEach(checkbox => checkbox.disabled = false);
+                }
+            }
+
             // Delete the section from the article
             this.article.splice(indexSection, 1);
         },
@@ -929,6 +972,11 @@ export default {
         handleUndoDelete() {
             // Add section back to article in original index position
             this.article.splice(this.sectionToRestore.index, 0, this.sectionToRestore.section);
+
+            if (this.sectionToRestore.section.key === 'image' && this.sectionToRestore.section.is_title_image) {
+                const otherCheckboxes = [...this.getAllTitleImageCheckboxes()].filter(({ id }) => id !== `imageTitleImage-${this.sectionToRestore.section.id}`);
+                otherCheckboxes.forEach(checkbox => checkbox.disabled = true);
+            }
 
             // Clear delete timeout + hide notification
             clearTimeout(this.timeoutDeleteNotification);
