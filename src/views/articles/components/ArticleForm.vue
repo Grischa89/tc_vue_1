@@ -377,7 +377,9 @@
             </div>
             <div class="preview-article__main">
                 <ArticleTemplate v-if="displayArticle">
-                    <ArticleDisplay :article="displayArticle" />
+                    <ArticleDisplay
+                        :article="displayArticle"
+                        :meta="meta" />
                 </ArticleTemplate>
             </div>
         </div>
@@ -572,6 +574,7 @@ export default {
 
         ...mapGetters({
             articleSections: 'articleSections',
+            meta: 'articleMeta',
             errors: 'articleValidationErrors',
             sectionToRestore: 'sectionToDelete',
             sectionToRestoreName: 'sectionToDeleteName',

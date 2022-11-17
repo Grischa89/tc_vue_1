@@ -184,10 +184,9 @@ export default {
 
         &__meta {
             color: var(--help);
-
-            span {
-                margin-right: 1rem;
-            }
+            font-size: .875rem;
+            margin-bottom: -.5rem;
+            width: 100%;
         }
     }
 </style>

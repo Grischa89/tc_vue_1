@@ -1,10 +1,9 @@
 <template>
-    <div>
+    <!-- <div> -->
         <div class="article">
-            <!-- <div
-                v-for="(section, i) in article"
-                :key="i"
-                class="article__section"> -->
+                <div class="article__meta">
+                    <span>{{ metaDate }}</span>
+                </div>
 
                 <component
                     v-for="(section, i) in articleWithComponents"
@@ -60,9 +59,7 @@
                     :table_head="section.table_head"
                     :rows="section.rows"
                     class="article__section__table" /> -->
-            <!-- </div> -->
         </div>
-    </div>
 </template>
 
 <script>
@@ -80,7 +77,14 @@ export default {
     name: 'ArticleDisplay',
 
     props: {
-        article: Array,
+        article: {
+            type: Array,
+            required: true,
+        },
+        meta: {
+            type: Object,
+            required: false,
+        }
     },
 
     components: {
@@ -97,9 +101,7 @@ export default {
 
     computed: {
         articleWithComponents() {
-            // if (this.article) {
-
-                const articleMapped = this.article.map(section => {
+            const articleMapped = this.article.map(section => {
                     switch (section.key) {
                         case 'heading':
                             section.component = 'ArticleDisplayHeading';
@@ -163,9 +165,16 @@ export default {
                 });
                 
                 return articleMapped;
-            // }
-
         },
+
+        metaDate() {
+            if (this.meta) {
+                const [splitDate, splitTime] = this.meta.updated.split(', ');
+                const formattedDate = splitDate.replace(/-/g, '.');
+
+                return formattedDate;
+            }
+        }
     }
 }
 </script>

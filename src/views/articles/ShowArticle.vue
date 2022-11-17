@@ -1,7 +1,8 @@
 <template>
     <ArticleTemplate v-if="loadStatus === 'success' && article">
         <ArticleDisplay
-        :article="article.articleForDisplay" />
+        :article="article.articleForDisplay"
+        :meta="meta" />
     </ArticleTemplate>
 
     <AsyncErrorFetchingData v-if="loadStatus === 'error'">
