@@ -135,7 +135,11 @@ const getters = {
                     image.height = article[i].height_field;
                     image.width = article[i].width_field;
                     // If image has is_title_image === true it needs to be placed at the beginning
-                    if (image.is_title_image) articleForDisplay.unshift(image);
+                    if (image.is_title_image) {
+                        articleForDisplay.unshift(image);
+                    } else {
+                        articleForDisplay.push(image);
+                    }
 
                     article.splice(i, 1);
                     return section;
