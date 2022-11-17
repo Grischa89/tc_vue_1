@@ -1,61 +1,66 @@
 <template>
     <div>
         <div class="article">
-            <div
+            <!-- <div
                 v-for="(section, i) in article"
                 :key="i"
-                class="article__section">
+                class="article__section"> -->
 
-                <ArticleDisplayImage
+                <component
+                    v-for="(section, i) in articleWithComponents"
+                    :key="section.id"
+                    :is="section.component"
+                    :compProps="section.compProps"
+                    class="article__section"></component>
+
+                <!-- <ArticleDisplayImage
                     v-if="section.key === 'image' && section.is_title_image"
                     :url="section.url"
                     :alt="section.alt"
                     class="article__section__titleImage" />
 
-                <article-display-heading v-else-if="section.key === 'heading'">
-                    <h1 class="article__section__heading">{{ section.value }}</h1>
-                </article-display-heading>
+                <ArticleDisplayHeading
+                    v-else-if="section.key === 'heading'"
+                    :heading="section.value"
+                    class="article__section__heading" />
 
-                <article-display-text v-else-if="section.key === 'summary'" >
-                    <p class="article__section__summary">{{ section.value }}</p>
-                </article-display-text>
+                <ArticleDisplaySummary
+                    v-else-if="section.key === 'summary'"
+                    :summary="section.value"
+                    class="article__section__summary" />
 
-                <article-display-text v-else-if="section.key === 'paragraph'">
-                    <p class="article__section__paragraph">{{ section.value }}</p>
-                </article-display-text>
+                <ArticleDisplayParagraph
+                    v-else-if="section.key === 'paragraph'"
+                    :paragraph="section.value"
+                    class="article__section__paragraph" />
 
-                <article-display-heading v-else-if="section.key === 'subheading'">
-                    <h2 class="article__section__subheading">{{ section.value }}</h2>
-                </article-display-heading>
+                <ArticleDisplaySubheading
+                    v-else-if="section.key === 'sub_subheading'"
+                    :subheading="section.value"
+                    class="article__section__subheading" />
 
-                <article-display-heading v-else-if="section.key === 'sub_subheading'">
-                    <h3 class="article__section__sub-subheading">{{ section.value }}</h3>
-                </article-display-heading>
+                <ArticleDisplaySub_Subheading
+                    v-else-if="section.key === 'sub_subheading'"
+                    :sub_subheading="section.value"
+                    class="article__section__sub-subheading" />
 
-                <div v-else-if="section.key === 'image' && !section.is_title_image" class="article__section__image" >
-                    <ArticleDisplayImage 
+                <ArticleDisplayImageContainer 
+                    v-else-if="section.key === 'image' && !section.is_title_image"
                     :url="section.url"
                     :alt="section.alt"
-                    class="article__section__image__img"/>
-                    <ArticleDisplayImageCaption
-                        v-if="section.alt" 
-                        :caption="section.alt"
-                        class="article__section__image__caption" />
-                </div>
+                    class="article__section__image" />
 
-                <article-display-list v-else-if="section.key === 'listarray'" class="article__section__listarray">
-                    <ArticleDisplayListItem
-                        v-for="(item, j) in section.items" :key="j"
-                        :item="item"
-                        class="article__section__listarray__item" />
-                </article-display-list>
+                <ArticleDisplayList
+                    v-else-if="section.key === 'listarray'"
+                    :items="section.items"
+                    class="article__section__listarray" />
 
                 <ArticleDisplayTable
                     v-else-if="section.key === 'table' && section.table_head"
                     :table_head="section.table_head"
                     :rows="section.rows"
-                    class="article__section__table" />
-            </div>
+                    class="article__section__table" /> -->
+            <!-- </div> -->
         </div>
     </div>
 </template>
@@ -63,11 +68,13 @@
 <script>
 import ArticleDisplayHeading from './ArticleDisplayHeading.vue';
 import ArticleDisplayImage from './ArticleDisplayImage.vue';
-import ArticleDisplayImageCaption from './ArticleDisplayImageCaption.vue';
+import ArticleDisplayImageContainer from './ArticleDisplayImageContainer.vue';
 import ArticleDisplayList from './ArticleDisplayList.vue';
-import ArticleDisplayListItem from './ArticleDisplayListItem.vue';
+import ArticleDisplayParagraph from './ArticleDisplayParagraph';
+import ArticleDisplaySubheading from './ArticleDisplaySubheading.vue';
+import ArticleDisplaySub_Subheading from './ArticleDisplaySub_Subheading.vue';
 import ArticleDisplayTable from './ArticleDisplayTable.vue';
-import ArticleDisplayText from './ArticleDisplayText.vue';
+import ArticleDisplaySummary from './ArticleDisplaySummary.vue';
 
 export default {
     name: 'ArticleDisplay',
@@ -79,11 +86,86 @@ export default {
     components: {
         ArticleDisplayHeading,
         ArticleDisplayImage,
-        ArticleDisplayImageCaption,
+        ArticleDisplayImageContainer,
         ArticleDisplayList,
-        ArticleDisplayListItem,
+        ArticleDisplayParagraph,
+        ArticleDisplaySubheading,
+        ArticleDisplaySub_Subheading,
+        ArticleDisplaySummary,
         ArticleDisplayTable,
-        ArticleDisplayText
+    },
+
+    computed: {
+        articleWithComponents() {
+            // if (this.article) {
+
+                const articleMapped = this.article.map(section => {
+                    switch (section.key) {
+                        case 'heading':
+                            section.component = 'ArticleDisplayHeading';
+                            section.compProps = {
+                                heading: section.value
+                            };
+                            break;
+                        case 'image':
+                            if (section.is_title_image) {
+                                section.component = 'ArticleDisplayImage';
+                            } else {
+                                section.component = 'ArticleDisplayImageContainer';
+                            }
+                            section.compProps = {
+                                url: section.url,
+                                alt: section.alt,
+                            }
+                            break;
+                        case 'listarray':
+                            section.component = 'ArticleDisplayList';
+                            section.compProps = {
+                                items: section.items
+                            };
+                            break;
+                        case 'paragraph':
+                            section.component = 'ArticleDisplayParagraph';
+                            section.compProps = {
+                                paragraph: section.value
+                            };
+                            break;
+                        case 'subheading':
+                            section.component = 'ArticleDisplaySubheading';
+                            section.compProps = {
+                                subheading: section.value
+                            };
+                            break;
+                        case 'sub_subheading':
+                            section.component = 'ArticleDisplaySub_Subheading';
+                            section.compProps = {
+                                sub_subheading: section.value
+                            };
+                            break;
+                        case 'summary':
+                            section.component = 'ArticleDisplaySummary';
+                            section.compProps = {
+                                summary: section.value
+                            };
+                            break;
+                        case 'table':
+                            section.component = 'ArticleDisplayTable';
+                            section.compProps = {
+                                table_head: section.table_head,
+                                rows: section.rows,
+                            };
+                            break;
+                        default:
+                            break;
+                    }
+
+                    return section;
+                });
+                
+                return articleMapped;
+            // }
+
+        },
     }
 }
 </script>

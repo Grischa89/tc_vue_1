@@ -1,5 +1,5 @@
 <template>
-    <img :src="url" :alt="alt">
+    <img :src="compProps.url" :alt="compProps.alt" class="article__section__image">
 </template>
 
 <script>
@@ -7,13 +7,9 @@ export default {
     name: 'ArticleDisplayImage',
 
     props: {
-        url: {
-            type: String,
-            required: true
-        },
-        alt: {
-            type: String,
-            required: true
+        compProps: {
+            type: Object,
+            required: true,
         }
     }
 }

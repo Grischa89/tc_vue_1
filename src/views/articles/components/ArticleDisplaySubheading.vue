@@ -1,10 +1,10 @@
 <template>
-    <h1 class="article__section__heading">{{ compProps.heading }}</h1>
+    <h2 class="article__section__subheading">{{ compProps.subheading }}</h2>
 </template>
 
 <script>
 export default {
-    name: 'ArticleDisplayHeading',
+    name: 'ArticleDisplaySubheading',
 
     props: {
         compProps: {

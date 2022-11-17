@@ -15,7 +15,7 @@ export default {
         align-items: center;
         font-family: Arial, Helvetica, sans-serif;
         font-size: $mobile-body;
-        text-align: justify;
+        text-align: left;
         width: min(100%, 40rem);
         margin-left: auto;
         margin-right: auto;
@@ -35,19 +35,30 @@ export default {
             }
 
             &__image {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                margin-left: auto;
-                margin-right: auto;
-                width: min(95%, 400px);
+                position: relative;
+                height: 300px;
+                width: 100%;
+                object-fit: cover;
+                border-radius: .25rem;
 
-                &__img {
+                &--nonTitleImage {
                     object-fit: contain;
-                    border-radius: .25rem;
+                    height: auto;
+                    width: 100%;
                     margin-bottom: .25rem;
                 }
+
+                // optional overlay
+                // &::before {
+                //     content: '';
+                //     position: absolute;
+                //     top: 0;
+                //     left: 0;
+                //     height: 100%;
+                //     width: 100%;
+                //     background-color: #252323;
+                //     opacity: .2;        
+                // }
 
                 &__caption {
                     font-size: $mobile-help;
@@ -56,10 +67,20 @@ export default {
                 }
             }
 
+            &__imageContainer {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+                width: min(95%, 400px);
+            }
+
             &__listarray {
-                list-style-type: '—';
-                list-style-position: outside;
-                text-align: left;
+                display: grid;
+                gap: .5rem;
+                list-style-type: disc;
                 margin-top: .5rem;
 
                 &__item {
@@ -75,18 +96,16 @@ export default {
             &__subheading {
                 font-family: Monaco, monospace;
                 font-size: 1.5rem;
-                font-weight: 600;
+                font-weight: bold;
             }
 
             &__sub-subheading {
                 font-family: Monaco, monospace;
                 font-size: 1.25rem;
-                font-style: italic;
             }
 
             &__summary {
                 color: var(--help);
-                text-align: justify;
                 padding-left: 5%;
                 padding-right: 5%;
             }
@@ -160,33 +179,6 @@ export default {
                         }
                     }
                 }
-            }
-
-            &__titleImage {
-                position: relative;
-                top: 0;
-                left: 0;
-                height: 300px;
-                width: 100%;
-                object-fit: cover;
-
-                // optional overlay
-                // &::before {
-                //     content: '';
-                //     position: absolute;
-                //     top: 0;
-                //     left: 0;
-                //     height: 100%;
-                //     width: 100%;
-                //     background-color: #252323;
-                //     opacity: .2;        
-                // }
-
-                // &__img {
-                //     height: var(--titleImageHeight);
-                //     width: 100%;
-                //     object-fit: cover;
-                // }
             }
         }
 
