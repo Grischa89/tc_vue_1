@@ -1,5 +1,4 @@
 <template>
-    <!-- <div> -->
         <div class="article">
                 <div class="article__meta">
                     <span>{{ metaDate }}</span>
@@ -11,54 +10,6 @@
                     :is="section.component"
                     :compProps="section.compProps"
                     class="article__section"></component>
-
-                <!-- <ArticleDisplayImage
-                    v-if="section.key === 'image' && section.is_title_image"
-                    :url="section.url"
-                    :alt="section.alt"
-                    class="article__section__titleImage" />
-
-                <ArticleDisplayHeading
-                    v-else-if="section.key === 'heading'"
-                    :heading="section.value"
-                    class="article__section__heading" />
-
-                <ArticleDisplaySummary
-                    v-else-if="section.key === 'summary'"
-                    :summary="section.value"
-                    class="article__section__summary" />
-
-                <ArticleDisplayParagraph
-                    v-else-if="section.key === 'paragraph'"
-                    :paragraph="section.value"
-                    class="article__section__paragraph" />
-
-                <ArticleDisplaySubheading
-                    v-else-if="section.key === 'sub_subheading'"
-                    :subheading="section.value"
-                    class="article__section__subheading" />
-
-                <ArticleDisplaySub_Subheading
-                    v-else-if="section.key === 'sub_subheading'"
-                    :sub_subheading="section.value"
-                    class="article__section__sub-subheading" />
-
-                <ArticleDisplayImageContainer 
-                    v-else-if="section.key === 'image' && !section.is_title_image"
-                    :url="section.url"
-                    :alt="section.alt"
-                    class="article__section__image" />
-
-                <ArticleDisplayList
-                    v-else-if="section.key === 'listarray'"
-                    :items="section.items"
-                    class="article__section__listarray" />
-
-                <ArticleDisplayTable
-                    v-else-if="section.key === 'table' && section.table_head"
-                    :table_head="section.table_head"
-                    :rows="section.rows"
-                    class="article__section__table" /> -->
         </div>
 </template>
 
