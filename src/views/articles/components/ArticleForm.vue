@@ -10,7 +10,7 @@
             
             <form class="form-article__main" @submit.prevent enctype="multipart/form-data">
                 <!-- <button v-if="showButtons" class="form-article__main__button" type="button" @click="addRow">Add Row</button> -->
-                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="200" :delayOnTouchOnly="true" :touchStartThreshold="4" :animation="150">
+                <draggable v-model="article" item-key="id" @start="drag=true" @end="drag=false" :delay="200" :delayOnTouchOnly="true" :touchStartThreshold="4" :animation="150" filter=".ignore-drag" :preventOnFilter="false">
                     <template #item="{element}">
                         <div class="form-article__main__form">
 
@@ -74,7 +74,7 @@
                                 <template v-else-if="element.key === 'image'">
                                     <!-- FILE -->
                                     <div class="form-article__main__form__section__row">
-                                        <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--file" :for="`imageFile-${element.id}`"><span class="form-article__main__form__section__row__label__text">Choose image</span></label>
+                                        <label class="form-article__main__form__section__row__label form-article__main__form__section__row__label--file ignore-drag" :for="`imageFile-${element.id}`"><span class="form-article__main__form__section__row__label__text">Choose image</span></label>
                                         <input @change="handleImage($event, element.id)"
                                             class="form-article__main__form__section__row__value form-article__main__form__section__row__value--file"
                                             type="file"
@@ -97,7 +97,7 @@
                                             :for="`imageName-${element.id}`">Name</label>
                                             <ArticleFormSectionInput
                                                 v-model="element.name"
-                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
+                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input ignore-drag"
                                                 :idForLabel="`imageName-${element.id}`"
                                                 :isReadonly="true" />
                                         </div>
@@ -108,7 +108,7 @@
                                             <label class="form-article__main__form__section__row__label" :for="`imagePK-${element.id}`">PK</label>
                                             <ArticleFormSectionInput
                                                 v-model="element.pk"
-                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
+                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input ignore-drag"
                                                 :idForLabel="`imagePK-${element.id}`"
                                                 :isReadonly="true" />
                                         </div>
@@ -119,7 +119,7 @@
                                             <label class="form-article__main__form__section__row__label" :for="`imageURL-${element.id}`">URL</label>
                                             <ArticleFormSectionInput
                                                 v-model="element.url"
-                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
+                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input ignore-drag"
                                                 :idForLabel="`imageURL-${element.id}`"
                                                 :isReadonly="true" />
                                         </div>
@@ -128,7 +128,7 @@
                                     <div class="form-article__main__form__section__row">
                                         <label class="form-article__main__form__section__row__label" :for="`imageAlt-${element.id}`">Alternative Text</label>
                                         <ArticleFormSectionTextarea
-                                            class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
+                                            class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea ignore-drag"
                                             v-model.trim="element.alt"
                                             :idForLabel="`imageAlt-${element.id}`"
                                             :rows="imageAltTextareaRows" />
@@ -140,7 +140,7 @@
                                             <input
                                                 v-model="element.is_title_image"
                                                 @change="handleCheckboxAction($event, element.id)"
-                                                type="checkbox" name="titleImage" :id="`imageTitleImage-${element.id}`">
+                                                type="checkbox" name="titleImage" :id="`imageTitleImage-${element.id}`" class="ignore-drag">
                                         </label>
                                     </div>
                                 </template>
@@ -161,11 +161,11 @@
                                                         v-model.trim="column.name"
                                                         @focus="saveColumnName(column.name)"
                                                         @blur="handleColumnInput($event, element.id, i)"
-                                                        class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input"
+                                                        class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input ignore-drag"
                                                         :id="`${element.key}Col${i}-${element.id}`"
                                                         :placeholder="`Column ${i + 1}`" />
                                                     <article-form-section-button
-                                                        class="form-article__main__form__section__row__button"
+                                                        class="form-article__main__form__section__row__button ignore-drag"
                                                         @click="deleteTableColumn(element.id, i)">
                                                         <template #icon>
                                                             <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
@@ -183,7 +183,7 @@
                                             <article-form-section-button
                                                     @click="addTableColumn(element.id)"
                                                     :id="`${element.key}ColumnBtn-${element.id}`"
-                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add"
+                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add ignore-drag"
                                                     >
                                                     <template #icon>
                                                         <IconPlus class="form-article__main__form__section__row__button__icon" />
@@ -214,13 +214,13 @@
                                                             <label class="form-article__main__form__section__row__label--visually-hidden" :for="`${element.key}Row${i}-Col${j}-${element.id}`"></label>
                                                             <input
                                                                 v-model.trim="row[`${element.columns[j].name}`]"
-                                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input form-article__main__form__section__row__fieldset__grid__item__nested__item"
+                                                                class="form-article__main__form__section__row__value form-article__main__form__section__row__value--input form-article__main__form__section__row__fieldset__grid__item__nested__item ignore-drag"
                                                                 :id="`${element.key}Row${i}-Col${j}-${element.id}`"
                                                                 :placeholder="element.columns[j].name" />
                                                         </template>
                                                     </div>
                                                     <article-form-section-button
-                                                        class="form-article__main__form__section__row__button"
+                                                        class="form-article__main__form__section__row__button ignore-drag"
                                                         @click="deleteTableRow(element.id, i)">
                                                         <template #icon>
                                                             <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
@@ -234,7 +234,7 @@
                                                 </div>
                                             </div>
                                                 <article-form-section-button 
-                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add"
+                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add ignore-drag"
                                                     @click="addTableRow(element.id)">
                                                     <template #icon>
                                                         <IconPlus class="form-article__main__form__section__row__button__icon" />
@@ -264,11 +264,11 @@
                                                         <ArticleFormSectionTextarea
                                                             v-model.trim="item.value"
                                                             @change="handleInputForShrunkSections(element.id)"
-                                                            class="form-article__main__form__section__row__fieldset__container__row__item form-article__main__form__section__row__value--textarea"
+                                                            class="form-article__main__form__section__row__fieldset__container__row__item form-article__main__form__section__row__value--textarea ignore-drag"
                                                             :idForLabel="`${element.key}Items-${element.id}-Item${i}`"
                                                             :rows="listArrayTextareaRows" />
                                                         <article-form-section-button
-                                                        class="form-article__main__form__section__row__button--inline"
+                                                        class="form-article__main__form__section__row__button--inline ignore-drag"
                                                             @click="deleteListArrayItem(element.id, i)">
                                                             <template #icon>
                                                                 <IconDelete class="form-article__main__form__section__row__button__icon form-article__main__form__section__row__button__icon--delete" />
@@ -281,7 +281,7 @@
                                                     <div v-if="i < element.items.length - 1" class="form-article__main__form__section__row__fieldset__grid__item__divider form-article__main__form__section__row__fieldset__grid__item__divider--listarray"></div>
                                                 </div>
                                                 <article-form-section-button
-                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button"
+                                                    class="form-article__main__form__section__row__button form-article__main__form__section__row__button--add form-article__main__form__section__row__fieldset__grid__button ignore-drag"
                                                     @click="addListArrayItem(element.id)">
                                                     <template #icon>
                                                         <IconPlus class="form-article__main__form__section__row__button__icon" />
@@ -315,7 +315,7 @@
                                         <ArticleFormSectionTextarea
                                             v-model.trim="element.value"
                                             @change="handleInputForShrunkSections(element.id)"
-                                            class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea"
+                                            class="form-article__main__form__section__row__value form-article__main__form__section__row__value--textarea ignore-drag"
                                             :idForLabel="`${element.key}Content-${element.id}`" />
                                         <ArticleFormSectionError
                                             v-if="element.errors?.missingContent"
@@ -327,14 +327,14 @@
                                 <div class="form-article__main__form__section__row">
                                     <article-form-section-button
                                         v-if="element.key === 'heading' || element.key === 'summary'"
-                                        class="form-article__main__form__section__row__button form-article__main__form__section__row__button--not-allowed">
+                                        class="form-article__main__form__section__row__button form-article__main__form__section__row__button--not-allowed ignore-drag">
                                         <template #text-append>
                                             <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--delete">Delete {{ element.key }}</span>
                                         </template>
                                     </article-form-section-button>
                                     <article-form-section-button
                                         v-else
-                                        class="form-article__main__form__section__row__button form-article__main__form__section__row__button--delete"
+                                        class="form-article__main__form__section__row__button form-article__main__form__section__row__button--delete ignore-drag"
                                         @click="handleDelete(element)">
                                         <template #text-append>
                                             <span class="form-article__main__form__section__row__button__text form-article__main__form__section__row__button__text--delete">Delete {{ element.key || `section` }}</span>
