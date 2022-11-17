@@ -321,6 +321,8 @@ const actions = {
         let articleValidationErrors = [];
         let headingExists = false;
         let summaryExists = false;
+        const titleImagesAllowed = 1;
+        let titleImageCounter = 0;
 
         data.article.forEach(element => {
             // Delete errors objectto start fresh (+ to not send it to API)
@@ -359,6 +361,8 @@ const actions = {
 
                     // Since v-model ignores the initial value of a checkbox it needs to be set to false
                     if (element.is_title_image === undefined) element.is_title_image = false;
+
+                    if (element.is_title_image === true) titleImageCounter += 1;
 
                     if (element.value === '') delete element.value;
                     break;
@@ -434,13 +438,11 @@ const actions = {
             }
         });
 
-        if (!headingExists) {
-            articleValidationErrors.push({ message: 'Heading is a required section.' });
-        }
+        if (!headingExists) articleValidationErrors.push({ message: 'Heading is a required section.' });
 
-        if (!summaryExists) {
-            articleValidationErrors.push({ message: 'Summary is a required section.' });
-        }
+        if (!summaryExists) articleValidationErrors.push({ message: 'Summary is a required section.' });
+
+        if (titleImageCounter > titleImagesAllowed) articleValidationErrors.push({ message: 'It is only one title image per article allowed. Please choose the one that should appear in the title and uncheck all others.' });
 
         commit('setArticleValidationErrors', articleValidationErrors);
         return articleValidationErrors.length;
