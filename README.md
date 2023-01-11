@@ -1,4 +1,10 @@
-# This is tc_vue
+# Trainer Codes Project Frontend
+
+## DISCLAIMER
+This site is not finished yet.
+
+## Description
+This is the frontend part of a project made by and for Pokemon GO players: A site where one can find and ultimately exchange Pokemon GO friend codes. 
 
 ## Project setup
 ```
