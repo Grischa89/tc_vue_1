@@ -42,15 +42,15 @@ export default {
                     { key: '', value: '', id: Math.floor(Date.now() * Math.random()) },
                 ],
                 templateBasic: [
-                    { key: 'heading', value: '', id: Math.floor(Date.now() * Math.random()) },
-                    { key: 'summary', value: '', id: Math.floor(Date.now() * Math.random()) },
-                    { key: 'paragraph', value: '', id: Math.floor(Date.now() * Math.random()) },
+                    { key: 'heading', value: '', id: Math.floor(Date.now() * Math.random()), errors: { value: '' } },
+                    { key: 'summary', value: '', id: Math.floor(Date.now() * Math.random()), errors: { value: '' } },
+                    { key: 'paragraph', value: '', id: Math.floor(Date.now() * Math.random()), errors: { value: '' } },
                 ],
                 templateTable: [
-                    { key: 'heading', value: '', id: Math.floor(Date.now() * Math.random()) },
-                    { key: 'summary', value: '', id: Math.floor(Date.now() * Math.random()) },
-                    { key: 'paragraph', value: '', id: Math.floor(Date.now() * Math.random()) },
-                    { key: 'table', value: '', id: Math.floor(Date.now() * Math.random()) },
+                    { key: 'heading', value: '', id: Math.floor(Date.now() * Math.random()), errors: { value: '' } },
+                    { key: 'summary', value: '', id: Math.floor(Date.now() * Math.random()), errors: { value: '' } },
+                    { key: 'paragraph', value: '', id: Math.floor(Date.now() * Math.random()), errors: { value: '' } },
+                    { key: 'table', id: Math.floor(Date.now() * Math.random()), errors: { columns: '' }},
                 ]
             },
             chosenTemplate: [],
