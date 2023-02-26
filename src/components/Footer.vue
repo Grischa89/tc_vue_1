@@ -35,7 +35,7 @@
         Trainer Codes {{ currentYear }}
       </div>
       <div class="footer__container__item">
-        &#129293; From trainers for trainers.
+        <span class="footer__container__item__emoji">&#129505;</span>&nbsp;From trainers for trainers.
       </div>
     </div>
   </footer>
@@ -132,6 +132,10 @@ export default {
         line-height: 110%;
         color: rgba($white, .5);
         margin: 0;
+
+        &__emoji {
+          color: rgba($white, 1);
+        }
       }
     }
 
