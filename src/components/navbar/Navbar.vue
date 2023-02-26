@@ -221,9 +221,7 @@ export default {
   top: 0;
   z-index: 50;
   padding: .5rem 1rem;
-  // margin-bottom: .75rem;
   background-color: var(--surface3);
-  transition: all 300ms ease-in-out;
   color: var(--text);
   border-bottom: 1px solid var(--border);//#393939; //hsl(0, 0%, 18.82%);
 
