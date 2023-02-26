@@ -62,23 +62,6 @@ const actions = {
       });
   }
 
-  // createQuestion({commit, state}) {
-    
-  //   commit('setQuestionsStatus', 'loading');
-
-  //   axios.post('/api/questions', { title: state.questionTitle, description: state.questionDescription } )
-  //     .then(res => {
-  //       console.log(res.data);
-  //       commit('pushQuestion', res.data);
-  //       commit('createTitle', '');
-  //       commit('createDescription', '');
-  //     })
-  //     .catch(err => {
-  //       console.log(err, 'Unable to create question.')
-  //     });
-
-  // },
-
 };
 
 const mutations = {
