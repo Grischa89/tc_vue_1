@@ -30,7 +30,7 @@ export default {
                 },
                 {
                     key: 'subheading',
-                    value: 'Sometimes you need Pokeacutemon GO Trainer Codes right way. Now! Immediately!'
+                    value: 'Sometimes you need Pokémon, GO Trainer Codes right way. Now! Immediately!'
                 },
                 {
                     key: 'paragraph',
