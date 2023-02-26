@@ -491,22 +491,23 @@ html, body {
 }
 
 .main-wrapper {
+  // Make main grow
   flex: 1;
   padding: 5%;
 }
 
-#nav {
-  padding: 30px;
+// #nav {
+//   padding: 30px;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+//   a {
+//     font-weight: bold;
+//     color: #2c3e50;
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+//     &.router-link-exact-active {
+//       color: #42b983;
+//     }
+//   }
+// }
 
 .cookie-comply--sticky {
   // fixed position for consent banner

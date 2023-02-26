@@ -146,7 +146,9 @@ export default {
     display: grid;
     gap: 1.5rem;
     height: 100%;
-    width: 100%;
+    width: min(100%, 900px);
+    margin-left: auto;
+    margin-right: auto;
     // padding: 5%;
     // background-color: $primary;
     // position: relative;
