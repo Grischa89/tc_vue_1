@@ -9,7 +9,7 @@
   <div class="main-wrapper">
     <router-view :key="$route.fullPath" />
 
-    <!-- <BackToTopButton /> -->
+    <BackToTopButton />
   </div>
 
   <CallToAction v-if="!userExists">
@@ -55,7 +55,7 @@
 <script>
 import LastUpdatedInfoBanner from './components/LastUpdatedInfoBanner.vue';
 import Navbar from './components/navbar/Navbar.vue';
-// import BackToTopButton from './components/navbar/BackToTopButton.vue';
+import BackToTopButton from './components/navbar/BackToTopButton.vue';
 import Footer from './components/Footer.vue';
 import CallToAction from './components/cta/CallToAction.vue';
 
@@ -68,7 +68,7 @@ export default {
     LastUpdatedInfoBanner,
     Navbar,
     Footer,
-    // BackToTopButton,
+    BackToTopButton,
     CallToAction,
   },
 
