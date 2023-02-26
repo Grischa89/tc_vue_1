@@ -2,17 +2,17 @@
   <footer class="footer" :class="{ 'footer--with-cta': !userExists }">
     <div class="footer__container">
       <div class="footer__container__item">
-        <router-link to="#" class="footer__container__item__link">About Us</router-link>
+        <router-link :to="{ name: 'About' }" class="footer__container__item__link">About</router-link>
       </div>
       <div class="footer__container__item">
+        <router-link :to="{ name: 'Contact' }" class="footer__container__item__link">Contact</router-link>
+      </div>
+      <div class="footer__container__item">
+        <router-link :to="{ name: 'LegalNotice' }" class="footer__container__item__link">Legal Notice</router-link>
+      </div>
+      <!-- <div class="footer__container__item">
         <router-link to="#" class="footer__container__item__link">Privacy Policy</router-link>
-      </div>
-      <div class="footer__container__item">
-        <router-link to="#" class="footer__container__item__link">Legal Notice</router-link>
-      </div>
-      <div class="footer__container__item">
-        <router-link to="#" class="footer__container__item__link">Contact</router-link>
-      </div>
+      </div> -->
     </div>
 
     <div class="footer__container">

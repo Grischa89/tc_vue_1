@@ -37,6 +37,8 @@ const ListArticlesUpdate = () => import(/* webpackChunkName: "listArticlesUpdate
 const UpdateArticle = () => import(/* webpackChunkName: "updateArticle" */ '../views/articles/UpdateArticle.vue');
 
 const About = () => import(/* webpackChunkName: "about" */ '../views/articles/_static/About.vue');
+const Contact = () => import(/* webpackChunkName: "about" */ '../views/articles/_static/Contact.vue');
+const LegalNotice = () => import(/* webpackChunkName: "about" */ '../views/articles/_static/LegalNotice.vue');
 const PrivacyPolicy = () => import(/* webpackChunkName: "privacy" */ '../views/articles/_static/PrivacyPolicy.vue');
 const PageNotFound = () => import(/* webpackChunkName: "pageNotFound" */ '../views/PageNotFound.vue');
 
@@ -279,10 +281,19 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: About
+  },
+
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: Contact
+  },
+
+  {
+    path: '/legal-notice',
+    name: 'LegalNotice',
+    component: LegalNotice
   },
 
   {
