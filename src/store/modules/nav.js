@@ -68,7 +68,6 @@ const actions = {
 
     axios.get('/api/v1/codes/')
       .then(res => {
-        // console.log('res1', res.data.data[0].time_of_scrape);
         commit('setLastUpdated', res.data.data[0].time_of_scrape)
       })
       .catch(err => {

@@ -37,86 +37,6 @@ const actions = {
       });
   },
 
-  // fetchFeedQuestions({ commit }) {
-
-  //   commit('setQuestionsStatus', 'loading');
-
-  //   axios.get('/api/questions')
-  //     .then(res => {
-  //       commit('setQuestions', res.data);
-  //       commit('setQuestionsStatus', 'success');
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log('Unable to fetch questions');
-  //       commit('setQuestionsStatus', 'error');
-
-  //     });
-  // },
-
-  // fetchFeedQuestions1({commit, state}) {
-
-  //   commit('setQuestionsStatus', 'loading');
-
-  //   axios.get('/api/questions1')
-  //     .then(res => {
-  //       commit('setQuestions', res.data);
-  //       commit('setQuestionsStatus', 'success');
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log('Unable to fetch questions');
-  //       commit('setQuestionsStatus', 'error');
-
-  //     });
-  // },
-
-  // fetchQuestion({ commit }, questionId) {
-
-  //   axios.get('/api/questions/' + questionId)
-  //     .then(res => {
-  //       commit('setQuestion', res.data);
-  //       commit('setAnswers', res.data.data.attributes.answers.data);
-  //       console.log('setAnswerCount', res.data.data.attributes.answers.answer_count);
-  //       commit('setAnswerCount', res.data.data.attributes.answers.answer_count);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log('Unable to fetch question.');
-  //     })
-  // },
-
-  // createQuestion({commit, state}) {
-    
-  //   commit('setQuestionsStatus', 'loading');
-
-  //   axios.post('/api/questions', { title: state.questionTitle, description: state.questionDescription } )
-  //     .then(res => {
-  //       console.log(res.data);
-  //       commit('pushQuestion', res.data);
-  //       commit('createTitle', '');
-  //       commit('createDescription', '');
-  //     })
-  //     .catch(err => {
-  //       console.log(err, 'Unable to create question.')
-  //     });
-
-  // },
-
-  // createAnswer({commit, state}, data) {
-
-  //   axios.post('/api/questions/'+data.questionId+'/answer', { body: state.answerBody })
-  //   .then(res => {
-  //     commit('setAnswers', res.data.data);
-  //     // console.log('setAnswerCount', res.data.answer_count);
-  //     commit('setAnswerCount', res.data.answer_count);
-
-  //   })
-  //   .catch(err => {
-  //     console.log(err, 'Unable to create answer.');
-  //   });
-  // },
-
 };
 
 const mutations = {
@@ -124,9 +44,6 @@ const mutations = {
   setRecentStatus(state, status) {
     state.recentLoadStatus = status;
   },
-
-  // pushQuestion(state, question) {
-  //   state.questions.data.unshift(question);
 
 };
 

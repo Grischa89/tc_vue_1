@@ -65,7 +65,6 @@ export default createStore({
     addDataPositions(state, codes) {
       // Check if codes array needs to be altered
       if (codes.length % 2 === 0) {
-        console.log('This array\'s length is an even number!');
         codes = codes.slice(0, -1);
       }
       let len = codes.length;

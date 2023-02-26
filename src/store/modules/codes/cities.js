@@ -35,18 +35,15 @@ const actions = {
 
   fetchCityCodes({ commit, rootState }, data) {
 
-    console.log('data', data.continent, data.country, data.city);
     commit('setCityStatus', 'loading');
     commit('setURLMessage', '');
 
     // axios.get(`/api/v1/codes/europe/spain/madrid-madrid/`)
     axios.get(`/api/v1/codes/${data.continent}/${data.country}/${data.city}/`)
       .then(res => {
-        console.log('res', res, res.data.new_cache_key);
         // NOTE: If valid continent request res.data.new_cache_key: ''
 
         if (res.data.new_cache_key) {
-          console.log('new_cache_key set in res fetchCityCodes');
 
           if (res.data.new_cache_key === 'recent_codes') {
             // 'recent_codes', both slugs incorrect (/eruop/span/madrid-madr)
@@ -85,14 +82,13 @@ const actions = {
         return commit('addDataPositions', res.data.data);
       })
       .then(() => {
-        console.log('rootState.myCodes', rootState.codes);
         commit('prettyCode', rootState.codes);
         commit('setCityStatus', 'success');
       })
       .catch(err => {
         commit('setCityStatus', 'error');
         console.log(err);
-        console.log('An error occured.');
+        console.log('An error occured. fetchCityCodes');
         
       })
   },
@@ -104,7 +100,6 @@ const actions = {
           commit('setCitySuggestions', res.data.data)
         })
         .catch(err => {
-          // TODO
           console.log('%cerr in fetchCountryForCitySuggestions', 'color: red; font-weight: bold;', err);
         });
   },

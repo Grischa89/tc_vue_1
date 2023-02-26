@@ -193,7 +193,7 @@ const actions = {
             return res.status;
         })
         .catch(err => {
-            console.log('err', err);
+            console.log('%cerr getArticleSections', 'color: red; font-weight: bold;', err);
         });
     },
 
@@ -225,7 +225,7 @@ const actions = {
             commit('setArticleRecommendations', res.data.recommendations);
         })
         .catch(err => {
-            console.log('err', err);
+            console.log('%cerr getArticleRecommendations', 'color: red; font-weight: bold;', err);
         });
     },
 
@@ -235,7 +235,7 @@ const actions = {
             commit('setArticles', res.data);
         })
         .catch(err => {
-            console.log('err', err);
+            console.log('%cerr getArticles', 'color: red; font-weight: bold;', err);
         });
     },
 

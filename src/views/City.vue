@@ -86,7 +86,6 @@ export default {
 
   created() {
     this.$store.dispatch('fetchCityCodes', { continent: this.$route.params.continent, country: this.$route.params.country, city: this.$route.params.city });
-    console.log('After dispatching fetchCityCodes');
   },
 
   beforeRouteLeave (to, from) {

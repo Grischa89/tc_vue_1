@@ -106,10 +106,8 @@ export default {
 
     mounted() {
         const mainNav = document.querySelector('.navbar-wrapper');
-        // console.log('%cmainNav', 'color: darkseagreen; font-weight: bold;', mainNav);
         const mainNavHeight = mainNav.clientHeight;
         const profileNav = document.querySelector('.profile__nav');
-        // console.log('%cprofileNav', 'color: darkseagreen; font-weight: bold;', profileNav);
 
         profileNav.style.top = `${mainNavHeight}px`;
     },
@@ -134,7 +132,7 @@ export default {
                 this.$router.push(`/`);
             })
             .catch(err => { // TODO: How to catch failed logout
-                console.log('err in Profile logout()', err);
+                console.log('%cerr in Profile logout()', 'color: red; font-weight: bold;', err);
             });
         },
     }

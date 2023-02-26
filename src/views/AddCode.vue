@@ -154,8 +154,6 @@ export default {
     },
 
     selectCountry(e) {
-      console.log('e.target.value', e.target.value);
-
       this.validateCountry(e.target.value);
       this.$store.dispatch('getCities', e.target.value)
         .then(res => {
@@ -206,7 +204,6 @@ export default {
     },
 
     checkLength(input, inputLen) {
-      // console.log('len', inputLen);
       // @keyup logic! -- NOTE: @keydown will be more difficult to implement for mobile.
       // On keydown you cannot use e.target.value since it is empty on first keydown.
       // So theoretically e.key or e.code are needed, but they are not available mobile.
@@ -239,7 +236,6 @@ export default {
     validateCountry(country) {
       if (!country) {
         this.errors.invalidCountry = 'Please choose a country.';
-        console.log('this.errors.invalidCountry', this.errors.invalidCountry);
         return false;
       } else {
         this.errors.invalidCountry = '';
@@ -250,7 +246,6 @@ export default {
     validateCity(city) {
       if (!city) {
         this.errors.invalidCity = 'Please choose a city.';
-        console.log('this.errors.invalidCity', this.errors.invalidCity);
         return false;
       } else {
         this.errors.invalidCity = '';

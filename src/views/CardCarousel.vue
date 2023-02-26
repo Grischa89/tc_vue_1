@@ -18,7 +18,6 @@ export default {
   },
 
   created() {
-    console.log('created hook run in CardCarousel view (test)');
     this.$store.dispatch('fetchTestCodes');
   },
 

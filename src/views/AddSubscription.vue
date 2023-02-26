@@ -141,9 +141,8 @@ export default {
     try {
       const userTimezone = await this.$store.dispatch('fetchClientLocation');
       this.data.user_timezone = userTimezone;
-      console.log('%cuserTimezone', 'color: darkseagreen; font-weight: bold;', userTimezone);
     } catch (err) {
-      console.log('%cerr', 'color: darkseagreen; font-weight: bold;', err);
+      console.log('%cerr fetchClientLocation', 'color: darkseagreen; font-weight: bold;', err);
       this.data.user_timezone = '';
     };
   },
@@ -187,7 +186,6 @@ export default {
 
       if ((validCode && validEvent && validCodeAction && this.data.user_timezone) || (validCode && validEvent && validCodeAction && validCountry)) {
         // TODO: Redirect to /profile or subscriptions list?
-        console.log('this.data', this.data);
 
         const submitSuccess = await this.$store.dispatch('addSubscription', this.data);
 
@@ -199,7 +197,6 @@ export default {
     validateEvent(event) {
       if (!event) {
         this.errors.invalidEvent = 'Please choose an event.';
-        console.log('this.errors.invalidEvent', this.errors.invalidEvent);
         return false;
       } else {
         this.errors.invalidEvent = '';
@@ -210,7 +207,6 @@ export default {
     validateCodeAction(action) {
       if (!action) {
         this.errors.invalidCodeAction = 'Please choose a subscription type.';
-        console.log('this.errors.invalidCodeAction', this.errors.invalidCodeAction);
         return false;
       } else {
         this.errors.invalidCodeAction = '';
@@ -221,7 +217,6 @@ export default {
     validateCountry(country) {
       if (!country) {
         this.errors.invalidCountry = 'Please choose a country.';
-        console.log('this.errors.invalidCountry', this.errors.invalidCountry);
         return false;
       } else {
         this.errors.invalidCountry = '';
@@ -272,7 +267,6 @@ export default {
     },
 
     checkLength(input, inputLen) {
-      // console.log('len', inputLen);
       // @keyup logic! -- NOTE: @keydown will be more difficult to implement for mobile.
       // On keydown you cannot use e.target.value since it is empty on first keydown.
       // So theoretically e.key or e.code are needed, but they are not available mobile.

@@ -35,9 +35,6 @@ export default {
 
         const activateSuccess = await this.$store.dispatch('activate', formData);
 
-        console.log('activateSuccess', activateSuccess);
-        console.log('activateSuccess typeof ', typeof activateSuccess);
-
         if (activateSuccess === 204) {
             this.$router.push('/log-in');
         } else if (activateSuccess === 400) {

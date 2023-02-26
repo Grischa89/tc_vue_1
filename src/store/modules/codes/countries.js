@@ -18,18 +18,15 @@ const actions = {
 
   fetchCountryCodes({ commit, rootState }, data) {
 
-    console.log('data', data.continent, data.country);
     commit('setCountryStatus', 'loading');
     commit('setURLMessage', '');
 
     // axios.get(`/api/v1/codes/asia/japan/`)
     axios.get(`/api/v1/codes/${data.continent}/${data.country}/`)
       .then(res => {
-        console.log('res', res);
         // NOTE: If valid continent request res.data.new_cache_key: ''
 
         if (res.data.new_cache_key) {
-          console.log('new_cache_key set in res fetchCountryCodes');
 
           if (res.data.new_cache_key === 'recent_codes') {
             // 'recent_codes', both slugs incorrect (/asfa/jpna/)
@@ -56,7 +53,6 @@ const actions = {
         return commit('addDataPositions', res.data.data);
       })
       .then(() => {
-        console.log('rootState.myCodes', rootState.codes);
         commit('prettyCode', rootState.codes);
         commit('setCountryStatus', 'success');
       })

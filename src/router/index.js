@@ -310,16 +310,12 @@ const routes = [
 ];
 
 const scrollBehavior = (to, from, savedPosition) => {
-  // console.log('%cto / from', 'color: plum; font-weight: bold;', to, from);
   if (savedPosition) {
-    // console.log('%cIFto.name', 'color: aqua; font-weight: bold;', to.name);
     return savedPosition;
   } else if (to.name === 'ProfileOverview' || to.name === 'ProfileCodes' || to.name === 'ProfileSubscriptions') {
-    // console.log('%cELSE IF to.name', 'color: aqua; font-weight: bold;', to.name);
     // In order for site not to scroll to top if nav link was clicked
     return false;
   } else {
-    // console.log('%cELSE to.name', 'color: aqua; font-weight: bold;', to.name);
     return { top: 0 };
   }
 };

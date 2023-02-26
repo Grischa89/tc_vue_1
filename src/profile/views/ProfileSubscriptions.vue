@@ -266,7 +266,6 @@ export default {
     },
 
     showEditForm(subscription) {
-      console.log('%csubscription', 'color: plum; font-weight: bold;', subscription);
       const editArea = document.querySelector(`[data-edit-id="${subscription.pk}"]`);
       const inputCode = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-code]`);
       const inputEvent = document.querySelector(`[data-edit-id="${subscription.pk}"] [data-input-event]`);
@@ -377,7 +376,6 @@ export default {
     validateEvent(event) {
       if (!event) {
         this.errors.invalidEvent = 'Please choose an event.';
-        console.log('this.errors.invalidEvent', this.errors.invalidEvent);
         return false;
       } else {
         this.errors.invalidEvent = '';
@@ -388,7 +386,6 @@ export default {
     validateCodeAction(action) {
       if (!action) {
         this.errors.invalidCodeAction = 'Please choose a subscription type.';
-        console.log('this.errors.invalidCodeAction', this.errors.invalidCodeAction);
         return false;
       } else {
         this.errors.invalidCodeAction = '';

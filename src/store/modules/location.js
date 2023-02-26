@@ -30,7 +30,6 @@ const actions = {
     const timezone = await Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     return new Promise((resolve, reject) => {
-      console.log('fetchClientLocation', timezone);
 
       if (timezone) {
         resolve(timezone);

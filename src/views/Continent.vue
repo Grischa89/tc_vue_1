@@ -46,7 +46,6 @@ name: 'Continent',
 
   mounted() {
     this.$store.dispatch('fetchContinentCodes', this.$route.params.continent);
-    console.log('After dispatching fetchContinentCodes in Continent');
   },
 
   beforeRouteLeave (to, from) {

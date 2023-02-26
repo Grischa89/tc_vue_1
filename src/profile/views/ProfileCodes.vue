@@ -109,7 +109,6 @@ export default {
 
   methods: {
     repostCode(code) {
-      console.log('%ccode', 'color: plum; font-weight: bold;', code);
       this.$store.commit('setCodeToRepost', code);
       this.$router.push({ name: 'AddCode'});
     }

@@ -92,14 +92,12 @@ const actions = {
     
     return axios.get('/api/v1/subscriptions/event_options/')
     .then(res => {
-      console.log('fetchSubscriptionOptions', res);
-
       commit('setEventOptions', res.data.events);
       commit('setCodeActionOptions', res.data.code_actions);
       return res.status;
     })
     .catch(err => {
-      console.log('error', err);
+      console.log('error fetchSubscriptionOptions', err);
       return err.response.status;
     });
   },
@@ -110,7 +108,6 @@ const actions = {
 
     return axios.get('/api/v1/subscriptions/list_subscriptions/')
       .then(res => {
-        console.log('%cres subs', 'color: darkseagreen; font-weight: bold;', res.data);
         commit('setSubscriptions', res.data);
         commit('setSubscriptionStatus', 'success');
 
@@ -127,12 +124,11 @@ const actions = {
     
     return axios.post('/api/v1/subscriptions/add/', data)
     .then(res => {
-      console.log('addSubscription', res);
 
       return res.status;
     })
     .catch(err => {
-      console.log('error', err);
+      console.log('error addSubscription', err);
       return err.response.status;
     });
   },
@@ -141,7 +137,6 @@ const actions = {
 
     return axios.patch(`/api/v1/subscriptions/${data.pk}/`, data.data)
       .then(res => {
-        console.log('res in editSubscription', res);
         commit('setUpdatedSubscriptions', { index: data.index, item: res.data });
         return res.status;
       })
@@ -153,12 +148,9 @@ const actions = {
 
   deleteSubscription({ commit }, data) {
 
-    // console.log('deleteSubscription dispatched! ', 'pk: ', data.pk, 'index: ', data.index);
-
     // TODO: Turn on before deployment
     return axios.delete(`/api/v1/subscriptions/${data.pk}/`)
       .then(res => {
-        console.log('res in deleteSubscription', res);
         commit('setDeletedSubscriptions', data.index);
         return res.status;
       })
@@ -176,7 +168,6 @@ const actions = {
       .then(res => {
         commit('setUserCodes', res.data);
         commit('setUserCodeStatus', 'success');
-        console.log('%cuser codes', 'color: orange; font-weight: bold;', res);
       })
       .catch(err => {
         commit('setUserCodeStatus', 'error');
@@ -204,13 +195,10 @@ const mutations = {
   },
 
   setUpdatedSubscriptions(state, data) {
-    // TODO: data.index undefined auffangen mit Array.findIndex
-    console.log('data in setEditedSubscriptions', data);
     state.subscriptions.splice(data.index, 1, data.item);
   },
 
   setDeletedSubscriptions(state, index) {
-    // TODO: index undefined auffangen mit Array.findIndex
     state.subscriptions.splice(index, 1);
   },
 
@@ -219,7 +207,6 @@ const mutations = {
   },
 
   setUserCodeStatus(state, status) {
-    console.log('%cstatus', 'color: cornflowerblue; font-weight: bold;', status);
     state.userCodeLoadStatus = status;
   },
 

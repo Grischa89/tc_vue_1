@@ -192,13 +192,12 @@ export default {
             this.$router.push(`/`);
         })
         .catch(err => { // TODO: How to catch failed logout
-            console.log('err in Navbar logout()', err);
+            console.log('%cerr in Navbar logout()', 'color: red; font-weight: bold;', err);
         });
     },
 
     toggleMode(e) {
       const mode = e.currentTarget.dataset.mode;
-      console.log('%cmode', 'color: darkseagreen; font-weight: bold;', mode);
       document.documentElement.setAttribute('color-mode', `${mode}`);
       mode === 'dark' ? this.isDarkMode = true : this.isDarkMode = false;
 

@@ -113,11 +113,9 @@ export default {
     registerClick(event) {
       // Delegate newActive to alsways be closest li item (no matter where click happened)
       this.newActive = event.target.closest('.carousel__item');
-      // console.log('this.newActive', this.newActive);
 
       // If click was outside of an li item OR on li item with pos value 0 (front)
       if (!this.newActive || this.newActive.classList.contains('carousel__item_active')) {
-        // console.log('No item or item already in front!');
         return;
       };
       
@@ -125,13 +123,10 @@ export default {
     },
 
     updatePos(newActive) {
-      // console.log('newActive', newActive);
       // Get pos value of clicked item
       const newActivePos = newActive.dataset.pos;
-      // console.log('newActivePos', newActivePos);
 
       if (!newActivePos) {
-        // console.log('Has now data-pos set!');
         return;
       }
 
@@ -169,14 +164,12 @@ export default {
     },
 
     prevSlide() {
-      // console.log('Previous button was clicked!');
       const prevSlide = this.elems.find((elem) => elem.dataset.pos == -1);
 
       this.updatePos(prevSlide);
     },
 
     nextSlide() {
-      // console.log('Next button was clicked!');
       const nextSlide = this.elems.find((elem) => elem.dataset.pos == 1);
 
       this.updatePos(nextSlide);

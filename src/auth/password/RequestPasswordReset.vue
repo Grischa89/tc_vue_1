@@ -56,7 +56,6 @@ export default {
                 const resetSuccess = await this.$store.dispatch('requestPasswordReset', resendActivationData);
 
                 if (resetSuccess === 204) {
-                    console.log('resetSuccess', resetSuccess);
                     this.$router.push({ name: 'RequestSuccess' });
                 } else {
                     this.errors.badRequest = 'Something went wrong. Please try again.';

@@ -15,10 +15,7 @@ axios.interceptors.response.use(function (response) {
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Let response pass
 
-  console.log('%cRequest worked: ', 'color: green; font-weight: bold;',  response.config.method, response.config.url);
-  if (response.data.access){
-    console.log('%cWith this access our request worked: ', 'color: green; font-weight: bold;', response.data.access);
-  }
+  console.log('%cRequest worked: ', 'color: green; font-weight: bold;', response.config.method, response.config.url);
 
   return response;
 }, async function (error) {
@@ -30,13 +27,11 @@ axios.interceptors.response.use(function (response) {
     // originalRequest.url should not be repeated (no loop)
     originalRequest._retry = true;
     
-    console.log('%cInvalid refresh token! ', 'color: red; font-weight: bold;', error.response.status, error.config.baseURL);
+    // console.log('%cInvalid refresh token! ', 'color: red; font-weight: bold;', error.response.status, error.config.baseURL);
 
     // Refresh JWT failed
     // Treat user as unknown and log them out
     await store.dispatch('logout');
-
-    console.log('%crouter', 'color: plum; font-weight: bold;', router);
 
     // Get meta info of current route
     const routeRequiresAuth = router.currentRoute.value.meta.requiresAuth;
@@ -62,11 +57,9 @@ axios.interceptors.response.use(function (response) {
 
   // Handle error returned from a GET method
   if (error.config.method === 'get' && !originalRequest._retry) {
-    console.log('%cWe have a GET method: ', 'color: orange; font-weight: bold;', error.config.method);
 
     // Handle GET + 401 (e.g. getUserProfile)
     if (error.response.status === 401) {
-      console.log('%cAnd a 401: ', 'color: orange; font-weight: bold;', error.response.status);
       // originalRequest.url should not be repeated (no loop)
       originalRequest._retry = true;
 
@@ -74,25 +67,20 @@ axios.interceptors.response.use(function (response) {
       return store.dispatch('refreshJWT')
       .then((access) => {
         // New access token being returned
-        console.log('%cWe got a new token for a GET method: ', 'color: orange; font-weight: bold;', access, typeof access);
 
-        console.log('%cThis is the GET request we want to repeat', 'color: orange; font-weight: bold;', originalRequest);
         // NOTE: Now for the original request the new access token needs to be set
         originalRequest.headers['Authorization'] = `JWT ${access}`;
-        console.log('%cWe are trying the GET request again with this header: ', 'color: orange; font-weight: bold;', originalRequest.headers['Authorization']);
 
         // Repeat the original request
         return new Promise((resolve, reject) => {
           axios.request(originalRequest)
             .then(response => {
               // The original request passed with its new token
-              console.log('%cGET Request with new token worked, url: ', 'color: orange; font-weight: bold;', error.config.url);
 
               resolve(response);
             })
             .catch((error) => {
               // The original request with new token got rejected
-              console.log('%cGET Request with new token DID NOT work, url: ', 'color: red; font-weight: bold;', error.config.url);
 
               reject(error);
             });
@@ -107,7 +95,6 @@ axios.interceptors.response.use(function (response) {
       });
     } else {
       // Handle all errors of requests with method GET which are not a 401
-      console.log('%cWe are rejecting the GET error, status: ', 'color: orange; font-weight: bold;', error.response.status);
 
       // Reject error as intended, let display be handled by vue (e.g. 404 when trying to retrieve codes should display async error component for user)
       return Promise.reject(error);
@@ -115,7 +102,6 @@ axios.interceptors.response.use(function (response) {
     
   } // Handle errors of non-GET methods
   else if (error.config.method !== 'get' && !originalRequest._retry) {
-    console.log('%cWe have another method: ', 'color: orange; font-weight: bold;', error.config.method, error.config.url, error.message, error.config, error.code, error.request);
     // originalRequest.url should not be repeated (no loop)
     originalRequest._retry = true;
 
@@ -137,14 +123,9 @@ axios.interceptors.response.use(function (response) {
     return store.dispatch('refreshJWT')
     .then((access) => {
       // New access token being returned
-      console.log('%cWe got a new token: ', 'color: slateblue; font-weight: bold;', access);
-      
-      // const originalRequest = error.config;
-      console.log('%cThis is the request we want to repeat', 'color: slateblue; font-weight: bold;', originalRequest);
 
       // NOTE: Now for the original request the new access token needs to be set
       originalRequest.headers['Authorization'] = `JWT ${access}`;
-      console.log('%cWe are trying the request again with this header: ', 'color: slateblue; font-weight: bold;', originalRequest.headers['Authorization']);
 
       // Repeat the original request
       return new Promise((resolve, reject) => {

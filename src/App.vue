@@ -110,21 +110,18 @@ export default {
       // In cas refreshJWT resolves with new access token this is what we want
       // If refreshJWT gets rejected due to invalid token the redirect gets handled in response interceptor in main.js
       this.$store.commit('setAuthenticated', true);
-      
-      console.log('%cknown, not logged out user + closed session - tc_user.access:', 'color: green; font-weight: bold;', tc_user.refresh);
 
       this.$store.dispatch('refreshJWT');
 
     } else {
       // "not known / logged out user"
-      console.log('%cnot known / logged out user - tc_user.access:', 'color: green; font-weight: bold;', tc_user.refresh);
+      console.log('%cnot known / logged out user - tc_user.access:', 'color: green; font-weight: bold;');
 
       this.$store.dispatch('logout');
     }
 
     // If tc_user has keys (no empty object) set 
     if (Object.keys(tc_user).length !== 0 && tc_user.constructor === Object) {
-      console.log('%cWe have a user object in localStorage', 'color: aqua; font-weight: bold;', tc_user);
       this.$store.commit('setUser', tc_user);
     }
 
@@ -140,14 +137,14 @@ export default {
 
     let docWidth = document.documentElement.offsetWidth;
 
-    [].forEach.call(
-      document.querySelectorAll('*'),
-      function(el) {
-        if (el.offsetWidth > docWidth) {
-          console.log('%cel', 'color: crimson; font-weight: bold;', el);
-        }
-      }
-    );
+    // [].forEach.call(
+    //   document.querySelectorAll('*'),
+    //   function(el) {
+    //     if (el.offsetWidth > docWidth) {
+    //       console.log('%cel', 'color: crimson; font-weight: bold;', el);
+    //     }
+    //   }
+    // );
   },
 
   computed: {
@@ -162,7 +159,6 @@ export default {
     async initCookieConsent() {
       // Get 'cookie-comply' item from localStorage
       const cookieComply = JSON.parse(localStorage.getItem('cookie-comply'));
-      console.log('%cAfter JSON.pars in initCookieConsent', 'color: red; font-weight: bold; background-color: white;', cookieComply);
       
       // If cookie-comply key exists in localStorage
       if (cookieComply) {
@@ -192,31 +188,25 @@ export default {
             console.log('NON-EU/ NON-CAL, no banner needed.');
             this.acceptedAll();
           }
-
         } catch (err) {
-          console.log('err in try catch', err);
           this.consentNeeded = true;
         }
       }
     },
 
     checkDate() {
-      console.log('I need to check the date');
-
       // Compare local storage date with current date
       // Get 'answeredAt' item from localStorage, or fallback Jan 2022, or 0
       const answeredAt = JSON.parse(localStorage.getItem('answeredAt') || Date.parse('01 Jan 2022 00:00:00 GMT') || '0');
       const elapsedTime = Date.now() - answeredAt;
 
       // (toSeconds * toMinutes * toHours * toDays)
-      const elapsedDays = elapsedTime / (1000 * 60 * 60 * 24)
-      console.log('elapsedDays', elapsedDays);
+      const elapsedDays = elapsedTime / (1000 * 60 * 60 * 24);
 
       return elapsedDays;
     },
     
     acceptedAll() {
-      console.log('acceptedAll');
       // Extend allScripts array if new script shall be included
       const allScripts = ['_ga','_hjid'];
       localStorage.setItem('cookie-comply', JSON.stringify(allScripts));
@@ -234,7 +224,6 @@ export default {
       if (!prefScripts.length) return
 
       for (let item of prefScripts) {
-        console.log(item);
         if (item === '_ga') {
           this._ga();
         }
@@ -254,9 +243,6 @@ export default {
 
     setMode() {
       const tc_colorMode = JSON.parse(localStorage.getItem('tc_colorMode')) || '';
-
-      console.log('%cThis is true if tc_colorMode not set in localStorage: ', 'color: orange; font-weight: bold;', tc_colorMode == false);
-      console.log('%cOS dark mode set to: ', 'color: orange; font-weight: bold;', window.matchMedia('(prefers-color-scheme: dark)').matches);
 
       // TODO This is how it should be (Check os mode preference, but let localStorage setting still take precedence)
       // if (tc_colorMode === 'dark' || (window.matchMedia('(prefers-color-scheme: dark)').matches && !tc_colorMode)) {

@@ -17,19 +17,16 @@ const actions = {
 
   fetchContinentCodes({ commit, rootState }, continent) {
 
-    console.log('continent', continent);
     commit('setContinentStatus', 'loading');
     commit('setURLMessage', '');
 
     axios.get(`/api/v1/codes/${continent}/`)
       .then(res => {
-        console.log(res);
         // NOTE: If valid continent request res.data.new_cache_key: ''
 
         if (res.data.new_cache_key) {
           // 'recent_codes', incorrect continent slug (/asfa/)
-          console.log('new_cache_key set in res fetchContinentCodes');
-          console.log(res.data.new_cache_key);
+          
           // TODO: Here not new_cache_key but recent codes or sth
           // NOTE: validSlug is here '/', Home
           const slugs = { 'invalidSlug': `/${continent}/`, 'validSlug': '/' };
@@ -56,21 +53,6 @@ const actions = {
         console.log('An error occured in fetchContinentCodes.');
       })
   },
-
-  // fetchQuestion({ commit }, questionId) {
-
-  //   axios.get('/api/questions/' + questionId)
-  //     .then(res => {
-  //       commit('setQuestion', res.data);
-  //       commit('setAnswers', res.data.data.attributes.answers.data);
-  //       console.log('setAnswerCount', res.data.data.attributes.answers.answer_count);
-  //       commit('setAnswerCount', res.data.data.attributes.answers.answer_count);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log('Unable to fetch question.');
-  //     })
-  // },
 
 };
 

@@ -81,7 +81,6 @@ export default {
   },
 
   mounted() {
-    console.log('%cthis.$route.params.continent', 'color: darkseagreen; font-weight: bold;', this.$route.params.continent);
     this.$store.dispatch('fetchCountryCodes', { continent: this.$route.params.continent, country: this.$route.params.country });
   },
 

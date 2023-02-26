@@ -48,8 +48,6 @@ const actions = {
 
     return axios.post('/api/v1/accounts/auth/users/', userCreateData)
       .then(res => {
-        console.log("res in createUser", res);
-
         return { status: res.status };
       })
       .catch(err => {
@@ -62,13 +60,8 @@ const actions = {
 
   activate({ commit }, formData) {
 
-    console.log('formData in auth.js activate', formData);
-
     return axios.post(`/api/v1/accounts/auth/users/activation/`, formData)
       .then(res => {
-        console.log('res.status after auth/users/activation/', res.status);
-        // set state.user zu res.data??? stein: this.user = response.data (in component)
-
         return res.status;
       })
       .catch(err => {
@@ -84,7 +77,6 @@ const actions = {
 
     return axios.post(`/api/v1/accounts/auth/users/resend_activation/`, formData)
       .then(res => {
-        console.log('res.status after auth/users/activation/', res.status);
 
         commit('setRequestEmail', formData.email);
 
@@ -104,7 +96,6 @@ const actions = {
 
     return axios.post(`/api/v1/accounts/auth/users/reset_password/`, formData)
       .then(res => {
-        console.log('res.status after reset_password', res.status);
 
         commit('setRequestEmail', formData.email);
 
@@ -124,7 +115,6 @@ const actions = {
 
     return axios.post(`/api/v1/accounts/auth/users/reset_password_confirm/`, formData)
       .then(res => {
-        console.log('reset_password_confirm', res.status);
 
         return res.status;
       })
@@ -157,15 +147,11 @@ const actions = {
   refreshJWT({ commit }) {
     const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
 
-    console.log('%cTry to refresh JWT in auth.js', 'color: cornflowerblue; font-weight: bold;', tc_user.refresh);
-
     return axios.post(`/api/v1/accounts/auth/jwt/refresh/`, {"refresh": tc_user.refresh})
       .then(res => {
         tc_user.access = res.data.access;
         localStorage.tc_user = JSON.stringify(tc_user);
         sessionStorage.isAuthenticated = JSON.stringify(true);
-
-        console.log('%c refreshJWT() set sessionStorage.isAuthenticated ', 'color: lime; font-weight: bold;', sessionStorage.isAuthenticated);
 
         axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}`;
         commit('setAuthenticated', true);
@@ -188,7 +174,6 @@ const actions = {
         localStorage.tc_user = JSON.stringify(tc_user);
         sessionStorage.isAuthenticated = JSON.stringify(true);
 
-        console.log('%c login() set sessionStorage.isAuthenticated ', 'color: lime; font-weight: bold;', sessionStorage.isAuthenticated);
         axios.defaults.headers.common['Authorization'] = `JWT ${res.data.access}`;
 
         commit('setAuthenticated', true);
@@ -237,7 +222,6 @@ const actions = {
 
     commit('setAuthenticated', false);
 
-    console.log('%cUser was logged out', 'color: fuchsia; font-weight: bold;');
     return Promise.resolve(true);
   },
 
