@@ -100,8 +100,8 @@ export default {
     },
 
     created() {
-        if (!this.userCodes) this.$store.dispatch('fetchUserCodes');
-        if (!this.subscriptions) this.$store.dispatch('fetchAllSubscriptions');
+        this.$store.dispatch('fetchUserCodes');
+        this.$store.dispatch('fetchAllSubscriptions');
     },
 
     mounted() {
