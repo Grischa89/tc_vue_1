@@ -36,6 +36,13 @@ export default {
         const activateSuccess = await this.$store.dispatch('activate', formData);
 
         if (activateSuccess === 204) {
+            const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
+            
+            if (tc_user.is_active === false) {
+                tc_user.is_active = true;
+                this.$store.commit('setUser', tc_user);
+            }
+            
             this.$router.push('/log-in');
         } else if (activateSuccess === 400) {
             console.log('Need to request activation link again. 400', activateSuccess);
