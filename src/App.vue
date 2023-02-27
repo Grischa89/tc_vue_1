@@ -4,6 +4,7 @@
     :elapsedInfo="elapsedInfo" />
   <Navbar
     :isAuthenticated="isAuthenticated"
+    :isStaff="isStaff"
     :darkMode="darkMode" />
   
   <div class="main-wrapper">
@@ -110,6 +111,7 @@ export default {
       // In cas refreshJWT resolves with new access token this is what we want
       // If refreshJWT gets rejected due to invalid token the redirect gets handled in response interceptor in main.js
       this.$store.commit('setAuthenticated', true);
+      this.$store.commit('setStaff', tc_user.is_staff);
 
       this.$store.dispatch('refreshJWT');
 
@@ -150,6 +152,7 @@ export default {
   computed: {
     ...mapGetters({
       isAuthenticated: 'isAuthenticated',
+      isStaff: 'isStaff',
       elapsedInfo: 'elapsedInfo',
       userExists: 'userExists',
     }),

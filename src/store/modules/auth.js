@@ -3,6 +3,7 @@ import axios from 'axios';
 const state = {
   user: {},
   isAuthenticated: false,
+  isStaff: false,
   accessToken: '',
   refreshToken: '',
   token: '',
@@ -20,6 +21,10 @@ const getters = {
 
   isAuthenticated: state => {
     return state.isAuthenticated;
+  },
+
+  isStaff: state => {
+    return state.isStaff;
   },
 
   userExists: state => {
@@ -200,6 +205,7 @@ const actions = {
 
         // Set state.user to retrieved user
         commit('setUser', res.data);
+        commit('setStaff', res.data.is_staff);
         
         return res.data;
       })
@@ -213,6 +219,7 @@ const actions = {
 
     delete tc_user.access;
     delete tc_user.refresh;
+    delete tc_user.is_staff;
 
     // Still re-set tc_user with username and is_active
     localStorage.tc_user = JSON.stringify(tc_user);
@@ -221,6 +228,7 @@ const actions = {
     delete axios.defaults.headers.common['Authorization'];
 
     commit('setAuthenticated', false);
+    commit('setStaff', false);
 
     return Promise.resolve(true);
   },
@@ -243,6 +251,10 @@ const mutations = {
 
   setAuthenticated(state, isAuthenticated) {
     state.isAuthenticated = isAuthenticated;
+  },
+
+  setStaff(state, isStaff) {
+    state.isStaff = isStaff;
   },
 
   setActivated(state, isActivated) {

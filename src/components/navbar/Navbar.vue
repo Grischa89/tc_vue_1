@@ -125,7 +125,9 @@ export default {
   props: {
     isAuthenticated: {
       type: Boolean,
-      // required: true,
+    },
+    isStaff: {
+      type: Boolean,
     },
     darkMode: {
       type: Boolean,
@@ -134,8 +136,6 @@ export default {
 
   created() {
     this.isDarkMode = this.darkMode;
-    const tc_user = JSON.parse(localStorage.getItem('tc_user')) || {};
-    this.isStaff = tc_user.is_staff === true ? true : false;
   },
 
   computed: {
@@ -150,7 +150,7 @@ export default {
       showMenu: false,
       atTop: 0,
       isDarkMode: false,
-      isStaff: false,
+      // isStaff: false,
     }
   },
 
