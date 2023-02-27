@@ -79,7 +79,7 @@ const actions = {
 
         // // TODO: Make global mutation that sets document title mit getter in beforeEach?
 
-        return commit('addDataPositions', res.data.data);
+        return commit('setCodes', res.data.data);
       })
       .then(() => {
         commit('prettyCode', rootState.codes);

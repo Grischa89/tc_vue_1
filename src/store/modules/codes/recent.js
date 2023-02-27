@@ -25,7 +25,7 @@ const actions = {
       .then(res => {
         window.document.title = 'Recent Codes From Around The World | trainercodes.net';
         commit('setBreadcrumb', '');
-        return commit('addDataPositions', res.data.data);
+        return commit('setCodes', res.data.data);
       })
       .then(() => {
         commit('prettyCode', rootState.codes);

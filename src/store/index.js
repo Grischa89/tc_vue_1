@@ -62,34 +62,7 @@ export default createStore({
 
   mutations: {
 
-    addDataPositions(state, codes) {
-      // Check if codes array needs to be altered
-      if (codes.length % 2 === 0) {
-        codes = codes.slice(0, -1);
-      }
-      let len = codes.length;
-      // Set middle value value of array length
-      let limit = (len - 1) / 2;
-  
-      // Set iterators
-      let i = 0
-      let j = limit;
-  
-      while (i < len) {
-  
-        // Assign positive positional values to elements until limit
-        if (i <= limit){
-          codes[i].dataPos = i;
-          i++;
-        } else {
-          // Assign negative positional values
-          // For array elements with index greater than limit
-          codes[i].dataPos = -j;
-          j--;
-          i++;
-        }
-      }
-  
+    setCodes(state, codes) {  
       state.codes = codes;
     },
 

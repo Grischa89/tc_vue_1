@@ -41,7 +41,7 @@ const actions = {
 
         commit('setBreadcrumb', '');
 
-        return commit('addDataPositions', res.data.data);
+        return commit('setCodes', res.data.data);
       })
       .then(() => {
         commit('prettyCode', rootState.codes);

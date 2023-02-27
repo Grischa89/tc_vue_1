@@ -50,7 +50,7 @@ const actions = {
           commit('setBreadcrumb', { continentName: res.data.data[0].continent, continentSlug: res.data.data[0].continent_slug });
         }
 
-        return commit('addDataPositions', res.data.data);
+        return commit('setCodes', res.data.data);
       })
       .then(() => {
         commit('prettyCode', rootState.codes);
